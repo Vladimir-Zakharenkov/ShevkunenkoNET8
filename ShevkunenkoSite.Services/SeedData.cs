@@ -14,6 +14,27 @@ public static class SeedData
             context.Database.Migrate();
         }
 
+        if (!context.BackgroundFile.Any())
+        {
+            context.BackgroundFile.AddRange(
+                new BackgroundFileModel
+                {
+                    LeftBackground = "FotoPlenka.png",
+                    RightBackground = "FotoPlenka.png",
+                    WebLeftBackground = "FotoPlenka.webp",
+                    WebRightBackground = "FotoPlenka.webp"
+                },
+                new BackgroundFileModel
+                {
+                    LeftBackground = "biografy-left.png",
+                    RightBackground = "biografy-right.png",
+                    WebLeftBackground = "biografy-left.webp",
+                    WebRightBackground = "biografy-right.webp"
+                });
+
+            context.SaveChanges();
+        }
+
         if (!context.IconFile.Any())
         {
             context.IconFile.AddRange(
@@ -374,10 +395,10 @@ public static class SeedData
             context.ImageFile.AddRange(
                 new ImageFileModel
                 {
-                    ImageCaption = "Изображение отсутствует",
-                    ImageDescription = "Изображение отсутствует",
-                    ImageAltTitle = "изображение отсутствует",
-                    ImagePath = "images/common",
+                    ImageCaption = "Изображение не найдено",
+                    ImageDescription = "Изображение не найдено в базе данных сайта.",
+                    ImageAltTitle = "изображение не найдено",
+                    ImagePath = "/images/common",
                     ImageFileName = "no-image.png",
                     ImageFileNameExtension = "png",
                     ImageMimeType = "image/png",
@@ -387,47 +408,58 @@ public static class SeedData
                     IconFileName = "no-image-300.png",
                     IconFileNameExtension = "png",
                     IconMimeType = "image/png",
-                    IconFileSize = 62541,
+                    IconFileSize = 41667,
                     IconWidth = 300,
-                    IconHeight = 300
-                },
-                new ImageFileModel
-                {
-                    ImageCaption = "Сайт памяти Сергея Шевкуненко",
-                    ImageDescription = "Сайт памяти Сергея Шевкуненко",
-                    ImageAltTitle = "сайт памяти Сергея Шевкуненко",
-                    ImagePath = "images/common",
-                    ImageFileName = "index1.gif",
-                    ImageFileNameExtension = "gif",
-                    ImageMimeType = "image/gif",
-                    ImageFileSize = 588813,
-                    ImageWidth = 1122,
-                    ImageHeight = 480,
-                    IconFileName = "index1-300.gif",
-                    IconFileNameExtension = "gif",
-                    IconMimeType = "image/gif",
-                    IconFileSize = 48564,
-                    IconWidth = 300,
-                    IconHeight = 128
-                });
-
-            context.SaveChanges();
-        }
-
-        if (!context.BackgroundFile.Any())
-        {
-            context.BackgroundFile.AddRange(
-                new BackgroundFileModel
-                {
-                    LeftBackground = "FotoPlenka.png",
-
-                    RightBackground = "FotoPlenka.png"
-                },
-                new BackgroundFileModel
-                {
-                    LeftBackground = "biografy-left.png",
-
-                    RightBackground = "biografy-right.png"
+                    IconHeight = 225,
+                    ImageHDFileName = null,
+                    ImageHDFileSize = 0,
+                    ImageHDHeight = 0,
+                    ImageHDMimeType = null,
+                    ImageHDNameExtension = null,
+                    ImageHDWidth = 0,
+                    Icon100FileName = "no-image-100.png",
+                    Icon100FileNameExtension = "png",
+                    Icon100FileSize = 9360,
+                    Icon100Height = 75,
+                    Icon100MimeType = "image/png",
+                    Icon100Width = 100,
+                    Icon200FileName = "no-image-200.png",
+                    Icon200FileNameExtension = "png",
+                    Icon200FileSize = 22526,
+                    Icon200Height = 150,
+                    Icon200MimeType = "image/png",
+                    Icon200Width = 200,
+                    SearchFilter = "Админ,",
+                    WebImageFileName = "no-image.webp",
+                    WebImageFileSize = 4990,
+                    WebImageFileNameExtension = "webp",
+                    WebImageMimeType = "image/webp",
+                    WebIconFileName = "no-image-300.webp",
+                    WebIconFileNameExtension = "webp",
+                    WebIconFileSize = 2156,
+                    WebIconMimeType = "image/webp",
+                    WebIcon200FileName = "no-image-200.webp",
+                    WebIcon200FileNameExtension = "webp",
+                    WebIcon200FileSize = 1574,
+                    WebIcon200MimeType = "image/webp",
+                    WebIcon100FileName = "no-image-100.webp",
+                    WebIcon100FileNameExtension = "webp",
+                    WebIcon100FileSize = 922,
+                    WebIcon100MimeType = "image/webp",
+                    WebImageHDFileName = null,
+                    WebImageHDFileSize = 0,
+                    WebImageHDMimeType = "image/webp",
+                    WebImageHDNameExtension = "webp",
+                    WebImageHDHeight = 0,
+                    WebImageHDWidth = 0,
+                    WebImageHeight = 540,
+                    WebImageWidth = 720,
+                    WebIconHeight = 225,
+                    WebIconWidth = 300,
+                    WebIcon200Height = 150,
+                    WebIcon200Width = 200,
+                    WebIcon100Height = 75,
+                    WebIcon100Width = 100
                 });
 
             context.SaveChanges();
