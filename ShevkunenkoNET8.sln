@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShevkunenkoSite", "ShevkunenkoSite\ShevkunenkoSite.csproj", "{05F99654-47F2-44B3-9DB4-86301D51EC05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShevkunenkoSite.Models", "ShevkunenkoSite.Models\ShevkunenkoSite.Models.csproj", "{9BC852D7-EF45-41F8-B6D5-417CC3938DBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShevkunenkoSite.Services", "ShevkunenkoSite.Services\ShevkunenkoSite.Services.csproj", "{ECFB151D-1304-4946-9E2F-AEA1AE299139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{05F99654-47F2-44B3-9DB4-86301D51EC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05F99654-47F2-44B3-9DB4-86301D51EC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05F99654-47F2-44B3-9DB4-86301D51EC05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC852D7-EF45-41F8-B6D5-417CC3938DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC852D7-EF45-41F8-B6D5-417CC3938DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC852D7-EF45-41F8-B6D5-417CC3938DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC852D7-EF45-41F8-B6D5-417CC3938DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECFB151D-1304-4946-9E2F-AEA1AE299139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFB151D-1304-4946-9E2F-AEA1AE299139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFB151D-1304-4946-9E2F-AEA1AE299139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFB151D-1304-4946-9E2F-AEA1AE299139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
