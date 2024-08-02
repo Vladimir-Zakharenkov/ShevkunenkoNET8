@@ -87,7 +87,7 @@ public class PageInfoModel
     public string PageFullPath { get; set; } = string.Empty;
 
     [DataType(DataType.Text)]
-    public string PageFullPathWithData { get; private set; } = string.Empty;
+    public string PageFullPathWithData { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Необходимо указать файл browserconfig")]
     [Display(Name = "Файл browserconfig: ")]
