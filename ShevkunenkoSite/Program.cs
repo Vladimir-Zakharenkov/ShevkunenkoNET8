@@ -40,6 +40,6 @@ WebApplication app = builder.Build();
 #endregion
 
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => DataConfig.Test /*"Hello World!"*/);
 
 app.Run();
