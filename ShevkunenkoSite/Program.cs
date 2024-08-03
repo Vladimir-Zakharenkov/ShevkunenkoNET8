@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -10,13 +12,46 @@ IWebHostEnvironment environment = builder.Environment;
 
 IServiceCollection services = builder.Services;
 
+services.AddControllersWithViews();
+
+services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeAreaPage("Admin", "/Index");
+    options.Conventions.AuthorizeAreaFolder("Admin", "/DBCRUD");
+    options.Conventions.AddPageRoute("/Sitemap", "sitemap.xml");
+    options.Conventions.AddPageRoute("/Robots", "robots.txt");
+});
+
+services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = new PathString("/Admin/Login");
+    });
+
 services.AddDbContext<SiteDbContext>(opts =>
 {
     opts.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"]);
-    opts.EnableSensitiveDataLogging(true);
+
+    if (environment.IsDevelopment())
+    {
+        opts.EnableSensitiveDataLogging(true);
+    }
 });
 
-//services.AddDatabaseDeveloperPageExceptionFilter();
+services.AddDatabaseDeveloperPageExceptionFilter();
+
+services.Configure<RazorViewEngineOptions>(options =>
+{
+    options.AreaViewLocationFormats.Clear();
+    options.AreaViewLocationFormats.Add("/Areas/{2}/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Areas/{2}/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+});
 
 #endregion
 
