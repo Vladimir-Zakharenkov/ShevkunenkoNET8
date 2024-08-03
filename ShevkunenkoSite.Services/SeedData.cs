@@ -1,10 +1,6 @@
 ﻿//If you need to reset the database, then run this command in the ShevkunenkoSite.Services folder:
 //dotnet ef database --startup-project ..\ShevkunenkoSite  drop --force --context SiteDbContext
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using ShevkunenkoSite.Models;
-
 namespace ShevkunenkoSite;
 
 public static class SeedData
@@ -18,26 +14,26 @@ public static class SeedData
             context.Database.Migrate();
         }
 
-        if (!context.BackgroundFile.Any())
-        {
-            context.BackgroundFile.AddRange(
-                new BackgroundFileModel
-                {
-                    LeftBackground = "FotoPlenka.png",
-                    RightBackground = "FotoPlenka.png",
-                    WebLeftBackground = "FotoPlenka.webp",
-                    WebRightBackground = "FotoPlenka.webp"
-                },
-                new BackgroundFileModel
-                {
-                    LeftBackground = "biografy-left.png",
-                    RightBackground = "biografy-right.png",
-                    WebLeftBackground = "biografy-left.webp",
-                    WebRightBackground = "biografy-right.webp"
-                });
+        //if (!context.BackgroundFile.Any())
+        //{
+        //    context.BackgroundFile.AddRange(
+        //        new BackgroundFileModel
+        //        {
+        //            LeftBackground = "FotoPlenka.png",
+        //            RightBackground = "FotoPlenka.png",
+        //            WebLeftBackground = "FotoPlenka.webp",
+        //            WebRightBackground = "FotoPlenka.webp"
+        //        },
+        //        new BackgroundFileModel
+        //        {
+        //            LeftBackground = "biografy-left.png",
+        //            RightBackground = "biografy-right.png",
+        //            WebLeftBackground = "biografy-left.webp",
+        //            WebRightBackground = "biografy-right.webp"
+        //        });
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
 
         if (!context.IconFile.Any())
         {
@@ -469,184 +465,184 @@ public static class SeedData
             context.SaveChanges();
         }
 
-        if (!context.PageInfo.Any())
-        {
-            context.PageInfo.AddRange(
-            new PageInfoModel
-            {
-                PageTitle = "Сайт памяти Сергея Шевкуненко",
-                PageDescription = "Эта история по-своему уникальна и практически не имеет " +
-                    "аналогов в истории российского кинематографа. Подававший большие надежды " +
-                    "актер волею судьбы угодил в тюрьму и довольно быстро добился славы и " +
-                    "признания совсем в другой среде - уголовной. Последней ступенькой, " +
-                    "на которую сумел забраться в преступной иерархии этот бывший актер, " +
-                    "была должность «положенца», которая предшествует самому высокому " +
-                    "титулу в уголовной среде - вора в законе. Имя этого человека - " +
-                    "Сергей Шевкуненко.",
-                PageKeyWords = "сергей шевкуненко,сергей шевкуненко фото,сергей " +
-                    "шевкуненко криминальная,шевкуненко сергей юрьевич,сергей шевкуненко биография," +
-                    "сергей шевкуненко криминальная биография,сергей шевкуненко убийство," +
-                    "сергей шевкуненко фото убийство,сергей шевкуненко жена,сергей шевкуненко википедия," +
-                    "фильм криминальная звезда сергей шевкуненко,сергей шевкуненко похороны," +
-                    "актер сергей шевкуненко,памяти сергей шевкуненко,сергей шевкуненко документальный фильм," +
-                    "сергей шевкуненко документальный фильм криминальная звезда,криминальная звезда " +
-                    "документальный фильм памяти сергея шевкуненко,сергей шевкуненко видео," +
-                    "сестра сергея шевкуненко,шевкуненко сергей юрьевич похороны,сергей шевкуненко кортик," +
-                    "елена шевкуненко жена сергея шевкуненко,сергей шевкуненко могила," +
-                    "сергей шевкуненко смерть,сергей шевкуненко похороны видео,сергей шевкуненко личная жизнь," +
-                    "сергей шевкуненко фото смерть,шевкуненко сергей юрьевич вспоминают друзья," +
-                    "актер сергей шевкуненко биография,судьба сергея шевкуненко," +
-                    "сергей шевкуненко фото перед смертью,сергей шевкуненко криминал," +
-                    "шевкуненко сергей юрьевич криминал",
-                PageLastmod = DateTime.Today,
-                PageLoc = "/index",
-                BrowserConfig = "main.xml",
-                Manifest = "main.json",
-                OgType = "website",
-                BackgroundFileModelId = new("E073BDDD694F4818A0C308DADB48DCD9"),
-                ImageFileModelId = new("893CB76A-927A-432B-9E60-08DAF54685FF"),
-                PageArea = string.Empty,
-                PageCardText = string.Empty,
-                Changefreq = "monthly",
-                Priority = "0.9",
-                PageIconPath = "/main",
-                BrowserConfigFolder = "/main",
-                Action = "/index",
-                Controller = "/shevkunenko",
-                RoutData = string.Empty,
-                PageAsRazorPage = false,
-                PagePathNickName = string.Empty,
-                //PageFullPath = "/shevkunenko/index", вычисляемое свойство
-                //PageFullPathWithData = "/shevkunenko/index", вычисляемое свойство
-                //PagePathNickNameWithData = string.Empty, вычисляемое свойство
-                PageLinks = true,
-                RefPages = string.Empty,
-                PageFilter = string.Empty,
-                PageFilterOut = string.Empty
-            }
-            );
+        //if (!context.PageInfo.Any())
+        //{
+        //    context.PageInfo.AddRange(
+        //    new PageInfoModel
+        //    {
+        //        PageTitle = "Сайт памяти Сергея Шевкуненко",
+        //        PageDescription = "Эта история по-своему уникальна и практически не имеет " +
+        //            "аналогов в истории российского кинематографа. Подававший большие надежды " +
+        //            "актер волею судьбы угодил в тюрьму и довольно быстро добился славы и " +
+        //            "признания совсем в другой среде - уголовной. Последней ступенькой, " +
+        //            "на которую сумел забраться в преступной иерархии этот бывший актер, " +
+        //            "была должность «положенца», которая предшествует самому высокому " +
+        //            "титулу в уголовной среде - вора в законе. Имя этого человека - " +
+        //            "Сергей Шевкуненко.",
+        //        PageKeyWords = "сергей шевкуненко,сергей шевкуненко фото,сергей " +
+        //            "шевкуненко криминальная,шевкуненко сергей юрьевич,сергей шевкуненко биография," +
+        //            "сергей шевкуненко криминальная биография,сергей шевкуненко убийство," +
+        //            "сергей шевкуненко фото убийство,сергей шевкуненко жена,сергей шевкуненко википедия," +
+        //            "фильм криминальная звезда сергей шевкуненко,сергей шевкуненко похороны," +
+        //            "актер сергей шевкуненко,памяти сергей шевкуненко,сергей шевкуненко документальный фильм," +
+        //            "сергей шевкуненко документальный фильм криминальная звезда,криминальная звезда " +
+        //            "документальный фильм памяти сергея шевкуненко,сергей шевкуненко видео," +
+        //            "сестра сергея шевкуненко,шевкуненко сергей юрьевич похороны,сергей шевкуненко кортик," +
+        //            "елена шевкуненко жена сергея шевкуненко,сергей шевкуненко могила," +
+        //            "сергей шевкуненко смерть,сергей шевкуненко похороны видео,сергей шевкуненко личная жизнь," +
+        //            "сергей шевкуненко фото смерть,шевкуненко сергей юрьевич вспоминают друзья," +
+        //            "актер сергей шевкуненко биография,судьба сергея шевкуненко," +
+        //            "сергей шевкуненко фото перед смертью,сергей шевкуненко криминал," +
+        //            "шевкуненко сергей юрьевич криминал",
+        //        PageLastmod = DateTime.Today,
+        //        PageLoc = "/index",
+        //        BrowserConfig = "main.xml",
+        //        Manifest = "main.json",
+        //        OgType = "website",
+        //        BackgroundFileModelId = new("E073BDDD694F4818A0C308DADB48DCD9"),
+        //        ImageFileModelId = new("893CB76A-927A-432B-9E60-08DAF54685FF"),
+        //        PageArea = string.Empty,
+        //        PageCardText = string.Empty,
+        //        Changefreq = "monthly",
+        //        Priority = "0.9",
+        //        PageIconPath = "/main",
+        //        BrowserConfigFolder = "/main",
+        //        Action = "/index",
+        //        Controller = "/shevkunenko",
+        //        RoutData = string.Empty,
+        //        PageAsRazorPage = false,
+        //        PagePathNickName = string.Empty,
+        //        //PageFullPath = "/shevkunenko/index", вычисляемое свойство
+        //        //PageFullPathWithData = "/shevkunenko/index", вычисляемое свойство
+        //        //PagePathNickNameWithData = string.Empty, вычисляемое свойство
+        //        PageLinks = true,
+        //        RefPages = string.Empty,
+        //        PageFilter = string.Empty,
+        //        PageFilterOut = string.Empty
+        //    }
+        //    );
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
 
-        if (!context.MovieFile.Any())
-        {
-            context.MovieFile.AddRange(
-            new MovieFileModel
-            {
-                MovieCaption = "Кортик - 1",
-                MovieDescriptionHtml = "<p>Гражданская война в России.</p>\r\n<p>В небольшом городке Ревске у бабушки с дедушкой гостит их внук, школьник из Москвы Миша Поляков. Ему и его другу Генке Петрову попадает в руки старинный кортик, принадлежавший офицеру с линкора «Императрица Мария».</p>\r\n<p>С кортиком связана какая-то тайна — его ищет бывший офицер с погибшего линкора — белогвардеец, а ныне главарь банды, Валерий Сигизмундович Никитский. Мишин друг — командир Красной Армии Полевой — пытается во что бы то ни стало сберечь кортик, в чём Миша ему и помогает.</p>\r\n<p>Миша и Генка едут в Москву…</p>",
-                MovieDescriptionForSchemaOrg = "Гражданская война в России. В небольшом городке Ревске у бабушки с дедушкой гостит их внук, школьник из Москвы Миша Поляков. Ему и его другу Генке Петрову попадает в руки старинный кортик, принадлежавший офицеру с линкора «Императрица Мария». С кортиком связана какая-то тайна — его ищет бывший офицер с погибшего линкора — белогвардеец, а ныне главарь банды, Валерий Сигизмундович Никитский. Мишин друг — командир Красной Армии Полевой — пытается во что бы то ни стало сберечь кортик, в чём Миша ему и помогает. Миша и Генка едут в Москву…",
-                MovieDuration = TimeSpan.Parse("01:08:39.9783333"),
-                MovieWidth = 1560,
-                MovieHeight = 1080,
-                MovieScreenFormat = "4X3",
-                MovieFileName = "kortik-1-seriya-(hd).mp4",
-                MovieFileExtension = "mp4",
-                MovieMimeType = "video/mp4",
-                MovieFileSize = 1402897577,
-                MovieDateCreated = DateTime.ParseExact("1973-01-01 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
-                MovieDatePublished = DateTime.ParseExact("1974-06-04 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
-                MovieUploadDate = DateTime.ParseExact("2023-02-04 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
-                MovieIsFamilyFriendly = true,
-                MovieInLanguage2 = string.Empty,
-                MovieРroductionCompany = "Беларусьфильм",
-                MovieDirector1 = "Николай Калинин",
-                MovieDirector2 = string.Empty,
-                MovieMusicBy = "Станислав Пожлаков",
-                MovieGenre = "экранизация, детский, приключения",
-                MovieActor01 = "Сергей Шевкуненко",
-                MovieActor02 = "Владимир Дичковский",
-                MovieActor03 = "Игорь Шульженко",
-                MovieActor04 = "Михаил Голубович",
-                MovieActor05 = "Эммануил Виторган",
-                MovieActor06 = "Зоя Фёдорова",
-                MovieActor07 = "Леонид Кмит",
-                MovieActor08 = "Наталья Чемодурова",
-                MovieActor09 = "Виктор Сергачёв",
-                MovieActor10 = "Александр Примако",
-                MovieContentUrl = new("https://sergeyshef.ru/video/kortik-1-seriya-(hd).mp4"),
-                MovieCaptionForOnline = "КОРТИК - 1 серия",
-                MovieYouTube = new("https://www.youtube.com/embed/xJ4tfm9kdqA"),
-                MovieVkVideo = new("https://vk.com/video_ext.php?oid=705530674&id=456239292&hash=a0df9c56c3e9bb50"),
-                MovieMailRuVideo = new("https://my.mail.ru/video/embed/30262781949248138"),
-                MovieOkVideo = new("https://ok.ru/videoembed/4326441355910"),
-                MovieYandexDiskVideo = new("https://disk.yandex.ru/i/vNuICTfUCpbnPQ"),
-                MovieKinoTeatrRu = new("https://www.kino-teatr.ru/kino/movie/sov/3199/annot/"),
-                MovieKinoPoisk = new("https://www.kinopoisk.ru/series/79844/"),
-                MovieImbd = new("https://www.imdb.com/title/tt0069600/?ref_=nv_sr_srsg_0"),
-                MovieNote = string.Empty,
-                MovieInLanguage1 = "ru",
-                MovieSubtitles1 = string.Empty,
-                MovieSubtitles2 = string.Empty,
-                PageInfoModelId = new("F654CC14-FA40-4617-8844-08DB01E1D51B"),
-                MovieAdult = false,
-                MoviePart = 1,
-                MovieTotalParts = 3,
-                ImageFileModelId = new("ABE5FA25-C882-4CD7-C558-08DB10624E7D"),
-                MoviePoster = null,
-                MovieInMainList = true,
-                PageInfoModelIdForSeries = new("6D727655-B263-406D-7865-08DB0178B531"),
-                SearchFilter = "Шевкуненко, Кортик,",
-                FullMovieID = null,
-                SearchFilter1 = "Кортик,",
-                SearchFilter2 = "Шевкуненко,",
-                HeadTitleForVideoLinks1 = string.Empty,
-                HeadTitleForVideoLinks2 = "Фильмы с участием Сергея Шевкуненко",
-                HeadTitleForVideoLinks3 = "Сергей Шевкуненко - роли в кино",
-                IconType1 = "webicon300",
-                IconType2 = "webicon300",
-                IconType3 = "webicon300",
-                IsImage1 = true,
-                IsImage2 = false,
-                IsImage3 = false,
-                MoviePosterGuid = new("962F0E6D - 2B5A - 48F7 - 8D8C - 08DB0A677DAF"),
-                SearchFilter3 = "Шевкуненко,",
-                IsPartsMoreOne1 = false,
-                IsPartsMoreOne2 = true,
-                IsPartsMoreOne3 = true,
-                AllMoviesFromDB1 = true,
-                AllMoviesFromDB2 = false,
-                AllMoviesFromDB3 = false,
-                Carousel = true,
-                FramesAroundMovie = string.Empty,
-                ImageForHeadSeriesImageFileModelId = null,
-                SeriesSearchFilter = string.Empty,
-                TopicGuidList = "59019054-7df0-42b7-7fa5-08dca3df7399"
-            }
-            );
+        //if (!context.MovieFile.Any())
+        //{
+        //    context.MovieFile.AddRange(
+        //    new MovieFileModel
+        //    {
+        //        MovieCaption = "Кортик - 1",
+        //        MovieDescriptionHtml = "<p>Гражданская война в России.</p>\r\n<p>В небольшом городке Ревске у бабушки с дедушкой гостит их внук, школьник из Москвы Миша Поляков. Ему и его другу Генке Петрову попадает в руки старинный кортик, принадлежавший офицеру с линкора «Императрица Мария».</p>\r\n<p>С кортиком связана какая-то тайна — его ищет бывший офицер с погибшего линкора — белогвардеец, а ныне главарь банды, Валерий Сигизмундович Никитский. Мишин друг — командир Красной Армии Полевой — пытается во что бы то ни стало сберечь кортик, в чём Миша ему и помогает.</p>\r\n<p>Миша и Генка едут в Москву…</p>",
+        //        MovieDescriptionForSchemaOrg = "Гражданская война в России. В небольшом городке Ревске у бабушки с дедушкой гостит их внук, школьник из Москвы Миша Поляков. Ему и его другу Генке Петрову попадает в руки старинный кортик, принадлежавший офицеру с линкора «Императрица Мария». С кортиком связана какая-то тайна — его ищет бывший офицер с погибшего линкора — белогвардеец, а ныне главарь банды, Валерий Сигизмундович Никитский. Мишин друг — командир Красной Армии Полевой — пытается во что бы то ни стало сберечь кортик, в чём Миша ему и помогает. Миша и Генка едут в Москву…",
+        //        MovieDuration = TimeSpan.Parse("01:08:39.9783333"),
+        //        MovieWidth = 1560,
+        //        MovieHeight = 1080,
+        //        MovieScreenFormat = "4X3",
+        //        MovieFileName = "kortik-1-seriya-(hd).mp4",
+        //        MovieFileExtension = "mp4",
+        //        MovieMimeType = "video/mp4",
+        //        MovieFileSize = 1402897577,
+        //        MovieDateCreated = DateTime.ParseExact("1973-01-01 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
+        //        MovieDatePublished = DateTime.ParseExact("1974-06-04 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
+        //        MovieUploadDate = DateTime.ParseExact("2023-02-04 00:00:00.000", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture),
+        //        MovieIsFamilyFriendly = true,
+        //        MovieInLanguage2 = string.Empty,
+        //        MovieРroductionCompany = "Беларусьфильм",
+        //        MovieDirector1 = "Николай Калинин",
+        //        MovieDirector2 = string.Empty,
+        //        MovieMusicBy = "Станислав Пожлаков",
+        //        MovieGenre = "экранизация, детский, приключения",
+        //        MovieActor01 = "Сергей Шевкуненко",
+        //        MovieActor02 = "Владимир Дичковский",
+        //        MovieActor03 = "Игорь Шульженко",
+        //        MovieActor04 = "Михаил Голубович",
+        //        MovieActor05 = "Эммануил Виторган",
+        //        MovieActor06 = "Зоя Фёдорова",
+        //        MovieActor07 = "Леонид Кмит",
+        //        MovieActor08 = "Наталья Чемодурова",
+        //        MovieActor09 = "Виктор Сергачёв",
+        //        MovieActor10 = "Александр Примако",
+        //        MovieContentUrl = new("https://sergeyshef.ru/video/kortik-1-seriya-(hd).mp4"),
+        //        MovieCaptionForOnline = "КОРТИК - 1 серия",
+        //        MovieYouTube = new("https://www.youtube.com/embed/xJ4tfm9kdqA"),
+        //        MovieVkVideo = new("https://vk.com/video_ext.php?oid=705530674&id=456239292&hash=a0df9c56c3e9bb50"),
+        //        MovieMailRuVideo = new("https://my.mail.ru/video/embed/30262781949248138"),
+        //        MovieOkVideo = new("https://ok.ru/videoembed/4326441355910"),
+        //        MovieYandexDiskVideo = new("https://disk.yandex.ru/i/vNuICTfUCpbnPQ"),
+        //        MovieKinoTeatrRu = new("https://www.kino-teatr.ru/kino/movie/sov/3199/annot/"),
+        //        MovieKinoPoisk = new("https://www.kinopoisk.ru/series/79844/"),
+        //        MovieImbd = new("https://www.imdb.com/title/tt0069600/?ref_=nv_sr_srsg_0"),
+        //        MovieNote = string.Empty,
+        //        MovieInLanguage1 = "ru",
+        //        MovieSubtitles1 = string.Empty,
+        //        MovieSubtitles2 = string.Empty,
+        //        PageInfoModelId = new("F654CC14-FA40-4617-8844-08DB01E1D51B"),
+        //        MovieAdult = false,
+        //        MoviePart = 1,
+        //        MovieTotalParts = 3,
+        //        ImageFileModelId = new("ABE5FA25-C882-4CD7-C558-08DB10624E7D"),
+        //        MoviePoster = null,
+        //        MovieInMainList = true,
+        //        PageInfoModelIdForSeries = new("6D727655-B263-406D-7865-08DB0178B531"),
+        //        SearchFilter = "Шевкуненко, Кортик,",
+        //        FullMovieID = null,
+        //        SearchFilter1 = "Кортик,",
+        //        SearchFilter2 = "Шевкуненко,",
+        //        HeadTitleForVideoLinks1 = string.Empty,
+        //        HeadTitleForVideoLinks2 = "Фильмы с участием Сергея Шевкуненко",
+        //        HeadTitleForVideoLinks3 = "Сергей Шевкуненко - роли в кино",
+        //        IconType1 = "webicon300",
+        //        IconType2 = "webicon300",
+        //        IconType3 = "webicon300",
+        //        IsImage1 = true,
+        //        IsImage2 = false,
+        //        IsImage3 = false,
+        //        MoviePosterGuid = new("962F0E6D - 2B5A - 48F7 - 8D8C - 08DB0A677DAF"),
+        //        SearchFilter3 = "Шевкуненко,",
+        //        IsPartsMoreOne1 = false,
+        //        IsPartsMoreOne2 = true,
+        //        IsPartsMoreOne3 = true,
+        //        AllMoviesFromDB1 = true,
+        //        AllMoviesFromDB2 = false,
+        //        AllMoviesFromDB3 = false,
+        //        Carousel = true,
+        //        FramesAroundMovie = string.Empty,
+        //        ImageForHeadSeriesImageFileModelId = null,
+        //        SeriesSearchFilter = string.Empty,
+        //        TopicGuidList = "59019054-7df0-42b7-7fa5-08dca3df7399"
+        //    }
+        //    );
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
 
-        if (!context.TopicMovie.Any())
-        {
-            context.TopicMovie.AddRange(
-                new TopicMovieModel
-                {
-                    TopicDescription = "Фильмы с участием Сергея Шевкунеко",
-                    TopicHeadPage = "Фильмы с участием Сергея Шевкунеко",
-                    ImageForRef = false,
-                    IconTypeForRef = "webicon300",
-                    GeneralPageForMovieEpisodes = true,
-                    NumberOfLinksPerPage = 2
-                }
-                );
+        //if (!context.TopicMovie.Any())
+        //{
+        //    context.TopicMovie.AddRange(
+        //        new TopicMovieModel
+        //        {
+        //            TopicDescription = "Фильмы с участием Сергея Шевкунеко",
+        //            TopicHeadPage = "Фильмы с участием Сергея Шевкунеко",
+        //            ImageForRef = false,
+        //            IconTypeForRef = "webicon300",
+        //            GeneralPageForMovieEpisodes = true,
+        //            NumberOfLinksPerPage = 2
+        //        }
+        //        );
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
 
-        if (!context.Access.Any())
-        {
-            context.Access.AddRange(
-                new AccessModel
-                {
-                    Email = "krivosein623@gmail.com",
-                    Password = "sergey623_"
-                }
-                );
+        //if (!context.Access.Any())
+        //{
+        //    context.Access.AddRange(
+        //        new AccessModel
+        //        {
+        //            Email = "krivosein623@gmail.com",
+        //            Password = "sergey623_"
+        //        }
+        //        );
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
     }
 }

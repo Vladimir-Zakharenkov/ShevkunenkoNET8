@@ -2,6 +2,8 @@
 
 public class ImageFileModel
 {
+    #region Описание
+
     [Key]
     [Display(Name = "Идентификатор картинки :")]
     [Column("ImageFileId")]
@@ -36,6 +38,8 @@ public class ImageFileModel
     [DataType(DataType.MultilineText)]
     [Display(Name = "Фильтр поиска: ")]
     public string SearchFilter { get; set; } = string.Empty;
+
+    #endregion
 
     #region AutoFillImage
 

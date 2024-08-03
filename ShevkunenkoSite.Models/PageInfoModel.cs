@@ -150,7 +150,7 @@ public class PageInfoModel
     public Guid ImageFileModelId { get; set; }
     public ImageFileModel? ImageFileModel { get; set; }
 
-    public MovieFileModel? MovieFile { get; set; }
+    //public MovieFileModel? MovieFile { get; set; }
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Включить группу ссылок:")]
@@ -159,5 +159,5 @@ public class PageInfoModel
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "ID связанных страниц:")]
-    public string RefPages { get; set; } = string.Empty; 
+    public string RefPages { get; set; } = string.Empty;
 }
