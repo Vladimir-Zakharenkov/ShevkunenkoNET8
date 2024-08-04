@@ -29,4 +29,7 @@ public class BackgroundFileModel
     [Display(Name = "Фон страницы справа (WebP):")]
     [DataType(DataType.Text)]
     public string WebRightBackground { get; set; } = string.Empty;
+
+    // навигационное свойство
+    public PageInfoModel? PageInfo { get; set; }
 }

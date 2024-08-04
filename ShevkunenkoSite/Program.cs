@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.WebEncoders;
+using System.Text.Unicode;
+using WebMarkupMin.AspNetCore8;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +55,43 @@ services.Configure<RazorViewEngineOptions>(options =>
     options.AreaViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
 });
+
+services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
+
+services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+    options.AppendTrailingSlash = true;
+});
+
+services.AddWebMarkupMin(
+        options =>
+        {
+            options.AllowMinificationInDevelopmentEnvironment = false;
+            options.AllowCompressionInDevelopmentEnvironment = false;
+        })
+        .AddHtmlMinification(
+            options =>
+            {
+                options.MinificationSettings.RemoveRedundantAttributes = true;
+                options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
+                options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
+            })
+        //.AddXmlMinification()
+        .AddHttpCompression();
+
+#region Связь с базой данных
+
+services.AddScoped<IPageInfoRepository, PageInfoImplementation>();
+services.AddScoped<IBackgroundFotoRepository, BackGroundFotoImplementation>();
+services.AddScoped<IIconFileRepository, IconFileImplementation>();
+services.AddScoped<IImageFileRepository, ImageFileImplementation>();
+services.AddScoped<IMovieFileRepository, MovieFileImplementation>();
+services.AddScoped<IAccessRepository, AccessImplementation>();
+services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
+
+#endregion
 
 #endregion
 
