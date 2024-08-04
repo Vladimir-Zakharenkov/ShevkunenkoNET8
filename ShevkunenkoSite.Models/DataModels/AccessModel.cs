@@ -1,4 +1,4 @@
-﻿namespace ShevkunenkoSite.Models;
+﻿namespace ShevkunenkoSite.Models.DataModels;
 
 public class AccessModel
 {

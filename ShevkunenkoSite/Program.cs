@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.WebEncoders;
-using ShevkunenkoSite.Services.Interfaces;
-using System.Text.Unicode;
-using WebMarkupMin.AspNetCore8;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -82,7 +76,7 @@ services.AddWebMarkupMin(
         //.AddXmlMinification()
         .AddHttpCompression();
 
-#region Связь с базой данных
+#region Работа с базой данных
 
 services.AddScoped<IPageInfoRepository, PageInfoImplementation>();
 services.AddScoped<IBackgroundFotoRepository, BackGroundFotoImplementation>();
@@ -114,7 +108,6 @@ WebApplication app = builder.Build();
 //SeedData.EnsurePopulated(app);
 
 #endregion
-
 
 app.MapGet("/", () => DataConfig.Test /*"Hello World!"*/);
 

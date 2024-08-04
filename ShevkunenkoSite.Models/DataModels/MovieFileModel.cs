@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Org Рroduction Imbd Poisk
 
-namespace ShevkunenkoSite.Models;
+namespace ShevkunenkoSite.Models.DataModels;
 
 public class MovieFileModel
 {

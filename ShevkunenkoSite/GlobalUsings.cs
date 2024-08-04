@@ -3,3 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 global using ShevkunenkoSite.Services;
 global using ShevkunenkoSite.Services.Interfaces;
 global using System.Text.Encodings.Web;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+global using Microsoft.Extensions.WebEncoders;
+global using System.Text.Unicode;
+global using WebMarkupMin.AspNetCore8;
