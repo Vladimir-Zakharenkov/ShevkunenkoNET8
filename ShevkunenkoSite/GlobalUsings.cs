@@ -1,11 +1,5 @@
-﻿global using Microsoft.AspNetCore.Mvc;
-global using Microsoft.AspNetCore.Mvc.Razor;
-global using Microsoft.AspNetCore.Mvc.RazorPages;
-global using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿global using Microsoft.AspNetCore.Mvc.Razor;
 global using Microsoft.EntityFrameworkCore;
-global using ShevkunenkoSite;
-global using ShevkunenkoSite.Models;
-//global using ShevkunenkoSite.Models.ViewModels;
 global using ShevkunenkoSite.Services;
-//global using ShevkunenkoSite.Services.Infrastructure;
+global using ShevkunenkoSite.Services.Interfaces;
 global using System.Text.Encodings.Web;

@@ -1,4 +1,4 @@
-﻿namespace ShevkunenkoSite.Services;
+﻿namespace ShevkunenkoSite.Services.Interfaces;
 
 public class AccessImplementation : IAccessRepository
 {

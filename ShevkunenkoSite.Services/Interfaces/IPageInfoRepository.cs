@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ShevkunenkoSite.Services;
+namespace ShevkunenkoSite.Services.Interfaces;
 
 public interface IPageInfoRepository
 {

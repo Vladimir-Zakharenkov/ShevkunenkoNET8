@@ -23,8 +23,4 @@
     <ProjectReference Include="..\ShevkunenkoSite.Models\ShevkunenkoSite.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
 </Project>
