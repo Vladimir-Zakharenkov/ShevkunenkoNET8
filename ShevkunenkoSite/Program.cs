@@ -117,6 +117,8 @@ app.UseHsts();
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 #endregion
 
 app.MapGet("/", () => DataConfig.Test /*"Hello World!"*/);

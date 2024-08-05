@@ -1,0 +1,31 @@
+﻿.cardborder a, .borderforitem {
+    border: .2rem ridge transparent;
+    transition: all .6s ease-in-out;
+    color: black;
+}
+
+.cardborder a:hover, .borderforitem:hover {
+    border: .2rem ridge rgba(194, 10, 41, 0.9);
+    opacity: .9;
+    transition: all .6s ease-in-out;
+    color: rgba(194, 10, 41, 0.9);
+}
+
+@media only screen and (max-width: 280px) {
+    .fontadaptive {
+        font-size: 7px;
+    }
+}
+
+@media only screen and (min-width: 281px) and (max-width: 340px) {
+    .fontadaptive {
+        font-size: 9px;
+    }
+}
+
+@media only screen and (min-width: 341px) and (max-width: 400px) {
+    .fontadaptive {
+        font-size: 11px;
+    }
+}
+

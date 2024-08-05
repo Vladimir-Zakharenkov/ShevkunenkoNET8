@@ -1,0 +1,52 @@
+﻿.adp90_img {
+    width: 90%;
+    border-radius: 1rem;
+}
+
+.width70percent {
+    width: 70%;
+}
+
+.width50percent {
+   max-width: 50%;
+}
+
+.width30percent {
+    width: 30%;
+    min-width: 180px;
+}
+
+.maxwidth300px {
+    max-width: 300px;
+}
+
+.maxwidth700px {
+    max-width: 700px;
+}
+
+.maxwidth900px {
+    max-width: 900px;
+}
+
+.imageref {
+    border: .3rem ridge transparent;
+    border-radius: .4rem;
+    transition: all .3s ease-in-out;
+}
+
+.imageref:hover {
+    border: 0.3rem rgba(194, 10, 41, 0.9) ridge;
+    opacity: .9;
+}
+
+.setimage_border {
+    border: .3rem rgba(194, 10, 41, 0.9) ridge;
+}
+
+.footer-image img {
+    border-width: 0 !important;
+}
+
+.footer-image a:hover {
+    text-decoration: none;
+}

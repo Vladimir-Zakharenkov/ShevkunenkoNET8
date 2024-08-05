@@ -1,0 +1,47 @@
+﻿a {
+    text-decoration: none;
+}
+
+a:active, .dropdown:active {
+    position: relative;
+    top: 4px;
+}
+
+.dropdown a:active {
+    top: 0;
+}
+
+.atext {
+    width: auto !important;
+    height: auto !important;
+    font-weight: 600;
+    text-indent: 0;
+    border-radius: .3rem;
+    padding: 0 .3rem .1rem;
+    color: hsla(0,61%,35%,1);
+    background-color: hsla(210,51%,60%,0.2);
+    transition: all .7s ease
+}
+
+.atext:hover {
+    color: hsla(0,50%,100%,1);
+    background-color: hsla(0,61%,35%,.8)
+}
+
+.donate {
+    display: inline-block;
+    width: contain;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.1rem;
+    background: rgba(0,0,0,0.03) !important;
+    transition: all .3s ease-in-out;
+}
+
+.donate:hover, .donate a span:hover {
+    color: darkred;
+    border-color: darkred !important;
+}
+
+.donatealerts {
+    border-color: darkred !important;
+}

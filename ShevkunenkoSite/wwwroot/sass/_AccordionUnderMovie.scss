@@ -1,0 +1,58 @@
+﻿@import "../lib/bootstrap/scss/_functions.scss";
+
+// padding accordion
+$accordion-padding-y: 0.5rem;
+$accordion-padding-x: 1.25rem;
+
+// цвет текста accordion
+$accordion-color: rgba(0, 0, 0, 0.9);
+
+// фон для всего accordion
+$accordion-bg: rgba(255, 255, 255, 0.9);
+
+// рамка для всего accordion
+$accordion-border-width: 1px;
+$accordion-border-color: darkred;
+$accordion-border-radius: 0.2rem;
+$accordion-inner-border-radius: 0.2rem;
+
+// padding тела
+$accordion-body-padding-y: $accordion-padding-y;
+$accordion-body-padding-x: $accordion-padding-x;
+
+// параметры кнопки
+$accordion-button-padding-y: $accordion-padding-y;
+$accordion-button-padding-x: $accordion-padding-x;
+$accordion-button-color: $accordion-color;
+$accordion-button-bg: $accordion-bg;
+//$accordion-transition: $btn-transition, border-radius .15s ease;
+$accordion-button-active-bg: $accordion-bg;
+$accordion-button-active-color: $accordion-color;
+
+$accordion-button-focus-border-color: rgba(255, 0, 255, 0.9);
+$accordion-button-focus-box-shadow: rgba(237, 63, 9, 0.9) 0px 0px 3px;
+
+
+// цвет значка
+$accordion-icon-color: darkred;
+$accordion-icon-active-color: darkred;
+
+
+@import "../lib/bootstrap/scss/_variables.scss";
+@import "../lib/bootstrap/scss/_mixins.scss";
+@import "../lib/bootstrap/scss/_accordion.scss";
+
+// начальные параметры кнопки
+.accordion-button {
+    font-size: 1.2rem;
+    text-shadow: rgba(194, 10, 41, 0.6) 1px 2px 2px;
+}
+
+.accordion-body {
+    text-align: justify;
+    text-indent: 1.25rem;
+}
+
+.accordion-body-nointend {
+    text-indent: 0;
+}
