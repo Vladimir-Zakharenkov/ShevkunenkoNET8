@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240802234720_Initial")]
-    partial class Initial
+    [Migration("20240804204635_04-08-2024-23-45")]
+    partial class _040820242345
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.AccessModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AccessModel", b =>
                 {
                     b.Property<Guid>("AccessModelId")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("Access");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.BackgroundFileModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BackgroundFileModel", b =>
                 {
                     b.Property<Guid>("BackgroundFileModelId")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("BackgroundFile");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.IconFileModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.IconFileModel", b =>
                 {
                     b.Property<Guid>("IconFileModelId")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("IconFile");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.ImageFileModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.ImageFileModel", b =>
                 {
                     b.Property<Guid>("ImageFileModelId")
                         .ValueGeneratedOnAdd()
@@ -347,7 +347,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("ImageFile");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.MovieFileModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.MovieFileModel", b =>
                 {
                     b.Property<Guid>("MovieFileModelId")
                         .ValueGeneratedOnAdd()
@@ -638,12 +638,14 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasIndex("ImageForHeadSeriesImageFileModelId");
 
-                    b.HasIndex("PageInfoModelId");
+                    b.HasIndex("PageInfoModelId")
+                        .IsUnique()
+                        .HasFilter("[PageInfoModelId] IS NOT NULL");
 
                     b.ToTable("MovieFile");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.PageInfoModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
                     b.Property<Guid>("PageInfoModelId")
                         .ValueGeneratedOnAdd()
@@ -774,7 +776,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("PageInfo");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.TopicMovieModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TopicMovieModel", b =>
                 {
                     b.Property<Guid>("TopicMovieModelId")
                         .ValueGeneratedOnAdd()
@@ -807,19 +809,19 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.ToTable("TopicMovie");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.MovieFileModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.MovieFileModel", b =>
                 {
-                    b.HasOne("ShevkunenkoSite.Models.ImageFileModel", "ImageFileModel")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImageFileModel")
                         .WithMany()
                         .HasForeignKey("ImageFileModelId");
 
-                    b.HasOne("ShevkunenkoSite.Models.ImageFileModel", "ImageForHeadSeries")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImageForHeadSeries")
                         .WithMany()
                         .HasForeignKey("ImageForHeadSeriesImageFileModelId");
 
-                    b.HasOne("ShevkunenkoSite.Models.PageInfoModel", "PageInfoModel")
-                        .WithMany()
-                        .HasForeignKey("PageInfoModelId");
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
+                        .WithOne("MovieFile")
+                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.MovieFileModel", "PageInfoModelId");
 
                     b.Navigation("ImageFileModel");
 
@@ -828,15 +830,15 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("PageInfoModel");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.PageInfoModel", b =>
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.HasOne("ShevkunenkoSite.Models.BackgroundFileModel", "BackgroundFileModel")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.BackgroundFileModel", "BackgroundFileModel")
                         .WithMany()
                         .HasForeignKey("BackgroundFileModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShevkunenkoSite.Models.ImageFileModel", "ImageFileModel")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImageFileModel")
                         .WithMany()
                         .HasForeignKey("ImageFileModelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -845,6 +847,11 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("BackgroundFileModel");
 
                     b.Navigation("ImageFileModel");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
+                {
+                    b.Navigation("MovieFile");
                 });
 #pragma warning restore 612, 618
         }

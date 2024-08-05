@@ -1,3 +1,5 @@
+using ShevkunenkoSite;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -98,14 +100,16 @@ WebApplication app = builder.Build();
 
 //IWebHostEnvironment env = app.Environment;
 
-//if (env.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Error");
+if (environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
 
-//    app.UseDeveloperExceptionPage();
-//}
+    app.UseDeveloperExceptionPage();
 
-//SeedData.EnsurePopulated(app);
+    SeedData.EnsurePopulated(app);
+
+}
+
 
 #endregion
 
