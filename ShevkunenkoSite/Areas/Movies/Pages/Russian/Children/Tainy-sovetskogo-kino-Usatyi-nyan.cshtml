@@ -1,0 +1,17 @@
+﻿@page
+
+@model Tainy_sovetskogo_kino_Usatyi_nyanModel
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/children/usatyi-nyan"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

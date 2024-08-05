@@ -1,0 +1,44 @@
+﻿@page
+@model LoginModel
+
+@{
+    var retUrl = HttpContext.Request.Query["ReturnUrl"].ToString();
+
+    if (string.IsNullOrEmpty(retUrl))
+    {
+        retUrl = "/Admin";
+    }
+}
+
+<div class="row">
+
+    <div class="col col-sm-6 col-lg-4 col-xl-3 col-xxl-3 d-block mx-auto px-2">
+
+        <h1>Вход на сайт</h1>
+
+        <form method="post" role="form" asp-page-handler="OnPostAsync" asp-route-returnurl="@retUrl">
+
+            <label for="locInput" asp-for="Access.Email" class="form-label text-primary fs-5"></label>
+            <input id="locInput" asp-for="Access.Email" class="form-control" />
+            <span asp-validation-for="Access.Email" class="text-danger"></span>
+
+            <hr class="liniya" />
+
+            <label for="lastmodInput" asp-for="Access.Password" class="form-label text-primary fs-5"></label>
+            <input id="lastmodInput" asp-for="Access.Password" class="form-control" />
+            <span asp-validation-for="Access.Password" class="text-danger"></span>
+
+            <hr class="liniya" />
+
+            <div class="text-center">
+
+                <button type="submit" class="col btn btn-outline-success shadw">SUBMIT</button>
+                <a asp-page="/Index" asp-area="" class="col btn btn-outline-danger ms-3 shadw">CANCEL</a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

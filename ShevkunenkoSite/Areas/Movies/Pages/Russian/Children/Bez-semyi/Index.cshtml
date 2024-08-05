@@ -1,0 +1,38 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] Links = new string[]{
+        "/movies/russian/children/bez-semyi/bez-semyi-1",
+        "/movies/russian/children/bez-semyi/bez-semyi-2"
+    };
+
+    string[] films = new string[]{
+        "/programs/eshe-ne-vecher-16-09-2011"
+    };
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <vc:image-view file-name="bez-semyi.png" css-class="adp90_img maxwidth700px ten" is-icon="false" />
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<vc:page-links links="@Links" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

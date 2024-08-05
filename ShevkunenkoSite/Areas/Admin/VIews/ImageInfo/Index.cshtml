@@ -1,0 +1,278 @@
+﻿@model ImageListViewModel
+
+@{
+}
+
+<!-- Строка поиска -->
+<div class="row">
+
+    @if (!String.IsNullOrEmpty(Model.ImageSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск по строке: <span class="text-black text_shadow">@Model.ImageSearchString</span></p>
+    }
+
+</div>
+
+<!-- Количество картинок -->
+@if (Model.AllImages.Count() == 0)
+{
+    <div class="row">
+
+        <div class="col text-center p-2">
+
+            <p class="fs-5 text_shadow mb-0">В базе данных нет картинок</p>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="row">
+
+        <div class="col-12 text-center mb-0">
+
+            <p class="fs-5 text-primary mb-0">Количество изображений:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+
+        </div>
+
+    </div>
+}
+
+<hr class="liniya" />
+
+<!-- Добавить картинку - Иконки - Поиск картинок -->
+<div class="row row-cols-2 row-cols-md-3 justify-content-center px-2">
+
+    <div class="col-6 col-md-2">
+        <a class="btn btn-outline-danger shadw"
+           asp-area="Admin"
+           asp-controller="ImageInfo"
+           asp-action="AddImage"
+           title="добавить картинку">
+            Добавить
+        </a>
+    </div>
+
+    <div class="col-6 col-md-2">
+        <a class="btn btn-outline-primary mx-4 shadw"
+           asp-area="Admin"
+           asp-controller="ImageInfo"
+           asp-action="Index"
+           asp-route-iconlist="true"
+           asp-route-pageNumber=@Model.PagingInfo.CurrentPage
+           asp-route-imageSearchString=@Model.ImageSearchString
+           title="иконки">
+            Иконки
+        </a>
+    </div>
+
+    <div class="col-12 col-md-8 mt-4 mt-md-0 justify-content-center">
+
+        <form method="get" asp-area="Admin" asp-controller="ImageInfo" asp-action="Index">
+
+            <input asp-for="IconList" type="hidden" value="false" />
+            <input type="text" class="me-2" asp-for="ImageSearchString" />
+            <input type="submit" value="Поиск" class="btn btn-outline-danger py-1 mb-1 shadw" title="поиск картинок" />
+
+        </form>
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<!-- Страницы -->
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             page-model="@Model.PagingInfo"
+             image-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             data-toggle="buttons"
+             role="group"
+             aria-label="картинки сайта">
+        </div>
+
+    </div>
+}
+
+<div class="row">
+
+    <div class="col m-1 shadw">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-hover caption-top align-middle">
+
+                <thead>
+
+                    <tr class="table-secondary">
+                        <th scope="col" class="text-start text-primary">FileName</th>
+                        <th scope="col" class="text-start text-primary">ImageCaption</th>
+                        <th scope="col" class="d-none d-xl-table-cell text-start text-success">WebHD</th>
+                        <th scope="col" class="d-none d-xl-table-cell text-start text-success">WebImage</th>
+                        <th scope="col" class="d-none d-xl-table-cell text-start text-success">WebIcon300</th>
+                        <th scope="col" class="d-none d-xl-table-cell text-start text-success">WebIcon200</th>
+                        <th scope="col" class="d-none d-xl-table-cell text-start text-success">WebIcon100</th>
+                        <th scope="col" class="d-none d-lg-table-cell text-start">Width</th>
+                        <th scope="col" class="d-none d-lg-table-cell text-start">Height</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var image in Model!.AllImages)
+                    {
+                        <tr class="text-start">
+                            @if (!string.IsNullOrEmpty(@image.WebImageFileName))
+                            {
+                                <td scope="col" class="text-sm-start text_shadow">@image.WebImageFileName</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="text-sm-start text_shadow">@image.ImageFileName</td>
+                            }
+
+                            <td scope="col" class="text-start text_shadow">@image.ImageCaption</td>
+
+                            @if (!string.IsNullOrEmpty(@image.WebImageHDFileName))
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-primary">Да</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-danger">Нет</td>
+                            }
+
+                            @if (!string.IsNullOrEmpty(@image.WebImageFileName))
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-primary">Да</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-danger">Нет</td>
+                            }
+
+                            @if (!string.IsNullOrEmpty(@image.WebIconFileName))
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-primary">Да</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-danger">Нет</td>
+                            }
+
+                            @if (!string.IsNullOrEmpty(@image.WebIcon200FileName))
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-primary">Да</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-danger">Нет</td>
+                            }
+
+                            @if (!string.IsNullOrEmpty(@image.WebIcon100FileName))
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-primary">Да</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-xl-table-cell text-start text-danger">Нет</td>
+                            }
+
+                            @if (image.WebImageWidth > 0)
+                            {
+                                <td scope="col" class="d-none d-lg-table-cell text-start">@image.WebImageWidth</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-lg-table-cell text-start">@image.ImageWidth</td>
+                            }
+
+                            @if (image.WebImageHeight > 0)
+                            {
+                                <td scope="col" class="d-none d-lg-table-cell text-start">@image.WebImageHeight</td>
+                            }
+                            else
+                            {
+                                <td scope="col" class="d-none d-lg-table-cell text-start">@image.ImageHeight</td>
+                            }
+
+                            <td scope="col" title="Информация">
+                                <a class="btn btn-outline-primary py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="ImageInfo"
+                                   asp-action="DetailsImage"
+                                   asp-route-imageId="@image.ImageFileModelId"
+                                   title="Информация о картинке">
+                                    Info
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Редактировать">
+                                <a class="btn btn-outline-success py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="ImageInfo"
+                                   asp-action="EditImage"
+                                   asp-route-imageId="@image.ImageFileModelId"
+                                   title="Изменить картинку">
+                                    Edit
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Удалить">
+                                <a class="btn btn-outline-danger py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="ImageInfo"
+                                   asp-action="DeleteImage"
+                                   asp-route-imageId="@image.ImageFileModelId"
+                                   title="Удалить картинку">
+                                    Del
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Страницы -->
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             page-model="@Model.PagingInfo"
+             image-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             data-toggle="buttons"
+             role="group"
+             aria-label="картинки сайта">
+        </div>
+
+    </div>
+}

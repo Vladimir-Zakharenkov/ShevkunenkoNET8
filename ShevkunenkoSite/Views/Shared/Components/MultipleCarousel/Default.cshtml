@@ -1,0 +1,177 @@
+﻿@model ThreeCarouselsViewModel
+
+@{
+    int i = 1;
+    int j = 1;
+    int k = 1;
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow">Кадры фильма</h2>
+
+<div class="row gx-1">
+
+    <div class="col-4">
+
+        <div id="multipleItemCarousel1" class="carousel slide carousel-fade rounded-3 shadw" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+
+                @foreach (var picture in Model.FirstCarousel ?? Enumerable.Empty<ImageFileModel>())
+                {
+                    @if (i == 1)
+                    {
+                        <div class="carousel-item active p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+
+                        i++;
+                    }
+                    else
+                    {
+                        <div class="carousel-item p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-4">
+
+        <div id="multipleItemCarousel2" class="carousel slide carousel-fade rounded-3 shadw" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+
+                @foreach (var picture in Model.SecondCarousel ?? Enumerable.Empty<ImageFileModel>())
+                {
+                    @if (j == 1)
+                    {
+                        <div class="carousel-item active p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-action="@Model.PageInfo.Action.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+
+                        j++;
+                    }
+                    else
+                    {
+                        <div class="carousel-item p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-action="@Model.PageInfo.Action.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-4">
+
+        <div id="multipleItemCarousel3" class="carousel slide carousel-fade rounded-3 shadw" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+
+                @foreach (var picture in Model.ThirdCarousel ?? Enumerable.Empty<ImageFileModel>())
+                {
+                    @if (k == 1)
+                    {
+                        <div class="carousel-item active p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+
+                        k++;
+                    }
+                    else
+                    {
+                        <div class="carousel-item p-1 rounded-3 shadw borderforitem">
+
+                            <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-controller="@Model.PageInfo.Controller.TrimStart('/')" asp-route-movieid=@Model.MovieCarousel.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId>
+
+                                <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block w-100 shadw" icon-type="webicon300" />
+
+                            </a>
+
+                            <div class="carousel-caption d-none d-lg-block">
+
+                                <p class="fs-5 text_shadow">@picture.ImageDescription</p>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

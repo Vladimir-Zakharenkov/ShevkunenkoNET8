@@ -1,0 +1,96 @@
+﻿@model ImageListViewModel
+
+@{
+    int i = 0;
+}
+
+<div class="row py-2">
+
+    <div class="col">
+
+        <div id="fotoAlbumCarousel" class="carousel slide carousel-dark rounded-3 pb-5 shadw">
+
+            <div class="carousel-indicators pb-5">
+
+                @for (int k = 0; k < Model.AllImages!.Count(); k++)
+                {
+                    if (Model.CurrentImageId == Model.AllImages[k].ImageFileModelId)
+                    {
+                        <button type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide-to="@k" class="active" aria-current="true" aria-label="Фото @k">
+                            <vc:view-image image-id="@Model.AllImages[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide-to="@k" aria-label="Фото @k">
+                            <vc:view-image image-id="@Model.AllImages[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
+                        </button>
+                    }
+                }
+
+            </div>
+
+            <div class="carousel-inner pb-5">
+
+                @foreach (var picture in Model.AllImages ?? Enumerable.Empty<ImageFileModel>())
+                {
+                    @if (Model.CurrentImageId == picture.ImageFileModelId)
+                    {
+                        <div class="carousel-item active p-1 rounded-3 shadw">
+
+                            <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block mx-auto shadw" icon-type="" />
+
+                            <p class="d-none d-md-block fs-4 mt-3 text_shadow">@picture.ImageDescription</p>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item p-1 rounded-3 shadw">
+
+                            <vc:view-image image-id=@picture.ImageFileModelId css-class="d-block mx-auto shadw" icon-type="" />
+
+                            <p class="d-none d-md-block fs-4 mt-3 text_shadow">@picture.ImageDescription</p>
+
+                        </div>
+                    }
+
+                    i++;
+                }
+
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<p class="h3 text_shadow">фото из фильмов о Сергее&nbsp;Шевкуненко<br /><span class="h4">страница @Model.PagingInfo.CurrentPage</span></p>
+
+<div class="row p-2 m-2">
+
+    <div album-page="@Model.PagingInfo"
+         page-action="PhotoAlbum"
+         page-classes-enabled="true"
+         page-class="btn"
+         page-class-normal="btn-outline-dark"
+         page-class-selected="btn-danger"
+         class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+         data-toggle="buttons"
+         role="group"
+         aria-label="фотоальбом">
+    </div>
+
+</div>

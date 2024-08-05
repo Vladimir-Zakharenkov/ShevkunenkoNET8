@@ -1,0 +1,15 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] links = new string[]{
+        "/movies/foreign/children/mary-poppins"
+    };
+}
+
+<h1 class="text_shadow">ФИЛЬМЫ ДЛЯ ДЕТЕЙ</h1>
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="3" />

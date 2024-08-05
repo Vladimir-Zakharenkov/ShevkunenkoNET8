@@ -1,0 +1,27 @@
+﻿@page
+
+@model Tainy_kino_Zelenyi_furgonModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/comedy/zelenyi-furgon/index"
+    };
+
+    string[] about = new string[]{
+        "/programs/korotkiy-vek-muzchin"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@parts" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">АЛЕКСАНДР СОЛОВЬЁВ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@about" size="1" />

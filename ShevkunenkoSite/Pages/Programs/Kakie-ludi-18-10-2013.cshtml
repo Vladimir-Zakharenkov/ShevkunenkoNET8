@@ -1,0 +1,21 @@
+﻿@page
+
+@model Kakie_ludi_18_10_2013Model
+
+@{
+    string[] links = new string[]{
+        "/movies/russian/skazki/morozko",
+        "/rybakov/movies/kortik/index",
+        "/movies/russian/comedy/dmb",
+        "/movies/russian/zamri-umri-voskresni",
+        "/movies/russian/samostoyatelnaya-zisn"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="1" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

@@ -1,0 +1,105 @@
+﻿@model TopicMovieModel
+
+@{
+}
+
+<div class="row">
+
+    <hr class="liniya" />
+
+    <h1 class="fs-3 text_shadow">Удалить тему видео</h1>
+
+    <hr class="liniya" />
+
+    <div class="card w-75 mx-auto p-2">
+
+        <div class="card-body mx-auto p-0">
+
+            <ul class="list-group list-group-flush text-center">
+
+                <!-- Идентификатор в базе данных (GUID) -->
+                <li class="list-group-item">
+                    <span class="fw-bold fs-5 text-primary">TopicMovieModelId&nbsp;:</span><br />
+                    <span id="TopicItemID" class="fs-5 text_shadow">@Model.TopicMovieModelId</span><br />
+                    <span id="TopicItemIDHelpBlock" class="fs-6 form-text">
+                        идентификатор в базе данных (GUID)
+                    </span>
+                </li>
+
+                <!-- Описание темы -->
+                <li class="list-group-item">
+                    <span class="fw-bold fs-5 text-primary">TopicDescription&nbsp;:</span><br />
+                    <span id="TopicItemDescription" class="fs-5 text_shadow">@Model.TopicDescription</span><br />
+                    <span id="TopicItemDescriptionHelpBlock" class="fs-6 form-text">
+                        описание темы
+                    </span>
+                </li>
+
+            </ul>
+
+            <hr class="liniya" />
+
+            @if (ViewBag.moviesOfTopic.Length > 0)
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-sm table-hover caption-top align-middle">
+
+                        <thead>
+
+                            <tr class="table-secondary">
+                                <th scope="col" class="text-start text-primary">Ссылки в фильмах</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var movie in ViewBag.moviesOfTopic)
+                            {
+                                <tr class="text-start">
+
+                                    <td scope="col" class="d-table-cell text-sm-start text_shadow">@movie.MovieCaption</td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="fs-6 form-text">ссылки в фильмах будут удалены</p>
+
+                </div>
+            }
+            else
+            {
+                <p class="fs-5 text_shadow">ссылки на данную тему отсутствуют</p>
+            }
+
+            <hr class="liniya" />
+
+            <!-- Удалить - Отменить -->
+            <form method="post">
+
+                <input asp-for="TopicMovieModelId" type="hidden" value="@Model.TopicMovieModelId" />
+
+                <div class="card-footer p-2">
+
+                    <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить тему">Удалить</button>
+
+                    <a class="btn btn-outline-success m-2 shadw"
+                        asp-area="Admin" 
+                        asp-controller="TopicMovie" 
+                        asp-action="Index" 
+                        title="отменить">Отмена</a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

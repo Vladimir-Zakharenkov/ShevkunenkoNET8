@@ -1,0 +1,278 @@
+﻿@{
+    string sitePath = "https://" + Context.Request.Host;
+
+    string screenFormat = ((int)(((double)Model.PageInfo.MovieFile!.MovieHeight / (double)Model.PageInfo.MovieFile.MovieWidth) * 100)).ToString() + "%";
+
+    string posterForVideo = string.Empty;
+
+    @if (Model.PageInfo.MovieFile.ImageFileModel!.ImageHDFileName != null)
+    {
+        posterForVideo = @Model.PageInfo.MovieFile.ImageFileModel.ImagePath + "/" + @Model.PageInfo.MovieFile.ImageFileModel.ImageHDFileName;
+    }
+    else
+    {
+        posterForVideo = @Model.PageInfo.MovieFile.ImageFileModel.ImagePath + "/" + @Model.PageInfo.MovieFile.ImageFileModel.ImageFileName;
+    }
+}
+
+<div class="row mx-auto mb-3 maxwidth800px">
+
+    <div class="col-12">
+
+        <h1 class="h2 text_shadow">@Html.Raw(Model.PageInfo.MovieFile!.MovieCaptionForOnline)</h1>
+
+        <hr class="liniya" />
+
+    </div>
+
+    <div class="col-12 p-0 p-sm-1 p-xl-2 mb-3 shadw">
+
+        <span itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+
+            <meta itemprop="name" content="@Model.PageInfo.MovieFile!.MovieCaption" />
+            <meta itemprop="caption" content="@Model.PageInfo.MovieFile!.MovieCaption" />
+            <link itemprop="url" href="@Model.PageInfo.MovieFile.MovieContentUrl" />
+            <link itemprop="contentUrl" href="@Model.PageInfo.MovieFile.MovieContentUrl" />
+            <meta itemprop="description" content="@Model.PageInfo.MovieFile.MovieDescriptionForSchemaOrg" />
+            <meta itemprop="duration" content="@Model.PageInfo.MovieFile.MovieDuration.ToString("'T'hh'H'mm'M'ss'S'")" />
+            <meta itemprop="isFamilyFriendly" content="@Model.PageInfo.MovieFile.MovieIsFamilyFriendly.ToString()" />
+            <link itemprop="thumbnail" href="@sitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <link itemprop="thumbnailUrl" href="@sitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <meta itemprop="uploadDate" content="@Model.PageInfo.MovieFile.MovieUploadDate.ToString("yyyy-MM-dd")" />
+            <meta itemprop="height" content="@Model.PageInfo.MovieFile.MovieHeight" />
+            <meta itemprop="width" content="@Model.PageInfo.MovieFile.MovieWidth" />
+            @if (Model.PageInfo.MovieFile.MovieHeight <= 360)
+            {
+                <meta itemprop="videoQuality" content="low" />
+            }
+
+            @if (Model.PageInfo.MovieFile.MovieHeight > 360 & Model.PageInfo.MovieFile.MovieHeight <= 720)
+            {
+                <meta itemprop="videoQuality" content="medium" />
+            }
+
+            @if (Model.PageInfo.MovieFile.MovieHeight > 720 & Model.PageInfo.MovieFile.MovieHeight < 1080)
+            {
+                <meta itemprop="videoQuality" content="HD" />
+            }
+
+            @if (Model.PageInfo.MovieFile.MovieHeight >= 1080)
+            {
+                <meta itemprop="videoQuality" content="full HD" />
+            }
+            <meta itemprop="contentSize" content="@Model.PageInfo.MovieFile.MovieFileSize.ToString().Substring(0, Model.PageInfo.MovieFile.MovieFileSize.ToString().Length - 3)" />
+            <meta itemprop="dateReleased" content="@Model.PageInfo.MovieFile.MovieDatePublished.ToString("yyyy-MM-dd")" />
+            <meta itemprop="dateCreated" content="@Model.PageInfo.MovieFile.MovieDateCreated.ToString("yyyy-MM-dd")" />
+            <meta itemprop="inLanguage" content="@Model.PageInfo.MovieFile.MovieInLanguage1" />
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieInLanguage2))
+            {
+                <meta itemprop="inLanguage" content="@Model.PageInfo.MovieFile.MovieInLanguage2" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieSubtitles1))
+            {
+                <meta itemprop="subtitleLanguage" content="@Model.PageInfo.MovieFile.MovieSubtitles1" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieSubtitles2))
+            {
+                <meta itemprop="subtitleLanguage" content="@Model.PageInfo.MovieFile.MovieSubtitles2" />
+            }
+            <meta itemprop="part" content="@Model.PageInfo.MovieFile.MoviePart" />
+            <meta itemprop="genre" content="@Model.PageInfo.MovieFile.MovieGenre" />
+            <meta itemprop="content_id" content="@Model.PageInfo.MovieFile.MovieFileModelId" />
+            <meta itemprop="productionCompany" content="@Model.PageInfo.MovieFile.MovieРroductionCompany" />
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieDirector1))
+            {
+                <meta itemprop="director" content="@Model.PageInfo.MovieFile.MovieDirector1" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieDirector2))
+            {
+                <meta itemprop="director" content="@Model.PageInfo.MovieFile.MovieDirector2" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieMusicBy))
+            {
+                <meta itemprop="musicBy" content="@Model.PageInfo.MovieFile.MovieMusicBy" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor01))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor01" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor02))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor02" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor03))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor03" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor04))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor04" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor05))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor05" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor06))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor06" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor07))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor07" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor08))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor08" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor09))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor09" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageInfo.MovieFile.MovieActor10))
+            {
+                <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor10" />
+            }
+
+            <meta itemprop="image" content="@sitePath@Model.PageInfo.MovieFile.ImageFileModel.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <meta itemprop="playerType" content="@Model.PageInfo.MovieFile.MovieMimeType" />
+            <meta itemprop="availablePlatform" content="Desktop" />
+            <meta itemprop="availablePlatform" content="Mobile" />
+
+        </span>
+
+        <div class="div-adaptiv mx-auto" style="padding-bottom:@screenFormat;">
+
+            @if (Model.SergeyshefRu)
+            {
+                <video id="my-video"
+                       class="video-js video-adaptiv"
+                       controls
+                       preload="auto"
+                       width="@Model.PageInfo.MovieFile.MovieWidth"
+                       height="@Model.PageInfo.MovieFile.MovieHeight"
+                       poster="@posterForVideo"
+                       data-setup="{}">
+
+                    <source src="@Model.VideoRef" type="@Model.PageInfo.MovieFile.MovieMimeType" />
+
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+
+                </video>
+
+                <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
+
+                <script>
+                    var player = videojs('playerId', {
+                        html5: {
+                            vhs: {
+                                overrideNative: true
+                            },
+                            nativeAudioTracks: false,
+                            nativeVideoTracks: false
+                        }
+                    });
+                </script>
+            }
+            else
+            {
+                <iframe class="video-adaptiv" src="@Model.VideoRef" allowfullscreen></iframe>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="accordion" id="movieDescription">
+
+        <div class="accordion-item shadw">
+
+            <h2 class="accordion-header" id="heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                    Содержание:
+                </button>
+            </h2>
+
+            <div id="collapse" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#movieDescription">
+
+                <div class="accordion-body">
+
+                    @Html.Raw(Model.PageInfo.MovieFile.MovieDescriptionHtml)
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <p class="text_shadow fs-4 mt-3 mb-0">ВИДЕО НА :</p>
+
+    <hr class="liniya maxwidth28percent" />
+
+    <div class="row row-cols-6 gx-md-2 gx-lg-3 gx-xl-4 justify-content-center">
+
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieYouTube">
+            <vc:image-view file-name="youtube.png" css-class="col-12 shadw imageref @Model.YoutubeImageBorder" is-icon="true" />
+        </a>
+
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieVkVideo">
+            <vc:image-view file-name="vk-video.png" css-class="col-12 shadw imageref @Model.VkImageBorder" is-icon="true" />
+        </a>
+
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieMailRuVideo">
+            <vc:image-view file-name="mailru.png" css-class="col-12 shadw imageref @Model.MailruImageBorder" is-icon="true" />
+        </a>
+
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieOkVideo">
+            <vc:image-view file-name="odnoklassniki.png" css-class="col-12 shadw imageref @Model.OkImageBorder" is-icon="true" />
+        </a>
+
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieContentUrl">
+            <vc:image-view file-name="asuscomm.png" css-class="col-12 shadw imageref @Model.SergeyshefBorder" is-icon="true" />
+        </a>
+
+        <a onClick="this.target='_blank'" href="@Model.PageInfo.MovieFile.MovieYandexDiskVideo">
+            <vc:image-view file-name="yandex-disk.png" css-class="col-12 shadw imageref" is-icon="true" />
+        </a>
+
+    </div>
+
+    <p class="fs-4 text_shadow mt-3 mb-0">О ФИЛЬМЕ:</p>
+
+    <hr class="liniya maxwidth28percent" />
+
+    <div class="row row-cols-6 gx-md-2 gx-lg-3 gx-xl-4 justify-content-center">
+
+        <a onClick="this.target='_blank'" href="@Model.PageInfo.MovieFile.MovieKinoTeatrRu">
+            <vc:image-view file-name="kino-teatr.png" css-class="col-12 shadw imageref" is-icon="true" />
+        </a>
+
+        <a onClick="this.target='_blank'" href="@Model.PageInfo.MovieFile.MovieKinoPoisk">
+            <vc:image-view file-name="kinopoisk.png" css-class="col-12 shadw imageref" is-icon="true" />
+        </a>
+
+        <a onClick="this.target='_blank'" href="@Model.PageInfo.MovieFile.MovieImbd">
+            <vc:image-view file-name="imdb.png" css-class="col-12 shadw imageref" is-icon="true" />
+        </a>
+
+    </div>
+
+</div>

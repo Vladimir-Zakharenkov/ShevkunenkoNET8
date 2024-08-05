@@ -1,0 +1,309 @@
+﻿@model EditPageViewModel
+
+@{
+    PageInfoModel pageInfo = new();
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1 class="fs-3 text_shadow">Добавить страницу</h1>
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post" enctype="multipart/form-data">
+
+                    <input asp-for="PageItem.PageInfoModelId" type="hidden" value="@Guid.Empty" />
+                    <input asp-for="PageItem.PageIconPath" type="hidden" value="main.xml" />
+                    <input asp-for="PageItem.BrowserConfig" type="hidden" value="main.xml" />
+                    <input asp-for="PageItem.BrowserConfigFolder" type="hidden" value="/main" />
+                    <input asp-for="PageItem.Manifest" type="hidden" value="main.xml" />
+
+                    @if (Context.Request.Method == "POST")
+                    {
+                        <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+                    }
+
+                    <div aria-describedby="PageAsRazorPageInputHelpBlock">
+                        <div class="form-check form-check-inline me-5">
+                            <input asp-for="PageItem.PageAsRazorPage" class="form-check-input" type="radio" id="inlineRadio1" value="false" checked>
+                            <label asp-for="PageItem.PageAsRazorPage" class="form-check-label fs-5">MVC Page</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input asp-for="PageItem.PageAsRazorPage" class="form-check-input" type="radio" id="inlineRadio2" value="true">
+                            <label asp-for="PageItem.PageAsRazorPage" class="form-check-label fs-5">Razor Page</label>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="PageAsRazorPageInputHelpBlock" class="form-text">
+                                тип страницы
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PageItem.PageAsRazorPage" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="ImageFileFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                    <input id="ImageFormFileInput" asp-for="ImageFileFormFile" class="form-control mt-2" aria-describedby="ImageFormFileInputHelpBlock" />
+                    <span asp-validation-for="ImageFileFormFile" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="BackgroundFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                    <input id="BackgroundFormFileInput" asp-for="BackgroundFormFile" class="form-control mt-2" aria-describedby="BackgroundFormFileInputHelpBlock" />
+                    <span asp-validation-for="BackgroundFormFile" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="PageItem.PageArea" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto" aria-describedby="PageAreaInputHelpBlock">
+                            <select id="AreaInput" asp-for="PageItem.PageArea" class="form-select">
+                                @{
+                                    for (int i = 0; i < pageInfo.AreaItems.Count(); i++)
+                                    {
+                                        <option value="@pageInfo.AreaItems[i]">@pageInfo.AreaItems[i]</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center" id="PageAreaInputHelpBlock">
+                            <span class="form-text">
+                                область «Area»
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PageItem.PageArea" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.Controller" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="ControllerInput" asp-for="PageItem.Controller" class="form-control text-center" aria-describedby="ControllerInputHelpBlock" />
+                    <div id="ControllerInputHelpBlock" class="form-text">
+                        Controller для страницы MVC
+                    </div>
+                    <span asp-validation-for="PageItem.Controller" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.Action" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="ActionInput" asp-for="PageItem.Action" class="form-control text-center" aria-describedby="ActionInputHelpBlock" />
+                    <div id="ActionInputHelpBlock" class="form-text">
+                        Action для страницы MVC
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.RoutData" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="RoutDataInput" asp-for="PageItem.RoutData" class="form-control text-center" aria-describedby="RoutDataInputHelpBlock" />
+                    <div id="ActionInputHelpBlock" class="form-text">
+                        QweryString
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageLoc" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageLocInput" asp-for="PageItem.PageLoc" class="form-control text-center" aria-describedby="PageLocInputHelpBlock" />
+                    <div id="PageLocInputHelpBlock" class="form-text">
+                        <span>указывать только для RazorPage</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PageLoc" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PagePathNickName" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PagePathNickNameInput" asp-for="PageItem.PagePathNickName" class="form-control text-center" aria-describedby="PagePathNickNameInputHelpBlock" />
+                    <div id="PagePathNickNameInputHelpBlock" class="form-text">
+                        <span>альтернативный адресс страницы</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PagePathNickName" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageTitle" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageTitleInput" asp-for="PageItem.PageTitle" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
+                    <div id="PageTitleInputHelpBlock" class="form-text">
+                        тег «title» - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PageTitle" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageDescription" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="PageDescriptionInput" asp-for="PageItem.PageDescription" rows="7" class="form-control fordetails" aria-describedby="PageDescriptionInputHelpBlock">
+                    <p class="fordetails">PageDescription</p>
+                    </textarea>
+                    <div id="PageDescriptionInputHelpBlock" class="form-text">
+                        тег «description» - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PageDescription" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="PageKeyWordsInput" asp-for="PageItem.PageKeyWords" rows="7" class="form-control fordetails" aria-describedby="PageKeyWordsInputHelpBlock">
+                    <p class="fordetails">PageKeyWords</p>
+                    </textarea>
+                    <div id="PageKeyWordsInputHelpBlock" class="form-text">
+                        тег «keywords» - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center" aria-describedby="PageCardTextInputHelpBlock" />
+                    <div id="PageCardTextInputHelpBlock" class="form-text">
+                        текст для карточки страницы
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
+                    <div id="PageFilterInputHelpBlock" class="form-text">
+                        фильтр поиска страницы
+                    </div>
+                    <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
+                    <p class="fordetails">PageFilterOut</p>
+                    </textarea>
+                    <div id="PageFilterOutInputHelpBlock" class="form-text">
+                        фильтры поиска страниц
+                    </div>
+                    <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="PageItem.OgType" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="OgTypeInput" asp-for="PageItem.OgType" class="form-select">
+                                <option value="website" selected>website</option>
+                                <option value="movie">movie</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="OgTypeInputHelpBlock" class="form-text">
+                                тег «og:type» - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PageItem.OgType" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="PageItem.Changefreq" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="ChangefreqInput" asp-for="PageItem.Changefreq" class="form-select">
+                                <option value="always">always</option>
+                                <option value="hourly">hourly</option>
+                                <option value="daily">daily</option>
+                                <option value="weekly">weekly</option>
+                                <option value="monthly" selected>monthly</option>
+                                <option value="yearly">yearly</option>
+                                <option value="never">never</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="ChangefreqInputHelpBlock" class="form-text">
+                                Changefreq: частота изменения страницы - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PageItem.Changefreq" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="PageItem.Priority" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="PriorityInput" asp-for="PageItem.Priority" class="form-select">
+                                <option value="0.0">0.0</option>
+                                <option value="0.1">0.1</option>
+                                <option value="0.2">0.2</option>
+                                <option value="0.3">0.3</option>
+                                <option value="0.4">0.4</option>
+                                <option value="0.5" selected>0.5</option>
+                                <option value="0.6">0.6</option>
+                                <option value="0.7">0.7</option>
+                                <option value="0.8">0.8</option>
+                                <option value="0.9">0.9</option>
+                                <option value="1.0">1.0</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="PrioritylInputHelpBlock" class="form-text">
+                                Priority: значимость страницы (от 0.0 до 1.0) - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PageItem.Priority" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2">
+                        <label asp-for="PageItem.PageLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks" type="radio" value="true">
+                            <label class="form-check-label d-inline-block" for="PageLinksTrue">
+                                <span class="">Показывать ссылки</span>
+                            </label>
+                        </div>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks" type="radio" value="false" checked>
+                            <label class="form-check-label d-inline-block" for="PageLinksFalse">
+                                <span class="">Не показывать ссылки</span>
+                            </label>
+                        </div>
+                        <div id="PageLinksInputHelpBlock" class="form-text">
+                            <span>показывать ссылки на связанные страницы</span>
+                        </div>
+                        <span asp-validation-for="PageItem.PageLinks" class="text-danger"></span>
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.RefPages" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control fordetails" aria-describedby="RefPagesInputHelpBlock">
+                    <p class="fordetails">RefPages</p>
+                    </textarea>
+                    <span asp-validation-for="PageItem.RefPages" class="text-danger"></span>
+
+                    <div class="card-footer p-0 mt-2">
+
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="Сохранить">Сохранить</button>
+
+                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="Index" class="btn btn-outline-danger m-2 shadw" title="Отменить">Отменить</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

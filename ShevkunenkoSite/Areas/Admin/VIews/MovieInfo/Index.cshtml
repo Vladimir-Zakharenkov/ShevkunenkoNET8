@@ -1,0 +1,298 @@
+﻿@model MoviesListViewModel
+
+@{
+}
+
+<div class="row">
+
+    @if (!String.IsNullOrEmpty(Model.MovieCaptionSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск в названии по строке: <span class="text-danger">&laquo;@Model.MovieCaptionSearchString&raquo;</span></p>
+    }
+
+    @if (!String.IsNullOrEmpty(Model.MovieDescriptionForSchemaOrgSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск в описании по строке: <span class="text-danger">&laquo;@Model.MovieDescriptionForSchemaOrgSearchString&raquo;</span></p>
+    }
+
+    @if (!String.IsNullOrEmpty(Model.MovieGenreSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск по жанру:  <span class="text-danger">&laquo;@Model.MovieGenreSearchString&raquo;</span></p>
+    }
+
+    @if (!String.IsNullOrEmpty(Model.MovieDirectorSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск по режиссеру:  <span class="text-danger">&laquo;@Model.MovieDirectorSearchString&raquo;</span></p>
+    }
+
+    @if (!String.IsNullOrEmpty(Model.MovieMusicBySearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск по режиссеру:  <span class="text-danger">&laquo;@Model.MovieMusicBySearchString&raquo;</span></p>
+    }
+
+    @if (!String.IsNullOrEmpty(Model.MovieActorSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">Поиск по актеру:  <span class="text-danger">&laquo;@Model.MovieActorSearchString&raquo;</span></p>
+    }
+
+</div>
+
+@if (Model.PagingInfo.TotalItems == 0)
+{
+    <div class="row">
+
+        <div class="col text-center p-2">
+
+            <p class="fs-5 text-primary mb-0">В базе данных нет фильмов</p>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="row">
+
+        <div class="col-12 text-center">
+
+            <p class="fs-5 text-primary mb-0">Количество фильмов:&nbsp;@Model.PagingInfo.TotalItems</p>
+
+        </div>
+
+        <hr class="liniya" />
+
+        <div class="col mb-3">
+
+            <a asp-area="Admin" asp-controller="MovieInfo" asp-action="AddMovie" class="btn btn-outline-danger me-4 shadw" title="добавить фильм">Добавить фильм</a>
+
+        </div>
+
+    </div>
+}
+
+<div class="accordion mb-3" id="movieSearch">
+
+    <div class="accordion-item shadw">
+
+        <h2 class="accordion-header" id="heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                Поиск фильма:
+            </button>
+        </h2>
+
+        <div id="collapse" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#movieSearch">
+
+            <div class="accordion-body">
+
+                <div class="col table-responsive border border-primary m-2 p-2 shadw">
+
+                    <form method="get" asp-area="Admin" asp-controller="MovieInfo" asp-action="Index">
+
+                        <table class="table table-sm table-hover table-borderless">
+                            <tbody>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Названия фильма:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieCaptionSearchString" /><br />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Содержание:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieDescriptionForSchemaOrgSearchString" /><br />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Жанр:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieGenreSearchString" /><br />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Режиссёр:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieDirectorSearchString" /><br />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Композитор:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieMusicBySearchString" /><br />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td scope="row" class="text-end">
+                                        <span class="fs-5 text-danger">Актер:</span><br />
+                                    </td>
+                                    <td class="text-start">
+                                        <input type="text" asp-for="MovieActorSearchString" /><br />
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <p class="text-center">
+
+                            <input type="submit" value="ПОИСК" class="btn btn btn-outline-primary py-1 shadw" />
+
+                        </p>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div page-model="@Model.PagingInfo"
+             movie-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             data-toggle="buttons"
+             role="group"
+             aria-label="фильмы сайта">
+        </div>
+
+    </div>
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <table class="table table-sm table-hover caption-top align-middle">
+
+            <thead>
+
+                <tr>
+                    <th scope="col" class="text-start">Название</th>
+                    <th scope="col" class="text-start">Серия</th>
+                    <th scope="col" class="d-none d-lg-table-cell text-start">Файл</th>
+                    <th scope="col" class="d-none d-xl-table-cell text-start">Формат</th>
+                    <th scope="col" class="d-none d-xl-table-cell text-start">Время</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var movieInfo in Model?.Movies ?? Enumerable.Empty<MovieFileModel>())
+                {
+                    <tr class="text-start">
+
+                        <td scope="col" class="text-start">@movieInfo.MovieCaption</td>
+
+                        <td scope="col" class="text-start">
+                            &nbsp;&nbsp;&nbsp;
+                            @if (movieInfo.MovieTotalParts > 1)
+                            {
+                                @movieInfo.MoviePart
+                            }
+                        </td>
+
+                        <td scope="col" class="d-none d-lg-table-cell text-start" title="@movieInfo.MovieFileName">@movieInfo.MovieFileName</td>
+
+                        <td scope="col" class="d-none d-xl-table-cell text-start">@movieInfo.MovieScreenFormat</td>
+
+                        <td scope="col" class="d-none d-xl-table-cell text-start">@movieInfo.MovieDuration.ToString(@"hh\:mm\:ss")</td>
+
+                        <td scope="col" class="text-end">
+                            <a asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="DetailsMovie"
+                               asp-route-movieid="@movieInfo.MovieFileModelId"
+                               class="btn btn-outline-primary p-1 shadw"
+                               title="информация">Info</a>
+                        </td>
+
+                        <td scope="col" class="text-end">
+                            <a asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="EditMovie"
+                               asp-route-movieid="@movieInfo.MovieFileModelId"
+                               class="btn btn-outline-success p-1 shadw"
+                               title="редактировать">Edit</a>
+                        </td>
+
+                        <td scope="col" class="text-end">
+                            <a asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="DeleteMovie"
+                               asp-route-movieid="@movieInfo.MovieFileModelId"
+                               class="btn btn-outline-danger p-1 shadw"
+                               title="удалить">Del</a>
+                        </td>
+
+                        @if (movieInfo.PageInfoModelId != null && movieInfo.PageInfoModelId != Guid.Empty)
+                        {
+                            <td scope="col" class="text-end">
+                                <a href="@Url.Content(movieInfo.PageInfoModel?.PageFullPathWithData)"
+                                   class="btn btn-outline-primary py-0 px-1 shadw"
+                                   title="просмотр">Run</a>
+                            </td>
+                        }
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+@if (Model!.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div page-model="@Model.PagingInfo"
+             movie-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             data-toggle="buttons"
+             role="group"
+             aria-label="фильмы сайта">
+        </div>
+
+    </div>
+}

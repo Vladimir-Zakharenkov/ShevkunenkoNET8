@@ -1,0 +1,30 @@
+﻿@page
+
+@model Bez_semyi_2Model
+
+@{
+    string[] links = new string[]{
+        "/movies/russian/children/bez-semyi/bez-semyi-1",
+        "/movies/russian/children/bez-semyi/bez-semyi-2"
+    };
+
+    string[] films = new string[]{
+        "/programs/eshe-ne-vecher-16-09-2011"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

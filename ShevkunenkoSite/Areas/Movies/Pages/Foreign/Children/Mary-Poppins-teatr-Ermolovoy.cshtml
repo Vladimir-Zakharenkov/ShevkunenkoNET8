@@ -1,0 +1,21 @@
+﻿@page
+
+@model Mary_Poppins_teatr_ErmolovoyModel
+
+@{
+    string[] remake = new string[]{
+        "/movies/russian/children/mary-poppins/index",
+        "/movies/foreign/children/mary-poppins",
+        "/movies/foreign/children/mary-poppins-returns"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ЭКРАНИЗАЦИИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@remake" size="2" />

@@ -1,0 +1,56 @@
+﻿@model ImageFileModel
+
+@{
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1 class="fs-3 text_shadow">Удалить картинку</h1>
+
+        <p>(файл картинки не удаляется)</p>
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            <p class="text-primary fs-6 mb-0">КАРТИНКА (@Model.ImageWidth x @Model.ImageHeight)</p>
+
+            <vc:view-image image-id="@Model.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+            @if (!string.IsNullOrEmpty(Model.WebImageFileName))
+            {
+                <p class="text-primary mb-0 fw-bolder">File: @Model.ImagePath/@Model.WebImageFileName - @Model.WebImageFileSize bytes</p>
+            }
+            else
+            {
+                <p class="text-primary mb-0 fw-bolder">File: @Model.ImagePath/@Model.ImageFileName - @Model.ImageFileSize bytes</p>
+            }
+
+            <hr class="liniya" />
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post" asp-area="Admin" asp-controller="ImageInfo" asp-action="DeleteImage" asp-route-imageid="@Model.ImageFileModelId" class="mt-2">
+
+                    <input asp-for="@Model.ImageFileModelId" type="hidden" />
+
+                    <div class="card-footer p-2">
+
+                        <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить картинку">Delete</button>
+                        <a asp-area="Admin" asp-controller="ImageInfo" asp-action="Index" asp-route-iconlist="false" class="btn btn-outline-success shadw" title="не удалять">Cancel</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

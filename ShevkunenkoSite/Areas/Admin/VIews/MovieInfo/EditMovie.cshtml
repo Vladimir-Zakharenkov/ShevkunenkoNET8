@@ -1,0 +1,1750 @@
+﻿@model EditMovieViewModel
+
+@{
+    var optionsDictionary = Model.TopicsForMovie.ToDictionary(k => k.TopicMovieModelId.ToString(), v => v.TopicDescription);
+}
+
+<div class="row">
+
+    @* Кадры фильма слева *@
+    @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie) == true)
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.FramesAroundMovie" left-side="true" one-frame="false" />
+    }
+    else
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="true" one-frame="false" />
+    }
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <h1 class="fs-3 text_shadow">Изменить данные</h1>
+
+        <hr class="liniya" />
+
+        @if (Context.Request.Method == "POST")
+        {
+            <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+        }
+
+        <div class="card p-2">
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post" enctype="multipart/form-data">
+
+                    <input asp-for="MovieItem.MovieFileModelId" type="hidden" />
+                    <input asp-for="MovieItem.MovieDuration" type="hidden" />
+                    <input asp-for="MovieItem.MovieWidth" type="hidden" />
+                    <input asp-for="MovieItem.MovieHeight" type="hidden" />
+                    <input asp-for="MovieItem.MovieFileName" type="hidden" />
+                    <input asp-for="MovieItem.MovieFileExtension" type="hidden" />
+                    <input asp-for="MovieItem.MovieMimeType" type="hidden" />
+                    <input asp-for="MovieItem.MovieFileSize" type="hidden" />
+                    <input asp-for="MovieItem.ImageFileModelId" type="hidden" />
+                    <input asp-for="MovieItem.MoviePosterGuid" type="hidden" />
+
+                    @* название фильма *@
+                    @if (Context.Request.Method == "GET")
+                    {
+                        <h2 class="fs-3 mb-3 text_shadow"><span class="text-black">@Model.MovieItem.MovieCaption</span></h2>
+                    }
+
+                    @*  количество серий и номер серии фильма *@
+                    @if (Context.Request.Method == "GET" && Model.MovieItem.MovieTotalParts > 1)
+                    {
+                        <p class="fs-5 mb-0 text_shadow">количество серий: <span class="text-success">«@Model.MovieItem.MovieTotalParts»</span></p>
+
+                        <p class="fs-5 mb-0 text_shadow">серия: <span class="text-success">«@Model.MovieItem.MoviePart»</span></p>
+
+                        <hr class="liniya" />
+                    }
+
+                    @* данные по группам *@
+                    <div class="accordion" id="accordionEditMovie">
+
+                        @* файл фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFilmFile">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmFile" aria-expanded="true" aria-controls="FilmFile">
+                                    <span class="form-label text-success fs-5">Файл фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmFile" class="accordion-collapse collapse" aria-labelledby="headingFilmFile" data-bs-parent="#accordionEditMovie">
+
+                                @* файл фильма *@
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @if (Context.Request.Method == "GET")
+                                    {
+                                        @if (string.IsNullOrEmpty(Model.MovieItem.MovieFileName))
+                                        {
+                                            <p class="fs-5 mb-3 text_shadow">файл фильма отсутствует</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-5 mb-3 text_shadow">файл фильма: <span class="text-success">«@Model.MovieItem.MovieFileName»</span></p>
+                                        }
+                                    }
+
+                                </div>
+
+                                @* выбрать файл фильма *@
+                                <div class="row g-2 justify-content-center pb-2">
+
+                                    <div class="col-auto">
+
+                                        <label asp-for="FileForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+
+                                    </div>
+
+                                    <div class="col-auto">
+
+                                        <input id="FileForMovieFormFileInput" asp-for="FileForMovieFormFile" class="form-control text-center" aria-describedby="FileForMovieFormFileInputHelpBlock" />
+
+                                    </div>
+
+                                    <div id="FileForMovieFormFileInputHelpBlock" class="fs-6 form-text">
+
+                                        <span>выбрать файл</span>
+
+                                    </div>
+
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="FileForMovieFormFile" class="text-danger"></span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* полная версия фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFullFilm">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FullFilm" aria-expanded="true" aria-controls="FullFilm">
+                                    <span class="form-label text-success fs-5">Полная версия фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FullFilm" class="accordion-collapse collapse" aria-labelledby="headingFullFilm" data-bs-parent="#accordionEditMovie">
+
+                                @* файл полной версии фильма *@
+                                @if (Context.Request.Method == "GET")
+                                {
+                                    @if (Model.FullMovie == null)
+                                    {
+                                        <p class="fs-5 mb-4 text_shadow">файл полной версии не определен</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="fs-5 mb-4 text_shadow">файл полной версии: <span class="text-success">«@Model.FullMovie.MovieFileName»</span></p>
+                                    }
+                                }
+
+                                @* выбрать файл полной версии фильма *@
+                                <div class="row g-2 justify-content-center pb-2">
+
+                                    <div class="col-auto">
+
+                                        <label class="col-form-label text-primary fs-5 me-2" asp-for="FullMovieFormFile"></label>
+
+                                    </div>
+
+                                    <div class="col-auto">
+
+                                        <input id="FullMovieFormFile" class="form-control text-center" asp-for="FullMovieFormFile" aria-describedby="FullMovieFormFileInputHelpBlock" />
+
+                                    </div>
+
+                                    <div id="FullMovieFormFileInputHelpBlock" class="fs-6 form-text">
+
+                                        <span>выбрать файл полной версии фильма</span><span class="text-danger"></span>
+
+                                    </div>
+
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="FullMovieFormFile" class="text-danger"></span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* страница фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFilmPage">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmPage" aria-expanded="true" aria-controls="FilmPage">
+                                    <span class="form-label text-success fs-5">Страница фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmPage" class="accordion-collapse collapse pb-2" aria-labelledby="headingFilmPage" data-bs-parent="#accordionEditMovie">
+
+                                @* <label asp-for="PageForMovie" class="form-label text-primary fs-5 await  text_shadow"></label> *@
+
+                                @if (Context.Request.Method == "GET")
+                                {
+                                    <p class="fs-5 text_shadow">текущая страница:</p>
+                                    <p class="fs-5 mb-2 text-success text_shadow">«@Model.MovieItem.PageInfoModel?.PageFullPathWithData»</p>
+                                }
+
+                                <input id="PageForMovieInput" class="form-control text-center" asp-for="PageForMovie" aria-describedby="PageForMovieInputHelpBlock" />
+
+                                <div id="PageForMovieInputHelpBlock" class="fs-6 form-text">
+
+                                    адрес страницы фильма - <span class="text-danger">для удаления введите 0</span>
+
+                                </div>
+
+                                <span asp-validation-for="PageForMovie" class="text-danger"></span>
+
+                            </div>
+
+                        </div>
+
+                        @* картинка фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFilmImage">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmImage" aria-expanded="true" aria-controls="FilmImage">
+                                    <span class="form-label text-success fs-5">Картинка для фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmImage" class="accordion-collapse collapse" aria-labelledby="headingFilmImage" data-bs-parent="#accordionEditMovie">
+
+                                @* картинка фильма *@
+                                @if (Context.Request.Method == "GET")
+                                {
+                                    @if (Model.MovieItem.ImageFileModelId != null)
+                                    {
+                                        <vc:view-image image-id="@Model.MovieItem.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                        if (!string.IsNullOrEmpty(Model.MovieItem.ImageFileModel?.WebImageFileName))
+                                        {
+                                            <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.WebImageFileName»</span></p>
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.ImageFileName»</span></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h2 class="fs-4 my-3 text_shadow">Картинка для видео отсутствует</h2>
+                                    }
+                                }
+
+                                @* выбрать картинку фильма *@
+                                <div class="row g-2 justify-content-center pb-2">
+
+                                    <div class="col-auto">
+
+                                        <input id="ImageForMovieFormFileInput" class="form-control text-center" asp-for="ImageForMovieFormFile" aria-describedby="ImageForMovieFormFileInputHelpBlock" />
+
+                                    </div>
+
+                                    <div id="ImageForMovieFormFileInputHelpBlock" class="fs-6 form-text">
+
+                                        <span>выбрать картинку для фильма</span>
+
+                                    </div>
+
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="ImageForMovieFormFile" class="text-danger"></span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* постер фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFilmPoster">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmPoster" aria-expanded="true" aria-controls="FilmPoster">
+                                    <span class="form-label text-success fs-5">Постер для фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmPoster" class="accordion-collapse collapse" aria-labelledby="headingFilmPoster" data-bs-parent="#accordionEditMovie">
+
+                                @* постер фильма *@
+                                @if (Context.Request.Method == "GET")
+                                {
+                                    @if (Model.PosterForMovie != null)
+                                    {
+                                        <vc:view-image image-id="@Model.PosterForMovie.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                        if (!string.IsNullOrEmpty(Model.PosterForMovie.WebImageFileName))
+                                        {
+                                            <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.WebImageFileName»</span></p>
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.ImageFileName»</span></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h2 class="fs-4 my-3 text_shadow">Постер для видео отсутствует</h2>
+                                    }
+                                }
+
+                                @*выбрать постер фильма *@
+                                <div class="row g-2 justify-content-center pb-2">
+
+                                    <div class="col-auto">
+
+                                        <input id="PosterForMovieFormFileInput" asp-for="PosterForMovieFormFile" class="form-control text-center" aria-describedby="PosterForMovieFormFileInputHelpBlock" />
+
+                                    </div>
+
+                                    <div id="PosterForMovieFormFileInputHelpBlock" class="fs-6 form-text">
+
+                                        <span>выбрать постер для фильму</span>
+
+                                    </div>
+
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="PosterForMovieFormFile" class="text-danger"></span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* данные многосерийного фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingSeries">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmSeries" aria-expanded="true" aria-controls="FilmSeries">
+                                    <span class="form-label text-success fs-5">Многосерийный фильм :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmSeries" class="accordion-collapse collapse" aria-labelledby="headingSeries" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* текст поиска всех серий *@
+                                    <div class="mb-3">
+
+                                        <label class="form-label text-primary fs-5 await" asp-for="MovieItem.SeriesSearchFilter"></label>
+                                        <input id="SeriesSearchFilterInput" class="form-control text-center" asp-for="MovieItem.SeriesSearchFilter" aria-describedby="SeriesSearchFilterInputHelpBlock" />
+
+                                        <div id="SeriesSearchFilterInputHelpBlock" class="fs-6 form-text">
+
+                                            текст поиска всех серий фильма
+
+                                        </div>
+
+                                        <span asp-validation-for="MovieItem.SeriesSearchFilter" class="text-danger"></span>
+
+                                    </div>
+
+                                    @* количество серий *@
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label class="form-label text-primary fs-5" asp-for="MovieItem.MovieTotalParts"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieTotalPartsInput" asp-for="MovieItem.MovieTotalParts" class="form-control text-center" aria-describedby="MovieTotalPartsInputHelpBlock" />
+                                        </div>
+                                        <div id="MovieTotalPartsInputHelpBlock" class="fs-6 form-text">
+                                            количество серий - <span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieTotalParts" class="text-danger"></span>
+                                    </div>
+
+                                    @*  номер серии *@
+                                    <div class="row g-2 justify-content-center">
+
+                                        <div class="col-auto">
+                                            <label asp-for="@Model.MovieItem.MoviePart" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MoviePartInput" class="form-control text-center" asp-for="MovieItem.MoviePart" aria-describedby="MoviePartInputHelpBlock" />
+                                        </div>
+                                        <div id="MoviePartInputHelpBlock" class="fs-6 form-text">
+                                            серия - <span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MoviePart" class="text-danger"></span>
+
+                                        <hr class="liniya" />
+
+                                    </div>
+
+                                    <!-- картинка для заголовка страницы серий -->
+                                    @if (Context.Request.Method == "GET")
+                                    {
+                                        @if (Model.MovieItem.ImageForHeadSeriesImageFileModelId != null)
+                                        {
+                                            <h2 class="fs-4 text_shadow">Картинка страницы серий</h2>
+
+                                            <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                            if (Model.MovieItem.ImageForHeadSeries is not null)
+                                            {
+                                                if (!string.IsNullOrEmpty(Model.MovieItem.ImageForHeadSeries.WebImageFileName))
+                                                {
+                                                    <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.MovieItem.ImageForHeadSeries.ImagePath/@Model.MovieItem.ImageForHeadSeries.WebImageFileName»</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="fs-5 mt-2 mb-3 text_shadow">файл: <span class="text-success">«@Model.MovieItem.ImageForHeadSeries.ImagePath/@Model.MovieItem.ImageForHeadSeries.ImageFileName»</span></p>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <h2 class="fs-5 mb-3 text_shadow">Картинка для страницы серий отсутствует</h2>
+                                        }
+                                    }
+
+                                    <!-- выбрать файл картинки для заголовка страницы серий -->
+                                    <div class="row g-2 justify-content-center">
+
+                                        <div class="col-auto">
+
+                                            <label asp-for="ImageHeadForSeriesFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <input id="ImageHeadForSeriesFormFileInput" class="form-control text-center" asp-for="ImageHeadForSeriesFormFile" aria-describedby="ImageHeadForSeriesFormFileInputHelpBlock" />
+
+                                        </div>
+
+                                        <div id="ImageHeadForSeriesFormFileInputHelpBlock" class="fs-6 form-text">
+
+                                            <span>картинка на странице серий - </span><span class="text-danger">выбирать только для 1-ой серии</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="ImageHeadForSeriesFormFile" class="text-danger"></span>
+                                        }
+
+                                        <hr class="liniya" />
+
+                                    </div>
+
+                                    <!-- адрес страницы серий фильма -->
+                                    <div>
+
+                                        <label asp-for="PageForSeriesString" class="form-label text-primary fs-5 await"></label>
+
+                                        @if (Context.Request.Method == "GET")
+                                        {
+                                            <p class="fs-5 mb-2 text_shadow">текущая страница: <span class="text-success">«@Model.PageForSeriesString?.TrimEnd('?')»</span></p>
+                                        }
+
+                                        <input id="PageForSeriesStringInput" asp-for="PageForSeriesString" class="form-control text-center" aria-describedby="PageForSeriesStringInputHelpBlock" />
+
+                                        <div id="PageForSeriesStringInputHelpBlock" class="fs-6 form-text">
+
+                                            адрес страницы серий фильма - <span class="text-danger">для удаления введите 0</span>
+
+                                        </div>
+
+                                        <span asp-validation-for="PageForSeriesString" class="text-danger"></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* заголовок, описание, лента кадров *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingDescription">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDescription" aria-expanded="true" aria-controls="FilmDescription">
+                                    <span class="form-label text-success fs-5">Заголовок, описание, лента кадров :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmDescription" class="accordion-collapse collapse" aria-labelledby="headingDescription" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    <label asp-for="MovieItem.MovieCaption" class="form-label text-primary fs-5"></label>
+                                    <input id="MovieCaptionInput" class="form-control text-center" asp-for="MovieItem.MovieCaption" aria-describedby="MovieCaptionInputHelpBlock" />
+                                    <div id="MovieCaptionInputHelpBlock" class="form-text text-center mb-2">
+                                        название фильма - <span class="text-danger">обязательное поле</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieCaption" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieCaptionForOnline" class="form-label text-primary fs-5"></label>
+                                    <input id="MovieCaptionForOnlineInput" asp-for="MovieItem.MovieCaptionForOnline" class="form-control text-center" aria-describedby="MovieCaptionForOnlineInputHelpBlock" />
+                                    <div id="MovieCaptionForOnlineInputHelpBlock" class="form-text mb-2">
+                                        заголовок страницы фильма (HTML) - <span class="text-danger">обязательное поле</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieCaptionForOnline" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieDescriptionForSchemaOrg" class="form-label text-primary fs-5"></label>
+                                    <textarea id="MovieDescriptionForSchemaOrgInput" rows="7" asp-for="MovieItem.MovieDescriptionForSchemaOrg" class="form-control" aria-describedby="MovieDescriptionForSchemaOrgInputHelpBlock"></textarea>
+                                    <div id="MovieDescriptionForSchemaOrgInputHelpBlock" class="form-text pb-2">
+                                        <span>краткое содержание (SchemaOrg) - </span><span class="text-danger">обязательное поле</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieDescriptionForSchemaOrg" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieDescriptionHtml" class="form-label text-primary fs-5"></label>
+                                    <textarea id="MovieDescriptionHtmlInput" rows="7" asp-for="MovieItem.MovieDescriptionHtml" class="form-control" aria-describedby="MovieDescriptionHtmlHelpBlock"></textarea>
+                                    <div id="MovieDescriptionHtmlHelpBlock" class="form-text pb-2">
+                                        <span>краткое содержание (HTML) - </span><span class="text-danger">обязательное поле</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieDescriptionHtml" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.FramesAroundMovie" class="form-label text-primary fs-5"></label>
+                                    <input id="MovieFramesAroundMovieInput" asp-for="MovieItem.FramesAroundMovie" class="form-control" aria-describedby="MovieFramesAroundMovieHelpBlock" />
+                                    <div id="MovieFramesAroundMovieHelpBlock" class="form-text pb-2">
+                                        <span>название фильма для ленты кадров</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.FramesAroundMovie" class="text-danger"></span>
+
+                                    <hr class="m-0" />
+
+                                    <label asp-for="MovieItem.MovieNote" class="form-label text-primary fs-5"></label>
+                                    <textarea id="MovieNoteInput" rows="2" asp-for="MovieItem.MovieNote" class="form-control" aria-describedby="MovieNoteHelpBlock"></textarea>
+                                    <div id="MovieNoteHelpBlock" class="form-text pb-2">
+                                        <span>примечания</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieNote" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* формат изображения *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingScreenFormat">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#ScreenFormat" aria-expanded="true" aria-controls="ScreenFormat">
+                                    <span class="form-label text-success fs-5">Формат изображения :</span>
+                                </button>
+                            </h2>
+
+                            <div id="ScreenFormat" class="accordion-collapse collapse" aria-labelledby="headingScreenFormat" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* формат изображения *@
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieScreenFormat" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select id="ScreenFormatInput" asp-for="MovieItem.MovieScreenFormat" class="form-select" aria-describedby="ScreenFormatInputHelpBlock">
+                                                <option value="">Формат</option>
+                                                <option value="4X3">4x3</option>
+                                                <option value="16X9">16x9</option>
+                                            </select>
+                                        </div>
+                                        <div id="ScreenFormatInputHelpBlock" class="fs-6 form-text">
+                                            <span>формат изображения</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieScreenFormat" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* даты фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingDate">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDate" aria-expanded="true" aria-controls="FilmDate">
+                                    <span class="form-label text-success fs-5">Даты :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmDate" class="accordion-collapse collapse" aria-labelledby="headingDate" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* дата примьеры фильма *@
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieDatePublished" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieDatePublishedInput" asp-for="MovieItem.MovieDatePublished" class="form-control text-center" aria-describedby="MovieDatePublishedInputHelpBlock" />
+                                        </div>
+                                        <div id="MovieDatePublishedInputHelpBlock" class="fs-6 form-text">
+                                            <span>дата премьеры - </span><span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieDatePublished" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* дата создания фильма *@
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieDateCreated" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieDateCreatedInput" asp-for="MovieItem.MovieDateCreated" class="form-control text-center" aria-describedby="MovieDateCreatedInputHelpBlock" />
+                                        </div>
+                                        <div id="MovieDateCreatedInputHelpBlock" class="fs-6 form-text">
+                                            <span>дата производства - </span><span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieDateCreated" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* дата загрузки фильма на сайт *@
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieUploadDate" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieUploadDateInput" asp-for="MovieItem.MovieUploadDate" class="form-control text-center" aria-describedby="MovieUploadDateInputHelpBlock" />
+                                        </div>
+                                        <div id="MovieUploadDateInputHelpBlock" class="fs-6 form-text">
+                                            <span>дата публикации на сайте - </span><span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieUploadDate" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* фильтры поиска *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingSearch">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Search" aria-expanded="true" aria-controls="Search">
+                                    <span class="form-label text-success fs-5">Фильтры поиска :</span>
+                                </button>
+                            </h2>
+
+                            <div id="Search" class="accordion-collapse collapse" aria-labelledby="headingSearch" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* жанр фильма *@
+                                    <label asp-for="MovieItem.MovieGenre" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <textarea id="MovieGenreInput" rows="2" asp-for="MovieItem.MovieGenre" class="form-control" aria-describedby="MovieGenreInputHelpBlock"></textarea>
+                                    <div id="MovieGenreInputHelpBlock" class="fs-6 form-tex pb-2">
+                                        <span>жанр фильма</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieGenre" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* фильтры поиска фильма в базе данных *@
+                                    <label asp-for="MovieItem.SearchFilter" class="form-label text-primary fs-5"></label>
+                                    <textarea id="SearchFilterInput" rows="2" asp-for="MovieItem.SearchFilter" class="form-control" aria-describedby="SearchFilterInputHelpBlock"></textarea>
+                                    <div id="SearchFilterInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильтры поиска фильма в базе данных </span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.SearchFilter" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* темы фильма *@
+                                    <div class="list-group-item">
+                                        <span class="fs-5 text-primary">
+                                            Текущие темы&nbsp;:
+                                        </span><br />
+                                        @if (Model.TopicFilters.Length > 0)
+                                        {
+                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start">
+                                                @foreach (var filter in Model.TopicFilters)
+                                                {
+                                                    <p>@filter</p>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-5 form-text">
+                                                темы не заданы
+                                            </span>
+                                        }
+                                    </div>
+
+                                    <label asp-for="MovieItem.TopicGuidList" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                    <select name="topicOptions" multiple>
+
+                                        @foreach (var item in optionsDictionary)
+                                        {
+                                            if (Model.TopicFilters.Contains(item.Value))
+                                            {
+                                                <option selected value="@item.Key">@item.Value</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Key">@item.Value</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                    <div id="TopicGuidListInputHelpBlock" class="fs-6 form-text">
+                                        <span>изменить темы фильма</span>
+                                    </div>
+
+                                    <span asp-validation-for="MovieItem.TopicGuidList" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* ограничения для просмотра *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingRestrict">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Restrict" aria-expanded="true" aria-controls="Restrict">
+                                    <span class="form-label text-success fs-5">Ограничения для просмотра :</span>
+                                </button>
+                            </h2>
+
+                            <div id="Restrict" class="accordion-collapse collapse" aria-labelledby="headingRestrict" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* семейный фильм *@
+                                    <label asp-for="MovieItem.MovieIsFamilyFriendly" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <input id="MovieIsFamilyFriendlyInput" asp-for="MovieItem.MovieIsFamilyFriendly" class="align-text-bottom" aria-describedby="MovieIsFamilyFriendlyInputHelpBlock" />
+                                    <div id="MovieIsFamilyFriendlyInputHelpBlock" class="fs-6 form-text">
+                                        <span>снять отметку в случае наличия ограничений</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieIsFamilyFriendly" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* фильм для взрослых *@
+                                    <label asp-for="MovieItem.MovieAdult" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <input id="MovieAdultInput" asp-for="MovieItem.MovieAdult" class="align-text-bottom" aria-describedby="MovieAdultInputHelpBlock" />
+                                    <div id="MovieAdultInputHelpBlock" class="fs-6 form-text">
+                                        <span>поставить отметку в случае наличия ограничений</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieAdult" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    @* фильм в основном списке *@
+                                    <label asp-for="MovieItem.MovieInMainList" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <input id="MovieInMainListInput" asp-for="MovieItem.MovieInMainList" class="align-text-bottom" aria-describedby="MovieInMainListInputHelpBlock" />
+                                    <div id="MovieInMainListInputHelpBlock" class="fs-6 form-text">
+                                        <span>поставить отметку для включения в список</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieInMainList" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* язык - субтитры фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingLanguage">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmLanguage" aria-expanded="true" aria-controls="FilmLanguage">
+                                    <span class="form-label text-success fs-5">Язык фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmLanguage" class="accordion-collapse collapse" aria-labelledby="headingLanguage" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend">
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieInLanguage1" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select id="MovieInLanguage1Input" asp-for="MovieItem.MovieInLanguage1" class="form-select" aria-describedby="MovieInLanguage1InputHelpBlock">
+                                                <option value="">Язык</option>
+                                                <option value="ru" selected>ru</option>
+                                                <option value="en">en</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 justify-content-center">
+                                            <span id="MovieInLanguage1InputHelpBlock" class="fs-6 form-text">
+                                                язык звуковой дорожки (1) -
+                                            </span>
+                                            <span class="text-danger">обязательное поле</span>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieInLanguage1" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieInLanguage2" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select id="MovieInLanguage2Input" asp-for="MovieItem.MovieInLanguage2" class="form-select" aria-describedby="MovieInLanguage2InputHelpBlock">
+                                                <option value="">Язык</option>
+                                                <option value="ru">ru</option>
+                                                <option value="en">en</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 justify-content-center">
+                                            <span id="MovieInLanguage2InputHelpBlock" class="fs-6 form-text">
+                                                язык звуковой дорожки (2) -
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieInLanguage2" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieSubtitles1" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select id="MovieSubtitles1Input" asp-for="MovieItem.MovieSubtitles1" class="form-select" aria-describedby="MovieSubtitles1InputHelpBlock">
+                                                <option value="">Язык</option>
+                                                <option value="ru">ru</option>
+                                                <option value="en">en</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 justify-content-center">
+                                            <span id="MovieSubtitles1InputHelpBlock" class="fs-6 form-text">
+                                                язык субтитров (1) -
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieSubtitles1" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieSubtitles2" class="col-form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select id="MovieSubtitles2Input" asp-for="MovieItem.MovieSubtitles2" class="form-select" aria-describedby="MovieSubtitles2InputHelpBlock">
+                                                <option value="">Язык</option>
+                                                <option value="ru">ru</option>
+                                                <option value="en">en</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 justify-content-center">
+                                            <span id="MovieSubtitles2InputHelpBlock" class="fs-6 form-text">
+                                                язык субтитров (1) -
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieSubtitles2" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* съёмочная группа фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingFilmCrew">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmCrew" aria-expanded="true" aria-controls="FilmCrew">
+                                    <span class="form-label text-success fs-5">Съемочная группа :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmCrew" class="accordion-collapse collapse" aria-labelledby="headingFilmCrew" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body accordion-body-nointend">
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieРroductionCompany" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="РroductionCompanyInput" asp-for="MovieItem.MovieРroductionCompany" class="form-control text-center" aria-describedby="РroductionCompanyInputHelpBlock" />
+                                        </div>
+                                        <div id="РroductionCompanyInputHelpBlock" class="fs-6 form-text">
+                                            <span>кинокомпания - </span><span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieРroductionCompany" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieDirector1" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="Director1Input" asp-for="MovieItem.MovieDirector1" class="form-control text-center" aria-describedby="Director1InputHelpBlock" />
+                                        </div>
+                                        <div id="Director1InputHelpBlock" class="fs-6 form-text">
+                                            <span>режиссер (1) - </span><span class="text-danger">обязательное поле</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieDirector1" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieDirector2" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="Director2Input" asp-for="MovieItem.MovieDirector2" class="form-control text-center" aria-describedby="Director2InputHelpBlock" />
+                                        </div>
+                                        <div id="Director2InputHelpBlock" class="fs-6 form-text">
+                                            <span>режиссер (2) - </span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieDirector2" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieMusicBy" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieMusicByInput" asp-for="MovieItem.MovieMusicBy" class="form-control text-center" aria-describedby="MovieMusicByInputHelpBlock" />
+                                        </div>
+                                        <div id="MovieMusicByInputHelpBlock" class="fs-6 form-text">
+                                            <span>композитор</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieMusicBy" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor01" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor01Input" asp-for="MovieItem.MovieActor01" class="form-control text-center" aria-describedby="MovieActor01InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor01InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor01" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor02" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor02Input" asp-for="MovieItem.MovieActor02" class="form-control text-center" aria-describedby="MovieActor02InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor02InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor02" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor03" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor03Input" asp-for="MovieItem.MovieActor03" class="form-control text-center" aria-describedby="MovieActor03InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor03InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor03" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor04" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor04Input" asp-for="MovieItem.MovieActor04" class="form-control text-center" aria-describedby="MovieActor04InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor04InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor04" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor05" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor05Input" asp-for="MovieItem.MovieActor05" class="form-control text-center" aria-describedby="MovieActor05InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor05InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor05" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor06" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor06Input" asp-for="MovieItem.MovieActor06" class="form-control text-center" aria-describedby="MovieActor06InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor06InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor06" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor07" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor07Input" asp-for="MovieItem.MovieActor07" class="form-control text-center" aria-describedby="MovieActor07InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor07InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor07" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor08" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor08Input" asp-for="MovieItem.MovieActor08" class="form-control text-center" aria-describedby="MovieActor08InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor08InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor08" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor09" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor09Input" asp-for="MovieItem.MovieActor09" class="form-control text-center" aria-describedby="MovieActor09InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor09InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor09" class="text-danger"></span>
+                                    </div>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <div class="row g-2 justify-content-center">
+                                        <div class="col-auto">
+                                            <label asp-for="MovieItem.MovieActor10" class="form-label text-primary fs-5"></label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input id="MovieActor10Input" asp-for="MovieItem.MovieActor10" class="form-control text-center" aria-describedby="MovieActor10InputHelpBlock" />
+                                        </div>
+                                        <div id="MovieActor10InputHelpBlock" class="fs-6 form-text">
+                                            <span>актер (актриса)</span>
+                                        </div>
+                                        <span asp-validation-for="MovieItem.MovieActor10" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* ссылки на фильм *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingRef">
+
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#refForMovie" aria-expanded="true" aria-controls="refForMovie">
+                                    <span class="form-label text-success fs-5">Ссылки на фильм :</span>
+                                </button>
+
+                            </h2>
+
+                            <div id="refForMovie" class="accordion-collapse collapse" aria-labelledby="headingRef" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body">
+
+                                    <label class="col-form-label text-primary fs-5 me-2" asp-for="MovieItem.MovieContentUrl"></label>
+                                    <br />
+                                    <input id="MovieContentUrlInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieContentUrl" aria-describedby="MovieContentUrlInputHelpBlock" />
+                                    <div id="MovieContentUrlInputHelpBlock" class="fs-6 form-text">
+                                        <span>адрес файла фильма на сервере</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieContentUrl" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieYouTube" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieYouTubeInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieYouTube" aria-describedby="MovieYouTubeInputHelpBlock" />
+                                    <div id="MovieYouTubeInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильм на YOUTUBE</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieYouTube" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieVkVideo" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieVkVideoInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieVkVideo" aria-describedby="MovieVkVideoInputHelpBlock" />
+                                    <div id="MovieVkVideoInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильм на VK</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieVkVideo" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieMailRuVideo" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieMailRuVideoInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieMailRuVideo" aria-describedby="MovieMailRuVideoInputHelpBlock" />
+                                    <div id="MovieMailRuVideoInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильм на MAIL.RU</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieMailRuVideo" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieOkVideo" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieOkVideoInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieOkVideo" aria-describedby="MovieOkVideoInputHelpBlock" />
+                                    <div id="MovieOkVideoInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильм на OK</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieOkVideo" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieYandexDiskVideo" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieYandexDiskVideoInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieYandexDiskVideo" aria-describedby="MovieYandexDiskVideoInputHelpBlock" />
+                                    <div id="MovieYandexDiskVideoInputHelpBlock" class="fs-6 form-text">
+                                        <span>фильм на YandexDisk</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieYandexDiskVideo" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* ссылки на информацию о фильме *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header" id="headingInfoRef">
+
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#infoRef" aria-expanded="true" aria-controls="infoRef">
+                                    <span class="form-label text-success fs-5">Ссылки на информацию :</span>
+                                </button>
+
+                            </h2>
+
+                            <div id="infoRef" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionEditMovie">
+
+                                <div class="accordion-body">
+
+                                    <label asp-for="MovieItem.MovieKinoTeatrRu" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieKinoTeatrRuInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieKinoTeatrRu" aria-describedby="MovieKinoTeatrRuInputHelpBlock" />
+                                    <div id="MovieKinoTeatrRuInputHelpBlock" class="fs-6 form-text">
+                                        <span>информация на kino-teatr.ru</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieKinoTeatrRu" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieKinoPoisk" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieKinoPoiskInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieKinoPoisk" aria-describedby="MovieKinoPoiskInputHelpBlock" />
+                                    <div id="MovieKinoPoiskInputHelpBlock" class="fs-6 form-text">
+                                        <span>информация на kino-teatr.ru</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieKinoPoisk" class="text-danger"></span>
+
+                                    <hr class="m-0 mb-2" />
+
+                                    <label asp-for="MovieItem.MovieImbd" class="col-form-label text-primary fs-5 me-2"></label>
+                                    <br />
+                                    <input id="MovieImbdInput" class="align-text-bottom col-11" asp-for="MovieItem.MovieImbd" aria-describedby="MovieImbdInputHelpBlock" />
+                                    <div id="MovieImbdInputHelpBlock" class="fs-6 form-text">
+                                        <span>информация на kino-teatr.ru</span>
+                                    </div>
+                                    <span asp-validation-for="MovieItem.MovieImbd" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* блоки ссылок под видео *@
+                        <div class="accordion-item shadw">
+
+                            @* заголовок группы *@
+                            <h2 class="accordion-header mb-2" id="headingAddLinks">
+
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
+                                    <span class="form-label text-success fs-5">Группа ссылок под видео :</span>
+                                </button>
+
+                            </h2>
+
+                            <div id="accordionLinks" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionEditMovie">
+
+                                @* фотокарусель *@
+                                <div class="accordion-item mb-3 shadw">
+
+                                    @* заголовок группы *@
+                                    <h2 class="accordion-header" id="FotoCarousel">
+
+                                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Carousel" aria-expanded="true" aria-controls="Carousel">
+                                            <span class="form-label text-success fs-5">Фотокарусель :</span>
+                                        </button>
+
+                                    </h2>
+
+                                    @* запуск карусели *@
+                                    <div id="Carousel" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                        <div class="accordion-body">
+
+                                            <label class="form-label text-primary fs-5 fw-bold" asp-for="MovieItem.Carousel"></label>
+                                            <div class="form-check">
+                                                <input id="Carouseltrue" class="form-check-input" asp-for="MovieItem.Carousel" type="radio" value="true">
+                                                <label class="form-check-label" for="Carouseltrue">
+                                                    Показывать
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="Carouselfalse" class="form-check-input" asp-for="MovieItem.Carousel" type="radio" value="false">
+                                                <label class="form-check-label" for="Carouselfalse">
+                                                    Не показывать
+                                                </label>
+                                            </div>
+                                            <div id="CarouselInputHelpBlock" class="fs-6 form-text">
+                                                <span>запуск фотокарусели под видео</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.Carousel" class="text-danger"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                @* блок ссылок под видео 1 *@
+                                <div class="accordion-item mb-3 shadw">
+
+                                    @* заголовок группы *@
+                                    <h2 class="accordion-header" id="headingAddLinks1">
+
+                                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks1" aria-expanded="true" aria-controls="AddLinks1">
+                                            <span class="form-label text-success fs-5">Ссылки 1 :</span>
+                                        </button>
+
+                                    </h2>
+
+                                    @* группа ссылок 1 *@
+                                    <div id="AddLinks1" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                        <div class="accordion-body">
+
+                                            @* заголовок группы 1 *@
+                                            <label asp-for="MovieItem.HeadTitleForVideoLinks1" class="col-form-label text-primary fs-5 fw-bold me-2"></label>
+                                            <br />
+                                            <input id="HeadTitleForVideoLinks1Input" asp-for="MovieItem.HeadTitleForVideoLinks1" class="align-text-bottom col-11" aria-describedby="HeadTitleForVideoLinks1InputHelpBlock" />
+                                            <div id="HeadTitleForVideoLinks1InputInputHelpBlock" class="fs-6 form-text">
+                                                <span>заголовок (1) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.HeadTitleForVideoLinks1" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильтры поиска группы 1 *@
+                                            <label asp-for="MovieItem.SearchFilter1" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <textarea id="SearchFilter1Input" rows="3" asp-for="MovieItem.SearchFilter1" class="form-control" aria-describedby="SearchFilter1InputHelpBlock"></textarea>
+                                            <div id="SearchFilter1InputHelpBlock" class="fs-6 form-text">
+                                                <span>фильтры поиска (1) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.SearchFilter1" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* тип картинки группы 1 *@
+                                            <label asp-for="MovieItem.IsImage1" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsImage1true" class="form-check-input" asp-for="MovieItem.IsImage1" type="radio" value="true">
+                                                <label class="form-check-label" for="IsImage1true">
+                                                    Картинка
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsImage1false" class="form-check-input" asp-for="MovieItem.IsImage1" type="radio" value="false">
+                                                <label class="form-check-label" for="IsImage1false">
+                                                    Постер
+                                                </label>
+                                            </div>
+                                            <div id="IsImage1InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать изображение как постер или как картинка</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.IsImage1" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* формат картинки группы 1 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="MovieItem.IconType1" class="col-form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="IconType1Input" asp-for="MovieItem.IconType1" class="form-select">
+                                                        <option value="hd">hd</option>
+                                                        <option value="image">image</option>
+                                                        <option value="icon300">icon300</option>
+                                                        <option value="icon200">icon200</option>
+                                                        <option value="icon100">icon100</option>
+                                                        <option value="webhd">webhd</option>
+                                                        <option value="webimage">webimage</option>
+                                                        <option value="webicon300" selected>webicon300</option>
+                                                        <option value="webicon200">webicon200</option>
+                                                        <option value="webicon100">webicon100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 justify-content-center">
+                                                    <span id="IconType1InputHelpBlock" class="fs-6 form-text">
+                                                        параметры изображения <span class="text-danger">обязательное поле</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.IconType1" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* для многосерийного фильма *@
+                                            <label asp-for="MovieItem.IsPartsMoreOne1" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne1true" class="form-check-input" asp-for="MovieItem.IsPartsMoreOne1" type="radio" value="true">
+                                                <label class="form-check-label" for="IsPartsMoreOne1true">
+                                                    Многосерийный
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne1false" class="form-check-input" asp-for="MovieItem.IsPartsMoreOne1" type="radio" value="false">
+                                                <label class="form-check-label" for="IsPartsMoreOne1false">
+                                                    Одна серия
+                                                </label>
+                                            </div>
+                                            <div id="isPartsMoreOne1InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать ссылку на страницу фильма</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.IsPartsMoreOne1" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильмы из списка MainList *@
+                                            <label asp-for="MovieItem.AllMoviesFromDB1" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB1true" class="form-check-input" asp-for="MovieItem.AllMoviesFromDB1" type="radio" value="true">
+                                                <label class="form-check-label" for="AllMoviesFromDB1true">
+                                                    Все фильмы
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB1false" class="form-check-input" asp-for="MovieItem.AllMoviesFromDB1" type="radio" value="false">
+                                                <label class="form-check-label" for="AllMoviesFromDB1false">
+                                                    Фильмы из списка MainList
+                                                </label>
+                                            </div>
+                                            <div id="AllMoviesFromDB1InputHelpBlock" class="fs-6 form-text">
+                                                <span>все найденные фильмы или фильмы с параметром InMainList (true)</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.AllMoviesFromDB1" class="text-danger"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                @* блок ссылок под видео 2 *@
+                                <div class="accordion-item mb-3 shadw">
+
+                                    @* заголовок группы 2 *@
+                                    <h2 class="accordion-header" id="headingAddLinks2">
+
+                                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks2" aria-expanded="true" aria-controls="AddLinks2">
+                                            <span class="form-label text-success fs-5">Ссылки 2 :</span>
+                                        </button>
+
+                                    </h2>
+
+                                    @* группа ссылок 2 *@
+                                    <div id="AddLinks2" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                        <div class="accordion-body">
+
+                                            @* заголовок группы 2 *@
+                                            <label asp-for="@Model.MovieItem.HeadTitleForVideoLinks2" class="col-form-label text-primary fs-5 fw-bold me-2"></label>
+                                            <br />
+                                            <input id="HeadTitleForVideoLinks2Input" asp-for="@Model.MovieItem.HeadTitleForVideoLinks2" class="align-text-bottom col-11" aria-describedby="HeadTitleForVideoLinks2InputHelpBlock" />
+                                            <div id="HeadTitleForVideoLinks2InputInputHelpBlock" class="fs-6 form-text">
+                                                <span>заголовок (2) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.HeadTitleForVideoLinks2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильтры поиска группы 2 *@
+                                            <label asp-for="@Model.MovieItem.SearchFilter2" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <textarea id="SearchFilter2Input" rows="3" asp-for="@Model.MovieItem.SearchFilter2" class="form-control" aria-describedby="SearchFilter2InputHelpBlock"></textarea>
+                                            <div id="SearchFilter2InputHelpBlock" class="fs-6 form-text">
+                                                <span>фильтры поиска (2) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.SearchFilter2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* тип картинки группы 2 *@
+                                            <label asp-for="@Model.MovieItem.IsImage2" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsImage2true" class="form-check-input" asp-for="@Model.MovieItem.IsImage2" type="radio" value="true">
+                                                <label class="form-check-label" for="IsImage2true">
+                                                    Картинка
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsImage2false" class="form-check-input" asp-for="@Model.MovieItem.IsImage2" type="radio" value="false">
+                                                <label class="form-check-label" for="IsImage2false">
+                                                    Постер
+                                                </label>
+                                            </div>
+                                            <div id="IsImage2InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать изображение как постер или как картинка</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IsImage2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* формат картинки группы 2 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.MovieItem.IconType2" class="col-form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="IconType2Input" asp-for="@Model.MovieItem.IconType2" class="form-select">
+                                                        <option value="hd">hd</option>
+                                                        <option value="image">image</option>
+                                                        <option value="icon300">icon300</option>
+                                                        <option value="icon200">icon200</option>
+                                                        <option value="icon100">icon100</option>
+                                                        <option value="webhd">webhd</option>
+                                                        <option value="webimage">webimage</option>
+                                                        <option value="webicon300" selected>webicon300</option>
+                                                        <option value="webicon200">webicon200</option>
+                                                        <option value="webicon100">webicon100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 justify-content-center">
+                                                    <span id="IconType2InputHelpBlock" class="fs-6 form-text">
+                                                        параметры изображения <span class="text-danger">обязательное поле</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IconType2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* для многосерийного фильма *@
+                                            <label asp-for="@Model.MovieItem.IsPartsMoreOne2" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne2true" class="form-check-input" asp-for="@Model.MovieItem.IsPartsMoreOne2" type="radio" value="true">
+                                                <label class="form-check-label" for="IsPartsMoreOne2true">
+                                                    Многосерийный
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne2false" class="form-check-input" asp-for="@Model.MovieItem.IsPartsMoreOne2" type="radio" value="false">
+                                                <label class="form-check-label" for="IsPartsMoreOne2false">
+                                                    Одна серия
+                                                </label>
+                                            </div>
+                                            <div id="isPartsMoreOne2InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать ссылку на страницу фильма</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IsPartsMoreOne2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильмы из списка MainList *@
+                                            <label asp-for="@Model.MovieItem.AllMoviesFromDB2" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB2true" class="form-check-input" asp-for="@Model.MovieItem.AllMoviesFromDB2" type="radio" value="true">
+                                                <label class="form-check-label" for="AllMoviesFromDB2true">
+                                                    Все фильмы
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB2false" class="form-check-input" asp-for="@Model.MovieItem.AllMoviesFromDB2" type="radio" value="false">
+                                                <label class="form-check-label" for="AllMoviesFromDB2false">
+                                                    Фильмы из списка MainList
+                                                </label>
+                                            </div>
+                                            <div id="AllMoviesFromDB2InputHelpBlock" class="fs-6 form-text">
+                                                <span>все найденные фильмы или фильмы с параметром InMainList (true)</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.AllMoviesFromDB2" class="text-danger"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                @* блок ссылок под видео 3 *@
+                                <div class="accordion-item mb-3 shadw">
+
+                                    @* заголовок группы 2 *@
+                                    <h2 class="accordion-header" id="headingAddLinks3">
+
+                                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks3" aria-expanded="true" aria-controls="AddLinks3">
+                                            <span class="form-label text-success fs-5">Ссылки 3 :</span>
+                                        </button>
+
+                                    </h2>
+
+                                    @* группа ссылок 3 *@
+                                    <div id="AddLinks3" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                        <div class="accordion-body">
+
+                                            @* заголовок группы 3 *@
+                                            <label asp-for="@Model.MovieItem.HeadTitleForVideoLinks3" class="col-form-label text-primary fs-5 fw-bold me-2"></label>
+                                            <br />
+                                            <input id="HeadTitleForVideoLinks3Input" asp-for="@Model.MovieItem.HeadTitleForVideoLinks3" class="align-text-bottom col-11" aria-describedby="HeadTitleForVideoLinks3InputHelpBlock" />
+                                            <div id="HeadTitleForVideoLinks3InputInputHelpBlock" class="fs-6 form-text">
+                                                <span>заголовок (3) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.HeadTitleForVideoLinks3" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильтры поиска группы 3 *@
+                                            <label asp-for="@Model.MovieItem.SearchFilter3" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <textarea id="SearchFilter3Input" rows="3" asp-for="@Model.MovieItem.SearchFilter3" class="form-control" aria-describedby="SearchFilter3InputHelpBlock"></textarea>
+                                            <div id="SearchFilter3InputHelpBlock" class="fs-6 form-text">
+                                                <span>фильтры поиска (3) связанных видео</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.SearchFilter2" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* тип картинки группы 3 *@
+                                            <label asp-for="@Model.MovieItem.IsImage3" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsImage3true" class="form-check-input" asp-for="@Model.MovieItem.IsImage3" type="radio" value="true">
+                                                <label class="form-check-label" for="IsImage3true">
+                                                    Картинка
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsImage3false" class="form-check-input" asp-for="@Model.MovieItem.IsImage3" type="radio" value="false">
+                                                <label class="form-check-label" for="IsImage3false">
+                                                    Постер
+                                                </label>
+                                            </div>
+                                            <div id="IsImage3InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать изображение как постер или как картинка</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IsImage3" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* формат картинки группы 3 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.MovieItem.IconType3" class="col-form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="IconType3Input" asp-for="@Model.MovieItem.IconType3" class="form-select">
+                                                        <option value="hd">hd</option>
+                                                        <option value="image">image</option>
+                                                        <option value="icon300">icon300</option>
+                                                        <option value="icon200">icon200</option>
+                                                        <option value="icon100">icon100</option>
+                                                        <option value="webhd">webhd</option>
+                                                        <option value="webimage">webimage</option>
+                                                        <option value="webicon300" selected>webicon300</option>
+                                                        <option value="webicon200">webicon200</option>
+                                                        <option value="webicon100">webicon100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 justify-content-center">
+                                                    <span id="IconType3InputHelpBlock" class="fs-6 form-text">
+                                                        параметры изображения <span class="text-danger">обязательное поле</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IconType3" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* для многосерийного фильма *@
+                                            <label asp-for="@Model.MovieItem.IsPartsMoreOne3" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne3true" class="form-check-input" asp-for="@Model.MovieItem.IsPartsMoreOne3" type="radio" value="true">
+                                                <label class="form-check-label" for="IsPartsMoreOne3true">
+                                                    Многосерийный
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="IsPartsMoreOne3false" class="form-check-input" asp-for="@Model.MovieItem.IsPartsMoreOne3" type="radio" value="false">
+                                                <label class="form-check-label" for="IsPartsMoreOne3false">
+                                                    Одна серия
+                                                </label>
+                                            </div>
+                                            <div id="isPartsMoreOne3InputHelpBlock" class="fs-6 form-text">
+                                                <span>выбрать ссылку на страницу фильма</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.IsPartsMoreOne3" class="text-danger"></span>
+
+                                            <hr class="liniya" />
+
+                                            @* фильмы из списка MainList *@
+                                            <label asp-for="@Model.MovieItem.AllMoviesFromDB3" class="form-label text-primary fs-5 fw-bold"></label>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB3true" class="form-check-input" asp-for="@Model.MovieItem.AllMoviesFromDB3" type="radio" value="true">
+                                                <label class="form-check-label" for="AllMoviesFromDB3true">
+                                                    Все фильмы
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="AllMoviesFromDB3false" class="form-check-input" asp-for="@Model.MovieItem.AllMoviesFromDB3" type="radio" value="false">
+                                                <label class="form-check-label" for="AllMoviesFromDB3false">
+                                                    Фильмы из списка MainList
+                                                </label>
+                                            </div>
+                                            <div id="AllMoviesFromDB3InputHelpBlock" class="fs-6 form-text">
+                                                <span>все найденные фильмы или фильмы с параметром InMainList (true)</span>
+                                            </div>
+                                            <span asp-validation-for="@Model.MovieItem.AllMoviesFromDB3" class="text-danger"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @* сохранить-отменить данные *@
+                    <div class="card-footer p-2">
+
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="сохранить изменения">Сохранить</button>
+
+                        <a class="btn btn-outline-danger m-2 shadw"
+                           asp-area="Admin"
+                           asp-controller="MovieInfo"
+                           asp-action="Index"
+                           title="отменить">Отменить</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @* Кадры фильма справа *@
+    @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie) == true)
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.FramesAroundMovie" left-side="false" one-frame="false" />
+    }
+    else
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="false" one-frame="false" />
+    }
+
+</div>

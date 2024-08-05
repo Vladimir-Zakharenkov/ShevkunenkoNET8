@@ -1,0 +1,27 @@
+﻿@page
+
+@model Samostoyatelnaya_zisnModel
+
+@{
+    string[] films = new string[]{
+        "/programs/kakie-ludi-18-10-2013"
+    };
+
+    string[] links = new string[]{
+        "/movies/russian/zamri-umri-voskresni"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="3" />

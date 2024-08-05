@@ -1,0 +1,14 @@
+﻿@model IEnumerable<PageInfoModel>
+
+@{
+    string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
+}
+
+<div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+    @foreach (var item in Model)
+    {
+        <vc:card-of-page page="@item" />
+    }
+
+</div>

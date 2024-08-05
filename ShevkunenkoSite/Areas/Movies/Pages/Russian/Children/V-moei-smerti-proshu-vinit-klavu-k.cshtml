@@ -1,0 +1,19 @@
+﻿@page
+
+@model V_moei_smerti_proshu_vinit_klavu_kModel
+
+@{
+    string[] about = new string[]{
+        "/programs/segodnya-vecherom-30-11-2013",
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">О ФИЛЬМЕ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@about" size="3" />

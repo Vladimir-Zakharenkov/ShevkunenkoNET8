@@ -1,0 +1,160 @@
+﻿@model TopicMovieModel
+
+@{
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-8 col-xxl-7 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1><span class="fs-3 text_shadow">Информация о теме видео</span></h1>
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            <div class="card-body mx-0 p-0">
+
+                <ul class="list-group list-group-flush text-center">
+
+                    <!-- Идентификатор в базе данных (GUID) -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">TopicMovieModelId&nbsp;:</span><br />
+                        <span id="TopicItemID" class="fs-5 text_shadow">@Model.TopicMovieModelId</span><br />
+                        <span id="TopicItemIDHelpBlock" class="fs-6 form-text">
+                            идентификатор в базе данных (GUID)
+                        </span>
+                    </li>
+
+                    <!-- Описание темы -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">TopicDescription&nbsp;:</span><br />
+                        <span id="TopicItemDescription" class="fs-5 text_shadow">@Model.TopicDescription</span><br />
+                        <span id="TopicItemDescriptionHelpBlock" class="fs-6 form-text">
+                            описание темы
+                        </span>
+                    </li>
+
+                    <!-- Заголовок страницы темы -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">TopicHeadPage&nbsp;:</span><br />
+                        @* @Html.Raw(Model.TopicHeadPage)<br /> *@
+                        <span id="TopicItemHeadPage" class="fs-5 text_shadow">@Model.TopicHeadPage</span><br />
+                        <span id="TopicItemHeadPageHelpBlock" class="fs-6 form-text">
+                            заголовок темы
+                        </span>
+                    </li>
+
+                    <!-- Тип картинки для видео -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">ImageForRef&nbsp;:</span><br />
+
+                        @if (Model.ImageForRef == true)
+                        {
+                            <span id="ImageForRef" class="fs-5 text_shadow">картинка для видео (true)</span>
+
+                            <br />
+                        }
+                        else if (Model.ImageForRef == false)
+                        {
+                            <span id="ImageForRef" class="fs-5 text_shadow">постер для видео (false)</span>
+
+                            <br />
+                        }
+                        else
+                        {
+                            <span id="ImageForRef" class="fs-5 text_shadow">картинка страницы для видео (null)</span>
+
+                            <br />
+                        }
+
+                        <span id="ImageForRefHelpBlock" class="fs-6 form-text">
+                            тип картинки для ссылки на видео
+                        </span>
+                    </li>
+
+                    <!-- Формат картинки для видео -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">IconTypeForRef&nbsp;:</span><br />
+                        <span id="IconTypeForRef" class="fs-5 text_shadow">@Model.IconTypeForRef</span><br />
+                        <span id="IconTypeForRefHelpBlock" class="fs-6 form-text">
+                            размер картинки для ссылки на видео
+                        </span>
+                    </li>
+
+                    <!-- Ссылка на страницу серий -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">GeneralPageForMovieEpisodes&nbsp;:</span><br />
+
+                        @if (Model.GeneralPageForMovieEpisodes == true)
+                        {
+                            <span id="GeneralPageForMovieEpisodes" class="fs-5 text_shadow">ссылка на страницу серий (true)</span>
+
+                            <br />
+                        }
+                        else
+                        {
+                            <span id="GeneralPageForMovieEpisodes" class="fs-5 text_shadow">ссылка на фильм (false)</span>
+
+                            <br />
+                        }
+
+                        <span id="GeneralPageForMovieEpisodesHelpBlock" class="fs-6 form-text">
+                            для многосерийных фильмов
+                        </span>
+                    </li>
+
+                    <!-- Количество ссылок на странице -->
+                    <li class="list-group-item">
+                        <span class="fw-bold fs-5 text-primary">NumberOfLinksPerPage&nbsp;:</span><br />
+                        <span id="NumberOfLinksPerPage" class="fs-5 text_shadow">@Model.NumberOfLinksPerPage</span><br />
+                        <span id="NumberOfLinksPerPageHelpBlock" class="fs-6 form-text">
+                            количество ссылок на странице
+                        </span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <hr class="liniya" />
+
+            <!-- Смотреть - Изменить - Удалить -->
+            <div class="card-footer p-2 my-2">
+
+                <a class="btn btn-outline-success p-1 shadw"
+                   asp-area="Admin"
+                   asp-controller="TopicMovie"
+                   asp-action="EditTopicMovie"
+                   asp-route-topicId="@Model.TopicMovieModelId"
+                   title="изменить тему">Изменить</a>
+
+                <a class="btn btn-outline-danger p-1 mx-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="TopicMovie"
+                   asp-action="DeleteTopicMovie"
+                   asp-route-topicId="@Model.TopicMovieModelId"
+                   title="удалить тему">Удалить</a>
+
+                <a class="btn btn btn-outline-primary p-1 px-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="TopicMovie"
+                   asp-action="Index"
+                   title="список тем видео">Список</a>
+
+                <a class="btn btn btn-outline-dark p-1 px-2 shadw"
+                   asp-area=""
+                   asp-controller="AllVideo"
+                   asp-action="Index"
+                   asp-route-topicId="@Model.TopicMovieModelId"
+                   title="смотреть тему">Смотреть</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

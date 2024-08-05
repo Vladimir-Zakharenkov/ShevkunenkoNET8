@@ -1,0 +1,23 @@
+﻿@page
+
+@model Mary_Poppins_PremiereModel
+
+@{
+    string[] film = new string[]{
+        "/movies/foreign/children/mary-poppins",
+        "/movies/foreign/children/making-mary-poppins",
+        "/movies/foreign/children/from-page-to-stage",
+        "/movies/foreign/children/richard-sherman-musical-journey",
+        "/movies/foreign/children/music-for-mary-poppins",
+        "/movies/foreign/children/mary-poppins-reunion",
+        "/movies/foreign/children/mary-poppins-julie-andrews",
+        "/movies/foreign/children/saving-mr-banks",
+        "/movies/foreign/children/ten-mary-poppins"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@film" size="1" />

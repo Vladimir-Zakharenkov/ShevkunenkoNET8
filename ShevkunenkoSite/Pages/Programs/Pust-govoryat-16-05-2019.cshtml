@@ -1,0 +1,19 @@
+﻿@page
+
+@model Pust_govoryat_16_05_2019Model
+
+@{
+    string[] Links = new string[]{
+        "/programs/pust-govoryat-21-03-2012"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">«ПУСТЬ ГОВОРЯТ» 21&nbsp;марта&nbsp;2012</h3>
+
+<vc:page-links links="@Links" size="3" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

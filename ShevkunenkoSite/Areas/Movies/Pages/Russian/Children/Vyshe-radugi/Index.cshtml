@@ -1,0 +1,39 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/children/vyshe-radugi/1-seriya",
+        "/movies/russian/children/vyshe-radugi/2-seriya"
+    };
+
+    string[] films = new string[]{
+        "/programs/segodnya-vecherom-30-11-2013",
+        "/movies/russian/children/vyshe-radugi/tainy-kino-vyshe-radugi"
+    };
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <vc:image-view file-name="vyshe-radugi.png" css-class="adp90_img maxwidth700px ten" is-icon="false" />
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<vc:page-links links="@parts" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">О ФИЛЬМЕ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

@@ -1,0 +1,27 @@
+﻿@model int
+
+@{
+    string[] films = new string[] {
+        "/movies/russian/comedy/dobro-pojalovat",
+        "/rybakov/movies/kortik/index",
+        "/rybakov/movies/bronzovaya-ptica/index",
+        "/movies/russian/children/mary-poppins/index",
+        "/movies/russian/children/usatyi-nyan",
+        "/movies/russian/children/vnimanie-cherepaha",
+        "/movies/russian/children/bez-semyi/index",
+        "/movies/russian/children/uroki-francuzskogo",
+        "/movies/russian/children/ostrov-koldun",
+        "/movies/russian/children/karantin",
+        "/movies/russian/children/priklucheniya-buratino/index",
+        "/movies/russian/children/priklucheniya-elektronika/index",
+        "/movies/russian/children/vyshe-radugi/index"
+    };
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow fs-3">ДЕТСКИЕ ФИЛЬМЫ НА САЙТЕ</h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="@Model" />

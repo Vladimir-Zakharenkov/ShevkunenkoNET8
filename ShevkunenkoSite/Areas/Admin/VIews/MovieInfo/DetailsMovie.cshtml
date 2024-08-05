@@ -1,0 +1,1603 @@
+﻿@model DetailsMovieViewModel
+
+@{
+}
+
+<div class="row">
+
+    @* Лента кадров слева *@
+    @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie) == true)
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.FramesAroundMovie" left-side="true" one-frame="false" />
+    }
+    else
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="true" one-frame="false" />
+    }
+
+    <div class="col-sm-12 col-md w-100 mb-3">
+
+        @* Название фильма *@
+        <h1 class="fs-5">
+            <span class="text-primary">MovieFileName :</span><br />
+            <span class="fs-3 text_shadow">@Model.MovieItem.MovieCaption</span><br />
+            <span class="fs-6 form-text">
+                название фильма в базе данных
+            </span>
+        </h1>
+
+        <hr class="liniya" />
+
+        @* Идентификатор в базе данных *@
+        <h2 class="lh-1">
+            <span class="fs-5 text-primary">MovieFileModelId :</span><br />
+            <span class="fs-5 text_shadow">
+                @Model.MovieItem.MovieFileModelId
+            </span><br />
+            <span class="fs-6 form-text">
+                идентификатор в базе данных (GUID)
+            </span>
+        </h2>
+
+        @* Информация по разделам *@
+        <div class="card p-2">
+
+            @* Изменить, удалить, смотреть *@
+            <div class="card-footer p-0 my-2">
+
+                <a class="btn btn-outline-success py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="EditMovie"
+                   asp-route-movieId="@Model.MovieItem.MovieFileModelId"
+                   title="изменить данные">Изменить</a>
+
+                <a class="btn btn-outline-danger py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="DeleteMovie"
+                   asp-route-movieId="@Model.MovieItem.MovieFileModelId"
+                   title="удалить фильм">Удалить</a>
+
+                <a class="btn btn-outline-primary py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="Index" title="список фильмов">Список</a>
+
+                @if (Model.MovieItem.PageInfoModel != null && Model.MovieItem.PageInfoModel?.PageInfoModelId != Guid.Empty)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.MovieItem.PageInfoModelId"
+                       title="данные страницы фильма">Старница</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.MovieItem.PageInfoModel?.PageFullPathWithData)"
+                       title="страница фильма">Смотреть</a>
+                }
+
+                @if (Model.PageForSeries != null && Model.PageForSeries?.PageInfoModelId != Guid.Empty)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.PageForSeries?.PageInfoModelId"
+                       title="данные страницы серий">Старница серий</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.PageForSeries?.PageFullPathWithData)"
+                       title="серии фильма">Серии</a>
+                }
+
+                @if (Model.FullMovie != null)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.FullMovie.PageInfoModelId"
+                       title="страница полной версии">Станица полной версии</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.FullMovie.PageInfoModel?.PageFullPathWithData)"
+                       title="полная версия">Полный фильм</a>
+                }
+
+            </div>
+
+            @* Разделы информации (accordion) *@
+            <div class="accordion" id="accordionDetailsMovie">
+
+                @* файл фильма *@
+                <div class="accordion-item  mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingFilmFile">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmFile" aria-expanded="true" aria-controls="FilmFile">
+                            <span class="form-label text-success fs-5">Файл фильма :</span>
+                        </button>
+                    </h2>
+
+                    <div id="FilmFile" class="accordion-collapse collapse" aria-labelledby="headingFilmFile" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @if (!string.IsNullOrEmpty(Model.MovieItem.MovieFileName))
+                            {
+                                <p class="fs-5 mb-0">
+                                    <span class="text-primary">MovieContentUrl</span><br />
+                                    <span class="text_shadow">
+                                        @Model.MovieItem.MovieContentUrl
+                                    </span><br />
+                                    <span class="fs-6 form-text">
+                                        адрес файла на сайте
+                                    </span>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="fs-5 mb-0">
+                                    <span class="text-primary">MovieContentUrl</span><br />
+                                    <span class="text_shadow">
+                                        файл фильма отсутствует
+                                    </span><br />
+                                    <span class="fs-6 form-text">
+                                        адрес файла на сайте
+                                    </span>
+                                </p>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* картинка фильма *@
+                <div class="accordion-item  mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingFilmImage">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmImage" aria-expanded="true" aria-controls="FilmImage">
+                            <span class="form-label text-success fs-5">Картинка фильма :</span>
+                        </button>
+                    </h2>
+
+                    <div id="FilmImage" class="accordion-collapse collapse" aria-labelledby="headingFilmImage" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend  text-center">
+
+                            @if (Model.MovieItem.ImageFileModelId != null)
+                            {
+                                <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.ImageFileModelId</span></p>
+
+                                <vc:view-image image-id="@Model.MovieItem.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                @if (!string.IsNullOrEmpty(Model.MovieItem.ImageFileModel?.WebImageFileName))
+                                {
+                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.WebImageFileName</p>
+                                }
+                                else
+                                {
+                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.ImageFileName</p>
+                                }
+
+                                <p class="fs-6 form-text">картинка для видео</p>
+                            }
+                            else
+                            {
+                                <h2 class="fs-5 text_shadow">Картинка для видео отсутствует</h2>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* постер фильма *@
+                <div class="accordion-item  mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingFilmPoster">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmPoster" aria-expanded="true" aria-controls="FilmPoster">
+                            <span class="form-label text-success fs-5">Постер фильма :</span>
+                        </button>
+                    </h2>
+
+                    <div id="FilmPoster" class="accordion-collapse collapse" aria-labelledby="headingFilmPoster" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend  text-center">
+
+                            @if (Model.PosterForMovie != null)
+                            {
+                                <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.MoviePosterGuid</span></p>
+
+                                <vc:view-image image-id="@Model.PosterForMovie.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                @if (!string.IsNullOrEmpty(Model.PosterForMovie.WebImageFileName))
+                                {
+                                    <p class="fs-5 mb-0 text_shadow">@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.WebImageFileName</p>
+                                }
+                                else
+                                {
+                                    <p class="fs-5 mb-0 text_shadow">@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.ImageFileName</p>
+                                }
+
+                                <p class="fs-6 form-text">постер для видео</p>
+                            }
+                            else
+                            {
+                                <h2 class="fs-5 text_shadow">Постер для видео отсутствует</h2>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Инфо для многосерийного фильма *@
+                @if (Model.MovieItem.MovieTotalParts > 1)
+                {
+                    <div class="accordion-item  mb-3 shadw">
+
+                        <h2 class="accordion-header" id="headingFilmSeries">
+                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmSeries" aria-expanded="true" aria-controls="FilmSeries">
+                                <span class="form-label text-success fs-5">Многосерийный фильм :</span>
+                            </button>
+                        </h2>
+
+                        <div id="FilmSeries" class="accordion-collapse collapse" aria-labelledby="headingFilmSeries" data-bs-parent="#accordionDetailsMovie">
+
+                            <div class="accordion-body accordion-body-nointend text-center">
+
+                                <p class="fs-5 mb-0"><span class="text-primary">Количество серий:</span> <span class="text_shadow">@Model.MovieItem.MovieTotalParts</span></p>
+
+                                <p class="fs-5 mb-0"><span class="text-primary">Серия:</span> <span class="text_shadow">@Model.MovieItem.MoviePart</span></p>
+
+                                @if (!string.IsNullOrEmpty(Model.MovieItem.SeriesSearchFilter))
+                                {
+                                    <p class="fs-5 mb-0"><span class="text-primary">Текст поиска серий:</span> <span class="text_shadow">@Model.MovieItem.SeriesSearchFilter</span></p>
+                                }
+                                else
+                                {
+                                    <p class="fs-5 mb-0"><span class="text-primary">Текст поиска серий:</span> <span class="text-danger">не задан</span></p>
+                                }
+
+                                <hr class="liniya" />
+
+                                @if (Model.MovieItem.MoviePart == 1 && Model.MovieItem.ImageForHeadSeries != null)
+                                {
+                                    <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.ImageForHeadSeriesImageFileModelId</span></p>
+
+                                    <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.ImageForHeadSeries.WebImageFileName))
+                                    {
+                                        <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageForHeadSeries.ImagePath/@Model.MovieItem.ImageForHeadSeries.WebImageFileName</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageForHeadSeries.ImagePath/@Model.MovieItem.ImageForHeadSeries.ImageFileName</p>
+                                    }
+
+                                    <p class="fs-6 form-text">картинка для заголовка страницы серий</p>
+                                }
+                                else if (Model.MovieItem.MoviePart > 1)
+                                {
+                                    <h2 class="fs-5 text_shadow">Картинка заголовка страницы серий связана с 1 серией</h2>
+                                }
+                                else
+                                {
+                                    <h2 class="fs-5 text_shadow">Картинка заголовка страницы серий отсутствует</h2>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+                @* Заголовок страницы, описание, лента кадров *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingDescription">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDescription" aria-expanded="true" aria-controls="FilmDescription">
+                            <span class="form-label text-success fs-5">Заголовок страницы, описание, лента кадров :</span>
+                        </button>
+                    </h2>
+
+                    <div id="FilmDescription" class="accordion-collapse collapse" aria-labelledby="headingDescription" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Заголовок страницы *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieCaptionForOnline&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Html.Raw(Model.MovieItem.MovieCaptionForOnline)
+                                        </span><br />
+                                        <span class="fs-6">
+                                            (@Model.MovieItem.MovieCaptionForOnline)
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            заголовок страницы фильма (HTML)
+                                        </span>
+                                    </li>
+
+                                    @* Содержание *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieDescriptionHtml&nbsp;:
+                                        </span><br />
+
+                                        <div class="border border-1 border-secondary p-2 paragraph mb-2">
+                                            @Html.Raw(Model.MovieItem.MovieDescriptionHtml)
+                                        </div>
+
+                                        <div class="border border-1 border-secondary p-2 paragraph">
+                                            <p class="text-center text-primary fw-bold fs-5">(HTML код)</p>
+                                            @Model.MovieItem.MovieDescriptionHtml
+                                        </div>
+
+                                        <span class="fs-6 form-text">
+                                            краткое содержание
+                                        </span>
+                                    </li>
+
+                                    @* Название фильма для ленты кадров *@
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                FramesAroundMovie&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5 text_shadow">
+                                                @Model.MovieItem.FramesAroundMovie
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                название фильма для ленты кадров
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                FramesAroundMovie&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5 text_shadow">
+                                                @Model.MovieItem.MovieCaption
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                лента кадров по названию фильма
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @* Примечания к фильму *@
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieNote))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieNote&nbsp;:
+                                            </span><br />
+                                            <span class="fs-6">
+                                                @Model.MovieItem.MovieNote
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                примечания к фильму
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieNote&nbsp;:
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                примечания к фильму не заданы
+                                            </span>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* формат кадра *@
+                <div class="accordion-item  mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingScreenFormat">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#ScreenFormat" aria-expanded="true" aria-controls="ScreenFormat">
+                            <span class="form-label text-success fs-5">Формат кадра :</span>
+                        </button>
+                    </h2>
+
+                    <div id="ScreenFormat" class="accordion-collapse collapse" aria-labelledby="headingScreenFormat" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend  text-center">
+
+                            <ul class="list-group list-group-flush text-center">
+
+                                @* Формат кадра *@
+                                <li class="list-group-item">
+                                    <span class="fw-bold fs-5 text-primary">
+                                        MovieScreenFormat&nbsp;:
+                                    </span><br />
+                                    <span class="fs-5 text_shadow">
+                                        @Model.MovieItem.MovieScreenFormat
+                                    </span><br />
+                                    <span class="fs-6 form-text">
+                                        формат изображения
+                                    </span>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* размер кадра *@
+                @if (Model.MovieItem.MovieWidth != 0 && Model.MovieItem.MovieHeight != 0)
+                {
+                    <div class="accordion-item  mb-3 shadw">
+
+                        <h2 class="accordion-header" id="headingWidthHeight">
+                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#WidthHeight" aria-expanded="true" aria-controls="WidthHeight">
+                                <span class="form-label text-success fs-5">Размер кадра :</span>
+                            </button>
+                        </h2>
+
+                        <div id="WidthHeight" class="accordion-collapse collapse" aria-labelledby="headingWidthHeight" data-bs-parent="#accordionDetailsMovie">
+
+                            <div class="accordion-body accordion-body-nointend  text-center">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Размер кадра *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieWidth x MovieHeight&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieWidth px x @Model.MovieItem.MovieHeight px
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            размер кадра фильма
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+                @* Размер файла фильма *@
+                @if (Model.MovieItem.MovieFileSize > 0)
+                {
+                    <div class="accordion-item  mb-3 shadw">
+
+                        <h2 class="accordion-header" id="headingFileSize">
+                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FileSize" aria-expanded="true" aria-controls="FileSize">
+                                <span class="form-label text-success fs-5">Размер файла фильма :</span>
+                            </button>
+                        </h2>
+
+                        <div id="FileSize" class="accordion-collapse collapse" aria-labelledby="headingFileSize" data-bs-parent="#accordionDetailsMovie">
+
+                            <div class="accordion-body accordion-body-nointend  text-center">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Размер файла фильма *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieFileSize&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieFileSize.ToString("#,#") байт
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            размер файла фильма
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+                @* Продолжительность фильма *@
+                @if (Model.MovieItem.MovieDuration.Seconds != 0)
+                {
+                    <div class="accordion-item  mb-3 shadw">
+
+                        <h2 class="accordion-header" id="headingDuration">
+                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Duration" aria-expanded="true" aria-controls="Duration">
+                                <span class="form-label text-success fs-5">Продолжительность фильма :</span>
+                            </button>
+                        </h2>
+
+                        <div id="Duration" class="accordion-collapse collapse" aria-labelledby="headingDuration" data-bs-parent="#accordionDetailsMovie">
+
+                            <div class="accordion-body accordion-body-nointend  text-center">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Размер файла фильма *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieDuration&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieDuration.ToString(@"hh\:mm\:ss")
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            продолжительность фильма
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+                @* Даты *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingDate">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Date" aria-expanded="true" aria-controls="Date">
+                            <span class="form-label text-success fs-5">Даты :</span>
+                        </button>
+                    </h2>
+
+                    <div id="Date" class="accordion-collapse collapse" aria-labelledby="headingDate" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Дата создания *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieDateCreated&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieDateCreated.ToString("dd-MM-yyyy")
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            дата создания фильма
+                                        </span>
+                                    </li>
+
+                                    @* Дата примьеры *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieDatePublished&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieDatePublished.ToString("dd-MM-yyyy")
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            дата примьеры фильма
+                                        </span>
+                                    </li>
+
+                                    @* Дата публикации на сайте *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieUploadDate&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieUploadDate.ToString("dd-MM-yyyy")
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            дата публикации на сайте
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Фильтры поиска *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingFilters">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Filters" aria-expanded="true" aria-controls="Filters">
+                            <span class="form-label text-success fs-5">Фильтры поиска :</span>
+                        </button>
+                    </h2>
+
+                    <div id="Filters" class="accordion-collapse collapse" aria-labelledby="headingFilters" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Жанр фильма *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieGenre&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text_shadow">
+                                            @Model.MovieItem.MovieGenre
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            жанр фильма
+                                        </span>
+                                    </li>
+
+                                    @* Фильтр поиска *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            SearchFilter&nbsp;:
+                                        </span><br />
+                                        @if (Model.SearchFilters.Length > 0)
+                                        {
+                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start">
+                                                @foreach (var filter in Model.SearchFilters)
+                                                {
+                                                    <p>@filter</p>
+                                                }
+                                            </div>
+
+                                            <span class="fs-6 form-text">
+                                                фильтры поиска
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-6 form-text">
+                                                фильтры поиска не заданы
+                                            </span>
+                                        }
+                                    </li>
+
+                                    @* Список тем *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            TopicGuidList&nbsp;:
+                                        </span><br />
+                                        @if (Model.TopicFilters.Length > 0)
+                                        {
+                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start">
+                                                @foreach (var filter in Model.TopicFilters)
+                                                {
+                                                    <p>@filter</p>
+                                                }
+                                            </div>
+
+                                            <span class="fs-6 form-text">
+                                                список тем (Guid - Тема)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-6 form-text">
+                                                темы не заданы
+                                            </span>
+                                        }
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Ограничения для просмотра *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingRestrict">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Restrict" aria-expanded="true" aria-controls="Restrict">
+                            <span class="form-label text-success fs-5">Ограничения для просмотра :</span>
+                        </button>
+                    </h2>
+
+                    <div id="Restrict" class="accordion-collapse collapse" aria-labelledby="headingRestrict" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @* Ограничения по возрасту *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieIsFamilyFriendly&nbsp;:
+                                        </span>
+                                        <br />
+                                        @if (Model.MovieItem.MovieIsFamilyFriendly)
+                                        {
+                                            <span class="fs-5 text_shadow">Да</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-5 text_shadow">Нет</span>
+                                        }
+                                        <br />
+                                        <span class="fs-6 form-text">
+                                            нет ограничений по возрасту
+                                        </span>
+                                    </li>
+
+                                    @* Фильм для взрослых *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieAdult&nbsp;:
+                                        </span>
+                                        <br />
+                                        @if (Model.MovieItem.MovieAdult)
+                                        {
+                                            <span class="fs-5 text_shadow">Да</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-5 text_shadow">Нет</span>
+                                        }
+                                        <br />
+                                        <span class="fs-6 form-text">
+                                            фильм для взрослых (18+)
+                                        </span>
+                                    </li>
+
+                                    @* Фильм в списке фильмов сайта *@
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieInMainList&nbsp;:
+                                        </span><br />
+                                        @if (Model.MovieItem.MovieInMainList)
+                                        {
+                                            <span class="fs-5 text_shadow">Да</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fs-5 text_shadow">Нет</span>
+                                        }
+                                        <br />
+                                        <span class="fs-6 form-text">
+                                            в основном списке фильмов сайта
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Язык фильма *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingLanguage">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Language" aria-expanded="true" aria-controls="Language">
+                            <span class="form-label text-success fs-5">Язык фильма :</span>
+                        </button>
+                    </h2>
+
+                    <div id="Language" class="accordion-collapse collapse" aria-labelledby="headingLanguage" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieInLanguage1&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5">
+                                            @Model.MovieItem.MovieInLanguage1
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            звуковая дорожка 1
+                                        </span>
+                                    </li>
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieInLanguage2))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieInLanguage2&nbsp;:
+                                            </span><br />
+                                            <span class="fs-6">
+                                                @Model.MovieItem.MovieInLanguage2
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                звуковая дорожка (1)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieSubtitles1))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieSubtitles1&nbsp;:
+                                            </span><br />
+                                            <span class="fs-6">
+                                                @Model.MovieItem.MovieSubtitles1
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                язык субтитров (1)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieSubtitles2))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieSubtitles2&nbsp;:
+                                            </span><br />
+                                            <span class="fs-6">
+                                                @Model.MovieItem.MovieSubtitles2
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                язык субтитров (2)
+                                            </span>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Съемочная группа *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingFilmCrew">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmCrew" aria-expanded="true" aria-controls="FilmCrew">
+                            <span class="form-label text-success fs-5">Съемочная группа:</span>
+                        </button>
+                    </h2>
+
+                    <div id="FilmCrew" class="accordion-collapse collapse" aria-labelledby="headingFilmCrew" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body accordion-body-nointend">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieРroductionCompany&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5">
+                                            @Model.MovieItem.MovieРroductionCompany
+                                        </span><br />
+                                        <span class="fs-6 form-text">
+                                            кинокомпания
+                                        </span>
+                                    </li>
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieDirector1))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieDirector1&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieDirector1
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                режиссер
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieDirector2))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieDirector2&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieDirector2
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                режиссер
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieMusicBy))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieMusicBy&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieMusicBy
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                композитор
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor01))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor01&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor01
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor02))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor02&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor02
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor03))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor03&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor03
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor04))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor04&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor04
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor05))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor05&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor05
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor06))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor06&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor06
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor07))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor07&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor07
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor08))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor08&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor08
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor09))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor09&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor09
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.MovieActor10))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieActor10&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieActor10
+                                            </span><br />
+                                            <span class="fs-6 form-text">
+                                                актёр (актриса)
+                                            </span>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Ссылки на фильм *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingRef">
+
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Ref" aria-expanded="true" aria-controls="Ref">
+                            <span class="form-label text-success fs-5">Ссылки на фильм :</span>
+                        </button>
+
+                    </h2>
+
+                    <div id="Ref" class="accordion-collapse collapse" aria-labelledby="headingRef" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieContentUrl?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                sergeyshef.ru&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieContentUrl&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieContentUrl
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieContentUrl" onclick="this.target='_blank'" title="sergeyshef.ru" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    sergeyshef.ru
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieYouTube?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                youtube.com&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieYouTube&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieYouTube
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieYouTube" onclick="this.target='_blank'" title="youtube.com" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    youtube.com
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieVkVideo?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                vk.com&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieVkVideo&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieVkVideo
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieVkVideo" onclick="this.target='_blank'" title="vk.com" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    vk.com
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieMailRuVideo?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                mail.ru&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieMailRuVideo&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieMailRuVideo
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieMailRuVideo" onclick="this.target='_blank'" title="mail.ru" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    mail.ru
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieOkVideo?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                ok.ru&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieOkVideo&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieOkVideo
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieOkVideo" onclick="this.target='_blank'" title="ok.ru" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    ok.ru
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieYandexDiskVideo?.ToString()))
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-danger">
+                                                disk.yandex.ru&nbsp;:
+                                            </span><br />
+                                            <span class="fw-bold fs-5 text-primary">
+                                                &nbsp;файл не загружен
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                MovieYandexDiskVideo&nbsp;:
+                                            </span><br />
+                                            <span class="fs-5">
+                                                @Model.MovieItem.MovieYandexDiskVideo
+                                            </span><br />
+                                            <a href="@Model.MovieItem.MovieYandexDiskVideo" onclick="this.target='_blank'" title="disk.yandex.ru" itemprop="relatedLink">
+                                                <span class="fs-4 atext">
+                                                    disk.yandex.ru
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Ссылки на информацию *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingInfoRef">
+
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#infoRef" aria-expanded="true" aria-controls="infoRef">
+                            <span class="form-label text-success fs-5">Ссылки на информацию :</span>
+                        </button>
+
+                    </h2>
+
+                    <div id="infoRef" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieKinoTeatrRu&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5">
+                                            @Model.MovieItem.MovieKinoTeatrRu
+                                        </span><br />
+                                        <a href="@Model.MovieItem.MovieKinoTeatrRu" onclick="this.target='_blank'" title="kino-teatr.ru" itemprop="relatedLink">
+                                            <span class="fs-4 atext">
+                                                Kino-Teatr
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieKinoPoisk&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5">
+                                            @Model.MovieItem.MovieKinoPoisk
+                                        </span><br />
+                                        <a href="@Model.MovieItem.MovieKinoPoisk" onclick="this.target='_blank'" title="kinopoisk.ru" itemprop="relatedLink">
+                                            <span class="fs-4 atext">
+                                                Кино-Поиск
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            MovieImbd&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5">
+                                            @Model.MovieItem.MovieImbd
+                                        </span><br />
+                                        <a href="@Model.MovieItem.MovieImbd" onclick="this.target='_blank'" title="imbd.com" itemprop="relatedLink">
+                                            <span class="fs-4 atext">
+                                                IMBD
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Группы ссылок под видео *@
+                <div class="accordion-item shadw">
+
+                    <h2 class="accordion-header" id="headingAddLinks">
+
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks" aria-expanded="true" aria-controls="AddLinks">
+                            <span class="form-label text-success fs-5">Группы ссылок под видео :</span>
+                        </button>
+
+                    </h2>
+
+                    <div id="AddLinks" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionDetailsMovie">
+
+                        <div class="accordion-body">
+
+                            <div class="card-body mx-0 p-0">
+
+                                <ul class="list-group list-group-flush text-center">
+
+                                    @if (Model.MovieItem.Carousel)
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                Фотокарусель запущена
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <span class="fw-bold fs-5 text-primary">
+                                                Фотокарусель остановлена
+                                            </span>
+                                        </li>
+                                    }
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            Заголовок (1)&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text-danger">
+                                            @Model.MovieItem.HeadTitleForVideoLinks1
+                                        </span><br />
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            SearchFilter1&nbsp;:
+                                        </span><br />
+
+                                        <div class="border border-1 border-secondary p-2 paragraph">
+                                            @Model.MovieItem.SearchFilter1
+                                        </div>
+
+                                        <span class="fs-6 form-text">
+                                            фильтры поиска связанных фильмов (1)
+                                        </span>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            Заголовок (2)&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text-danger">
+                                            @Model.MovieItem.HeadTitleForVideoLinks2
+                                        </span><br />
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            SearchFilter2&nbsp;:
+                                        </span><br />
+
+                                        <div class="border border-1 border-secondary p-2 paragraph">
+                                            @Model.MovieItem.SearchFilter2
+                                        </div>
+
+                                        <span class="fs-6 form-text">
+                                            фильтры поиска связанных фильмов (2)
+                                        </span>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            Заголовок (3)&nbsp;:
+                                        </span><br />
+                                        <span class="fs-5 text-danger">
+                                            @Model.MovieItem.HeadTitleForVideoLinks3
+                                        </span><br />
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <span class="fw-bold fs-5 text-primary">
+                                            SearchFilter3&nbsp;:
+                                        </span><br />
+
+                                        <div class="border border-1 border-secondary p-2 paragraph">
+                                            @Model.MovieItem.SearchFilter3
+                                        </div>
+
+                                        <span class="fs-6 form-text">
+                                            фильтры поиска связанных фильмов (3)
+                                        </span>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Изменить, удалить, смотреть *@
+            <div class="card-footer p-0 my-2">
+
+                <a class="btn btn-outline-success py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="EditMovie"
+                   asp-route-movieId="@Model.MovieItem.MovieFileModelId"
+                   title="изменить данные">Изменить</a>
+
+                <a class="btn btn-outline-danger py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="DeleteMovie"
+                   asp-route-movieId="@Model.MovieItem.MovieFileModelId"
+                   title="удалить фильм">Удалить</a>
+
+                <a class="btn btn-outline-primary py-1 m-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="Index" title="список фильмов">Список</a>
+
+                @if (Model.MovieItem.PageInfoModel != null && Model.MovieItem.PageInfoModel?.PageInfoModelId != Guid.Empty)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.MovieItem.PageInfoModelId"
+                       title="данные страницы фильма">Старница</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.MovieItem.PageInfoModel?.PageFullPathWithData)"
+                       title="страница фильма">Смотреть</a>
+                }
+
+                @if (Model.PageForSeries != null && Model.PageForSeries?.PageInfoModelId != Guid.Empty)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.PageForSeries?.PageInfoModelId"
+                       title="данные страницы серий">Старница серий</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.PageForSeries?.PageFullPathWithData)"
+                       title="серии фильма">Серии</a>
+                }
+
+                @if (Model.FullMovie != null)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.FullMovie.PageInfoModelId"
+                       title="страница полной версии">Станица полной версии</a>
+
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       href="@Url.Content(Model.FullMovie.PageInfoModel?.PageFullPathWithData)"
+                       title="полная версия">Полный фильм</a>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @* Лента кадров справа *@
+    @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie) == true)
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.FramesAroundMovie" left-side="false" one-frame="false" />
+    }
+    else
+    {
+        <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="false" one-frame="false" />
+    }
+
+</div>

@@ -1,0 +1,32 @@
+﻿@page
+
+@model _2_seriyaModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/delo-suhovo-kobylina/1-seriya",
+        "/movies/russian/delo-suhovo-kobylina/2-seriya",
+        "/movies/russian/delo-suhovo-kobylina/3-seriya",
+        "/movies/russian/delo-suhovo-kobylina/4-seriya",
+    };
+
+    string[] screens = new string[]{
+        "/movies/russian/svadba-krechinskogo-1953/index",
+        "/movies/russian/delo-suhovo-kobylina/delo",
+        "/movies/russian/delo-suhovo-kobylina/veselye-raspluevskie-dni"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@parts" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ЭКРАНИЗАЦИИ ПЬЕС</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@screens" size="2" />

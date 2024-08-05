@@ -1,0 +1,41 @@
+﻿@page
+
+@model Zelenyi_furgon_2_seriyaModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/comedy/zelenyi-furgon/zelenyi-furgon-1-seriya",
+        "/movies/russian/comedy/zelenyi-furgon/zelenyi-furgon-2-seriya"
+    };
+
+    string[] about = new string[]{
+        "/programs/korotkiy-vek-muzchin",
+        "/movies/russian/comedy/zelenyi-furgon/tainy-kino-zelenyi-furgon"
+    };
+
+    string[] another = new string[]{
+        "/movies/russian/comedy/zelenyi-furgon/zelenyi-furgon-1959"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@parts" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">О ФИЛЬМЕ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@about" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГАЯ ЭКРАНИЗАЦИЯ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@another" size="2" />

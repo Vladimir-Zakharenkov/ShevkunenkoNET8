@@ -1,0 +1,12 @@
+﻿@model PageInfoModel[]
+
+<div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+    <hr class="liniya" />
+
+    @foreach (var item in Model)
+    {
+        <vc:card-of-page page="@item" />
+    }
+
+</div>

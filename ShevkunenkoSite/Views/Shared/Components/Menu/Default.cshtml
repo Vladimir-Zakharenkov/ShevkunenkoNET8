@@ -1,0 +1,415 @@
+﻿  <nav class="navbar sticky-top navbar-expand-md navbar-light bg-light py-0 mt-1 mb-3 rounded-3 shadw">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand text-black me-2" href="https://www.donationalerts.com/r/sergey1965" onClick="this.target='_blank'" title="поддержать сайт">
+            <span class="px-2 border border-2 rounded-1 shadw donate donatealerts">Помощь сайту</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse mt-md-0 mt-2 pt-2" id="siteNav">
+
+            <ul class="navbar-nav mb-md-0 mb-2" itemscope itemtype="https://schema.org/BreadcrumbList">
+
+                <!-- Переход на главную страницу -->
+                <li class="nav-item py-0 px-1 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link text-black p-0"
+                       asp-area=""
+                       asp-controller="Shevkunenko"
+                       asp-action="Index"
+                       role="button" itemprop="item">
+                        <span class="px-2" itemprop="name">Сайт</span>
+                    </a>
+                    <meta itemprop="position" content="0">
+
+                </li>
+
+                <!-- Разделы сайта -->
+                <li class="nav-item dropdown py-0 px-1 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Parts" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span class="px-2" itemprop="name">Разделы</span>
+                    </a>
+                    <meta itemprop="position" content="1">
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Parts" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="Shevkunenko"
+                               asp-action="Biography"
+                               itemprop="item">
+                                <span itemprop="name">Биография</span>
+                            </a>
+                            <meta itemprop="position" content="0">
+                        </li>
+
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="Shevkunenko"
+                               asp-action="PhotoAlbum"
+                               asp-route-pagenumber="1"
+                               itemprop="item">
+                                <span itemprop="name">Фотоальбом</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="Shevkunenko"
+                               asp-action="Navigation"
+                               itemprop="item">
+                                <span itemprop="name">Разделы сайта</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               href="https://shevkunenko.ru/raznoe.htm"
+                               itemprop="item">
+                                <span itemprop="name">Разное</span>
+                            </a>
+                            <meta itemprop="position" content="3">
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <!-- Видео на сайте -->
+                <li class="nav-item dropdown py-0 px-1 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Movies" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span class="px-2" itemprop="name">Фильмы</span>
+                    </a>
+                    <meta itemprop="position" content="2">
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Movies" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <!-- Знакомые о Сергее -->
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="AllVideo"
+                               asp-action="Znakomye-o-Sergee-Shevkunenko"
+                               itemprop="item">
+                                <span itemprop="name">Знакомые о Сергее</span>
+                            </a>
+                            <meta itemprop="position" content="0">
+                        </li>
+
+                        <!-- Телепрограммы о Сергее -->
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="AllVideo"
+                               asp-action="Programmy-o-Sergee-Shevkunenko"
+                               itemprop="item">
+                                <span itemprop="name">Телепрограммы</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+
+                        <!-- Роли в кино -->
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area=""
+                               asp-controller="AllVideo"
+                               asp-action="Index"
+                               asp-route-topicId="59019054-7df0-42b7-7fa5-08dca3df7399"
+                               itemprop="item">
+                                <span itemprop="name">Роли в кино »</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+
+                            <ul class="dropdown-menu dropdown-submenu bg-transparent border-0 mt-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1" onClick="this.target='_blank'"
+                                       href="https://www.kino-teatr.ru/kino/movie/sov/10394/forum/#s4037101" itemprop="item">
+                                        <span itemprop="name">« Сестра музыканта</span>
+                                    </a>
+                                    <meta itemprop="position" content="0">
+                                </li>
+
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area=""
+                                       asp-controller="AllVideo"
+                                       asp-action="Movie"
+                                       asp-route-movieid="8b8085f1-f824-4bae-c2e0-08db17233947"
+                                       itemprop="item">
+                                        <span itemprop="name">« 50 на 50</span>
+                                    </a>
+                                    <meta itemprop="position" content="1">
+                                </li>
+
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area="Movies"
+                                       asp-page="/Russian/Propavshaya_expediciya"
+                                       itemprop="item">
+                                        <span itemprop="name">« Пропавшая экспедиция »</span>
+                                    </a>
+                                    <meta itemprop="position" content="2">
+
+                                    <ul class="dropdown-menu dropdown-submenu bg-transparent border-0 mt-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area=""
+                                               asp-controller="AllVideo"
+                                               asp-action="Movie"
+                                               asp-route-movieid="93bf150c-139e-458c-53a5-08db16998382"
+                                               itemprop="item">
+                                                <span itemprop="name">« 1 серия</span>
+                                            </a>
+                                            <meta itemprop="position" content="0">
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area=""
+                                               asp-controller="AllVideo"
+                                               asp-action="Movie"
+                                               asp-route-movieid="5961e512-3fda-49b9-53a6-08db16998382"
+                                               itemprop="item">
+                                                <span itemprop="name">« 2 серия</span>
+                                            </a>
+                                            <meta itemprop="position" content="1">
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area=""
+                                               asp-controller="AllVideo"
+                                               asp-action="Movie"
+                                               asp-route-movieid="ed96bdd3-ed97-461a-e0a4-08db1a7f2842"
+                                               itemprop="item">
+                                                <span itemprop="name">« Золотая речка</span>
+                                            </a>
+                                            <meta itemprop="position" content="2">
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area="Rybakov"
+                                       asp-controller="MoviesByBooks"
+                                       asp-action="Bronzovaya-ptica"
+                                       itemprop="item">
+                                        <span itemprop="name">« Бронзовая птица »</span>
+                                    </a>
+                                    <meta itemprop="position" content="2">
+
+                                    <ul class="dropdown-menu dropdown-submenu bg-transparent border-0 mt-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="43244ced-4beb-420a-9333-08db1201ac22"
+                                               itemprop="item">
+                                                <span itemprop="name">« 1 серия</span>
+                                            </a>
+                                            <meta itemprop="position" content="0">
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="8105c488-8c2c-43ad-5ba2-08db124e22cd"
+                                               itemprop="item">
+                                                <span itemprop="name">« 2 серия</span>
+                                            </a>
+                                            <meta itemprop="position" content="1">
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="829549e8-488c-4811-96f5-08db131f68f0"
+                                               itemprop="item">
+                                                <span itemprop="name">« 3 серия</span>
+                                            </a>
+                                            <meta itemprop="position" content="2">
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area="Rybakov"
+                                       asp-controller="MoviesByBooks"
+                                       asp-action="Kortik">
+                                        <span itemprop="name">« Кортик »</span>
+                                        <meta itemprop="position" content="2">
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-submenu bg-transparent border-0 mt-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="F6D6A6CF-68A1-412F-B477-08DB06EBE160"
+                                               itemprop="item">
+                                                <span itemprop="name">« 1 серия</span>
+                                                <meta itemprop="position" content="0">
+                                            </a>
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="FEC30DAE-221B-4AEE-AD5B-08DB0F8CC7DA"
+                                               itemprop="item">
+                                                <span itemprop="name">« 2 серия</span>
+                                                <meta itemprop="position" content="1">
+                                            </a>
+                                        </li>
+
+                                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                               asp-area="Rybakov"
+                                               asp-controller="MoviesByBooks"
+                                               asp-action="Movie"
+                                               asp-route-movieid="76EF1B9F-ECEC-45BB-3990-08DB1107518A"
+                                               itemprop="item">
+                                                <span itemprop="name">« 3 серия</span>
+                                                <meta itemprop="position" content="2">
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <!-- Видео админа -->
+                        <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               href="https://shevkunenko.ru/admin/films.htm" itemprop="item">
+                                <span itemprop="name">Админ »</span>
+                            </a>
+                            <meta itemprop="position" content="3">
+
+                            <ul class="dropdown-menu dropdown-submenu bg-transparent border-0 mt-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                <!-- BBC-TOP-100-US-MOVIES -->
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area=""
+                                       asp-controller="AllVideo"
+                                       asp-action="bbc-top-100-us-movies"
+                                       itemprop="item">
+                                        <span itemprop="name">« BBC-TOP-100-US-MOVIES »</span>
+                                    </a>
+                                    <meta itemprop="position" content="0">
+
+                                </li>
+
+                                <!-- режиссёр Владимир Мотыль -->
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area="Movies"
+                                       asp-page="/Vladimir-Motyl"
+                                       itemprop="item">
+                                        <span itemprop="name">режиссёр Владимир Мотыль</span>
+                                    </a>
+                                    <meta itemprop="position" content="1">
+
+                                </li>
+
+                                <!-- Мой серебряный шар -->
+                                <li class="bg-light p-0 mb-1 border border-2 rounded-1 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                                       asp-area=""
+                                       asp-controller="AllVideo"
+                                       asp-action="Index"
+                                       asp-route-topicId="dc48fa89-0370-4530-84e1-413fa28a3e19"
+                                       itemprop="item">
+                                        <span itemprop="name">«Мой серебряный шар»</span>
+                                    </a>
+                                    <meta itemprop="position" content="2">
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <!-- Меню админа -->
+                @if (Context.Request.Host.ToString().Contains("localhost"))
+                {
+                    <li class="nav-item dropdown py-0 p-1 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                        <a class="nav-link text-black p-0" asp-area="Admin" asp-page="/Index" role="button" itemprop="item">
+                            <span class="px-2" itemprop="name">DB</span>
+                            <meta itemprop="position" content="3">
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown py-0 p-1 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                        <a class="nav-link text-black p-0" asp-area="Rybakov" asp-controller="moviesbybooks" asp-action="movie" asp-route-movieid="f6d6a6cf-68a1-412f-b477-08db06ebe160" role="button" itemprop="item">
+                            <span class="px-2" itemprop="name">Test</span>
+                            <meta itemprop="position" content="4">
+                        </a>
+
+                    </li>
+                }
+
+            </ul>
+
+            <!-- Соц сети -->
+            @if (!Context.Request.Host.ToString().Contains("localhost"))
+            {
+                <div class="ya-share2 nav-item dropdown py-0 px-1 mt-0 me-2 mb-2 border border-2 rounded-1 donate shadw maxwidthcontent" data-curtain data-size="m" data-limit="0" data-more-button-type="long" data-services="vkontakte,facebook,odnoklassniki,telegram,twitter,whatsapp,moimir,skype"></div>
+            }
+
+            <div class="ya-site-form ya-site-form_inited_no" data-bem="{&quot;action&quot;:&quot;https://yandex.ru/search/site/&quot;,&quot;arrow&quot;:false,&quot;bg&quot;:&quot;transparent&quot;,&quot;fontsize&quot;:14,&quot;fg&quot;:&quot;#000000&quot;,&quot;language&quot;:&quot;ru&quot;,&quot;logo&quot;:&quot;rb&quot;,&quot;publicname&quot;:&quot;Поиск по shevkunenko.site&quot;,&quot;suggest&quot;:true,&quot;target&quot;:&quot;_self&quot;,&quot;tld&quot;:&quot;ru&quot;,&quot;type&quot;:3,&quot;usebigdictionary&quot;:false,&quot;searchid&quot;:2633068,&quot;input_fg&quot;:&quot;#000000&quot;,&quot;input_bg&quot;:&quot;#ffffff&quot;,&quot;input_fontStyle&quot;:&quot;normal&quot;,&quot;input_fontWeight&quot;:&quot;normal&quot;,&quot;input_placeholder&quot;:&quot;поиск по сайту&quot;,&quot;input_placeholderColor&quot;:&quot;#000000&quot;,&quot;input_borderColor&quot;:&quot;#7f9db9&quot;}"><form class="pb-2" action="https://yandex.ru/search/site/" method="get" target="_self" accept-charset="utf-8"><input type="hidden" name="searchid" value="2633068" /><input type="hidden" name="l10n" value="ru" /><input type="hidden" name="reqenc" value="" /><input type="search" name="text" value="" /><input type="submit" value="Найти" /></form></div>
+
+        </div>
+
+    </div>
+
+</nav>

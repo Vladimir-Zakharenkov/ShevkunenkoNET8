@@ -1,0 +1,145 @@
+﻿@model TopicMovieModel
+
+@{
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1 class="fs-3 text_shadow">Добавить тему для видео</h1>
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post"
+                      asp-area="Admin"
+                      asp-controller="TopicMovie"
+                      asp-action="AddTopicMovie">
+
+                    <input asp-for="TopicMovieModelId" type="hidden" />
+
+                    <label asp-for="TopicDescription" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="TopicDescriptionInput" asp-for="TopicDescription" class="form-control text-center" aria-describedby="TopicDescriptionInputHelpBlock" />
+                    <div id="TopicDescriptionInputHelpBlock" class="form-text">
+                        описание темы видео - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="TopicDescription" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="TopicHeadPage" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="TopicHeadPageInput" asp-for="TopicHeadPage" class="form-control text-center" aria-describedby="TopicHeadPageInputHelpBlock" />
+                    <div id="TopicHeadPageInputHelpBlock" class="form-text">
+                        заголовок темы - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="TopicHeadPage" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <!-- Тип картинки для видео -->
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="ImageForRef" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="ImageForRefInput" asp-for="ImageForRef" class="form-select">
+                                <option value=@null selected>картинка страницы</option>
+                                <option value="True">картинка видео</option>
+                                <option value="False">постер видео</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="ImageForRefInputHelpBlock" class="form-text">
+                                тип картинки для видео - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ImageForRef" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <!-- Формат картинки для видео -->
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="IconTypeForRef" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="IconTypeForRefInput" asp-for="IconTypeForRef" class="form-select">
+                                <option value="webicon300" selected>файл .webp 300 px</option>
+                                <option value="webhd">файл .webp 1920 px</option>
+                                <option value="webimage">файл .webp 720 px</option>
+                                <option value="webicon200">файл .webp 200 px</option>
+                                <option value="webicon100">файл .webp 100 px</option>
+                                <option value="hd">файл .png 1920 px</option>
+                                <option value="image">файл .png 720 px</option>
+                                <option value="icon300">файл .png 300 px</option>
+                                <option value="icon200">файл .png 200 px</option>
+                                <option value="icon100">файл .png 100 px</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="IconTypeForRefInputHelpBlock" class="form-text">
+                                формат картинки для видео - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="IconTypeForRef" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <!-- Ссылка на страницу серий -->
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-auto">
+                            <label asp-for="GeneralPageForMovieEpisodes" class="col-form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="GeneralPageForMovieEpisodesInput" asp-for="GeneralPageForMovieEpisodes" class="form-select">
+                                <option value="True" selected>страница серий</option>
+                                <option value="False">страница фильма</option>
+                            </select>
+                        </div>
+                        <div class="col-12 justify-content-center">
+                            <span id="GeneralPageForMovieEpisodesInputHelpBlock" class="form-text">
+                                ссылка на страницу серий - <span class="text-danger">обязательное поле</span>
+                            </span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="GeneralPageForMovieEpisodes" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="NumberOfLinksPerPage" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="NumberOfLinksPerPageInput" asp-for="NumberOfLinksPerPage" class="form-control text-center" aria-describedby="NumberOfLinksPerPageHelpBlock" />
+                    <div id="NumberOfLinksPerPageHelpBlock" class="form-text">
+                        количество ссылок на странице - <span class="text-danger">обязательное поле</span>
+                    </div>
+                    <span asp-validation-for="NumberOfLinksPerPage" class="text-danger"></span>
+
+                    <!-- Сохранить - Отменить -->
+                    <div class="card-footer p-0 pt-2 mt-3">
+
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="добавить тему">Сохранить</button>
+
+                        <a class="btn btn-outline-danger m-2 shadw"
+                           asp-area="Admin"
+                           asp-controller="TopicMovie"
+                           asp-action="Index"
+                           title="отменить изменения">Отмена</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

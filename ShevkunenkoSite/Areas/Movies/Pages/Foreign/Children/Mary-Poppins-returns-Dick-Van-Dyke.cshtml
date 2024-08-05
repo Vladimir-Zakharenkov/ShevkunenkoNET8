@@ -1,0 +1,18 @@
+﻿@page
+
+@model Mary_Poppins_returns_Dick_Van_DykeModel
+
+@{
+    string[] film = new string[]{
+        "/movies/foreign/children/mary-poppins-returns",
+        "/movies/foreign/children/making-mary-poppins-returns",
+        "/movies/foreign/children/mary-poppins-returns-animation",
+        "/movies/foreign/children/saving-mr-banks"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@film" size="1" />

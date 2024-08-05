@@ -1,0 +1,21 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] movies = new string[]{
+        "/movies/yandexdisk/foreign/back-to-the-future",
+        "/movies/yandexdisk/foreign/war-and-peace-2007",
+        "/movies/yandexdisk/foreign/the-godfather"
+    };
+}
+
+<h1 class="text_shadow"><span class="h2">ЯНДЕКС-ДИСК</span><br />ЗАРУБЕЖНЫЕ ФИЛЬМЫ</h1>
+
+<hr class="liniya" />
+
+<vc:page-links links="@movies" size="2" />
+
+<hr class="liniya" />
+
+<vc:movie-disk movie-caption="Леон" />

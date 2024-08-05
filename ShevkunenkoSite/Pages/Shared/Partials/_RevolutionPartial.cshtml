@@ -1,0 +1,16 @@
+﻿@model int
+
+@{
+    string[] revolution = new string[] {
+        "/rybakov/movies/kortik-1954",
+        "/movies/russian/revolution-1917/chapaev"
+    };
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow fs-3">РЕВОЛЮЦИЯ - 1917</h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@revolution" size="@Model" />

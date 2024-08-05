@@ -1,0 +1,17 @@
+﻿@model int
+
+@{
+    string[] roliKino = new string[] {
+        "/movies/russian/50na50",
+        "/rybakov/movies/kortik/index",
+        "/rybakov/movies/bronzovaya-ptica/index",
+        "/movies/russian/propavshaya-expediciya/index" };
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow fs-3">СЕРГЕЙ ШЕВКУНЕНКО<br /><span class="fs-4">РОЛИ В КИНО</span></h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@roliKino" size="@Model" />

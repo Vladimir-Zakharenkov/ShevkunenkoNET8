@@ -1,0 +1,398 @@
+﻿@model DetailsPageViewModel
+
+@{
+    // var dict = Model.PageItem!.RoutData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+    //            .Select(part => part.Split('='))
+    //            .ToDictionary(split => split[0], split => split[1]);
+}
+
+<div class="row">
+
+    <h1 class="fs-4 text-primary my-3">Информация о странице</h1>
+
+    <div class="card w-75 mx-auto p-2">
+
+        <div class="card-footer border p-0 my-2">
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="EditPage"
+               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               class="btn btn-outline-dark py-1 px-4 m-2 shadw"
+               title="редактировать данные">
+                Edit
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="DeletePage"
+               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               class="btn btn-outline-danger py-1 m-2 shadw"
+               title="удалить страницу">
+                Delete
+            </a>
+
+            <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
+               class="btn btn-outline-primary py-1 px-4 m-2 shadw"
+               title="просмотр">
+                Run
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="Index"
+               class="btn btn-outline-success py-1 px-4 m-2 shadw"
+               title="список страниц">
+                List
+            </a>
+
+            @if (Model.PageItem.MovieFile != null)
+            {
+                <a asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="DetailsMovie"
+                   asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
+                   class="btn btn-outline-info py-1 m-2 shadw"
+                   title="данные фильма">
+                    Movie
+                </a>
+            }
+
+        </div>
+
+        <p class="fs-5">
+            <span class="text-primary">PageInfoModelId:</span><br />
+            <span class="text_shadow">
+                @Model.PageItem.PageInfoModelId
+            </span><br />
+            <span class="fs-6 form-text">
+                идентификатор в базе данных (GUID)
+            </span>
+        </p>
+
+        <hr class="w-50 mx-auto my-1" />
+
+        @if (@Model.PageItem.PageAsRazorPage)
+        {
+            <p class="fs-5 text-primary mb-0">Тип страницы : <span class="text-black">RazorPage</span></p>
+            <p class="fs-5 text-primary mb-0">Область:<span class="text-black">«@Model.PageItem.PageArea.TrimStart('/')»</span></p>
+            <p class="fs-5 text-primary mb-0">Адрес:<span class="text-black">«@Model.PageItem.PageArea@Model.PageItem.PageLoc»</span></p>
+            <p class="fs-5 text-primary mb-0">Псевдоним:<span class="text-black">«@Model.PageItem.PagePathNickName»</span></p>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table  table-sm w-75 mx-auto">
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Тип&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">MVC</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Область&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.PageArea.TrimStart('/')</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Контроллер&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.Controller.TrimStart('/')</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Действие&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.Action.TrimStart('/')</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Данные&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.RoutData</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Адрес&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.PageFullPathWithData</td>
+                    </tr>
+                    <tr class="fs-5">
+                        <td class="text-primary text-end w-25">Псевдоним&nbsp;:</td>
+                        <td class="text_shadow text-start w-75">@Model.PageItem.PagePathNickName</td>
+                    </tr>
+                </table>
+
+            </div>
+        }
+
+        <h2 class="fs-4 text-primary">Картинка для страницы</h2>
+
+        <a asp-area="Admin"
+           asp-controller="ImageInfo"
+           asp-action="DetailsImage"
+           asp-route-imageid="@Model.PageItem.ImageFileModelId"
+           class="mx-auto w-50 shadw imageref"
+           title="информация о картинке">
+            <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+        </a>
+
+        @if (Model.PageItem.ImageFileModel != null)
+        {
+            @if (!string.IsNullOrEmpty(Model.PageItem.ImageFileModel.WebImageFileName))
+            {
+                <p class="text_shadow my-2 fluid-font-size">@Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.WebImageFileName</p>
+            }
+            else
+            {
+                <p class="text_shadow my-2 fluid-font-size">@Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.ImageFileName</p>
+            }
+        }
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Иконка для страницы</h2>
+
+        <img itemprop="image" class="card-img-top m-2 width30percent shadw mx-auto" src="@DataConfig.IconsFolder/@Model.IconItem.IconPath/@Model.IconItem.IconFileName" alt="иконка страницы" title="иконка страницы" />
+
+        <p class="text_shadow my-2 fluid-font-size">@DataConfig.IconsFolder@Model.IconItem.IconPath/@Model.IconItem.IconFileName</p>
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Заголовок (PageTitle)&nbsp;:</h2>
+
+        <p>
+            <span class="text_shadow fluid-font-size">@Model.PageItem.PageTitle</span><br />
+            <span class="fs-6 form-text">
+                тег «title»
+            </span>
+        </p>
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Описание (PageDescription)&nbsp;:</h2>
+
+        <p class="px-5 text-justify text_shadow fluid-font-size">
+            @Model.PageItem.PageDescription
+        </p>
+        <p class="fs-6 form-text">
+            тег «description»
+        </p>
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Ключевые слова (PageKeyWords)&nbsp;:</h2>
+
+        <p class="px-5 text-justify text_shadow fluid-font-size">
+            @Model.PageItem.PageKeyWords
+        </p>
+        <p class="fs-6 form-text">
+            тег «keywords»
+        </p>
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Текст карточки (PageCardText)&nbsp;:</h2>
+
+        @if (string.IsNullOrEmpty(Model.PageItem.PageCardText))
+        {
+            <p class="fordetails text-center">(текст не задан)</p>
+        }
+        else
+        {
+            <p class="fordetails text-center text_shadow">@Model.PageItem.PageCardText</p>
+        }
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Фильтр поиска (PageFilter)&nbsp;:</h2>
+
+        <p class="px-5 text-center text_shadow fluid-font-size">
+            @Model.PageItem.PageFilter
+        </p>
+        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
+        {
+            <p class="fs-6 form-text">
+                фильтр поиска страницы
+            </p>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                фильтр поиска страницы не задан
+            </p>
+        }
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <h2 class="fs-4 text-primary">Фильтры поиска (PageFilterOut)&nbsp;:</h2>
+
+        <p class="px-5 text-center text_shadow fluid-font-size">
+            @Model.PageItem.PageFilterOut
+        </p>
+        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
+        {
+            <p class="fs-6 form-text">
+                фильтры поиска страниц
+            </p>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                фильтры поиска страниц не заданы
+            </p>
+        }
+
+        <hr class="w-50 mx-auto my-1" />
+
+        <div class="table-responsive">
+
+            <table class="table  table-sm align-middle w-75 mx-auto">
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Дата изменения (PageLastmod)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">тег «lastReviewed»</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">@Model.PageItem.PageLastmod</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Частота обновления (Changefreq)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">тег «changefreq» для sitemap.xml</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">@Model.PageItem.Changefreq</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Приоритет страницы (Priority)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">тег «priority» для sitemap.xml</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">@Model.PageItem.Priority</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Файл browserconfig (BrowserConfig)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">meta name="msapplication-config"</span>
+                    </td>
+                    <td class="fs-5 text-start">
+                        <a class="text-black text_shadow" href="/browserconfigs/@Model.PageItem.BrowserConfig">
+                            @Model.PageItem.BrowserConfig
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Папка иконок (BrowserConfigFolder)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">папка для иконок файла browserconfig</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">@Model.PageItem.BrowserConfigFolder</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Файл manifest (Manifest)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">link rel="manifest"</span>
+                    </td>
+                    <td class="fs-5 text-start">
+                        <a class="text-black text_shadow" href="/manifests/@Model.PageItem.Manifest">
+                            @Model.PageItem.Manifest
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Open Graph (og:type)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">meta property="og:type"</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">@Model.PageItem.OgType</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fs-5 text-primary">Ссылки на страницы (RefPages)&nbsp;:</span><br />
+                        <span class="fs-6 form-text">meta property="og:type"</span>
+                    </td>
+                    <td class="fs-5 text-start text_shadow">
+                        @if (Model.PageItem.PageLinks)
+                        {
+                            <span>включены</span>
+                        }
+                        else
+                        {
+                            <span>выключены</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <h2 class="fs-4 fw-bold text-primary mb-3">Ссылки на страницы</h2>
+
+        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+            @foreach (var item in Model.LinksOnPages)
+            {
+                <vc:card-of-page page=@item />
+            }
+
+            @* @foreach (var item in Model.PageItem.RefPages.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                <vc:card-for-page page-loc=@item.Trim() />
+            } *@
+
+        </div>
+
+        <hr class="liniya my-3" />
+
+        <h2 class="fs-4 fw-bold text-primary mb-3">Ссылки со страниц</h2>
+
+        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mb-3">
+
+            @foreach (var item in Model.LinksFromPages)
+            {
+                <vc:card-of-page page=@item />
+            }
+
+        </div>
+
+        <div class="card-footer border p-0 my-2">
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="EditPage"
+               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               class="btn btn-outline-dark py-1 px-4 m-2 shadw"
+               title="редактировать данные">
+                Edit
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="DeletePage"
+               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               class="btn btn-outline-danger py-1 m-2 shadw"
+               title="удалить страницу">
+                Delete
+            </a>
+
+            <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
+               class="btn btn-outline-primary py-1 px-4 m-2 shadw"
+               title="просмотр">
+                Run
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="PageInfo"
+               asp-action="Index"
+               class="btn btn-outline-success py-1 px-4 m-2 shadw"
+               title="список страниц">
+                List
+            </a>
+
+            @if (Model.PageItem.MovieFile != null)
+            {
+                <a asp-area="Admin"
+                   asp-controller="MovieInfo"
+                   asp-action="DetailsMovie"
+                   asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
+                   class="btn btn-outline-info py-1 m-2 shadw"
+                   title="данные фильма">
+                    Movie
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</div>

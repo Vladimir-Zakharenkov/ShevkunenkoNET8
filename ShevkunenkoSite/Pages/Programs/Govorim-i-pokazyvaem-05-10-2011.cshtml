@@ -1,0 +1,26 @@
+﻿@page
+
+@model Govorim_i_pokazyvaem_05_10_2011Model
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/skazki/sneznaya-koroleva",
+        "/movies/russian/skazki/taina-sneznoy-korolevy",
+        "/movies/russian/skazki/morozko",
+        "/movies/russian/skazki/ogon-voda-mednye-truby",
+        "/movies/russian/skazki/varvara-krasa-dlinnaya-kosa",
+        "/movies/russian/children/priklucheniya-buratino/index",
+        "/movies/russian/vozvrata-net",
+        "/movies/russian/skazki/korolevstvo-krivyh-zerkal",
+        "/rybakov/movies/kortik/index",
+        "/movies/russian/children/priklucheniya-elektronika/index"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="1" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

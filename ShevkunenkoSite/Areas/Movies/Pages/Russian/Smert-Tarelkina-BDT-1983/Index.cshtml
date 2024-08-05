@@ -1,0 +1,49 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/smert-tarelkina-bdt-1983/chast-1",
+        "/movies/russian/smert-tarelkina-bdt-1983/chast-2"
+    };
+
+    string[] another = new string[]{
+        "/movies/russian/delo-suhovo-kobylina/veselye-raspluevskie-dni",
+        "/movies/russian/smert-tarelkina-et-cetera-2005/index"
+    };
+
+    string[] suhovo = new string[]{
+        "/movies/russian/delo-suhovo-kobylina/index"
+    };
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <vc:image-view file-name="smert-tarelkina-bdt.png" css-class="adp90_img maxwidth700px ten" is-icon=false />
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<vc:page-links links="@parts" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ПОСТАНОВКИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@another" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">СУХОВО-КОБЫЛИН</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@suhovo" size="3" />

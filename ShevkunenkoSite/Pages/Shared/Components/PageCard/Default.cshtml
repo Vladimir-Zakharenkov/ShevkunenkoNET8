@@ -1,0 +1,162 @@
+﻿@model PageInfoModel
+
+@{
+    string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
+}
+
+<div class="col">
+
+    <div class="card shadw rounded-3 cardborder">
+
+        <a class="rounded-3" href="@Url.Content(Model.PageFullPathWithData)" title="@Model.PageTitle" itemprop="url">
+
+            @if (Model.OgType == "movie" && Model.MovieFile != null && Model.MovieFile.ImageFileModel != null)
+            {
+                <span itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+
+                    <meta itemprop="name" content="@Model.MovieFile.MovieCaption" />
+                    <meta itemprop="caption" content="@Model.MovieFile.MovieCaptionForOnline" />
+                    <link itemprop="url" href="@Model.MovieFile.MovieContentUrl" />
+                    <link itemprop="contentUrl" href="@Model.MovieFile.MovieContentUrl" />
+                    <meta itemprop="description" content="@Model.MovieFile.MovieDescriptionForSchemaOrg" />
+                    <meta itemprop="duration" content="@Model.MovieFile.MovieDuration.ToString("'T'hh'H'mm'M'ss'S'")" />
+                    <meta itemprop="isFamilyFriendly" content="@Model.MovieFile.MovieIsFamilyFriendly.ToString()" />
+                    <link itemprop="thumbnail" href="@sitePath@Model.MovieFile.ImageFileModel.ImagePath/@Model.MovieFile.ImageFileModel.ImageFileName" />
+                    <link itemprop="thumbnailUrl" href="@sitePath@Model.MovieFile.ImageFileModel.ImagePath/@Model.MovieFile.ImageFileModel.ImageFileName" />
+                    <meta itemprop="uploadDate" content="@Model.MovieFile.MovieUploadDate.ToString("yyyy-MM-dd")" />
+                    <meta itemprop="height" content="@Model.MovieFile.MovieHeight" />
+                    <meta itemprop="width" content="@Model.MovieFile.MovieWidth" />
+                    @if (Model.MovieFile.MovieHeight <= 360)
+                    {
+                        <meta itemprop="videoQuality" content="low" />
+                    }
+
+                    @if (Model.MovieFile.MovieHeight > 360 & Model.MovieFile.MovieHeight <= 720)
+                    {
+                        <meta itemprop="videoQuality" content="medium" />
+                    }
+
+                    @if (Model.MovieFile.MovieHeight > 720 & Model.MovieFile.MovieHeight < 1080)
+                    {
+                        <meta itemprop="videoQuality" content="HD" />
+                    }
+
+                    @if (Model.MovieFile.MovieHeight >= 1080)
+                    {
+                        <meta itemprop="videoQuality" content="full HD" />
+                    }
+                    <meta itemprop="contentSize" content="@Model.MovieFile.MovieFileSize.ToString().Substring(0, Model.MovieFile.MovieFileSize.ToString().Length - 3)" />
+                    <meta itemprop="dateReleased" content="@Model.MovieFile.MovieDatePublished.ToString("yyyy-MM-dd")" />
+                    <meta itemprop="dateCreated" content="@Model.MovieFile.MovieDateCreated.ToString("yyyy-MM-dd")" />
+                    <meta itemprop="inLanguage" content="@Model.MovieFile.MovieInLanguage1" />
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieInLanguage2))
+                    {
+                        <meta itemprop="inLanguage" content="@Model.MovieFile.MovieInLanguage2" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieSubtitles1))
+                    {
+                        <meta itemprop="subtitleLanguage" content="@Model.MovieFile.MovieSubtitles1" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieSubtitles2))
+                    {
+                        <meta itemprop="subtitleLanguage" content="@Model.MovieFile.MovieSubtitles2" />
+                    }
+                    <meta itemprop="part" content="@Model.MovieFile.MoviePart" />
+                    <meta itemprop="genre" content="@Model.MovieFile.MovieGenre" />
+                    <meta itemprop="content_id" content="@Model.MovieFile.MovieFileModelId" />
+                    <meta itemprop="productionCompany" content="@Model.MovieFile.MovieРroductionCompany" />
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieDirector1))
+                    {
+                        <meta itemprop="director" content="@Model.MovieFile.MovieDirector1" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieDirector2))
+                    {
+                        <meta itemprop="director" content="@Model.MovieFile.MovieDirector2" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieMusicBy))
+                    {
+                        <meta itemprop="musicBy" content="@Model.MovieFile.MovieMusicBy" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor01))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor01" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor02))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor02" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor03))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor03" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor04))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor04" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor05))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor05" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor06))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor06" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor07))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor07" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor08))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor08" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor09))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor09" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.MovieFile.MovieActor10))
+                    {
+                        <meta itemprop="actor" content="@Model.MovieFile.MovieActor10" />
+                    }
+
+                    <meta itemprop="image" content="@sitePath@Model.MovieFile.ImageFileModel.ImagePath/@Model.MovieFile.ImageFileModel.ImageFileName" />
+                    <meta itemprop="playerType" content="@Model.MovieFile.MovieMimeType" />
+                    <meta itemprop="availablePlatform" content="Desktop" />
+                    <meta itemprop="availablePlatform" content="Mobile" />
+
+                </span>
+
+                <vc:image-view file-name="@Model.ImageFileModel!.ImageFileName" css-class="card-img-top shadw rounded-3" is-icon="false" />
+            }
+            else
+            {
+                <vc:image-view file-name="@Model.ImageFileModel!.ImageFileName" css-class="card-img-top shadw rounded-3" is-icon="false" />
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PageCardText))
+            {
+                <div class="card-body p-0 mt-2 shadw cardBodyBg">
+
+                    <p class="card-title lh-1 fontadaptive my-1 mt-2">@Model.PageCardText</p>
+
+                </div>
+            }
+
+        </a>
+
+    </div>
+
+</div>

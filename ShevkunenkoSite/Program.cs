@@ -1,5 +1,3 @@
-using ShevkunenkoSite;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -42,15 +40,27 @@ services.AddDatabaseDeveloperPageExceptionFilter();
 
 services.Configure<RazorViewEngineOptions>(options =>
 {
+    options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.PageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+
+    options.AreaPageViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaPageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaPageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+
+    options.ViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.ViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.ViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
+    options.ViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+
     options.AreaViewLocationFormats.Clear();
     options.AreaViewLocationFormats.Add("/Areas/{2}/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Areas/{2}/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
-    options.AreaViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
 });
 
 services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
@@ -127,10 +137,31 @@ app.UseAuthorization();
 
 app.UseWebMarkupMin();
 
-app.MapRazorPages();
+#region Rooting
+
+app.MapAreaControllerRoute(
+        name: "videos_area",
+        areaName: "videos",
+        pattern: "videos/{controller=Номе}/{action=Index}/{id?}");
+
+app.MapControllerRoute("pagination", "Video-na-saite/Stranica{pageNumber}",
+    new { Controller = "AllVideo", action = "Index" });
+
+app.MapControllerRoute("PhotoAlbum", "Shevkunenko/PhotoAlbum/Page{pageNumber}/Photo-{imageId}",
+        new { Controller = "Shevkunenko", action = "PhotoAlbum" });
+
+app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area}/{controller=Shevkunenko}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Shevkunenko}/{action=Index}/{id?}");
 
 #endregion
 
-app.MapGet("/", () => DataConfig.Test /*"Hello World!"*/);
+app.MapRazorPages();
+
+#endregion
 
 app.Run();

@@ -1,0 +1,56 @@
+﻿@page
+
+@model Svadba_Krechinskogo_3_aktModel
+
+@{
+    string[] acts = new string[]{
+        "/movies/russian/svadba-krechinskogo/svadba-krechinskogo-1-akt",
+        "/movies/russian/svadba-krechinskogo/svadba-krechinskogo-2-akt",
+        "/movies/russian/svadba-krechinskogo/svadba-krechinskogo-3-akt"
+    };
+
+    string[] about = new string[]{
+        "/programs/korotkiy-vek-muzchin"
+    };
+
+    string[] another = new string[]{
+        "/movies/russian/svadba-krechinskogo-1953/index",
+        "/movies/russian/svadba-krechinskogo-1974/index",
+        "/movies/russian/svadba-krechinskogo-1975/index",
+        "/movies/russian/svadba-krechinskogo-2013/index"
+    };
+
+    string[] suhovo = new string[]{
+        "/movies/russian/delo-suhovo-kobylina/index"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@acts" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ВИТАЛИЙ СОЛОМИН</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@about" size="3" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ПОСТАНОВКИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@another" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">СУХОВО-КОБЫЛИН</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@suhovo" size="3" />

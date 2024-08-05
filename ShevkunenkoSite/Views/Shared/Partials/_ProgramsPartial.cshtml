@@ -1,0 +1,27 @@
+﻿@model int
+
+@{
+    string[] programs = new string[] {
+        "/video-na-saite/programmy-o-sergee-shevkunenko",
+        "/programs/artist-i-polojenec",
+        "/programs/maximum-19-04-2008",
+        "/programs/v-pogone-za-kortikom",
+        "/programs/bitva-extrasensov",
+        "/programs/russkie-sensacii",
+        "/programs/pryamoy-efir",
+        "/programs/pust-govoryat",
+        "/programs/eshe-ne-vecher",
+        "/programs/govorim-i-pokazyvaem",
+        "/programs/kakie-ludi",
+        "/programs/korotkiy-vek-muzchin-o-shevkunenko",
+        "/programs/segodnya-vecherom-1"
+    };
+}
+
+<hr class="liniya" />
+
+<h2 class="fs-4 text_shadow">ФИЛЬМЫ И ПРОГРАММЫ О<br /><span class="fs-2">СЕРГЕЕ ШЕВКУНЕНКО</span></h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@programs" size="@Model" />

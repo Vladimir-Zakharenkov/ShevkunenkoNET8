@@ -1,0 +1,31 @@
+﻿@page
+
+@model Taina_sneznoy_korolevyModel
+
+@{
+    string[] films = new string[]{
+        "/programs/Govorim-i-pokazyvaem-05-10-2011"
+    };
+
+    string[] remake = new string[]{
+        "/movies/russian/skazki/sneznaya-koroleva",
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АКТЁРАХ ФИЛЬМА</h3>
+
+<vc:page-links links="@films" size="3" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ЭКРАНИЗАЦИИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@remake" size="3" />
+
+@await Html.PartialAsync("_FilmySkazkiPartial", 1)

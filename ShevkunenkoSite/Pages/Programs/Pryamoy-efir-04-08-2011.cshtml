@@ -1,0 +1,20 @@
+﻿@page
+
+@model Pryamoy_efir_04_08_2011Model
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/skazki/korolevstvo-krivyh-zerkal",
+        "/movies/russian/comedy/dobro-pojalovat",
+        "/rybakov/movies/kortik/index",
+        "/rybakov/movies/bronzovaya-ptica/index"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="2" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

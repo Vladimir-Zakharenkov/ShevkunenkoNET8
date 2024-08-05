@@ -1,0 +1,10 @@
+﻿@model string[]
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-2 justify-content-center">
+
+    @foreach (var item in Model)
+    {
+        <vc:page-card page-loc="@item" />
+    }
+
+</div>

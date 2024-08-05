@@ -1,0 +1,53 @@
+﻿@model ImageViewModel
+
+@{
+    string sitePath = "https://" + Context.Request.Host;
+}
+
+<span itemscope itemtype="http://schema.org/ImageObject">
+
+    <meta itemprop="name" content="@Model.ImageItem.ImageCaption" />
+
+    <meta itemprop="caption" content="@Model.ImageItem.ImageCaption" />
+
+    <meta itemprop="description" content="@Model.ImageItem.ImageDescription" />
+
+    @if (Model.IsIcon == true)
+    {
+        <link itemprop="contentUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.ImageFileName" />
+
+        <link itemprop="thumbnailUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName" />
+
+        <meta itemprop="width" content="@Model.ImageItem.IconWidth px" />
+
+        <meta itemprop="height" content="@Model.ImageItem.IconHeight px" />
+
+        <img itemprop="image" class="@Model.CssClass" src="@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName" asp-append-version="true" alt="@Model.ImageItem.ImageAltTitle" title="@Model.ImageItem.ImageAltTitle" />
+    }
+    else if (Model.IsIcon == false || string.IsNullOrEmpty(Model.ImageItem.ImageHDFileName))
+    {
+        <link itemprop="contentUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.ImageFileName" />
+
+        <link itemprop="thumbnailUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName" />
+
+        <meta itemprop="width" content="@Model.ImageItem.ImageWidth px" />
+
+        <meta itemprop="height" content="@Model.ImageItem.ImageHeight px" />
+
+        <img itemprop="image" class="@Model.CssClass" src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageFileName" asp-append-version="true" alt="@Model.ImageItem.ImageAltTitle" title="@Model.ImageItem.ImageAltTitle" />
+
+    }
+    else
+    {
+        <link itemprop="contentUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.ImageHDFileName" />
+
+        <link itemprop="thumbnailUrl" href="@sitePath@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName" />
+
+        <meta itemprop="width" content="@Model.ImageItem.ImageHDWidth px" />
+
+        <meta itemprop="height" content="@Model.ImageItem.ImageHDHeight px" />
+
+        <img itemprop="image" class="@Model.CssClass" src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageHDFileName" asp-append-version="true" alt="@Model.ImageItem.ImageAltTitle" title="@Model.ImageItem.ImageAltTitle" />
+    }
+
+</span>

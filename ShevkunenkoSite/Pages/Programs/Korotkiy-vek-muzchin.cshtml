@@ -1,0 +1,20 @@
+﻿@page
+
+@model Korotkiy_vek_muzchinModel
+
+@{
+    string[] links = new string[]{
+        "/movies/russian/nezvanyi-drug",
+        "/movies/russian/svadba-krechinskogo/index",
+        "/movies/russian/comedy/zelenyi-furgon/index",
+        "/movies/russian/dvoryanskoe-gnezdo/index"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="1" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

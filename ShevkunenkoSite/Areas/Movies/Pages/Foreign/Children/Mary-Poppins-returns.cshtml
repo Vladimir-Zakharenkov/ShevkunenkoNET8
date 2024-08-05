@@ -1,0 +1,33 @@
+﻿@page
+
+@model Mary_Poppins_returnsModel
+
+@{
+    string[] makingMovie = new string[]{
+        "/movies/foreign/children/making-mary-poppins-returns",
+        "/movies/foreign/children/mary-poppins-returns-animation",
+        "/movies/foreign/children/mary-poppins-returns-dick-van-dyke",
+        "/movies/foreign/children/saving-mr-banks"
+    };
+
+    string[] remake = new string[]{
+        "/movies/russian/children/mary-poppins/index",
+        "/movies/foreign/children/mary-poppins-teatr-ermolovoy",
+        "/movies/foreign/children/mary-poppins"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@makingMovie" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ЭКРАНИЗАЦИИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@remake" size="2" />
+

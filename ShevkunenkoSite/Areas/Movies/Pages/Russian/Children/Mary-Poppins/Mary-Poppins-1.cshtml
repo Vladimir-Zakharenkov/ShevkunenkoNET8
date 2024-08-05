@@ -1,0 +1,44 @@
+﻿@page
+
+@model Mary_Poppins_1Model
+
+@{
+    string[] links = new string[]{
+        "/movies/russian/children/mary-poppins/mary-poppins-1",
+        "/movies/russian/children/mary-poppins/mary-poppins-2"
+    };
+
+    string[] films = new string[]{
+        "/programs/eshe-ne-vecher-16-09-2011"
+    };
+
+    string[] remake = new string[]{
+        "/movies/foreign/children/mary-poppins",
+        "/movies/foreign/children/mary-poppins-returns",
+        "/movies/foreign/children/mary-poppins-teatr-ermolovoy"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ЭКРАНИЗАЦИИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@remake" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

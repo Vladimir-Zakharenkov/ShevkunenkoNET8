@@ -1,0 +1,26 @@
+﻿@page
+
+@model Eshe_ne_vecher_16_09_2011Model
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/children/mary-poppins/index",
+        "/movies/russian/children/usatyi-nyan",
+        "/movies/russian/children/vnimanie-cherepaha",
+        "/movies/russian/comedy/dobro-pojalovat",
+        "/rybakov/movies/kortik/index",
+        "/movies/russian/children/bez-semyi/index",
+        "/movies/russian/children/uroki-francuzskogo",
+        "/movies/russian/vor",
+        "/movies/russian/children/ostrov-koldun",
+        "/movies/russian/children/karantin"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="1" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

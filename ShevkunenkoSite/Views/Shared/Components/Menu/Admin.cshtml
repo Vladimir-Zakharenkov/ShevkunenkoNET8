@@ -1,0 +1,228 @@
+﻿<nav class="navbar sticky-top navbar-expand-md navbar-light bg-light mt-1 mb-3 py-1 rounded-3 shadw">
+
+    <div class="container-fluid">
+
+        <!-- Переход к меню сайта -->
+        <a class="navbar-brand text-black pe-2 me-2"
+           asp-area=""
+           asp-controller="Shevkunenko"
+           asp-action="Index"
+           title="shevkunenko.site">
+            <span class="px-2 border border-2 rounded-1 donate shadw">Сайт</span>
+        </a>
+
+        <button class="navbar-toggler p-0" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse mt-2 mt-md-0" id="siteNav">
+
+            <!-- Картинки -->
+            <ul class="navbar-nav mb-3 mb-md-0" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                <li class="dropdown shadw donate px-1 py-1 py-md-0 me-3 border border-2 rounded-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Images" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span itemprop="name">Картинки</span>
+                        <meta itemprop="position" content="0">
+                    </a>
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Images" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="ImageInfo"
+                               asp-action="AddImage"
+                               itemprop="item">
+                                <span itemprop="name">Добавить</span>
+                                <meta itemprop="position" content="0">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="ImageInfo"
+                               asp-action="Index"
+                               asp-route-iconlist="false"
+                               itemprop="item">
+                                <span itemprop="name">Список</span>
+                                <meta itemprop="position" content="1">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="ImageInfo"
+                               asp-action="Index"
+                               asp-route-iconlist="true"
+                               itemprop="item">
+                                <span itemprop="name">Картинки</span>
+                                <meta itemprop="position" content="2">
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Фильмы -->
+            <ul class="navbar-nav mb-3 mb-md-0" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                <li class="dropdown shadw donate px-1 py-1 py-md-0 me-3 border border-2 rounded-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Movies" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span itemprop="name">Фильмы</span>
+                        <meta itemprop="position" content="1">
+                    </a>
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Movies" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="Index"
+                               itemprop="item">
+                                <span itemprop="name">Список</span>
+                                <meta itemprop="position" content="0">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="AddMovie"
+                               itemprop="item">
+                                <span itemprop="name">Добавить фильм</span>
+                                <meta itemprop="position" content="1">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="TopicMovie"
+                               asp-action="Index"
+                               itemprop="item">
+                                <span itemprop="name">Темы видео</span>
+                                <meta itemprop="position" content="2">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="TopicMovie"
+                               asp-action="AddTopicMovie"
+                               itemprop="item">
+                                <span itemprop="name">Добавить тему</span>
+                                <meta itemprop="position" content="3">
+                            </a>
+                        </li>
+
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Страницы -->
+            <ul class="navbar-nav mb-3 mb-md-0" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                <li class="dropdown shadw donate px-1 py-1 py-md-0 me-3 border border-2 rounded-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Pages" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span itemprop="name">Страницы</span>
+                        <meta itemprop="position" content="2">
+                    </a>
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Pages" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="PageInfo"
+                               asp-action="Index"
+                               asp-route-pageCard="false">
+                                <span itemprop="name">Список</span>
+                                <meta itemprop="position" content="0">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="PageInfo"
+                               asp-action="Index"
+                               asp-route-pageCard="true">
+                                <span itemprop="name">Иконки</span>
+                                <meta itemprop="position" content="1">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="PageInfo"
+                               asp-action="AddPage">
+                                <span itemprop="name">Добавить</span>
+                                <meta itemprop="position" content="2">
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Иконки -->
+            <ul class="navbar-nav mb-3 mb-md-0" itemprop="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                <li class="dropdown shadw donate px-1 py-1 py-md-0 me-3 border border-2 rounded-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Icons" role="button" data-bs-toggle="dropdown" aria-expanded="false" itemprop="item">
+                        <span itemprop="name">Иконки</span>
+                        <meta itemprop="position" content="3">
+                    </a>
+
+                    <ul class="dropdown-menu bg-transparent border-0 mt-0 mt-md-2" aria-labelledby="Icons" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-page="/DBCRUD/Icon-List"
+                               temprop="item">
+                                <span itemprop="name">Список</span>
+                                <meta itemprop="position" content="0">
+                            </a>
+                        </li>
+
+                        <li class="bg-light p-0 border border-2 rounded-1 mb-0 mb-md-1" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-page="/DBCRUD/Icon-Add"
+                               itemprop="item">
+                                <span itemprop="name">Добавить</span>
+                                <meta itemprop="position" content="1">
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>

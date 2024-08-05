@@ -1,0 +1,17 @@
+﻿@model int
+
+@{
+    string[] comedy = new string[] {
+        "/movies/russian/comedy/dobro-pojalovat",
+        "/movies/russian/comedy/dmb",
+        "/movies/russian/comedy/zelenyi-furgon"
+    };
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow fs-3">КОМЕДИИ</h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@comedy" size="@Model" />

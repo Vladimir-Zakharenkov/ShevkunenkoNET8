@@ -1,0 +1,20 @@
+﻿@model int
+
+@{
+    string[] skazki = new string[] {
+        "/movies/russian/skazki/korolevstvo-krivyh-zerkal",
+        "/movies/russian/skazki/sneznaya-koroleva",
+        "/movies/russian/skazki/morozko",
+        "/movies/russian/skazki/taina-sneznoy-korolevy",
+        "/movies/russian/skazki/ogon-voda-mednye-truby",
+        "/movies/russian/skazki/varvara-krasa-dlinnaya-kosa"
+    };
+}
+
+<hr class="liniya" />
+
+<h2 class="text_shadow fs-3">ФИЛЬМЫ - СКАЗКИ</h2>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@skazki" size="@Model" />

@@ -1,0 +1,60 @@
+﻿@model MovieFileModel
+
+@{
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1 class="fs-3 text_shadow">Удалить фильм</h1>
+
+        @if (!string.IsNullOrEmpty(Model.MovieFileName))
+        {
+            <p class="fs-5 mb-0 text_shadow">(файл фильма <span class="text-success">«@Model.MovieFileName»</span> не удаляется)</p>
+        }
+
+        @if (Model.MoviePoster != null)
+        {
+            <vc:image-view file-name="@Model.MoviePoster" css-class="card-img-top m-2 width50percent shadw" is-icon="false" />
+        }
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            <p class="fs-3 text_shadow"><span class="text-black">«@Model.MovieCaption»</span></p>
+
+            @if (Model.MovieTotalParts > 1)
+            {
+                <p class="fs-5 mb-0 text_shadow">Количество серий: <span class="text-success">«@Model.MovieTotalParts»</span></p>
+
+                <p class="fs-5 mb-0 text_shadow">Серия: <span class="text-success">«@Model.MoviePart»</span></p>
+
+                <hr />
+            }
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post" asp-route-movieid="@Model.MovieFileModelId" class="mt-2">
+
+                    <input asp-for="@Model.MovieFileModelId" type="hidden" />
+
+                    <div class="card-footer p-2">
+
+                        <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить фильм">Delete</button>
+                        <a asp-area="Admin" asp-controller="MovieInfo" asp-action="Index" class="btn btn-outline-success shadw" title="не удалять">Cancel</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

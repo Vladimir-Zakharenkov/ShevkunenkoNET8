@@ -1,0 +1,32 @@
+﻿@{
+    var message = Context.Request.Host.ToString().ToLower();
+
+    if (message.Contains("shevkunenko.site"))
+    {
+        <div class="row justify-content-center rsy">
+
+            <!-- Yandex.RTB R-A-1648952-1 -->
+            <div id="yandex_rtb_R-A-1648952-1" class="col-12 col-lg-6 border border-1"></div>
+            <script>
+                window.yaContextCb.push(() => {
+                    Ya.Context.AdvManager.render({
+                        renderTo: 'yandex_rtb_R-A-1648952-1',
+                        blockId: 'R-A-1648952-1'
+                    })
+                })</script>
+
+            <!-- Yandex.RTB R-A-1648952-2 -->
+            <div id="yandex_rtb_R-A-1648952-2" class="d-none col-lg-6 d-lg-inline-block border border-1"></div>
+            <script>
+                window.yaContextCb.push(() => {
+                    Ya.Context.AdvManager.render({
+                        renderTo: 'yandex_rtb_R-A-1648952-2',
+                        blockId: 'R-A-1648952-2'
+                    })
+                })</script>
+
+        </div>
+
+        <hr class="liniya" />
+    }
+}

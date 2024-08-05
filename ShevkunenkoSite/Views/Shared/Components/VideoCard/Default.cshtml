@@ -1,0 +1,186 @@
+﻿@model VideoCardViewModel
+
+@{
+    string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
+
+    string pathToMoviePage = string.Empty;
+
+    string onClickTaget = string.Empty;
+
+    if (!string.IsNullOrEmpty(Model.PathForSeries))
+    {
+        pathToMoviePage = Model.PathForSeries;
+    }
+    else if (Model.MovieInfo.PageInfoModelId == null || Model.MovieInfo.PageInfoModelId == Guid.Empty)
+    {
+        pathToMoviePage = Model.MovieInfo.MovieKinoTeatrRu!.ToString();
+
+        onClickTaget = "this.target ='_blank'";
+    }
+    else
+    {
+        pathToMoviePage = Model.MovieInfo.PageInfoModel!.PageFullPathWithData;
+    }
+}
+
+<div class="col">
+
+    <div class="card shadw rounded-3 cardborder">
+
+        <a class="rounded-3" href="@pathToMoviePage" onClick="@onClickTaget" title="@Model.MovieInfo.MovieCaption" itemprop="url">
+
+            <span itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+
+                <meta itemprop="name" content="@Model.MovieInfo.MovieCaption" />
+                <meta itemprop="caption" content="@Model.MovieInfo.MovieCaptionForOnline" />
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieFileName))
+                {
+                    <link itemprop="url" href="@Model.MovieInfo.MovieContentUrl" />
+                    <link itemprop="contentUrl" href="@Model.MovieInfo.MovieContentUrl" />
+                }
+
+                <meta itemprop="description" content="@Model.MovieInfo.MovieDescriptionForSchemaOrg" />
+
+                @if (Model.MovieInfo.MovieDuration != TimeSpan.Zero)
+                {
+                    <meta itemprop="duration" content="@Model.MovieInfo.MovieDuration.ToString("'T'hh'H'mm'M'ss'S'")" />
+                }
+
+                <meta itemprop="isFamilyFriendly" content="@Model.MovieInfo.MovieIsFamilyFriendly.ToString()" />
+                <link itemprop="thumbnail" href="@sitePath@Model.MovieInfo.ImageFileModel!.ImagePath/@Model.MovieInfo.ImageFileModel.ImageFileName" />
+                <link itemprop="thumbnailUrl" href="@sitePath@Model.MovieInfo.ImageFileModel.ImagePath/@Model.MovieInfo.ImageFileModel.ImageFileName" />
+                <meta itemprop="uploadDate" content="@Model.MovieInfo.MovieUploadDate.ToString("yyyy-MM-dd")" />
+
+                @if (Model.MovieInfo.MovieHeight > 0)
+                {
+                    <meta itemprop="height" content="@Model.MovieInfo.MovieHeight" />
+                }
+                @if (Model.MovieInfo.MovieWidth > 0)
+                {
+                    <meta itemprop="width" content="@Model.MovieInfo.MovieWidth" />
+                }
+                @if (Model.MovieInfo.MovieHeight <= 360)
+                {
+                    <meta itemprop="videoQuality" content="low" />
+                }
+
+                @if (Model.MovieInfo.MovieHeight > 360 & Model.MovieInfo.MovieHeight <= 720)
+                {
+                    <meta itemprop="videoQuality" content="medium" />
+                }
+
+                @if (Model.MovieInfo.MovieHeight > 720 & Model.MovieInfo.MovieHeight < 1080)
+                {
+                    <meta itemprop="videoQuality" content="HD" />
+                }
+
+                @if (Model.MovieInfo.MovieHeight >= 1080)
+                {
+                    <meta itemprop="videoQuality" content="full HD" />
+                }
+
+                @if (Model.MovieInfo.MovieFileSize > 0)
+                {
+                    <meta itemprop="contentSize" content="@Model.MovieInfo.MovieFileSize.ToString().Substring(0, Model.MovieInfo.MovieFileSize.ToString().Length - 3)" />
+                }
+                <meta itemprop="dateReleased" content="@Model.MovieInfo.MovieDatePublished.ToString("yyyy-MM-dd")" />
+                <meta itemprop="dateCreated" content="@Model.MovieInfo.MovieDateCreated.ToString("yyyy-MM-dd")" />
+                <meta itemprop="inLanguage" content="@Model.MovieInfo.MovieInLanguage1" />
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieInLanguage2))
+                {
+                    <meta itemprop="inLanguage" content="@Model.MovieInfo.MovieInLanguage2" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieSubtitles1))
+                {
+                    <meta itemprop="subtitleLanguage" content="@Model.MovieInfo.MovieSubtitles1" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieSubtitles2))
+                {
+                    <meta itemprop="subtitleLanguage" content="@Model.MovieInfo.MovieSubtitles2" />
+                }
+                <meta itemprop="part" content="@Model.MovieInfo.MoviePart" />
+                <meta itemprop="genre" content="@Model.MovieInfo.MovieGenre" />
+                <meta itemprop="content_id" content="@Model.MovieInfo.MovieFileModelId" />
+                <meta itemprop="productionCompany" content="@Model.MovieInfo.MovieРroductionCompany" />
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieDirector1))
+                {
+                    <meta itemprop="director" content="@Model.MovieInfo.MovieDirector1" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieDirector2))
+                {
+                    <meta itemprop="director" content="@Model.MovieInfo.MovieDirector2" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieMusicBy))
+                {
+                    <meta itemprop="musicBy" content="@Model.MovieInfo.MovieMusicBy" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor01))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor01" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor02))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor02" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor03))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor03" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor04))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor04" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor05))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor05" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor06))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor06" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor07))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor07" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor08))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor08" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor09))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor09" />
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MovieInfo.MovieActor10))
+                {
+                    <meta itemprop="actor" content="@Model.MovieInfo.MovieActor10" />
+                }
+
+                <meta itemprop="image" content="@sitePath@Model.MovieInfo.ImageFileModel.ImagePath/@Model.MovieInfo.ImageFileModel.ImageFileName" />
+                <meta itemprop="playerType" content="@Model.MovieInfo.MovieMimeType" />
+                <meta itemprop="availablePlatform" content="Desktop" />
+                <meta itemprop="availablePlatform" content="Mobile" />
+
+            </span>
+
+            <vc:view-image image-id="@Model.ImageForVideoGuid" css-class="card-img-top shadw rounded-3" icon-type="@Model.IconType" />
+
+        </a>
+
+    </div>
+
+</div>

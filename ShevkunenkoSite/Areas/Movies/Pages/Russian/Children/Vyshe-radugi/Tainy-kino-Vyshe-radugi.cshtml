@@ -1,0 +1,17 @@
+﻿@page
+
+@model Tainy_kino_Vyshe_radugiModel
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/children/vyshe-radugi/index"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="3" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

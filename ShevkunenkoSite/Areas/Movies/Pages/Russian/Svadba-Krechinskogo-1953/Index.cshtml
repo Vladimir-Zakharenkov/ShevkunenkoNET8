@@ -1,0 +1,51 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] parts = new string[]{
+        "/movies/russian/svadba-krechinskogo-1953/svadba-krechinskogo-1953-1-chast",
+        "/movies/russian/svadba-krechinskogo-1953/svadba-krechinskogo-1953-2-chast"
+    };
+
+    string[] another = new string[]{
+        "/movies/russian/svadba-krechinskogo/index",
+        "/movies/russian/svadba-krechinskogo-1974/index",
+        "/movies/russian/svadba-krechinskogo-1975/index",
+        "/movies/russian/svadba-krechinskogo-2013/index"
+    };
+
+    string[] suhovo = new string[]{
+        "/movies/russian/delo-suhovo-kobylina/index"
+    };
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <vc:image-view file-name="svadba-krechinskogo-1953.png" css-class="adp90_img maxwidth700px ten" is-icon=null />
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<vc:page-links links="@parts" size="2" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ПОСТАНОВКИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@another" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">СУХОВО-КОБЫЛИН</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@suhovo" size="3" />

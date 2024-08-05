@@ -1,0 +1,18 @@
+﻿@page
+
+@model Tainy_kino_priklucheniya_BuratinoModel
+
+@{
+    string[] links = new string[]{
+        "/movies/russian/children/priklucheniya-buratino/priklucheniya-buratino-1-seriya",
+        "/movies/russian/children/priklucheniya-buratino/priklucheniya-buratino-2-seriya"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="2" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

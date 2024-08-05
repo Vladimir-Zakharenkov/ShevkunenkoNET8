@@ -1,0 +1,20 @@
+﻿@page
+
+@model Segodnya_vecherom_30_11_2013Model
+
+@{
+    string[] films = new string[]{
+        "/movies/russian/children/vyshe-radugi/index",
+        "/movies/russian/dorogaya-elena-sergeevna",
+        "/rybakov/movies/kortik/index",
+        "/movies/russian/children/v-moei-smerti-proshu-vinit-klavu-k"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="2" />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)

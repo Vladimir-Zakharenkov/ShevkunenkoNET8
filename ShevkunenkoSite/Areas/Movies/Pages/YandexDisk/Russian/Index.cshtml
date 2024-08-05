@@ -1,0 +1,19 @@
+﻿@page
+
+@model IndexModel
+
+@{
+    string[] movies = new string[]{
+        "/movies/yandexdisk/russian/voina-i-mir"
+    };
+}
+
+<h1 class="text_shadow"><span class="h2">ЯНДЕКС-ДИСК</span><br />СОВЕТСКИЕ ФИЛЬМЫ</h1>
+
+<hr class="liniya" />
+
+<vc:page-links links="@movies" size="3" />
+
+<hr class="liniya" />
+
+<vc:movie-disk movie-caption="Земля Санникова" />

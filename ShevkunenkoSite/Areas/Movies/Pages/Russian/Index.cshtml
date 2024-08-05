@@ -1,0 +1,35 @@
+﻿@page
+
+@model IndexModel
+
+@{
+     string[] links = new string[]{
+        "/movies/russian/children/index",
+        "/movies/russian/revolution-1917/index",
+        "/movies/russian/comedy/index",
+        "/movies/russian/50na50",
+        "/rybakov/movies/kortik/index",
+        "/rybakov/movies/bronzovaya-ptica/index",
+        "/movies/russian/propavshaya-expediciya/index",
+        "/movies/russian/vozvrata-net",
+        "/movies/russian/zamri-umri-voskresni",
+        "/movies/russian/nezvanyi-drug",
+        "/movies/russian/svadba-krechinskogo-1953/index",
+        "/movies/russian/dvoryanskoe-gnezdo/index"
+    };
+}
+
+<div class="row">
+
+    <div class="col">
+
+        <h1 class="text_shadow">СОВЕТСКИЕ ФИЛЬМЫ</h1>
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<vc:page-links links="@links" size="2" />
+

@@ -1,0 +1,40 @@
+﻿@model MoviesListViewModel
+
+@* @Html.Raw(Model.PageHeadTitle) *@
+
+<h1 class="text_shadow">@Model.PageHeadTitle</h1>
+
+<hr class="liniya" />
+
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger" class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten" data-toggle="buttons" role="group" aria-label="фильмы сайта">
+        </div>
+
+    </div>
+}
+
+<div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-2 justify-content-center">
+
+    @foreach (var movieFile in Model?.Movies ?? Enumerable.Empty<MovieFileModel>())
+    {
+        <vc:video-card movie-file-model=@movieFile is-parts-more-one=@Model!.IsPartsMoreOne is-image=@Model.IsImage />
+    }
+
+</div>
+
+@if (Model != null && Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger" class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten" data-toggle="buttons" role="group" aria-label="фильмы сайта">
+        </div>
+
+    </div>
+}

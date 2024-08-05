@@ -1,0 +1,202 @@
+﻿@model TopicMovieViewModel
+
+@{
+}
+
+<!-- Строка поиска -->
+<div class="row">
+
+    @if (!String.IsNullOrEmpty(Model.TopicMovieSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">
+            Поиск по строке: <span class="text-black text_shadow">@Model.TopicMovieSearchString</span>
+        </p>
+    }
+
+</div>
+
+<!-- Количество тем -->
+@if (Model.AllTopics.Count() == 0)
+{
+    <div class="row">
+
+        <div class="col text-center p-2">
+
+            <p class="fs-5 text_shadow mb-0">В базе данных нет тем для видео</p>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="row">
+
+        <div class="col-12 text-center mb-0">
+
+            <p class="fs-5 text-primary mb-0">Количество тем для видео:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+
+        </div>
+
+    </div>
+}
+
+<hr class="liniya" />
+
+<!-- Добавить тему - Поиск темы -->
+<div class="row row-cols-2 text-start ps-1 ps-md-5">
+
+    <div class="col-2">
+        <a class="btn btn-outline-danger px-2 py-1 shadw"
+           asp-area="Admin"
+           asp-controller="TopicMovie"
+           asp-action="AddTopicMovie"
+           title="добавить тему">
+            Добавить
+        </a>
+    </div>
+
+    <div class="col-10 text-end pe-3 pe-md-5">
+
+        <form method="get" asp-area="Admin" asp-controller="TopicMovie" asp-action="Index">
+
+            <input type="text" class="me-2" asp-for="TopicMovieSearchString" />
+            <input type="submit" value="Поиск" class="btn btn-outline-success py-1 mb-1 shadw" title="поиск тем" />
+
+        </form>
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<!-- Страницы -->
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             page-model="@Model.PagingInfo"
+             topic-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             data-toggle="buttons"
+             role="group"
+             aria-label="темы видео">
+        </div>
+
+    </div>
+}
+
+<div class="row">
+
+    <div class="col m-1 shadw">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-hover caption-top align-middle">
+
+                <thead>
+
+                    <tr class="table-secondary">
+                        <th scope="col" class="d-none d-lg-table-cell text-start text-primary">TopicId</th>
+                        <th scope="col" class="text-start text-primary">TopicDescription</th>
+                        <th scope="col" class="text-start text-primary"></th>
+                        <th scope="col" class="text-start text-primary"></th>
+                        <th scope="col" class="text-start text-primary"></th>
+                        <th scope="col" class="text-start text-primary"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var topic in Model.AllTopics)
+                    {
+                        <tr class="text-start">
+
+                            <td scope="col" class="d-none d-lg-table-cell text-sm-start text_shadow">@topic.TopicMovieModelId</td>
+
+                            <td scope="col" class="text-start text_shadow">@topic.TopicDescription</td>
+
+                            <td scope="col" title="Информация">
+                                <a class="btn btn-outline-primary py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TopicMovie"
+                                   asp-action="DetailsTopicMovie"
+                                   asp-route-topicId="@topic.TopicMovieModelId"
+                                   title="информация о теме">
+                                    Info
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Редактировать">
+                                <a class="btn btn-outline-success py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TopicMovie"
+                                   asp-action="EditTopicMovie"
+                                   asp-route-topicId="@topic.TopicMovieModelId"
+                                   title="изменить тему">
+                                    Edit
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Удалить">
+                                <a class="btn btn-outline-danger py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TopicMovie"
+                                   asp-action="DeleteTopicMovie"
+                                   asp-route-topicId="@topic.TopicMovieModelId"
+                                   title="удалить тему">
+                                    Del
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Смотреть">
+                                <a class="btn btn-outline-primary py-1 px-1 shadw"
+                                   asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Index"
+                                   asp-route-topicId="@topic.TopicMovieModelId"
+                                   title="Смотреть">
+                                    Run
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Страницы -->
+@if (Model.PagingInfo.TotalPages > 1)
+{
+    <div class="row p-2 m-2">
+
+        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+             page-model="@Model.PagingInfo"
+             topic-search="@Model"
+             page-action="Index"
+             page-classes-enabled="true"
+             page-class="btn"
+             page-class-normal="btn-outline-dark"
+             page-class-selected="btn-danger"
+             data-toggle="buttons"
+             role="group"
+             aria-label="темы видео">
+        </div>
+
+    </div>
+}

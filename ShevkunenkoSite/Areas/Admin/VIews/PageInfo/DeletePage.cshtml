@@ -1,0 +1,55 @@
+﻿@model PageInfoModel
+
+@{
+}
+
+<div class="row">
+
+    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+
+        <hr class="liniya" />
+
+        <h1 class="fs-3 text_shadow">Удалить страницу</h1>
+
+        <hr class="liniya" />
+
+        <div class="card p-2">
+
+            @if (!string.IsNullOrEmpty(Model.RoutData))
+            {
+                <p class="fs-5 text-danger mb-0">(<span class="text-black">«@Model.PageFullPathWithData»</span>)</p>
+            }
+            else
+            {
+                <p class="fs-5 text-danger mb-0">(<span class="text-black">«@Model.PageFullPath»</span>)</p>
+            }
+
+            @if (@Model.ImageFileModel != null)
+            {
+                <vc:image-view file-name="@Model.ImageFileModel.ImageFileName" css-class="card-img-top m-2 width50percent shadw" is-icon="false" />
+            }
+
+            <hr class="liniya" />
+
+            <div class="card-body mx-0 p-0">
+
+                <form method="post" class="mt-2">
+
+                    <input asp-for="PageInfoModelId" type="hidden" value="@Model.PageInfoModelId" />
+
+                    <div class="card-footer p-2">
+
+                        <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить страницу">Delete</button>
+                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="Index"  class="btn btn-outline-success shadw" title="не удалять">Cancel</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

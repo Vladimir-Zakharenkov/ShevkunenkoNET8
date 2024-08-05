@@ -1,0 +1,22 @@
+﻿@page
+
+@model Usatyi_nyanModel
+
+@{
+    string[] films = new string[]{
+        "/programs/eshe-ne-vecher-16-09-2011",
+        "/movies/russian/children/tainy-sovetskogo-kino-usatyi-nyan"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="2" />
+
+@await Html.PartialAsync("_ChildrenPartial", 1)

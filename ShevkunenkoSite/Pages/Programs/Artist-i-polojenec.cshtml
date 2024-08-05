@@ -1,0 +1,13 @@
+﻿@page
+
+@model Artist_i_polojenecModel
+
+@{
+}
+
+<vc:movie-online />
+
+@await Html.PartialAsync("_ProgramsPartial", 1)
+
+@await Html.PartialAsync("_RoliKinoPartial", 1)
+

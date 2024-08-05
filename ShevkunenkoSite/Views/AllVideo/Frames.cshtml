@@ -1,0 +1,55 @@
+﻿@model FramesViewModel
+
+@{
+}
+
+@if (Model.MovieFile.MovieCaption.Contains("Интервью"))
+{
+    <h1 class="text_shadow">Криминальная звезда<br /><span class="h3">кадры из фильма</span></h1>
+}
+else
+{
+    <h1 class="text_shadow">@Model.MovieFile.MovieCaptionForOnline<br /><span class="h3">кадры из фильма</span></h1>
+}
+
+<hr class="liniya" />
+
+<div class="row">
+
+    <div class="col mx-3 pt-2 pt-lg-3 pb-4 shadw">
+
+        <vc:view-image image-id=@Model.ImageFile.ImageFileModelId css-class="shadw" icon-type="" />
+
+        <p class="h4 mt-3 text_shadow">@Model.ImageFile.ImageDescription</p>
+
+    </div>
+
+</div>
+
+<hr class="liniya" />
+
+<div class="row justify-content-center">
+
+    @foreach (var picture in Model.ImageArray ?? Enumerable.Empty<ImageFileModel>())
+    {
+        <div class="col-3 col-lg-2 col-xxl-1 g-2">
+
+            <div class="card shadw rounded-3 cardborder">
+
+                <a asp-area="" asp-controller="AllVideo" asp-action="Movie" asp-route-movieid=@Model.MovieFile.MovieFileModelId asp-route-imageid=@picture.ImageFileModelId class="rounded-3" title="" itemprop="url">
+
+                    <vc:view-image image-id=@picture.ImageFileModelId css-class="w-100" icon-type="webicon100" />
+
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter3))
+{
+    <vc:links-below3 movie="@Model.MovieFile" />
+}

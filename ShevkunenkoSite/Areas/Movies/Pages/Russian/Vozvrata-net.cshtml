@@ -1,0 +1,19 @@
+﻿@page
+
+@model Vozvrata_netModel
+
+@{
+    string[] films = new string[]{
+        "/programs/govorim-i-pokazyvaem-05-10-2011"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ОБ АТКЁРАХ ФИЛЬМА</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@films" size="3" />

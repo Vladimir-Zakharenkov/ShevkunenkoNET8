@@ -1,0 +1,38 @@
+﻿@page
+
+@model Mary_PoppinsModel
+
+@{
+    string[] makingMovie = new string[]{
+        "/movies/foreign/children/making-mary-poppins",
+        "/movies/foreign/children/from-page-to-stage",
+        "/movies/foreign/children/richard-sherman-musical-journey",
+        "/movies/foreign/children/music-for-mary-poppins",
+        "/movies/foreign/children/mary-poppins-premiere",
+        "/movies/foreign/children/mary-poppins-reunion",
+        "/movies/foreign/children/mary-poppins-julie-andrews",
+        "/movies/foreign/children/saving-mr-banks",
+        "/movies/foreign/children/saving-mr-banks-about-movie",
+        "/movies/foreign/children/ten-mary-poppins"
+    };
+
+    string[] remake = new string[]{
+        "/movies/russian/children/mary-poppins/index",
+        "/movies/foreign/children/mary-poppins-teatr-ermolovoy",
+        "/movies/foreign/children/mary-poppins-returns"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@makingMovie" size="1" />
+
+<hr class="liniya" />
+
+<h3 class="text_shadow">ДРУГИЕ ЭКРАНИЗАЦИИ</h3>
+
+<hr class="liniya maxwidth50percent mt-1" />
+
+<vc:page-links links="@remake" size="2" />

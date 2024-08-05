@@ -1,0 +1,18 @@
+﻿@page
+
+@model Morozko_ne_princessa_korolevnaModel
+
+@{
+    string[] films = new string[]{
+        "/programs/govorim-i-pokazyvaem-05-10-2011",
+        "/movies/russian/skazki/tainy-kino-morozko"
+    };
+}
+
+<vc:movie-online />
+
+<hr class="liniya" />
+
+<vc:page-links links="@films" size="2" />
+
+@await Html.PartialAsync("_FilmySkazkiPartial", 1)

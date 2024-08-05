@@ -1,0 +1,42 @@
+﻿@model ImageListViewModel
+
+<h1 class="text_shadow">Фото из фильмов о Сергее&nbsp;Шевкуненко<br /><span class="h2">страница @Model.PagingInfo.CurrentPage</span></h1>
+
+<hr class="liniya" />
+
+<div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-6 g-2 justify-content-center">
+
+    @foreach (var imageItem in Model.AllImages)
+    {
+        <div class="col">
+
+            <div class="card h-100 me-1 mb-1 p-1 shadw borderforitem">
+
+                <a asp-area="" asp-controller="Shevkunenko" asp-action="PhotoAlbum" asp-route-imageid="@imageItem.ImageFileModelId" asp-route-pageNumber="@Model.PagingInfo.CurrentPage" title="смотреть фото">
+
+                    <vc:view-image image-id="@imageItem.ImageFileModelId" css-class="card-img-top shadw" icon-type="webicon300" />
+
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+<div class="row p-2 m-2">
+
+    <div album-page="@Model.PagingInfo"
+         page-action="PhotoAlbum"
+         page-classes-enabled="true"
+         page-class="btn"
+         page-class-normal="btn-outline-dark"
+         page-class-selected="btn-danger"
+         class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+         data-toggle="buttons"
+         role="group"
+         aria-label="фотоальбом">
+    </div>
+
+</div>

@@ -1,0 +1,23 @@
+﻿@model SeriesViewModel
+
+@{
+}
+
+<div class="row mb-4">
+
+    <div class="col">
+
+        <vc:view-image image-id="@Model.HeadImageSeries" css-class="adp90_img maxwidth700px ten" icon-type="" />
+
+    </div>
+
+</div>
+
+<div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-4 justify-content-center">
+
+    @foreach (var movieFile in Model?.AllSeriesMovies ?? Enumerable.Empty<MovieFileModel>())
+    {
+        <vc:video-card movie-file-model="@movieFile" is-parts-more-one="@Model!.IsPartsMoreOne" is-image="@Model.IsImage" icon-type="@Model.IconType" />
+    }
+
+</div>

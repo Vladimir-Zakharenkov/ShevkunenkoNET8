@@ -1,0 +1,20 @@
+﻿@page
+
+@model Saving_mr_Banks_about_movieModel
+
+@{
+    string[] makingMovie = new string[]{
+        "/movies/foreign/children/saving-mr-banks",
+        "/movies/foreign/children/mary-poppins",
+        "/movies/foreign/children/mary-poppins-returns",
+        "/movies/foreign/children/music-for-mary-poppins",
+        "/movies/foreign/children/ten-mary-poppins"
+    };
+}
+
+
+<vc:movie-online />
+
+<hr class="liniya mt-1" />
+
+<vc:page-links links="@makingMovie" size="1" />
