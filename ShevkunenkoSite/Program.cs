@@ -107,9 +107,9 @@ if (environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 
     SeedData.EnsurePopulated(app);
-
 }
 
+app.UseStatusCodePagesWithReExecute("/Error{0}");
 
 #endregion
 
