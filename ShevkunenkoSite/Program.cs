@@ -119,6 +119,16 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseAuthentication();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseWebMarkupMin();
+
+app.MapRazorPages();
+
 #endregion
 
 app.MapGet("/", () => DataConfig.Test /*"Hello World!"*/);
