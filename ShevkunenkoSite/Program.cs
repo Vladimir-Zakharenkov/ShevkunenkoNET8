@@ -106,8 +106,6 @@ services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
 
 WebApplication app = builder.Build();
 
-//IConfiguration config = app.Configuration;
-
 if (environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
