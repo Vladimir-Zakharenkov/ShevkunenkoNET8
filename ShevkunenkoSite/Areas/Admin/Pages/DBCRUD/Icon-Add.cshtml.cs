@@ -142,11 +142,11 @@ public class Icon_AddModel : PageModel
 
                             if (tag.Name == "Detected MIME Type") IconItem.IconMimeType = tag.Description!;
 
-                            if (tag.Name == "File Size") IconItem.IconFileSize = Convert.ToUInt32(tag.Description![..tag.Description!.IndexOf(" ")]);
+                            if (tag.Name == "File Size") IconItem.IconFileSize = Convert.ToInt32(tag.Description![..tag.Description!.IndexOf(" ")]);
 
-                            if (tag.Name == "Image Width") IconItem.IconWidth = Convert.ToUInt32(tag.Description);
+                            if (tag.Name == "Image Width") IconItem.IconWidth = Convert.ToInt32(tag.Description);
 
-                            if (tag.Name == "Image Height") IconItem.IconHeight = Convert.ToUInt32(tag.Description);
+                            if (tag.Name == "Image Height") IconItem.IconHeight = Convert.ToInt32(tag.Description);
                         }
                     }
 
@@ -165,7 +165,7 @@ public class Icon_AddModel : PageModel
 
                             if (tag.Name == "Detected MIME Type") IconItem.IconMimeType = tag.Description!;
 
-                            if (tag.Name == "File Size") IconItem.IconFileSize = Convert.ToUInt32(tag.Description![..tag.Description!.IndexOf(" ")]);
+                            if (tag.Name == "File Size") IconItem.IconFileSize = Convert.ToInt32(tag.Description![..tag.Description!.IndexOf(" ")]);
                         }
                     }
 
@@ -181,7 +181,7 @@ public class Icon_AddModel : PageModel
                     IconItem.IconMimeType = "image/svg+xml";
                     IconItem.IconWidth = 2133;
                     IconItem.IconHeight = 2133;
-                    IconItem.IconFileSize = Convert.ToUInt32(IconFilesUpload.Find(f => f.FileName.EndsWith(".svg"))!.Length);
+                    IconItem.IconFileSize = Convert.ToInt32(IconFilesUpload.Find(f => f.FileName.EndsWith(".svg"))!.Length);
                 }
 
                 if (item.EndsWith(".ico"))

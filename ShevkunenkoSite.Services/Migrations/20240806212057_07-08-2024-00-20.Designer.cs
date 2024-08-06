@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240804204635_04-08-2024-23-45")]
-    partial class _040820242345
+    [Migration("20240806212057_07-08-2024-00-20")]
+    partial class _070820240020
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,8 +87,8 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("IconFileSize")
-                        .HasColumnType("bigint");
+                    b.Property<int>("IconFileSize")
+                        .HasColumnType("int");
 
                     b.Property<long>("IconHeight")
                         .HasColumnType("bigint");

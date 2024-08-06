@@ -1,28 +1,16 @@
 ﻿namespace ShevkunenkoSite.Controllers;
 
-public class Shevkunenko : Controller
+public class Shevkunenko(IImageFileRepository imageContext) : Controller
 {
-    private readonly IImageFileRepository _imageContext;
-    public Shevkunenko(IImageFileRepository imageContext) => _imageContext = imageContext;
+    private readonly IImageFileRepository _imageContext = imageContext;
 
-    public int imagesPerPage = 12;
+    public IActionResult Index() => View();
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Biography() => View();
 
-    public IActionResult Biography()
-    {
-        return View();
-    }
+    public IActionResult Navigation() => View();
 
-    public IActionResult Navigation()
-    {
-        return View();
-    }
-
-    public async Task<IActionResult> PhotoAlbum(Guid? imageId, int pageNumber = 1)
+    public async Task<IActionResult> PhotoAlbum(Guid? imageId, int imagesPerPage = 12, int pageNumber = 1)
     {
         var allPhotoes = from m in _imageContext.ImageFiles
             .OrderBy(p => p.WebImageFileName)
@@ -61,13 +49,7 @@ public class Shevkunenko : Controller
         }
     }
 
-    public IActionResult Press()
-    {
-        return Redirect("https://shevkunenko.ru/pressa/index.htm");
-    }
+    public IActionResult Press() => Redirect("https://shevkunenko.ru/pressa/index.htm");
 
-    public IActionResult Test()
-    {
-        return View();
-    }
+    public IActionResult Test() => View();
 }
