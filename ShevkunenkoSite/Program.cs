@@ -26,18 +26,6 @@ services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         options.LoginPath = new PathString("/Admin/Login");
     });
 
-services.AddDbContext<SiteDbContext>(opts =>
-{
-    opts.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"]);
-
-    if (environment.IsDevelopment())
-    {
-        opts.EnableSensitiveDataLogging(true);
-    }
-});
-
-services.AddDatabaseDeveloperPageExceptionFilter();
-
 services.Configure<RazorViewEngineOptions>(options =>
 {
     options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
@@ -90,6 +78,18 @@ services.AddWebMarkupMin(
 
 #region Работа с базой данных
 
+services.AddDbContext<SiteDbContext>(opts =>
+{
+    opts.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"]);
+
+    if (environment.IsDevelopment())
+    {
+        opts.EnableSensitiveDataLogging(true);
+    }
+});
+
+services.AddDatabaseDeveloperPageExceptionFilter();
+
 services.AddScoped<IPageInfoRepository, PageInfoImplementation>();
 services.AddScoped<IBackgroundFotoRepository, BackGroundFotoImplementation>();
 services.AddScoped<IIconFileRepository, IconFileImplementation>();
@@ -107,8 +107,6 @@ services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
 WebApplication app = builder.Build();
 
 //IConfiguration config = app.Configuration;
-
-//IWebHostEnvironment env = app.Environment;
 
 if (environment.IsDevelopment())
 {
