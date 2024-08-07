@@ -2,11 +2,8 @@
 
 [Area("Admin")]
 [Authorize]
-public class ImageInfoController : Controller
+public class ImageInfoController(IImageFileRepository imageContext) : Controller
 {
-    private readonly IImageFileRepository _imageContext;
-    public ImageInfoController(IImageFileRepository imageContext) => _imageContext = imageContext;
-
     public ImageFileModel? ImageItem { get; set; }
 
     #region SearchOptions
@@ -26,7 +23,7 @@ public class ImageInfoController : Controller
                                                         int pageNumber = 1
                                                         )
     {
-        var allImages = from m in _imageContext.ImageFiles
+        var allImages = from m in imageContext.ImageFiles
             .Where
             (
             s => s.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim())
@@ -87,9 +84,9 @@ public class ImageInfoController : Controller
 
     public async Task<IActionResult> DetailsImage(Guid? imageId, string? imageIcon)
     {
-        if (imageId.HasValue && await _imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
+        if (imageId.HasValue && await imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
         {
-            ImageItem = await _imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
+            ImageItem = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
 
             bool fileExists = true;
 
@@ -1090,70 +1087,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1180,70 +1177,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1270,70 +1267,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.IconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.IconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1360,70 +1357,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1450,70 +1447,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1540,70 +1537,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageHDFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1612,7 +1609,7 @@ public class ImageInfoController : Controller
 
                 #endregion
 
-                if (!imageItem.WebImageHDFormFile.FileName.ToLower().Contains("webp"))
+                if (!imageItem.WebImageHDFormFile.FileName.Contains("webp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» должен иметь расширение «webp»");
 
@@ -1637,70 +1634,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1709,7 +1706,7 @@ public class ImageInfoController : Controller
 
                 #endregion
 
-                if (!imageItem.WebImageFormFile.FileName.ToLower().Contains("webp"))
+                if (!imageItem.WebImageFormFile.FileName.Contains("webp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» должен иметь расширение «webp»");
 
@@ -1731,70 +1728,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIconFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1803,7 +1800,7 @@ public class ImageInfoController : Controller
 
                 #endregion
 
-                if (!imageItem.WebIconFormFile.FileName.ToLower().Contains("webp"))
+                if (!imageItem.WebIconFormFile.FileName.Contains("webp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» должен иметь расширение «webp»");
 
@@ -1828,70 +1825,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon200FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1900,7 +1897,7 @@ public class ImageInfoController : Controller
 
                 #endregion
 
-                if (!imageItem.WebIcon200FormFile.FileName.ToLower().Contains("webp"))
+                if (!imageItem.WebIcon200FormFile.FileName.Contains("webp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» должен иметь расширение «webp»");
 
@@ -1925,70 +1922,70 @@ public class ImageInfoController : Controller
             {
                 #region Проверка наличия файла в базе данных с таким же именем
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки (HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (100 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP HD)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 300 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP 200 px)");
 
                     return View(new EditImageViewModel());
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon100FormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (Web 100 px)");
 
@@ -1997,7 +1994,7 @@ public class ImageInfoController : Controller
 
                 #endregion
 
-                if (!imageItem.WebIcon100FormFile.FileName.ToLower().Contains("webp"))
+                if (!imageItem.WebIcon100FormFile.FileName.Contains("webp", StringComparison.CurrentCultureIgnoreCase))
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» должен иметь расширение «webp»");
 
@@ -2092,14 +2089,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("ImageHDFormFile", $"Не определить размер файла «{imageItem.ImageHDFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.ImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.ImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2189,14 +2186,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("ImageFormFile", $"Не определить размер файла «{imageItem.ImageFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.ImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.ImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2286,14 +2283,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("IconFormFile", $"Не определить размер файла «{imageItem.IconFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.IconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.IconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2383,14 +2380,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("Icon200FormFile", $"Не определить размер файла «{imageItem.Icon200FormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.Icon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.Icon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2480,14 +2477,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("Icon100FormFile", $"Не определить размер файла «{imageItem.Icon100FormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.Icon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.Icon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2577,14 +2574,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebImageHDFormFile", $"Не определить размер файла «{imageItem.WebImageHDFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.WebImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.WebImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2674,14 +2671,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebImageFormFile", $"Не определить размер файла «{imageItem.WebImageFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.WebImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.WebImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2771,14 +2768,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIconFormFilee", $"Не определить размер файла «{imageItem.WebIconFormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.WebIconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.WebIconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2868,14 +2865,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIcon200FormFile", $"Не определить размер файла «{imageItem.WebIcon200FormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.WebIcon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.WebIcon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -2965,14 +2962,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIcon100FormFile", $"Не определить размер файла «{imageItem.WebIcon100FormFile.FileName}»");
 
                                 return View(new EditImageViewModel());
                             }
 
-                            imageItem.EditImage.WebIcon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageItem.EditImage.WebIcon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -3006,7 +3003,7 @@ public class ImageInfoController : Controller
 
             #endregion
 
-            await _imageContext.AddNewImageAsync(imageItem.EditImage);
+            await imageContext.AddNewImageAsync(imageItem.EditImage);
 
             return RedirectToAction(nameof(DetailsImage), new { imageId = imageItem.EditImage.ImageFileModelId });
         }
@@ -3025,9 +3022,9 @@ public class ImageInfoController : Controller
     {
         EditImageViewModel editImage = new();
 
-        if (imageId.HasValue & await _imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
+        if (imageId.HasValue & await imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
         {
-            editImage.EditImage = await _imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
+            editImage.EditImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
 
             return View(editImage);
         }
@@ -3043,7 +3040,7 @@ public class ImageInfoController : Controller
     {
         if (ModelState.IsValid)
         {
-            ImageFileModel imageUpdate = await _imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageItem.EditImage.ImageFileModelId);
+            ImageFileModel imageUpdate = await imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageItem.EditImage.ImageFileModelId);
 
             #region Заголовок картинки
 
@@ -3727,70 +3724,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.ImageHDFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageHDFormFile", $"Файл «{imageItem.ImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -3804,70 +3801,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.ImageFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.ImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("ImageFormFile", $"Файл «{imageItem.ImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -3881,70 +3878,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.IconFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.IconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("IconFormFile", $"Файл «{imageItem.IconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -3958,70 +3955,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.Icon200FormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon200FormFile", $"Файл «{imageItem.Icon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4035,70 +4032,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.Icon100FormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.Icon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("Icon100FormFile", $"Файл «{imageItem.Icon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4112,70 +4109,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.WebImageHDFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageHDFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageHDFormFile", $"Файл «{imageItem.WebImageHDFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4189,70 +4186,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.WebImageFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebImageFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebImageFormFile", $"Файл «{imageItem.WebImageFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4266,70 +4263,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.WebIconFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIconFormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIconFormFile", $"Файл «{imageItem.WebIconFormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4343,70 +4340,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.WebIcon200FormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon200FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon200FormFile", $"Файл «{imageItem.WebIcon200FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4420,70 +4417,70 @@ public class ImageInfoController : Controller
 
             if (imageItem.WebIcon100FormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.ImageHDFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки HD");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.IconFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon200FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.Icon100FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки 100 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebImageHDFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл картинки HD (WebP)");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIconFileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 300 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon200FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 200 px");
 
                     return View(imageItem);
                 }
 
-                if (await _imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
+                if (await imageContext.ImageFiles.Where(x => x.WebIcon100FileName == imageItem.WebIcon100FormFile.FileName & x.ImageFileModelId != imageItem.EditImage.ImageFileModelId).AnyAsync())
                 {
                     ModelState.AddModelError("WebIcon100FormFile", $"Файл «{imageItem.WebIcon100FormFile.FileName}» уже существует в базе данных как файл иконки (WebP) 100 px");
 
@@ -4499,7 +4496,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.ImageHDFileName))
                 {
-                    if (imageItem.ImageHDFormFile.FileName[(imageItem.ImageHDFormFile.FileName.IndexOf(".") + 1)..] != imageItem.EditImage.ImageHDNameExtension)
+                    if (imageItem.ImageHDFormFile.FileName[(imageItem.ImageHDFormFile.FileName.IndexOf('.') + 1)..] != imageItem.EditImage.ImageHDNameExtension)
                     {
                         ModelState.AddModelError("ImageHDFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.ImageHDNameExtension}»");
 
@@ -4510,7 +4507,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.ImageHDFileName[..imageItem.EditImage.ImageHDFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.ImageHDNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.ImageHDFileName[..imageItem.EditImage.ImageHDFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.ImageHDNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -4585,14 +4582,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("ImageHDFormFile", $"Не определить размер файла «{imageItem.ImageHDFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.ImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.ImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -4641,7 +4638,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.ImageFileName))
                 {
-                    if (imageItem.ImageFormFile.FileName.ToString()[(imageItem.ImageFormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.ImageFileNameExtension)
+                    if (imageItem.ImageFormFile.FileName.ToString()[(imageItem.ImageFormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.ImageFileNameExtension)
                     {
                         ModelState.AddModelError("ImageFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.ImageFileNameExtension}»");
 
@@ -4652,7 +4649,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.ImageFileName[..imageItem.EditImage.ImageFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.ImageFileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.ImageFileName[..imageItem.EditImage.ImageFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.ImageFileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -4727,14 +4724,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("ImageFormFile", $"Не определить размер файла «{imageItem.ImageFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.ImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.ImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -4783,7 +4780,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.IconFileName))
                 {
-                    if (imageItem.IconFormFile.FileName.ToString()[(imageItem.IconFormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.IconFileNameExtension)
+                    if (imageItem.IconFormFile.FileName.ToString()[(imageItem.IconFormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.IconFileNameExtension)
                     {
                         ModelState.AddModelError("IconFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.IconFileNameExtension}»");
 
@@ -4794,7 +4791,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.IconFileName[..imageItem.EditImage.IconFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.IconFileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.IconFileName[..imageItem.EditImage.IconFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.IconFileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -4869,14 +4866,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("IconFormFile", $"Не определить размер файла «{imageItem.IconFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.IconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.IconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -4925,7 +4922,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.Icon200FileName))
                 {
-                    if (imageItem.Icon200FormFile.FileName.ToString()[(imageItem.Icon200FormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.Icon200FileNameExtension)
+                    if (imageItem.Icon200FormFile.FileName.ToString()[(imageItem.Icon200FormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.Icon200FileNameExtension)
                     {
                         ModelState.AddModelError("Icon200FormFile", $"Расширение файла должно быть «.{imageItem.EditImage.Icon200FileNameExtension}»");
 
@@ -4936,7 +4933,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.Icon200FileName[..imageItem.EditImage.Icon200FileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.Icon200FileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.Icon200FileName[..imageItem.EditImage.Icon200FileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.Icon200FileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5011,14 +5008,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("Icon200FormFile", $"Не определить размер файла «{imageItem.Icon200FormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.Icon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.Icon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5067,7 +5064,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.Icon100FileName))
                 {
-                    if (imageItem.Icon100FormFile.FileName.ToString()[(imageItem.Icon100FormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.Icon100FileNameExtension)
+                    if (imageItem.Icon100FormFile.FileName.ToString()[(imageItem.Icon100FormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.Icon100FileNameExtension)
                     {
                         ModelState.AddModelError("Icon100FormFile", $"Расширение файла должно быть «.{imageItem.EditImage.Icon100FileNameExtension}»");
 
@@ -5078,7 +5075,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.Icon100FileName[..imageItem.EditImage.Icon100FileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.Icon100FileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.Icon100FileName[..imageItem.EditImage.Icon100FileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.Icon100FileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5153,14 +5150,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("Icon100FormFile", $"Не определить размер файла «{imageItem.Icon100FormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.Icon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.Icon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5209,7 +5206,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.WebImageHDFileName))
                 {
-                    if (imageItem.WebImageHDFormFile.FileName[(imageItem.WebImageHDFormFile.FileName.IndexOf(".") + 1)..] != imageItem.EditImage.WebImageHDNameExtension)
+                    if (imageItem.WebImageHDFormFile.FileName[(imageItem.WebImageHDFormFile.FileName.IndexOf('.') + 1)..] != imageItem.EditImage.WebImageHDNameExtension)
                     {
                         ModelState.AddModelError("WebImageHDFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.WebImageHDNameExtension}»");
 
@@ -5220,7 +5217,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebImageHDFileName[..imageItem.EditImage.WebImageHDFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebImageHDNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebImageHDFileName[..imageItem.EditImage.WebImageHDFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebImageHDNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5295,14 +5292,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebImageHDFormFile", $"Не определить размер файла «{imageItem.WebImageHDFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.WebImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.WebImageHDFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5351,7 +5348,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.WebImageFileName))
                 {
-                    if (imageItem.WebImageFormFile.FileName[(imageItem.WebImageFormFile.FileName.IndexOf(".") + 1)..] != imageItem.EditImage.WebImageFileNameExtension)
+                    if (imageItem.WebImageFormFile.FileName[(imageItem.WebImageFormFile.FileName.IndexOf('.') + 1)..] != imageItem.EditImage.WebImageFileNameExtension)
                     {
                         ModelState.AddModelError("WebImageFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.WebImageFileNameExtension}»");
 
@@ -5362,7 +5359,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebImageFileName[..imageItem.EditImage.WebImageFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebImageFileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebImageFileName[..imageItem.EditImage.WebImageFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebImageFileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5437,14 +5434,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebImageFormFile", $"Не определить размер файла «{imageItem.WebImageFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.WebImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.WebImageFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5493,7 +5490,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.WebIconFileName))
                 {
-                    if (imageItem.WebIconFormFile.FileName.ToString()[(imageItem.WebIconFormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.WebIconFileNameExtension)
+                    if (imageItem.WebIconFormFile.FileName.ToString()[(imageItem.WebIconFormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.WebIconFileNameExtension)
                     {
                         ModelState.AddModelError("WebIconFormFile", $"Расширение файла должно быть «.{imageItem.EditImage.WebIconFileNameExtension}»");
 
@@ -5504,7 +5501,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIconFileName[..imageItem.EditImage.WebIconFileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIconFileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIconFileName[..imageItem.EditImage.WebIconFileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIconFileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5579,14 +5576,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIconFormFile", $"Не определить размер файла «{imageItem.WebIconFormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.WebIconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.WebIconFileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5635,7 +5632,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.WebIcon200FileName))
                 {
-                    if (imageItem.WebIcon200FormFile.FileName.ToString()[(imageItem.WebIcon200FormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.WebIcon200FileNameExtension)
+                    if (imageItem.WebIcon200FormFile.FileName.ToString()[(imageItem.WebIcon200FormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.WebIcon200FileNameExtension)
                     {
                         ModelState.AddModelError("WebIcon200FormFile", $"Расширение файла должно быть «.{imageItem.EditImage.WebIcon200FileNameExtension}»");
 
@@ -5646,7 +5643,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIcon200FileName[..imageItem.EditImage.WebIcon200FileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIcon200FileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIcon200FileName[..imageItem.EditImage.WebIcon200FileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIcon200FileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5721,14 +5718,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIcon200FormFile", $"Не определить размер файла «{imageItem.WebIcon200FormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.WebIcon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.WebIcon200FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -5777,7 +5774,7 @@ public class ImageInfoController : Controller
             {
                 if (!string.IsNullOrEmpty(imageItem.EditImage.WebIcon100FileName))
                 {
-                    if (imageItem.WebIcon100FormFile.FileName.ToString()[(imageItem.WebIcon100FormFile.FileName.ToString().IndexOf(".") + 1)..] != imageItem.EditImage.WebIcon100FileNameExtension)
+                    if (imageItem.WebIcon100FormFile.FileName.ToString()[(imageItem.WebIcon100FormFile.FileName.ToString().IndexOf('.') + 1)..] != imageItem.EditImage.WebIcon100FileNameExtension)
                     {
                         ModelState.AddModelError("WebIcon100FormFile", $"Расширение файла должно быть «.{imageItem.EditImage.WebIcon100FileNameExtension}»");
 
@@ -5788,7 +5785,7 @@ public class ImageInfoController : Controller
 
                     if (oldFileInfo.Exists)
                     {
-                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIcon100FileName[..imageItem.EditImage.WebIcon100FileName.IndexOf(".")] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIcon100FileNameExtension;
+                        string newFullNameForOldFile = @"D:\TEMP\" + imageItem.EditImage.WebIcon100FileName[..imageItem.EditImage.WebIcon100FileName.IndexOf('.')] + "-save-" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "." + imageItem.EditImage.WebIcon100FileNameExtension;
 
                         System.IO.File.Move(oldFileInfo.FullName, newFullNameForOldFile);
                     }
@@ -5863,14 +5860,14 @@ public class ImageInfoController : Controller
 
                         if (tag.Name == "File Size")
                         {
-                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]) <= 0)
+                            if (tag.Description == null || Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]) <= 0)
                             {
                                 ModelState.AddModelError("WebIcon100FormFile", $"Не определить размер файла «{imageItem.WebIcon100FormFile.FileName}»");
 
                                 return View(nameof(EditImage), imageItem);
                             }
 
-                            imageUpdate.WebIcon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                            imageUpdate.WebIcon100FileSize = Convert.ToUInt32(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                         }
 
                         if (tag.Name == "Image Width")
@@ -6049,7 +6046,7 @@ public class ImageInfoController : Controller
 
             #endregion
 
-            await _imageContext.SaveChangesInImageAsync();
+            await imageContext.SaveChangesInImageAsync();
 
             return RedirectToAction(nameof(DetailsImage), new { imageId = imageUpdate.ImageFileModelId });
         }
@@ -6068,9 +6065,9 @@ public class ImageInfoController : Controller
     {
         ImageFileModel deleteImage = new();
 
-        if (imageId.HasValue & await _imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
+        if (imageId.HasValue & await imageContext.ImageFiles.Where(i => i.ImageFileModelId == imageId).AnyAsync())
         {
-            deleteImage = await _imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
+            deleteImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == imageId);
 
             return View(deleteImage);
         }
@@ -6086,9 +6083,9 @@ public class ImageInfoController : Controller
     {
         if (deleteImage != null)
         {
-            if (await _imageContext.ImageFiles.Where(i => i.ImageFileModelId == deleteImage.ImageFileModelId).AnyAsync())
+            if (await imageContext.ImageFiles.Where(i => i.ImageFileModelId == deleteImage.ImageFileModelId).AnyAsync())
             {
-                await _imageContext.DeleteImageAsync(deleteImage.ImageFileModelId);
+                await imageContext.DeleteImageAsync(deleteImage.ImageFileModelId);
 
                 return RedirectToAction(nameof(Index));
             }
