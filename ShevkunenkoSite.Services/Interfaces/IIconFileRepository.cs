@@ -1,13 +1,12 @@
-﻿using ShevkunenkoSite.Models.DataModels;
+﻿namespace ShevkunenkoSite.Services.Interfaces;
 
-namespace ShevkunenkoSite.Services.Interfaces
+public interface IIconFileRepository
 {
-    public interface IIconFileRepository
-    {
-        IQueryable<IconFileModel> IconFiles { get; }
+    IQueryable<IconFileModel> IconFiles { get; }
 
-        Task SaveChangesInIconAsync();
+    Task SaveChangesInIconAsync();
 
-        Task AddNewIconAsync(IconFileModel icon);
-    }
+    Task AddNewIconAsync(IconFileModel icon);
+
+    Task DeleteIconAsync(Guid iconId);
 }

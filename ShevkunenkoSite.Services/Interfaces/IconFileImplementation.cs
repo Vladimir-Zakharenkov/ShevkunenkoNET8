@@ -1,11 +1,8 @@
-﻿using ShevkunenkoSite.Models.DataModels;
+﻿namespace ShevkunenkoSite.Services.Interfaces;
 
-namespace ShevkunenkoSite.Services.Interfaces;
-
-public class IconFileImplementation : IIconFileRepository
+public class IconFileImplementation(SiteDbContext siteContext) : IIconFileRepository
 {
-    private readonly SiteDbContext _siteContext;
-    public IconFileImplementation(SiteDbContext siteContext) => _siteContext = siteContext;
+    private readonly SiteDbContext _siteContext = siteContext;
 
     public IQueryable<IconFileModel> IconFiles => _siteContext.IconFile;
 
@@ -18,5 +15,10 @@ public class IconFileImplementation : IIconFileRepository
     {
         await _siteContext.IconFile.AddAsync(icon);
         await SaveChangesInIconAsync();
+    }
+
+    public Task DeleteIconAsync(Guid iconId)
+    {
+        throw new NotImplementedException();
     }
 }
