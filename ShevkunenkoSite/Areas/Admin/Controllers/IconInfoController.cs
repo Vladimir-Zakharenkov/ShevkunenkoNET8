@@ -28,7 +28,7 @@ public class IconInfoController(IIconFileRepository iconContext) : Controller
                     .OrderBy(ic => ic.IconFileName)
                     .ToArrayAsync();
 
-                return View("IconList", listOfIcons);
+                return View("IconsList", listOfIcons);
             }
             else
             {

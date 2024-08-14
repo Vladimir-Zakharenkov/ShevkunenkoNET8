@@ -37,9 +37,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 06 - Кофигурация", "Глава 06 - Кофигурация", "{DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}"
 	ProjectSection(SolutionItems) = preProject
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 01 - Основы конфигурации.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 01 - Основы конфигурации.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 02 - Нефайловые провайдеры конфигурации.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 02 - Нефайловые провайдеры конфигурации.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-01", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-01\Chapter06-01.csproj", "{60E96745-39DE-41ED-A414-E8E342652ADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-01", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-01\Chapter06-01.csproj", "{60E96745-39DE-41ED-A414-E8E342652ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-02", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-02\Chapter06-02.csproj", "{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +70,10 @@ Global
 		{60E96745-39DE-41ED-A414-E8E342652ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E96745-39DE-41ED-A414-E8E342652ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E96745-39DE-41ED-A414-E8E342652ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +82,7 @@ Global
 		{C8B84BA2-BADB-48E9-9531-9A46B84E6934} = {903275A2-A9B0-43E1-A13C-A089F3E48289}
 		{DD4DF3ED-7574-4ED0-9381-E72560BE7CF0} = {C8B84BA2-BADB-48E9-9531-9A46B84E6934}
 		{60E96745-39DE-41ED-A414-E8E342652ADC} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
+		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

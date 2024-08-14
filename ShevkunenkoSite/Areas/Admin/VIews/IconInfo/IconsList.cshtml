@@ -15,10 +15,9 @@
     {
         currentIcon = Model[0];
     }
-
 }
 
-<img src="/images/pageicons/@currentIcon.IconPath@currentIcon.IconFileName" "
+<img src="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
      title="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
      alt="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName" />
 
@@ -27,7 +26,7 @@
         Каталог:
     </span>
     <span class="text_shadow">
-@DataConfig.IconsFolder
+        @DataConfig.IconsFolder
     </span>
 </p>
 
@@ -36,7 +35,7 @@
         Количество иконок:
     </span>
     <span class="text_shadow">
-@Model.Length
+        @Model.Length
     </span>
 </p>
 
@@ -64,20 +63,20 @@
 
                 <tbody>
 
-@foreach (var iconItem in Model)
-{
-    if (iconItem.IconFileModelId == currentId)
-    {
-        trStyle = "table-primary";
-    }
-    else
-    {
-        trStyle = string.Empty;
-    }
+                    @foreach (var iconItem in Model)
+                    {
+                        if (iconItem.IconFileModelId == currentId)
+                        {
+                            trStyle = "table-primary";
+                        }
+                        else
+                        {
+                            trStyle = string.Empty;
+                        }
 
                         <tr class="text-start text_shadow @trStyle">
                             <td scope="col">
-                                <img src="/images/pageicons/@iconItem.IconPath@iconItem.IconFileName"
+                                <img src="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
                                      width="40" height="40"
                                      title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
                                      alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
@@ -104,7 +103,7 @@
                             </td>
 
                         </tr>
-}
+                    }
 
                 </tbody>
 

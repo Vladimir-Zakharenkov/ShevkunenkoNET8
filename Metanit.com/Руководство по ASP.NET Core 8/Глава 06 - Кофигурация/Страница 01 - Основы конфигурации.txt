@@ -67,7 +67,7 @@ app.Configuration["age"] = "37";
  
 app.Run(async (context) =>
 {
-    // получение настроек конфигураци
+    // получение настроек конфигурации
     string name = app.Configuration["name"];
     string age = app.Configuration["age"];
     await context.Response.WriteAsync($"{name} - {age}");
@@ -104,7 +104,7 @@ app.Configuration["age"] = "37";
 
 var builder = WebApplication.CreateBuilder();
 
-var dictationary = new Dictionary<string, string>
+var dictionary = new Dictionary<string, string>
 {
     {"name", "Tom"},
     {"age", "37"}

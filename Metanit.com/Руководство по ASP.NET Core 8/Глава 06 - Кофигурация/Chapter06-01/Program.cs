@@ -9,7 +9,7 @@
 
 //app.Run(async (context) =>
 //{
-//    // получение настроек конфигураци
+//    // получение настроек конфигурации
 //    string? name = app.Configuration["name"];
 //    string? age = app.Configuration["age"];
 
@@ -24,19 +24,19 @@
 
 //var builder = WebApplication.CreateBuilder();
 
-//var dictationary = new Dictionary<string, string>
+//var dictionary = new Dictionary<string, string>
 //{
 //    {"name", "Tom"},
 //    {"age", "37"}
 //};
 
-//builder.Configuration.AddInMemoryCollection(dictationary!);
+//builder.Configuration.AddInMemoryCollection(dictionary!);
 
 //var app = builder.Build();
 
 //app.Run(async (context) =>
 //{
-//    // получение настроек конфигураци
+//    // получение настроек конфигурации
 //    string? name = app.Configuration["name"];
 //    string? age = app.Configuration["age"];
 
