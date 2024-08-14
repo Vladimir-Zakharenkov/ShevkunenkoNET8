@@ -8,7 +8,7 @@ public class DataConfig
     public static string BrowserconfigIconsFolder { get; set; } = null!;
     public static string BrowserconfigPath { get; set; } = null!;
     public static string ManifestPath { get; set; } = null!;
-    public static string Test { get; set; } = null!;
+    public static string Test { get; set; } = string.Empty;
 
     //каталог с каталогами иконок для страниц
     public static string IconFoldersPath { get; set; } = null!;

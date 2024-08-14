@@ -5,7 +5,7 @@ public class Menu : ViewComponent
 {
     public IViewComponentResult Invoke()
     {
-        if (HttpContext.Request.Path.ToString().ToLower().Contains("admin"))
+        if (HttpContext.Request.Path.ToString().Contains("admin", StringComparison.CurrentCultureIgnoreCase))
         {
             return View("Admin");
         }

@@ -35,17 +35,17 @@ else
 {
     if (p.IconRel == "shortcut icon")
     {
-        <link rel="shortcut icon" type="image/x-icon" href="@DataConfig.IconsFolder@p.IconPath/@p.IconFileName" />
+        <link rel="shortcut icon" type="image/x-icon" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" />
     }
     else if (p.IconRel == "mask-icon")
     {
-        <link rel="mask-icon" type="image/svg+xml" href="@DataConfig.IconsFolder@p.IconPath/@p.IconFileName" color="#fffff" />
+        <link rel="mask-icon" type="image/svg+xml" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" color="#fffff" />
     }
     else
     {
         string widthHeight = @p.IconWidth + "x" + @p.IconHeight;
 
-        <link rel="@p.IconRel" type="@p.IconType" sizes="@widthHeight" href="@DataConfig.IconsFolder@p.IconPath/@p.IconFileName" />
+        <link rel="@p.IconRel" type="@p.IconType" sizes="@widthHeight" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" />
     }
 }
 

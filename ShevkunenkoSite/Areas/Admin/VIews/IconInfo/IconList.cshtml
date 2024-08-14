@@ -1,0 +1,117 @@
+﻿@model IconFileModel[]
+
+@{
+    string trStyle = string.Empty;
+
+    IconFileModel currentIcon;
+
+    Guid currentId;
+
+    if (Guid.TryParse(Context.Request.Query["iconId"], out currentId))
+    {
+        currentIcon = Model.First(ic => ic.IconFileModelId == currentId);
+    }
+    else
+    {
+        currentIcon = Model[0];
+    }
+
+}
+
+<img src="/images/pageicons/@currentIcon.IconPath@currentIcon.IconFileName" "
+     title="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
+     alt="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName" />
+
+<p class="fs-3">
+    <span class="fw-bold text-primary">
+        Каталог:
+    </span>
+    <span class="text_shadow">
+@DataConfig.IconsFolder
+    </span>
+</p>
+
+<p class="fs-3">
+    <span class="fw-bold text-primary">
+        Количество иконок:
+    </span>
+    <span class="text_shadow">
+@Model.Length
+    </span>
+</p>
+
+<div class="row mt-2">
+
+    <div class="col m-1 shadw">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-hover caption-top align-middle fs-5">
+
+                <thead>
+
+                    <tr class="text-start text-primary">
+                        <th scope="col" class="text-primary">Image</th>
+                        <th scope="col" class="text-primary">IconRel</th>
+                        <th scope="col" class="text-primary">File</th>
+                        <th scope="col" class="d-none d-md-table-cell text-primary">MimeType</th>
+                        <th scope="col" class="d-none d-md-table-cell text-primary">Size (bytes)</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+@foreach (var iconItem in Model)
+{
+    if (iconItem.IconFileModelId == currentId)
+    {
+        trStyle = "table-primary";
+    }
+    else
+    {
+        trStyle = string.Empty;
+    }
+
+                        <tr class="text-start text_shadow @trStyle">
+                            <td scope="col">
+                                <img src="/images/pageicons/@iconItem.IconPath@iconItem.IconFileName"
+                                     width="40" height="40"
+                                     title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
+                                     alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
+                            </td>
+                            <td scope="col">@iconItem.IconRel</td>
+                            <td scope="col">@iconItem.IconFileName</td>
+                            <td scope="col" class="d-none d-md-table-cell">@iconItem.IconMimeType</td>
+                            <td scope="col" class="d-none d-md-table-cell">@iconItem.IconFileSize</td>
+                            <td scope="col">
+                                <a class="btn btn-outline-primary p-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="IconInfo"
+                                   asp-action="Index"
+                                   asp-route-iconId="@iconItem.IconFileModelId"
+                                   title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">View</a>
+                            </td>
+                            <td scope="col">
+                                <a class="btn btn-outline-success p-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="IconInfo"
+                                   asp-action="EditIcon"
+                                   asp-route-iconId="@iconItem.IconFileModelId"
+                                   title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">Edit</a>
+                            </td>
+
+                        </tr>
+}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
