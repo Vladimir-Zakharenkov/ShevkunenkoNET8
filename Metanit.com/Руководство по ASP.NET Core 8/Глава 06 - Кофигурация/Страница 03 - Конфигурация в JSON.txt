@@ -61,3 +61,28 @@ builder.Configuration
 
 И если во втором файле есть настройки, которые имеют тот же ключ, что и настройки первого файла, 
 то происходит переопределение настроек: настройки из второго файла заменяют настройки первого.
+
+Но json может хранить также более сложные по составу объекты, например:
+
+{
+  "person": {"profile": {"name": "Tomas", "email":  "tom@gmail.com"}},
+  "company": { "name": "Microsoft"}
+}
+
+И чтобы обратиться к этой настройке, нам надо использовать знак двоеточия для обращения к иерархии настроек:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddJsonFile("config.json");
+ 
+app.Map("/", (IConfiguration appConfig) =>
+{
+    var personName = appConfig["person:profile:name"];
+    var companyName = appConfig["company:name"];
+    return $"{personName} - {companyName}";
+});
+ 
+app.Run();
+
+Конфигурация в XML
