@@ -86,3 +86,81 @@ app.Map("/", (IConfiguration appConfig) =>
 app.Run();
 
 Конфигурация в XML
+
+За использование конфигурации в XML-файле отвечает провайдер XmlConfigurationProvider. 
+Для загрузки xml-файла применяется метод расширения AddXmlFile().
+
+Итак, добавим в проект новый xml-файл, который назовем config.xml. Затем изменим его код на следующий:
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <person>Tom</person>
+  <company>Microsoft</company>
+</configuration>
+
+Здесь определены два элемента person и company, которые представляют конфигурационные настройки.
+
+Обратите внимание, что у файла xml в свойствах должно быть выставлено копирование при компиляции 
+в выходную папку приложения:
+
+https://metanit.com/sharp/aspnet6/pics/6.10.png
+
+Теперь используем этот файл:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddXmlFile("config.xml");
+ 
+app.Map("/", (IConfiguration appConfig) => $"{appConfig["person"]} - {appConfig["company"]}");
+ 
+app.Run();
+
+Если у нас файл конфигурации имеет разные уровни вложенности, например:
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <person>
+      <profile>
+          <name>Tomas</name>
+          <email>toma@gmail.com</email>
+      </profile>
+  </person>
+  <company>
+      <name>Microsoft</name>
+  </company>
+</configuration>
+
+то мы можем обращаться к этим уровням также, как и в файле json:
+
+app.Map("/", (IConfiguration appConfig) =>
+{
+    var personName = appConfig["person:profile:name"];
+    var companyName = appConfig["company:name"];
+    return $"{personName} - {companyName}";
+});
+
+Конфигурация в ini-файлах
+
+Для работы с конфигурацией INI применяется провайдер IniConfigurationProvider. 
+А для загрузки конфигурации из INI-файла нам надо использовать метод расширения AddIniFile().
+
+Например, добавим в проект текстовый файл и переименуем его в config.ini.
+
+https://metanit.com/sharp/aspnet6/pics/6.11.png
+
+Определим в этом файле следующее содержимое:
+
+person="Bob"
+company="Microsoft"
+
+Подключим конфигурацию из этого файла в приложении:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddIniFile("config.ini");
+ 
+app.Map("/", (IConfiguration appConfig) => $"{appConfig["person"]} - {appConfig["company"]}");
+ 
+app.Run();

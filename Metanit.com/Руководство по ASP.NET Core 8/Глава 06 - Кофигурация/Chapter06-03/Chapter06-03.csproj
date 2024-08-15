@@ -7,4 +7,13 @@
     <RootNamespace>Chapter06_03</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="config2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
