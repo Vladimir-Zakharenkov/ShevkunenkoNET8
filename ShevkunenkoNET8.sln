@@ -39,13 +39,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 06 - Кофиг�
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 01 - Основы конфигурации.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 01 - Основы конфигурации.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 02 - Нефайловые провайдеры конфигурации.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 02 - Нефайловые провайдеры конфигурации.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 03 - Конфигурация в JSON.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 03 - Конфигурация в JSON.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 04 - Конфигурация по умолчанию.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 04 - Конфигурация по умолчанию.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 05 - Анализ конфигурации.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Страница 05 - Анализ конфигурации.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-01", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-01\Chapter06-01.csproj", "{60E96745-39DE-41ED-A414-E8E342652ADC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-02", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-02\Chapter06-02.csproj", "{2F346098-6647-4B8E-BA89-F74E5EEEA7CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-03", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-03\Chapter06-03.csproj", "{90391051-10EE-4733-85D9-6B039E8B1354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-03", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-03\Chapter06-03.csproj", "{90391051-10EE-4733-85D9-6B039E8B1354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-04", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-04\Chapter06-04.csproj", "{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-05", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-05\Chapter06-05.csproj", "{FF128DD8-FF58-47B2-88D4-C07518B21B2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +87,14 @@ Global
 		{90391051-10EE-4733-85D9-6B039E8B1354}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90391051-10EE-4733-85D9-6B039E8B1354}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90391051-10EE-4733-85D9-6B039E8B1354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF128DD8-FF58-47B2-88D4-C07518B21B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF128DD8-FF58-47B2-88D4-C07518B21B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF128DD8-FF58-47B2-88D4-C07518B21B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF128DD8-FF58-47B2-88D4-C07518B21B2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +105,8 @@ Global
 		{60E96745-39DE-41ED-A414-E8E342652ADC} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{2F346098-6647-4B8E-BA89-F74E5EEEA7CF} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{90391051-10EE-4733-85D9-6B039E8B1354} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
+		{FDD0A654-64F6-4C8E-8F35-1CD87EE5E8C1} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
+		{FF128DD8-FF58-47B2-88D4-C07518B21B2A} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
