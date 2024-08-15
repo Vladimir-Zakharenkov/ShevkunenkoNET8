@@ -1,0 +1,63 @@
+Конфигурация в JSON
+
+Как правило, для хранения конфигурации в приложении ASP.NET Core используются файлы json. 
+Для работы с файлами json применяется провайдер JsonConfigurationProvider, 
+а для загрузки конфигурации из json применяется метод расширения AddJsonFile().
+
+По умолчанию в проекте уже есть файл конфигурации json - appsettings.json, 
+а также appsettings.Development.json, которые загружаются по умолчанию в приложении 
+и которые мы можем использовать для хранения конфигурационных настроек.
+
+https://metanit.com/sharp/aspnet6/pics/6.6.png
+
+Например, код файла appsettings.json:
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+Здесь определяются настройки логгирования (элемент "Logging") и разрешенные хосты (элемент "AllowedHosts"). 
+Одни элементы могут иметь вложенные элементы. Аналогичным образом можно задать другие необходимые 
+настройки или удалить ранее определенные.
+
+Однако в данном случае для примера возьмем новый файл json. Итак, добавим в проект новый файл config.json:
+
+https://metanit.com/sharp/aspnet6/pics/6.8.png
+
+И определим в нем следующее содержимое:
+
+{
+  "person": "Tom",
+  "company": "Microsoft"
+}
+
+Здесь задается два элемента с ключами "person" и "company". Используем эти настройки в приложении:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddJsonFile("config.json");
+ 
+app.Map("/", (IConfiguration appConfig) => $"{appConfig["person"]} - {appConfig["company"]}");
+ 
+app.Run();
+
+Для установки конфигурации из json-файла название файла передается в метод AddJsonFile().
+
+https://metanit.com/sharp/aspnet6/pics/6.9.png
+
+При определении настроек в файле json нам надо учитывать, что они должны иметь уникальные ключи. 
+Но при этом мы можем использовать для конфигурации более чем одного файла:
+
+builder.Configuration
+                .AddJsonFile("config.json")
+                .AddJsonFile("otherconfig.json");
+
+И если во втором файле есть настройки, которые имеют тот же ключ, что и настройки первого файла, 
+то происходит переопределение настроек: настройки из второго файла заменяют настройки первого.
