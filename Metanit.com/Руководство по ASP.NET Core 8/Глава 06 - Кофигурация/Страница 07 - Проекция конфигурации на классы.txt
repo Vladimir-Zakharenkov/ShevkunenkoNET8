@@ -1,0 +1,31 @@
+Проекция конфигурации на классы
+
+Фреймворк ASP.NET Core позволяет проецировать конфигурационные настройки на классы C#.
+
+Например, определим в проекте новый файл person.json, который будет хранить данные пользователя:
+
+{
+  "name": "Tom",
+  "age": "22"
+}
+
+Под эти данные определим в проекте класс Person:
+
+public class Person
+{
+    public string Name { get; set; } = "";
+    public int Age { get; set; } = 0;
+}
+
+Теперь свяжем конфигурацию из файла person.json с объектом класса Person:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddJsonFile("person.json");
+var tom = new Person();
+app.Configuration.Bind(tom);    // связываем конфигурацию с объектом tom
+ 
+app.Run(async (context) => await context.Response.WriteAsync($"{tom.Name} - {tom.Age}"));
+ 
+app.Run();

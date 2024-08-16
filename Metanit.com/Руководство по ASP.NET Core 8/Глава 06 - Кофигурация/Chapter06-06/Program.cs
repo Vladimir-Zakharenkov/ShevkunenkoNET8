@@ -1,6 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+using Chapter06_06;
+
+var builder = WebApplication.CreateBuilder();
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+builder.Configuration.AddTextFile("config.txt");
+
+app.Map("/", (IConfiguration appConfig) => $"{appConfig["name"]} - {appConfig["age"]}");
 
 app.Run();

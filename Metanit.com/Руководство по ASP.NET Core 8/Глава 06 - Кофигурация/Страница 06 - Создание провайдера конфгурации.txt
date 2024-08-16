@@ -50,3 +50,84 @@ public class TextConfigurationProvider : ConfigurationProvider
 
 Далее нам надо обращаться к этому провайдеру. Для этого определим класс источника конфигурации, 
 который назовем TextConfigurationSource:
+
+public class TextConfigurationSource : IConfigurationSource
+{
+    public string FilePath { get; }
+    public TextConfigurationSource(string filename)
+    {
+        FilePath = filename;
+    }
+    public IConfigurationProvider Build(IConfigurationBuilder builder)
+    {
+        // получаем полный путь для файла
+        string filePath = builder.GetFileProvider().GetFileInfo(FilePath).PhysicalPath;
+        return new TextConfigurationProvider(filePath);
+    }
+}
+
+Источник конфигурации должен реализовать интерфейс IConfigurationSource, и в частности, его метод Build. 
+В этот метод в качестве параметра передается строитель конфигурации.
+
+В данном случае этот объект нам позволяет получить полный путь к текстовому файлу. 
+Краткое название файла (относительный путь) передается в класс источника через конструктор 
+и хранится в свойстве FilePath. После создания полного пути к файлу этот путь передается 
+в конструктор TextConfigurationProvider.
+
+Чтобы задействовать функционал источника конфигурации создадим вспомогательный класс TextConfigurationExtensions:
+
+public static class TextConfigurationExtensions
+{
+    public static IConfigurationBuilder AddTextFile(
+        this IConfigurationBuilder builder, string path)
+    {
+        if (builder == null)
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
+        if (string.IsNullOrEmpty(path))
+        {
+            throw new ArgumentException("Путь к файлу не указан");
+        }
+ 
+        var source = new TextConfigurationSource(path);
+        builder.Add(source);
+        return builder;
+    }
+}
+
+Этот класс определяет для объекта IConfigurationBuilder метод расширения AddTextFile(), 
+в котором создается источник конфигурации TextConfigurationSource, который затем 
+добавляется к строителю конфигурации:
+
+var source = new TextConfigurationSource(path);
+builder.Add(source);
+
+Теперь добавим в проект сам файл конфигурации. Пусть он будет называться config.txt 
+и будет иметь следующее содержимое:
+
+name
+Tom
+age
+33
+
+То есть на первой строке идет ключ настройки, а на второй ее значение и так далее.
+
+Таким образом, у нас получится следующая структура проекта:
+
+https://metanit.com/sharp/aspnet6/pics/6.15.png
+
+И в конце изменим код файла Program.cs для использования конфигурации из текстового файла:
+
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+ 
+builder.Configuration.AddTextFile("config.txt");
+ 
+app.Map("/",(IConfiguration appConfig) => $"{appConfig["name"]} - {appConfig["age"]}");
+ 
+app.Run();
+
+И при обращении к приложению будут использованы настройки из текстового файла:
+
+https://metanit.com/sharp/aspnet6/pics/6.16.png
