@@ -1,10 +1,16 @@
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+#region Configuration
+
 ConfigurationManager configuration = builder.Configuration;
+
+configuration.AddJsonFile("DataConfig.json");
 
 configuration.Bind("ProjectData", new DataConfig());
 
 IWebHostEnvironment environment = builder.Environment;
+
+#endregion
 
 #region Add services to the container
 

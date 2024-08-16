@@ -1,0 +1,13 @@
+{
+  "ProjectData": {
+    "IconsFolder": "/images/pageicons/",
+    "BrowserconfigIconsFolder": "/images/browserconfig",
+    "ImageForMsapplication": "ms-icon-144x144.png",
+    "IconItem": "icon-96.png",
+    "BrowserconfigPath": "/browserconfigs",
+    "ManifestPath": "/manifests",
+    "IconFoldesPath": "/wwwroot/images/pageicons/",
+    "MovieFoldersPath": "F:\\site-video",
+    "Test": "appsetting"
+  }
+}
