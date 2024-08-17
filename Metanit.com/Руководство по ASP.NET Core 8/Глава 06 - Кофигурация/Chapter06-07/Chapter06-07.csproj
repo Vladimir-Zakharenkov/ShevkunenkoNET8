@@ -7,4 +7,12 @@
     <RootNamespace>Chapter06_07</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Update="person2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
