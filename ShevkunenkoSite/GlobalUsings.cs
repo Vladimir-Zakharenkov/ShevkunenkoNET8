@@ -1,4 +1,5 @@
 ﻿global using ShevkunenkoSite;
+global using ShevkunenkoSite.Models;
 global using ShevkunenkoSite.Models.DataModels;
 global using ShevkunenkoSite.Models.ViewModels;
 global using ShevkunenkoSite.Services;

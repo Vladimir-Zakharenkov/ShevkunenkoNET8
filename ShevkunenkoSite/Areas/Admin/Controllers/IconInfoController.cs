@@ -1,8 +1,4 @@
-﻿using MetadataExtractor;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -511,7 +507,35 @@ public class IconInfoController(IIconFileRepository iconContext) : Controller
 
             iconUpdate.IconPath = iconItem.EditIcon.IconPath;
             iconUpdate.IconRel = iconItem.EditIcon.IconRel;
-            iconUpdate.IconType = iconItem.EditIcon.IconType;
+            iconUpdate.IconType = iconUpdate.IconMimeType;
+
+            await iconContext.SaveChangesInIconAsync();
+
+            #region Удалить старый файл иконки
+
+            string pathForIconToDelete = Path.Join(System.IO.Directory.GetCurrentDirectory(), DataConfig.IconFoldersPath, iconItem.EditIcon.IconPath, iconItem.EditIcon.IconFileName);
+
+            FileInfo fileInfDelete = new(pathForIconToDelete);
+
+            if (fileInfDelete.Exists)
+            {
+                fileInfDelete.Delete();
+            }
+
+            #endregion
+
+            #region Записать новый файл иконки
+
+            string newPath = Path.Join(System.IO.Directory.GetCurrentDirectory(), DataConfig.IconFoldersPath, iconItem.EditIcon.IconPath, newNameForIconFormFile);
+
+            FileInfo fileInfMove = new(path);
+
+            if (fileInfMove.Exists)
+            {
+                fileInfMove.MoveTo(newPath, true);
+            }
+
+            #endregion
 
             return RedirectToAction(nameof(Index), new { iconId = iconItem.EditIcon.IconFileModelId });
         }

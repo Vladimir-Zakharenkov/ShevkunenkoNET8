@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Services;
+﻿// Ignore Spelling: Msapplication
+
+namespace ShevkunenkoSite.Models;
 
 public class DataConfig
 {

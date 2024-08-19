@@ -170,7 +170,7 @@ public class AllVideoController : Controller
 
             IsPartsMoreOne = false,
 
-            PageHeadTitle = "<h1 class=\"fs-4 text_shadow\">ФИЛЬМЫ И ПРОГРАММЫ О<br /><span class=\"fs-2\">СЕРГЕЕ ШЕВКУНЕНКО</span></h1>"
+            PageHeadTitle = "ФИЛЬМЫ И ПРОГРАММЫ О СЕРГЕЕ ШЕВКУНЕНКО"
         });
 
     [Route("video-na-saite/znakomye-o-sergee-shevkunenko")]

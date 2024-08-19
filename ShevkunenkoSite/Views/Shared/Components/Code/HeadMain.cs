@@ -13,13 +13,10 @@ public class HeadMain(IPageInfoRepository pageInfoContext, IIconFileRepository i
             iconList = await iconFileContext.IconFiles.Where(icon => icon.IconPath == "main/").AsNoTracking().ToListAsync();
         }
 
-        IconFileModel iconItem = iconList.First(icon => icon.IconFileName == @DataConfig.IconItem);
-
         return View(new HeadViewModel
         {
             PageInfo = pageInfoModel,
             IconList = iconList,
-            IconItem = iconItem
         });
     }
 }

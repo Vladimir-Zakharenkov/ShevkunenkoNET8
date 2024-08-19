@@ -6,7 +6,7 @@ public class DetailsPageViewModel
 
     public IconFileModel IconItem { get; set; } = new();
 
-    public PageInfoModel[] LinksOnPages { get; set; } =Array.Empty<PageInfoModel>();
+    public PageInfoModel[] LinksOnPages { get; set; } = [];
 
-    public PageInfoModel[] LinksFromPages { get; set; } = Array.Empty<PageInfoModel>();
+    public PageInfoModel[] LinksFromPages { get; set; } = [];
 }
