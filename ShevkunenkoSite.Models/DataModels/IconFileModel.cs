@@ -17,12 +17,12 @@ public class IconFileModel
 
     [DataType(DataType.Text)]
     [Display(Name = "Расширение файла иконки :")]
-    [Length(2, 5, ErrorMessage = "Расширение от 1 до 5 символов")]
+    [Length(2, 5, ErrorMessage = "Расширение от 2 до 5 символов")]
     public string IconFileNameExtension { get; set; } = "png";
 
     [DataType(DataType.Text)]
     [Display(Name = "MimeType файла иконки :")]
-    [Length(2, 5, ErrorMessage = "MimeType от 6 до 11 символов")]
+    [Length(6, 11, ErrorMessage = "MimeType от 6 до 11 символов")]
     public string IconMimeType { get; set; } = "image/png";
 
     [DataType(DataType.Text)]

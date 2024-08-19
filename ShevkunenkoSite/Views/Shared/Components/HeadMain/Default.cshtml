@@ -14,7 +14,6 @@
 <meta name="google-site-verification" content="JaJ5pHXzt-lZczZWIHZZyCH-4mSDA1o5w8mytFI0uqQ" />
 <meta name="yandex-verification" content="df8caf709ed9aba7" />
 <meta name="HandheldFriendly" content="True" />
-
 <link rel="canonical" href="@sitePath" />
 
 @if (!string.IsNullOrEmpty(Model.PageInfo.ImageFileModel.WebImageFileName))
@@ -35,11 +34,11 @@ else
 {
     if (p.IconRel == "shortcut icon")
     {
-        <link rel="shortcut icon" type="image/x-icon" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" />
+        <link rel="shortcut icon" type="image/x-icon" sizes="16x16 20x20 24x24 32x32 40x40 48x48 64x64 256x256" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" />
     }
     else if (p.IconRel == "mask-icon")
     {
-        <link rel="mask-icon" type="image/svg+xml" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" color="#fffff" />
+        <link rel="mask-icon" type="image/svg+xml" sizes="any" href="@DataConfig.IconsFolder@p.IconPath@p.IconFileName" color="#fffff" />
     }
     else
     {

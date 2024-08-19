@@ -17,20 +17,20 @@
     }
 }
 
-<img src="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
+<img class="maxwidth300px mt-2"
+     src="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
      title="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName"
      alt="@DataConfig.IconsFolder@currentIcon.IconPath@currentIcon.IconFileName" />
 
-<p class="fs-3">
-    <span class="fw-bold text-primary">
-        Каталог:
-    </span>
-    <span class="text_shadow">
-        @DataConfig.IconsFolder
-    </span>
+<p class="fs-4 text_shadow">
+    @DataConfig.IconsFolder@currentIcon.IconPath
+</p>
+<p class="fs-4 text_shadow">
+    @currentIcon.IconFileName
 </p>
 
-<p class="fs-3">
+
+<p class="fs-4">
     <span class="fw-bold text-primary">
         Количество иконок:
     </span>
@@ -39,78 +39,70 @@
     </span>
 </p>
 
-<div class="row mt-2">
+<div class="table-responsive">
 
-    <div class="col m-1 shadw">
+    <table class="table table-sm table-hover caption-top align-middle fs-5">
 
-        <div class="table-responsive">
+        <thead>
 
-            <table class="table table-sm table-hover caption-top align-middle fs-5">
+            <tr class="text-start text-primary">
+                <th scope="col" class="text-primary">Image</th>
+                <th scope="col" class="d-none d-md-table-cell text-primary">IconRel</th>
+                <th scope="col" class="text-primary">File</th>
+                <th scope="col" class="d-none d-lg-table-cell text-primary">MimeType</th>
+                <th scope="col" class="d-none d-md-table-cell text-primary">Size</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
 
-                <thead>
+        </thead>
 
-                    <tr class="text-start text-primary">
-                        <th scope="col" class="text-primary">Image</th>
-                        <th scope="col" class="text-primary">IconRel</th>
-                        <th scope="col" class="text-primary">File</th>
-                        <th scope="col" class="d-none d-md-table-cell text-primary">MimeType</th>
-                        <th scope="col" class="d-none d-md-table-cell text-primary">Size (bytes)</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
+        <tbody>
 
-                </thead>
+            @foreach (var iconItem in Model)
+            {
+                if (iconItem.IconFileModelId == currentId)
+                {
+                    trStyle = "table-primary";
+                }
+                else
+                {
+                    trStyle = string.Empty;
+                }
 
-                <tbody>
+                <tr class="text-start text_shadow @trStyle">
+                    <td scope="col">
+                        <img class="maxwidth40px"
+                             src="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
+                             title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
+                             alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
+                    </td>
+                    <td scope="col" class="d-none d-md-table-cell">@iconItem.IconRel</td>
+                    <td scope="col">@iconItem.IconFileName</td>
+                    <td scope="col" class="d-none d-lg-table-cel">@iconItem.IconMimeType</td>
+                    <td scope="col" class="d-none d-md-table-cell">@iconItem.IconFileSize</td>
+                    <td scope="col">
+                        <a class="btn btn-outline-primary  minwidth50px shadw"
+                           asp-area="Admin"
+                           asp-controller="IconInfo"
+                           asp-action="Index"
+                           asp-route-iconId="@iconItem.IconFileModelId"
+                           title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">View</a>
+                    </td>
+                    <td scope="col">
+                        <a class="btn btn-outline-success minwidth50px shadw"
+                           asp-area="Admin"
+                           asp-controller="IconInfo"
+                           asp-action="EditIcon"
+                           asp-route-iconId="@iconItem.IconFileModelId"
+                           title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">Edit</a>
+                    </td>
 
-                    @foreach (var iconItem in Model)
-                    {
-                        if (iconItem.IconFileModelId == currentId)
-                        {
-                            trStyle = "table-primary";
-                        }
-                        else
-                        {
-                            trStyle = string.Empty;
-                        }
+                </tr>
+            }
 
-                        <tr class="text-start text_shadow @trStyle">
-                            <td scope="col">
-                                <img src="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
-                                     width="40" height="40"
-                                     title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
-                                     alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
-                            </td>
-                            <td scope="col">@iconItem.IconRel</td>
-                            <td scope="col">@iconItem.IconFileName</td>
-                            <td scope="col" class="d-none d-md-table-cell">@iconItem.IconMimeType</td>
-                            <td scope="col" class="d-none d-md-table-cell">@iconItem.IconFileSize</td>
-                            <td scope="col">
-                                <a class="btn btn-outline-primary p-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="IconInfo"
-                                   asp-action="Index"
-                                   asp-route-iconId="@iconItem.IconFileModelId"
-                                   title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">View</a>
-                            </td>
-                            <td scope="col">
-                                <a class="btn btn-outline-success p-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="IconInfo"
-                                   asp-action="EditIcon"
-                                   asp-route-iconId="@iconItem.IconFileModelId"
-                                   title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">Edit</a>
-                            </td>
+        </tbody>
 
-                        </tr>
-                    }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
+    </table>
 
 </div>

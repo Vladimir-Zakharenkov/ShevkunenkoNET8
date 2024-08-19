@@ -12160,6 +12160,14 @@ body {
   min-width: 180px;
 }
 
+.maxwidth40px {
+  max-width: 40px;
+}
+
+.minwidth50px {
+  min-width: 50px;
+}
+
 .maxwidth300px {
   max-width: 300px;
 }
