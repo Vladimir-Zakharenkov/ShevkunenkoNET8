@@ -46,13 +46,14 @@
         <thead>
 
             <tr class="text-start text-primary">
+
                 <th scope="col" class="text-primary">Image</th>
                 <th scope="col" class="d-none d-md-table-cell text-primary">IconRel</th>
                 <th scope="col" class="text-primary">File</th>
-                <th scope="col" class="d-none d-lg-table-cell text-primary">MimeType</th>
-                <th scope="col" class="d-none d-md-table-cell text-primary">Size</th>
+                <th scope="col" class="d-none d-lg-table-cell text-primary">Size</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+
             </tr>
 
         </thead>
@@ -71,31 +72,31 @@
                 }
 
                 <tr class="text-start text_shadow @trStyle">
+
                     <td scope="col">
                         <img class="maxwidth40px"
-                             src="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
-                             title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
-                             alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
+                                src="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
+                                title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName"
+                                alt="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName" />
                     </td>
                     <td scope="col" class="d-none d-md-table-cell">@iconItem.IconRel</td>
                     <td scope="col">@iconItem.IconFileName</td>
-                    <td scope="col" class="d-none d-lg-table-cel">@iconItem.IconMimeType</td>
-                    <td scope="col" class="d-none d-md-table-cell">@iconItem.IconFileSize</td>
+                    <td scope="col" class="d-none d-lg-table-cell">@iconItem.IconFileSize</td>
                     <td scope="col">
                         <a class="btn btn-outline-primary  minwidth50px shadw"
-                           asp-area="Admin"
-                           asp-controller="IconInfo"
-                           asp-action="Index"
-                           asp-route-iconId="@iconItem.IconFileModelId"
-                           title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">View</a>
+                            asp-area="Admin"
+                            asp-controller="IconInfo"
+                            asp-action="Index"
+                            asp-route-iconId="@iconItem.IconFileModelId"
+                            title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">View</a>
                     </td>
                     <td scope="col">
                         <a class="btn btn-outline-success minwidth50px shadw"
-                           asp-area="Admin"
-                           asp-controller="IconInfo"
-                           asp-action="EditIcon"
-                           asp-route-iconId="@iconItem.IconFileModelId"
-                           title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">Edit</a>
+                            asp-area="Admin"
+                            asp-controller="IconInfo"
+                            asp-action="EditIcon"
+                            asp-route-iconId="@iconItem.IconFileModelId"
+                            title="@DataConfig.IconsFolder@iconItem.IconPath@iconItem.IconFileName">Edit</a>
                     </td>
 
                 </tr>

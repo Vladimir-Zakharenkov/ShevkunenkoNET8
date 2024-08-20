@@ -1,38 +1,21 @@
 ﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
-using Microsoft.AspNetCore.Authorization;
-using ShevkunenkoSite.Models;
-using System.Collections.Generic;
-using System.Linq;
-
 // Имена методов не начинать со слова Page
 [Area("Admin")]
 [Authorize]
-public class PageInfoController : Controller
+public class PageInfoController(
+    IPageInfoRepository pageInfoContext,
+    IIconFileRepository iconContext,
+    IImageFileRepository imageContext,
+    IBackgroundFotoRepository backgroundContext) : Controller
 {
-    private readonly IPageInfoRepository _pageInfoContext;
-    private readonly IIconFileRepository _iconContext;
-    private readonly IImageFileRepository _imageContext;
-    private readonly IBackgroundFotoRepository _backgroundContext;
-    public PageInfoController(
-        IPageInfoRepository pageInfoContext,
-        IIconFileRepository iconContext,
-        IImageFileRepository imageContext,
-        IBackgroundFotoRepository backgroundContext)
-    {
-        _pageInfoContext = pageInfoContext;
-        _iconContext = iconContext;
-        _imageContext = imageContext;
-        _backgroundContext = backgroundContext;
-    }
-
     #region Список страниц сайта
 
     public int pagesPerPage = 10;
 
     public async Task<ViewResult> Index(string? pageTitleSearchString, string? pageDescriptionSearchString, string? keyWordSearchString, bool pageCard = false, int pageNumber = 1)
     {
-        var allPages = from p in _pageInfoContext.PagesInfo
+        var allPages = from p in pageInfoContext.PagesInfo
                        select p;
 
         if (!string.IsNullOrEmpty(pageTitleSearchString))
@@ -107,7 +90,7 @@ public class PageInfoController : Controller
     {
         if (pageId.HasValue)
         {
-            PageInfoModel pageItem = await _pageInfoContext.PagesInfo
+            PageInfoModel pageItem = await pageInfoContext.PagesInfo
                 .AsNoTracking()
                 .FirstAsync(p => p.PageInfoModelId == pageId);
 
@@ -116,10 +99,12 @@ public class PageInfoController : Controller
                 return RedirectToAction(nameof(Index));
             }
 
-            IconFileModel iconItem = await _iconContext.IconFiles
+           var iconItem2 = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == pageItem.PageIconPath);
+
+            IconFileModel iconItem = await iconContext.IconFiles
                 .FirstAsync(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
 
-            iconItem ??= await _iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
+            iconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
 
             #region Ссылки на страницы
 
@@ -135,7 +120,7 @@ public class PageInfoController : Controller
 
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
-                    linksOnPages = await _pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
+                    linksOnPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
 
                     inList.AddRange(linksOnPages);
                 }
@@ -157,7 +142,7 @@ public class PageInfoController : Controller
             {
                 for (int i = 0; i < pageFilters.Length; i++)
                 {
-                    linksFromPages = await _pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
+                    linksFromPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
 
                     outList.AddRange(linksFromPages);
                 }
@@ -198,63 +183,63 @@ public class PageInfoController : Controller
 
             if (addItem.ImageFileFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(i => i.ImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.IconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName);
 
                     addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
@@ -278,40 +263,40 @@ public class PageInfoController : Controller
 
             if (addItem.BackgroundFormFile != null)
             {
-                if (await _backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName);
 
                     addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName);
 
                     addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName);
 
                     addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName);
 
                     addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
                 else
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
 
                     addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
             }
             else
             {
-                var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
+                var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
 
                 addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
             }
@@ -448,7 +433,7 @@ public class PageInfoController : Controller
             addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
             addItem.PageItem.RefPages = addItem.PageItem.RefPages.Trim();
 
-            if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await _pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
+            if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
             {
                 ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addItem.PageItem.PagePathNickName}» уже существует");
 
@@ -466,16 +451,16 @@ public class PageInfoController : Controller
                 checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData;
             }
 
-            if (await _pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
+            if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
             {
                 ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData}» уже существует");
 
                 return View();
             }
 
-            await _pageInfoContext.AddNewPageAsync(addItem.PageItem);
+            await pageInfoContext.AddNewPageAsync(addItem.PageItem);
 
-            PageInfoModel newPage = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == checkPageFullPathWithData);
+            PageInfoModel newPage = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == checkPageFullPathWithData);
 
             return RedirectToAction("DetailsPage", new { pageId = newPage.PageInfoModelId, Area = "Admin" });
         }
@@ -496,22 +481,22 @@ public class PageInfoController : Controller
 
         if (pageId.HasValue)
         {
-            if (await _pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
+            if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
             {
-                editPage.PageItem = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == pageId);
+                editPage.PageItem = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == pageId);
             }
             else
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            editPage.IconItem = await _iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
+            editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
 
-            editPage.IconItem ??= await _iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
+            editPage.IconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
 
             editPage.ImageFileFormFile = null;
 
-            editPage.LinksOnPages = await _pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(editPage.PageItem.PageInfoModelId.ToString())).ToArrayAsync();
+            editPage.LinksOnPages = await pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(editPage.PageItem.PageInfoModelId.ToString())).ToArrayAsync();
 
             return View(editPage);
         }
@@ -527,75 +512,75 @@ public class PageInfoController : Controller
     {
         if (ModelState.IsValid)
         {
-            PageInfoModel pageUpdate = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editPage.PageItem.PageInfoModelId);
+            PageInfoModel pageUpdate = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editPage.PageItem.PageInfoModelId);
 
-            IconFileModel editPageiconItem = await _iconContext.IconFiles
+            IconFileModel editPageiconItem = await iconContext.IconFiles
                 .FirstAsync(icon => icon.IconPath == pageUpdate.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
 
-            editPageiconItem ??= await _iconContext.IconFiles
+            editPageiconItem ??= await iconContext.IconFiles
                 .FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
 
             #region Изменить картинку для страницы
 
             if (editPage.ImageFileFormFile != null)
             {
-                if (await _imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
-                else if (await _imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var newImage = await _imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName);
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName);
 
                     pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
                 }
@@ -617,33 +602,33 @@ public class PageInfoController : Controller
 
             if (editPage.BackgroundFormFile != null)
             {
-                if (await _backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName);
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName);
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName);
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await _backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName);
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
                 else
                 {
-                    var newBackground = await _backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == "FotoPlenka.png");
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == "FotoPlenka.png");
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
@@ -757,7 +742,7 @@ public class PageInfoController : Controller
                 pageUpdate.Manifest = "admin.json";
             }
 
-            await _pageInfoContext.SaveChangesInPageAsync();
+            await pageInfoContext.SaveChangesInPageAsync();
 
             return RedirectToAction("DetailsPage", new { pageId = pageUpdate.PageInfoModelId, Area = "Admin" });
         }
@@ -777,9 +762,9 @@ public class PageInfoController : Controller
 
         if (pageId.HasValue)
         {
-            if (await _pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
+            if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
             {
-                deletePage = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == pageId);
+                deletePage = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == pageId);
             }
             else
             {
@@ -800,7 +785,7 @@ public class PageInfoController : Controller
     {
         if (deletePage != null)
         {
-            await _pageInfoContext.DeletePageAsync(deletePage.PageInfoModelId);
+            await pageInfoContext.DeletePageAsync(deletePage.PageInfoModelId);
 
             return RedirectToAction(nameof(Index));
         }
