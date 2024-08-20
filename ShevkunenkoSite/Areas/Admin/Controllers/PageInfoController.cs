@@ -99,7 +99,8 @@ public class PageInfoController(
                 return RedirectToAction(nameof(Index));
             }
 
-           var iconItem2 = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == pageItem.PageIconPath);
+            var temp = pageItem.PageIconPath;
+            var temp2 = DataConfig.IconItem;
 
             IconFileModel iconItem = await iconContext.IconFiles
                 .FirstAsync(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
