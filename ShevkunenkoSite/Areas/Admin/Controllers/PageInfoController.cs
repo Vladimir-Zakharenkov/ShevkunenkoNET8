@@ -13,6 +13,8 @@ public class PageInfoController(
 
     public int pagesPerPage = 10;
 
+    private static readonly char[] separator = [','];
+
     public async Task<ViewResult> Index(string? pageTitleSearchString, string? pageDescriptionSearchString, string? keyWordSearchString, bool pageCard = false, int pageNumber = 1)
     {
         var allPages = from p in pageInfoContext.PagesInfo
@@ -88,6 +90,8 @@ public class PageInfoController(
 
     public async Task<IActionResult> DetailsPage(Guid? pageId)
     {
+        IconFileModel iconItem;
+
         if (pageId.HasValue)
         {
             PageInfoModel pageItem = await pageInfoContext.PagesInfo
@@ -99,25 +103,29 @@ public class PageInfoController(
                 return RedirectToAction(nameof(Index));
             }
 
-            var temp = pageItem.PageIconPath;
-            var temp2 = DataConfig.IconItem;
+            if (await iconContext.IconFiles
+                .Where(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem).AnyAsync())
+            {
+                iconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
+            }
+            else
+            {
+                iconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
+            }
 
-            IconFileModel iconItem = await iconContext.IconFiles
-                .FirstAsync(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
-
-            iconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
 
             #region Ссылки на страницы
 
-            string[] pageFiltersOut = Array.Empty<string>();
+            string[] pageFiltersOut = [];
 
-            List<PageInfoModel> inList = new();
+            List<PageInfoModel> inList = [];
 
-            PageInfoModel[] linksOnPages = Array.Empty<PageInfoModel>();
+            PageInfoModel[] linksOnPages = [];
 
             if (!string.IsNullOrEmpty(pageItem.PageFilterOut))
             {
-                pageFiltersOut = pageItem.PageFilterOut.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                pageFiltersOut = pageItem.PageFilterOut.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
@@ -131,13 +139,13 @@ public class PageInfoController(
 
             #endregion
 
-            #region Сылающиеся страницы
+            #region Ссылающиеся страницы
 
-            string[] pageFilters = pageItem.PageFilter.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] pageFilters = pageItem.PageFilter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> outList = new();
+            List<PageInfoModel> outList = [];
 
-            PageInfoModel[] linksFromPages = Array.Empty<PageInfoModel>();
+            PageInfoModel[] linksFromPages = [];
 
             if (!string.IsNullOrEmpty(pageItem.PageFilter))
             {
@@ -148,7 +156,7 @@ public class PageInfoController(
                     outList.AddRange(linksFromPages);
                 }
 
-                linksFromPages = outList.ToArray();
+                linksFromPages = [.. outList];
             }
 
             #endregion
@@ -306,21 +314,21 @@ public class PageInfoController(
 
             if (addItem.PageItem.OgType == "website")
             {
-                addItem.PageItem.PageIconPath = "/main";
+                addItem.PageItem.PageIconPath = "main/";
                 addItem.PageItem.BrowserConfig = "main.xml";
                 addItem.PageItem.BrowserConfigFolder = "/main";
                 addItem.PageItem.Manifest = "main.json";
             }
             else if (addItem.PageItem.OgType == "movie")
             {
-                addItem.PageItem.PageIconPath = "/movie";
+                addItem.PageItem.PageIconPath = "movie/";
                 addItem.PageItem.BrowserConfig = "movie.xml";
                 addItem.PageItem.BrowserConfigFolder = "/movie";
                 addItem.PageItem.Manifest = "movie.json";
             }
             else
             {
-                addItem.PageItem.PageIconPath = "/main";
+                addItem.PageItem.PageIconPath = "main/";
                 addItem.PageItem.BrowserConfig = "main.xml";
                 addItem.PageItem.BrowserConfigFolder = "/main";
                 addItem.PageItem.Manifest = "main.json";
@@ -328,7 +336,7 @@ public class PageInfoController(
 
             if (addItem.PageItem.PageArea == "admin")
             {
-                addItem.PageItem.PageIconPath = "/admin";
+                addItem.PageItem.PageIconPath = "admin/";
                 addItem.PageItem.BrowserConfig = "admin.xml";
                 addItem.PageItem.BrowserConfigFolder = "/admin";
                 addItem.PageItem.Manifest = "admin.json";
@@ -385,7 +393,7 @@ public class PageInfoController(
             {
                 if (string.IsNullOrWhiteSpace(addItem.PageItem.PageLoc) || string.IsNullOrEmpty(addItem.PageItem.PageLoc))
                 {
-                    ModelState.AddModelError("PageItem.PageLoc", "Введите адрес старницы без области");
+                    ModelState.AddModelError("PageItem.PageLoc", "Введите адрес страницы без области");
 
                     return View();
                 }
@@ -493,7 +501,7 @@ public class PageInfoController(
 
             editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
 
-            editPage.IconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
+            editPage.IconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == @DataConfig.IconItem);
 
             editPage.ImageFileFormFile = null;
 
@@ -515,11 +523,19 @@ public class PageInfoController(
         {
             PageInfoModel pageUpdate = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editPage.PageItem.PageInfoModelId);
 
-            IconFileModel editPageiconItem = await iconContext.IconFiles
-                .FirstAsync(icon => icon.IconPath == pageUpdate.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
+            IconFileModel editPageiconItem;
 
-            editPageiconItem ??= await iconContext.IconFiles
-                .FirstAsync(icon => icon.IconPath == "/main" && icon.IconFileName == @DataConfig.IconItem);
+            if (await iconContext.IconFiles
+                .Where(icon => icon.IconPath == pageUpdate.PageIconPath && icon.IconFileName == DataConfig.IconItem).AnyAsync())
+            {
+                editPageiconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == pageUpdate.PageIconPath && icon.IconFileName == DataConfig.IconItem);
+            }
+            else
+            {
+                editPageiconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
+            }
 
             #region Изменить картинку для страницы
 
@@ -714,7 +730,7 @@ public class PageInfoController(
             if (editPage.PageItem.OgType == "website")
             {
                 pageUpdate.OgType = "website";
-                pageUpdate.PageIconPath = "/main";
+                pageUpdate.PageIconPath = "main/";
                 pageUpdate.BrowserConfig = "main.xml";
                 pageUpdate.BrowserConfigFolder = "/main";
                 pageUpdate.Manifest = "main.json";
@@ -722,14 +738,14 @@ public class PageInfoController(
             else if (editPage.PageItem.OgType == "movie")
             {
                 pageUpdate.OgType = "movie";
-                pageUpdate.PageIconPath = "/movie";
+                pageUpdate.PageIconPath = "movie/";
                 pageUpdate.BrowserConfig = "movie.xml";
                 pageUpdate.BrowserConfigFolder = "/movie";
                 pageUpdate.Manifest = "movie.json";
             }
             else
             {
-                pageUpdate.PageIconPath = "/main";
+                pageUpdate.PageIconPath = "main/";
                 pageUpdate.BrowserConfig = "main.xml";
                 pageUpdate.BrowserConfigFolder = "/main";
                 pageUpdate.Manifest = "main.json";
@@ -737,7 +753,7 @@ public class PageInfoController(
 
             if (pageUpdate.PageArea == "/admin")
             {
-                pageUpdate.PageIconPath = "/admin";
+                pageUpdate.PageIconPath = "admin/";
                 pageUpdate.BrowserConfig = "admin.xml";
                 pageUpdate.BrowserConfigFolder = "/admin";
                 pageUpdate.Manifest = "admin.json";
@@ -800,7 +816,13 @@ public class PageInfoController(
 
     #region Секция для тестов
 
+    //public async Task<IActionResult> ChangeIconPath()
+    //{
+    //    foreach (var item in pageInfoContext.PagesInfo)
+    //    {
 
+    //    }
+    //}
 
     #endregion
 }

@@ -2,8 +2,6 @@
 
 public class Shevkunenko(IImageFileRepository imageContext) : Controller
 {
-    private readonly IImageFileRepository _imageContext = imageContext;
-
     public IActionResult Index() => View();
 
     public IActionResult Biography() => View();
@@ -12,7 +10,7 @@ public class Shevkunenko(IImageFileRepository imageContext) : Controller
 
     public async Task<IActionResult> PhotoAlbum(Guid? imageId, int imagesPerPage = 12, int pageNumber = 1)
     {
-        var allPhotoes = from m in _imageContext.ImageFiles
+        var allPhotoes = from m in imageContext.ImageFiles
             .OrderBy(p => p.WebImageFileName)
             .Where(p => p.SearchFilter
             .Contains("Криминальная звезда"))
