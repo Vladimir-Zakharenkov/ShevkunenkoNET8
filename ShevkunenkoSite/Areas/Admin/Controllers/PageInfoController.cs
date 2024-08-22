@@ -114,7 +114,6 @@ public class PageInfoController(
                 iconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
-
             #region Ссылки на страницы
 
             string[] pageFiltersOut = [];

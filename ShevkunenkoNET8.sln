@@ -60,7 +60,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-06", "Metanit.com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-07", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-07\Chapter06-07.csproj", "{0A03FEA8-9B33-4345-BE83-1F457397DCA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter06-08", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-08\Chapter06-08.csproj", "{A42BDC45-5FCD-43B5-945F-111135949ED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chapter06-08", "Metanit.com\Руководство по ASP.NET Core 8\Глава 06 - Кофигурация\Chapter06-08\Chapter06-08.csproj", "{A42BDC45-5FCD-43B5-945F-111135949ED0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введение в ASP.NET Core", "Глава 01 - Введение в ASP.NET Core", "{15150E38-4EBB-4777-8318-8EF1BA17310C}"
+	ProjectSection(SolutionItems) = preProject
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 01 - Что такое ASP.NET Core.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 01 - Что такое ASP.NET Core.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +136,7 @@ Global
 		{508E3DCF-DA3C-467A-86AD-B409740874C5} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{0A03FEA8-9B33-4345-BE83-1F457397DCA0} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{A42BDC45-5FCD-43B5-945F-111135949ED0} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
+		{15150E38-4EBB-4777-8318-8EF1BA17310C} = {C8B84BA2-BADB-48E9-9531-9A46B84E6934}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

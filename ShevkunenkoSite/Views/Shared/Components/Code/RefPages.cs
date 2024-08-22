@@ -1,27 +1,26 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class RefPages : ViewComponent
+public class RefPages(IPageInfoRepository pageInfoContext) : ViewComponent
 {
-    private readonly IPageInfoRepository _pageInfoContext;
-    public RefPages(IPageInfoRepository pageInfoContext) => _pageInfoContext = pageInfoContext;
-
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        PageInfoModel pageInfoModel = await _pageInfoContext.GetPageInfoByPathAsync(HttpContext);
+        PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        string[] pageFiltersOut = Array.Empty<string>();
+        string[] pageIdOut = [];
 
-        List<PageInfoModel> onList = new();
+        List<PageInfoModel> onList = [];
 
-        PageInfoModel[] refPages = Array.Empty<PageInfoModel>();
+        PageInfoModel[] refPages = [];
 
         if (!string.IsNullOrEmpty(pageInfoModel.PageFilterOut))
         {
-            pageFiltersOut = pageInfoModel.PageFilterOut.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
+            pageIdOut = pageInfoModel.PageFilterOut.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
-            for (int i = 0; i < pageFiltersOut.Length; i++)
+            for (int i = 0; i < pageIdOut.Length; i++)
             {
-                refPages = await _pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
+                refPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageIdOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
 
                 onList.AddRange(refPages);
             }
@@ -30,7 +29,7 @@ public class RefPages : ViewComponent
         }
         else
         {
-            refPages = await _pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(pageInfoModel.PageInfoModelId.ToString())).OrderBy(p => p.PageCardText).ToArrayAsync();
+            refPages = await pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(pageInfoModel.PageInfoModelId.ToString())).OrderBy(p => p.PageCardText).ToArrayAsync();
         }
 
         if (refPages.Length > 0 & pageInfoModel.PageLinks == true)

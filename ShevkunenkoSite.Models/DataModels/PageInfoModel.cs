@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Models.DataModels;
+﻿// Ignore Spelling: Loc Lastmod Changefreq Og
+
+namespace ShevkunenkoSite.Models.DataModels;
 
 public class PageInfoModel
 {
@@ -7,13 +9,13 @@ public class PageInfoModel
     public Guid PageInfoModelId { get; set; }
 
     [NotMapped]
-    public string[] AreaItems = new string[]
-    {
+    public string[] AreaItems =
+    [
         "",
         "Admin",
         "Movies",
         "Rybakov"
-    };
+    ];
 
     #region Описание
 
