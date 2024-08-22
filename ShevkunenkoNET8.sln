@@ -65,6 +65,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введение в ASP.NET Core", "Глава 01 - Введение в ASP.NET Core", "{15150E38-4EBB-4777-8318-8EF1BA17310C}"
 	ProjectSection(SolutionItems) = preProject
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 01 - Что такое ASP.NET Core.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 01 - Что такое ASP.NET Core.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 02 - Основы в ASP.NET Core.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 02 - Основы в ASP.NET Core.txt
 	EndProjectSection
 EndProject
 Global
