@@ -68,6 +68,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введе�
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 02 - Основы в ASP.NET Core.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\Страница 02 - Основы в ASP.NET Core.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "helloapp", "helloapp", "{1887A977-E4CC-49B9-9CD2-84A25BF6D95C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "helloapp", "Metanit.com\Руководство по ASP.NET Core 8\Глава 01 - Введение в ASP.NET Core\helloapp\helloapp.csproj", "{7F2F8053-2DF5-4917-B19D-85FA82B48BD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +126,10 @@ Global
 		{A42BDC45-5FCD-43B5-945F-111135949ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A42BDC45-5FCD-43B5-945F-111135949ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A42BDC45-5FCD-43B5-945F-111135949ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2F8053-2DF5-4917-B19D-85FA82B48BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2F8053-2DF5-4917-B19D-85FA82B48BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2F8053-2DF5-4917-B19D-85FA82B48BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2F8053-2DF5-4917-B19D-85FA82B48BD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +146,8 @@ Global
 		{0A03FEA8-9B33-4345-BE83-1F457397DCA0} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{A42BDC45-5FCD-43B5-945F-111135949ED0} = {DD4DF3ED-7574-4ED0-9381-E72560BE7CF0}
 		{15150E38-4EBB-4777-8318-8EF1BA17310C} = {C8B84BA2-BADB-48E9-9531-9A46B84E6934}
+		{1887A977-E4CC-49B9-9CD2-84A25BF6D95C} = {15150E38-4EBB-4777-8318-8EF1BA17310C}
+		{7F2F8053-2DF5-4917-B19D-85FA82B48BD2} = {1887A977-E4CC-49B9-9CD2-84A25BF6D95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
