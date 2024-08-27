@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ShevkunenkoSite.Models.ViewModels;
+﻿namespace ShevkunenkoSite.Models.ViewModels;
 
 public class EditPageViewModel : DetailsPageViewModel
 {

@@ -519,9 +519,9 @@ public class PageInfoController(
                 return RedirectToAction(nameof(Index));
             }
 
-            editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == @DataConfig.IconItem);
+            editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
 
-            editPage.IconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == @DataConfig.IconItem);
+            editPage.IconItem ??= await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
 
             editPage.ImageFileFormFile = null;
 
