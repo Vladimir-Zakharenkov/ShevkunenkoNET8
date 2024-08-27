@@ -1,4 +1,7 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using ShevkunenkoSite.Models.DataModels;
+using System.Linq;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -90,15 +93,18 @@ public class PageInfoController(
 
     public async Task<IActionResult> DetailsPage(Guid? pageId)
     {
-        IconFileModel iconItem;
-
         if (pageId.HasValue)
         {
-            PageInfoModel pageItem = await pageInfoContext.PagesInfo
-                .AsNoTracking()
-                .FirstAsync(p => p.PageInfoModelId == pageId);
+            PageInfoModel pageItem;
+            IconFileModel iconItem;
 
-            if (pageItem == null)
+            if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageId).AnyAsync())
+            {
+                pageItem = await pageInfoContext.PagesInfo
+                    .AsNoTracking()
+                    .FirstAsync(p => p.PageInfoModelId == pageId);
+            }
+            else
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -114,49 +120,63 @@ public class PageInfoController(
                 iconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
-            #region Ссылки на страницы
+            #region Ссылки на страницы сайта оп фильтру (PageFilterOut)
 
-            string[] pageFiltersOut = [];
+            string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> inList = [];
+            List<PageInfoModel> linksByFilterOut = [];
 
-            PageInfoModel[] linksOnPages = [];
-
-            if (!string.IsNullOrEmpty(pageItem.PageFilterOut))
+            if (pageFiltersOut.Length > 0)
             {
-                pageFiltersOut = pageItem.PageFilterOut.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
-                    linksOnPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
-
-                    inList.AddRange(linksOnPages);
+                    linksByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
+                    _ = linksByFilterOut.Distinct().OrderBy(p => p.PageCardText);
                 }
-
-                linksOnPages = inList.Distinct().ToArray();
             }
 
             #endregion
 
-            #region Ссылающиеся страницы
+            #region Ссылки на страницы сайта по GUID (RefPages)
 
-            string[] pageFilters = pageItem.PageFilter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            string[] pageIdOut = pageItem.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> outList = [];
+            List<PageInfoModel> linksByGuid = [];
 
-            PageInfoModel[] linksFromPages = [];
+            if (pageIdOut.Length > 0)
+            {
+                foreach (string refPageId in pageIdOut)
+                {
+                    if (Guid.TryParse(refPageId, out Guid pageGuid))
+                    {
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
+                        {
+                            linksByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+                            _ = linksByGuid.Distinct().OrderBy(p => p.PageCardText);
+                        }
+                    }
+                }
+            }
 
-            if (!string.IsNullOrEmpty(pageItem.PageFilter))
+            #endregion
+
+            #region Страницы ссылающиеся на текущую страницу
+
+            string[] pageFilters = pageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            List<PageInfoModel> linksFromPages = [];
+
+            if (pageFilters.Length > 0)
             {
                 for (int i = 0; i < pageFilters.Length; i++)
                 {
-                    linksFromPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
-
-                    outList.AddRange(linksFromPages);
+                    linksFromPages.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut.ToLower().Contains(pageFilters[i].ToLower().Trim() + ",")).ToArrayAsync());
                 }
-
-                linksFromPages = [.. outList];
             }
+
+            linksFromPages.AddRange(await pageInfoContext.PagesInfo.Where(p => p.RefPages.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower())).ToArrayAsync());
+
+            _ = linksByGuid.Distinct().OrderBy(p => p.PageCardText);
 
             #endregion
 
@@ -164,7 +184,8 @@ public class PageInfoController(
             {
                 PageItem = pageItem,
                 IconItem = iconItem,
-                LinksOnPages = linksOnPages,
+                LinksRefPages = linksByGuid,
+                LinksOnPages = linksByFilterOut,
                 LinksFromPages = linksFromPages
             });
         }
@@ -504,7 +525,7 @@ public class PageInfoController(
 
             editPage.ImageFileFormFile = null;
 
-            editPage.LinksOnPages = await pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(editPage.PageItem.PageInfoModelId.ToString())).ToArrayAsync();
+            editPage.LinksOnPages = await pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(editPage.PageItem.PageInfoModelId.ToString())).ToListAsync();
 
             return View(editPage);
         }

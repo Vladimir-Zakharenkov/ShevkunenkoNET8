@@ -1,19 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using ShevkunenkoSite.Models.DataModels;
+﻿namespace ShevkunenkoSite.Services.Interfaces;
 
-namespace ShevkunenkoSite.Services.Interfaces;
-
-public class PageInfoImplementation : IPageInfoRepository
+public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoRepository
 {
-    private readonly SiteDbContext _siteContext;
-    public PageInfoImplementation(SiteDbContext siteContext) => _siteContext = siteContext;
-
-    public IQueryable<PageInfoModel> PagesInfo => _siteContext.PageInfo
+    public IQueryable<PageInfoModel> PagesInfo => siteContext.PageInfo
         .Include(i => i.ImageFileModel)
         .Include(b => b.BackgroundFileModel)
         .Include(m => m.MovieFile).ThenInclude(mi => mi!.ImageFileModel);
 
-    #region Определить страницу по адрессу
+    #region Определить страницу по адресу
 
     public async Task<PageInfoModel> GetPageInfoByPathAsync(HttpContext httpContext)
 
@@ -60,7 +54,7 @@ public class PageInfoImplementation : IPageInfoRepository
                         }
                         else
                         {
-                            routData = routData[..routData.LastIndexOf("&")];
+                            routData = routData[..routData.LastIndexOf('&')];
                         }
                     }
                 }
@@ -106,7 +100,7 @@ public class PageInfoImplementation : IPageInfoRepository
 
     public async Task SaveChangesInPageAsync()
     {
-        _ = await _siteContext.SaveChangesAsync();
+        _ = await siteContext.SaveChangesAsync();
     }
 
     #endregion
@@ -115,7 +109,7 @@ public class PageInfoImplementation : IPageInfoRepository
 
     public async Task AddNewPageAsync(PageInfoModel page)
     {
-        _ = await _siteContext.PageInfo.AddAsync(page);
+        _ = await siteContext.PageInfo.AddAsync(page);
         await SaveChangesInPageAsync();
     }
 
@@ -125,12 +119,12 @@ public class PageInfoImplementation : IPageInfoRepository
 
     public async Task DeletePageAsync(Guid pageId)
     {
-        if (await _siteContext.PageInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
+        if (await siteContext.PageInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
         {
-            PageInfoModel pageToDelete = await _siteContext.PageInfo.FirstAsync(i => i.PageInfoModelId == pageId);
+            PageInfoModel pageToDelete = await siteContext.PageInfo.FirstAsync(i => i.PageInfoModelId == pageId);
 
-            _ = _siteContext.PageInfo.Remove(pageToDelete);
-            _ = await _siteContext.SaveChangesAsync();
+            _ = siteContext.PageInfo.Remove(pageToDelete);
+            _ = await siteContext.SaveChangesAsync();
         }
     }
 

@@ -1,6 +1,4 @@
-﻿using ShevkunenkoSite.Models.DataModels;
-
-namespace ShevkunenkoSite.Services;
+﻿namespace ShevkunenkoSite.Services;
 
 public class SiteDbContext : DbContext
 {

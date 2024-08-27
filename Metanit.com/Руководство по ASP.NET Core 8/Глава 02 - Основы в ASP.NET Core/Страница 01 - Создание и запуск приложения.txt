@@ -1,0 +1,4 @@
+Основы в ASP.NET Core
+
+Создание и запуск приложения. WebApplication и WebApplicationBuilder
+

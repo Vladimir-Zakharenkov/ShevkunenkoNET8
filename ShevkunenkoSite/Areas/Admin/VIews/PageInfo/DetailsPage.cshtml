@@ -1,6 +1,9 @@
 ﻿@model DetailsPageViewModel
 
 @{
+    int i = 0;
+    int j = 0;
+    int k = 0;
     // var dict = Model.PageItem!.RoutData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
     //            .Select(part => part.Split('='))
     //            .ToDictionary(split => split[0], split => split[1]);
@@ -122,8 +125,8 @@
         <a asp-area="Admin"
            asp-controller="ImageInfo"
            asp-action="DetailsImage"
-           asp-route-imageid="@Model.PageItem.ImageFileModelId"
-           class="mx-auto w-50 shadw imageref"
+           asp-route-imageid="Model.PageItem.ImageFileModelId"
+           class="mx-auto shadw maxwidth300px imageref"
            title="информация о картинке">
             <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="w-100" icon-type="webimage" />
         </a>
@@ -144,9 +147,9 @@
 
         <h2 class="fs-4 text-primary">Иконка для страницы</h2>
 
-        <img itemprop="image" class="card-img-top m-2 width30percent shadw mx-auto" src="@DataConfig.IconsFolder/@Model.IconItem.IconPath/@Model.IconItem.IconFileName" alt="иконка страницы" title="иконка страницы" />
+        <img itemprop="image" class="card-img-top m-2 width30percent maxwidth300px shadw mx-auto" src="@DataConfig.IconsFolder/@Model.IconItem.IconPath/@Model.IconItem.IconFileName" alt="иконка страницы" title="иконка страницы" />
 
-        <p class="text_shadow my-2 fluid-font-size">@DataConfig.IconsFolder@Model.IconItem.IconPath/@Model.IconItem.IconFileName</p>
+        <p class="text_shadow my-2 fluid-font-size">@DataConfig.IconsFolder@Model.IconItem.IconPath@Model.IconItem.IconFileName</p>
 
         <hr class="w-50 mx-auto my-1" />
 
@@ -192,46 +195,6 @@
         else
         {
             <p class="fordetails text-center text_shadow">@Model.PageItem.PageCardText</p>
-        }
-
-        <hr class="w-50 mx-auto my-1" />
-
-        <h2 class="fs-4 text-primary">Фильтр поиска (PageFilter)&nbsp;:</h2>
-
-        <p class="px-5 text-center text_shadow fluid-font-size">
-            @Model.PageItem.PageFilter
-        </p>
-        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
-        {
-            <p class="fs-6 form-text">
-                фильтр поиска страницы
-            </p>
-        }
-        else
-        {
-            <p class="fs-6 form-text">
-                фильтр поиска страницы не задан
-            </p>
-        }
-
-        <hr class="w-50 mx-auto my-1" />
-
-        <h2 class="fs-4 text-primary">Фильтры поиска (PageFilterOut)&nbsp;:</h2>
-
-        <p class="px-5 text-center text_shadow fluid-font-size">
-            @Model.PageItem.PageFilterOut
-        </p>
-        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
-        {
-            <p class="fs-6 form-text">
-                фильтры поиска страниц
-            </p>
-        }
-        else
-        {
-            <p class="fs-6 form-text">
-                фильтры поиска страниц не заданы
-            </p>
         }
 
         <hr class="w-50 mx-auto my-1" />
@@ -296,54 +259,246 @@
                     </td>
                     <td class="fs-5 text-start text_shadow">@Model.PageItem.OgType</td>
                 </tr>
-                <tr>
-                    <td>
-                        <span class="fs-5 text-primary">Ссылки на страницы (RefPages)&nbsp;:</span><br />
-                        <span class="fs-6 form-text">meta property="og:type"</span>
-                    </td>
-                    <td class="fs-5 text-start text_shadow">
-                        @if (Model.PageItem.PageLinks)
-                        {
-                            <span>включены</span>
-                        }
-                        else
-                        {
-                            <span>выключены</span>
-                        }
-                    </td>
-                </tr>
             </table>
 
         </div>
 
-        <h2 class="fs-4 fw-bold text-primary mb-3">Ссылки на страницы</h2>
+        <hr class="liniya" />
 
-        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+        <h2 class="fs-4 fw-bold text-primary">Фильтр поиска текущей страницы (PageFilter)&nbsp;:</h2>
 
-            @foreach (var item in Model.LinksOnPages)
+        <p class="px-5 text-center text_shadow fluid-font-size">
+            @Model.PageItem.PageFilter
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
+        {
+            <p class="fs-6 form-text">
+                фильтр поиска страницы
+            </p>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                фильтр поиска текущей страницы не задан
+            </p>
+        }
+
+        <hr class="liniya" />
+
+        <h2 class="fs-4 fw-bold text-primary">Фильтры поиска страниц (PageFilterOut)&nbsp;:</h2>
+
+        @if (Model.LinksOnPages.Count > 0)
+        {
+            <p class="px-5 text-center text_shadow fluid-font-size">
+                @Model.PageItem.PageFilterOut
+            </p>
+            <p class="fs-6 form-text">
+                фильтры поиска страниц
+            </p>
+
+            <div class="table-responsive mt-3">
+
+                <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                    <thead>
+
+                        <tr class="text-start text-primary">
+
+                            <th scope="col" class="text-primary">№</th>
+                            <th scope="col" class="text-primary">GUID</th>
+                            <th scope="col" class="text-primary">Title</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model.LinksOnPages)
+                        {
+                            if (i == 0)
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+
+                            <tr class="text-start fs-5">
+
+                                <td scope="col" class="text-primary">@i</td>
+                                <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                @foreach (var item in Model.LinksOnPages)
+                {
+                    <vc:card-of-page page=item />
+                }
+
+            </div>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                фильтры поиска страниц не заданы
+            </p>
+        }
+
+        <hr class="liniya" />
+
+        <h2 class="fs-4 fw-bold text-primary">Ссылки на страницы (RefPages)</h2>
+
+        <p class="fs-4 mb-4 text_shadow">
+            @if (Model.PageItem.PageLinks)
             {
-                <vc:card-of-page page=@item />
+                <span>включены</span>
             }
-
-            @* @foreach (var item in Model.PageItem.RefPages.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            else
             {
-                <vc:card-for-page page-loc=@item.Trim() />
-            } *@
+                <span>выключены</span>
+            }
+        </p>
 
-        </div>
+        @if (Model.LinksRefPages.Count > 0)
+        {
+            <div class="table-responsive">
+
+                <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                    <thead>
+
+                        <tr class="text-start text-primary">
+
+                            <th scope="col" class="text-primary">№</th>
+                            <th scope="col" class="text-primary">GUID</th>
+                            <th scope="col" class="text-primary">Title</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model.LinksRefPages)
+                        {
+                            if (i == 0)
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+
+                            <tr class="text-start fs-5">
+
+                                <td scope="col" class="text-primary">@i</td>
+                                <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                @foreach (var item in Model.LinksRefPages)
+                {
+                    <vc:card-of-page page=item />
+                }
+
+            </div>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                нет ссылок на другие страницу
+            </p>
+        }
 
         <hr class="liniya my-3" />
 
-        <h2 class="fs-4 fw-bold text-primary mb-3">Ссылки со страниц</h2>
+        <h2 class="fs-4 fw-bold text-primary mb-3">Ссылки на текущую страницу</h2>
 
-        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mb-3">
+        @if (@Model.LinksFromPages.Count > 0)
+        {
+            <div class="table-responsive mt-3">
 
-            @foreach (var item in Model.LinksFromPages)
-            {
-                <vc:card-of-page page=@item />
-            }
+                <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
 
-        </div>
+                    <thead>
+
+                        <tr class="text-start text-primary">
+
+                            <th scope="col" class="text-primary">№</th>
+                            <th scope="col" class="text-primary">GUID</th>
+                            <th scope="col" class="text-primary">Title</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model.LinksFromPages)
+                        {
+                            if (i == 0)
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+
+                            <tr class="text-start fs-5">
+
+                                <td scope="col" class="text-primary">@i</td>
+                                <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mb-3">
+
+                @foreach (var item in Model.LinksFromPages)
+                {
+                    <vc:card-of-page page=@item />
+                }
+
+            </div>
+        }
+        else
+        {
+            <p class="fs-6 form-text">
+                нет ссылок на текущую страницу
+            </p>
+        }
 
         <div class="card-footer border p-0 my-2">
 

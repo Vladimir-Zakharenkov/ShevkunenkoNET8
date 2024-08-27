@@ -170,21 +170,24 @@ public class PageInfoModel
     [Display(Name = "Включить группу ссылок:")]
     public bool PageLinks { get; set; } = false;
 
+    // строка по которой осуществляется поиск текущей страницы
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Фильтр поиска страницы:")]
     [DataType(DataType.Text)]
     public string PageFilter { get; set; } = string.Empty;
 
+    // список фильтров (PageFilter) страниц сайта, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Фильтры поиска страниц:")]
     [DataType(DataType.Text)]
     public string PageFilterOut { get; set; } = string.Empty;
 
+    // список GUID страниц на которые ссылается текущая страница
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "ID связанных страниц:")]
+    [Display(Name = "Ссылки на страницы:")]
     public string RefPages { get; set; } = string.Empty;
 
     #endregion
