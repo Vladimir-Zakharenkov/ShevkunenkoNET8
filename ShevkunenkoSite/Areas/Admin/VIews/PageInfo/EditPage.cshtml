@@ -1,5 +1,11 @@
 ﻿@model EditPageViewModel
 
+@{
+    int j = 0;
+    int k = 0;
+    int l = 0;
+}
+
 <div class="row">
 
     <hr class="liniya" />
@@ -300,6 +306,85 @@
                 </div>
                 <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
 
+                @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
+                {
+                    <p class="px-5 text-center text_shadow fluid-font-size">
+                        @Model.PageItem.PageFilter
+                    </p>
+
+                    <p class="fs-6 form-text">
+                        фильтр поиска страницы
+                    </p>
+
+                    @if (Model.LinksFromPagesByPageFilter.Count > 0)
+                    {
+                        <div class="table-responsive mt-3">
+
+                            <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                <thead>
+
+                                    <tr class="text-start text-primary">
+
+                                        <th scope="col" class="text-primary">№</th>
+                                        <th scope="col" class="text-primary">GUID</th>
+                                        <th scope="col" class="text-primary">Title</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.LinksFromPagesByPageFilter)
+                                    {
+                                        if (j == 0)
+                                        {
+                                            j = 1;
+                                        }
+                                        else
+                                        {
+                                            j++;
+                                        }
+
+                                        <tr class="text-start fs-5">
+
+                                            <td scope="col" class="text-primary">@j</td>
+                                            <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                            <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                            @foreach (var item in Model.LinksFromPagesByPageFilter)
+                            {
+                                <vc:card-of-page page=item />
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="fs-6 form-text">
+                            по данным фильтрам нет ссылок
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="fs-6 form-text">
+                        фильтр поиска текущей страницы не задан
+                    </p>
+                }
+
                 <hr class="liniya" />
 
                 <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
@@ -310,6 +395,85 @@
                     фильтры поиска страниц
                 </div>
                 <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
+
+                @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
+                {
+                    <p class="px-5 text-center text_shadow fluid-font-size">
+                        @Model.PageItem.PageFilterOut
+                    </p>
+
+                    <p class="fs-6 form-text">
+                        фильтр поиска страниц
+                    </p>
+
+                    @if (Model.LinksToPagesByFilterOut.Count > 0)
+                    {
+                        <div class="table-responsive mt-3">
+
+                            <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                <thead>
+
+                                    <tr class="text-start text-primary">
+
+                                        <th scope="col" class="text-primary">№</th>
+                                        <th scope="col" class="text-primary">GUID</th>
+                                        <th scope="col" class="text-primary">Title</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.LinksToPagesByFilterOut)
+                                    {
+                                        if (k == 0)
+                                        {
+                                            k = 1;
+                                        }
+                                        else
+                                        {
+                                            k++;
+                                        }
+
+                                        <tr class="text-start fs-5">
+
+                                            <td scope="col" class="text-primary">@k</td>
+                                            <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                            <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                            @foreach (var item in Model.LinksToPagesByFilterOut)
+                            {
+                                <vc:card-of-page page=item />
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="fs-6 form-text">
+                            по данным фильтрам нет ссылок
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="fs-6 form-text">
+                        фильтр поиска страниц не задан
+                    </p>
+                }
 
                 <hr class="liniya" />
 
@@ -336,34 +500,81 @@
                 <hr class="liniya" />
 
                 <label asp-for="PageItem.RefPages" class="form-label text-primary fs-5 fw-bold"></label>
-                <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control fordetails" aria-describedby="RefPagesInputHelpBlock">
+                <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control justify-content-start fordetails" aria-describedby="RefPagesInputHelpBlock">
                 <p class="fordetails">RefPages</p>
                     </textarea>
                 <span asp-validation-for="PageItem.RefPages" class="text-danger"></span>
 
-                <h2 class="fs-4 text-primary mt-3">Ссылки на страницы</h2>
-
-                <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
-
-                    @foreach (var item in Model.PageItem.RefPages.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                @if (!string.IsNullOrEmpty(Model.PageItem.RefPages))
+                {
+                    @if (Model.LinksToPagesByGuid.Count > 0)
                     {
-                        <vc:card-for-page page-loc=@item.Trim() />
+                        <div class="table-responsive mt-3">
+
+                            <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                <thead>
+
+                                    <tr class="text-start text-primary">
+
+                                        <th scope="col" class="text-primary">№</th>
+                                        <th scope="col" class="text-primary">GUID</th>
+                                        <th scope="col" class="text-primary">Title</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.LinksToPagesByGuid)
+                                    {
+                                        if (l == 0)
+                                        {
+                                            l = 1;
+                                        }
+                                        else
+                                        {
+                                            l++;
+                                        }
+
+                                        <tr class="text-start fs-5">
+
+                                            <td scope="col" class="text-primary">@l</td>
+                                            <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                            <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                            @foreach (var item in Model.LinksToPagesByGuid)
+                            {
+                                <vc:card-of-page page=item />
+                            }
+
+                        </div>
                     }
-
-                </div>
-
-                <hr class="liniya my-3" />
-
-                <h2 class="fs-4 text-primary">Ссылки со страниц</h2>
-
-                <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
-
-                    @foreach (var item in Model.LinksToPagesByFilterOut)
+                    else
                     {
-                        <vc:card-of-page page=@item />
+                        <p class="fs-6 form-text">
+                            по данным фильтрам нет ссылок
+                        </p>
                     }
-
-                </div>
+                }
+                else
+                {
+                    <p class="fs-6 form-text">
+                        фильтр поиска страниц по GUID не задан
+                    </p>
+                }
 
                 <div class="card-footer p-0 mt-2">
 

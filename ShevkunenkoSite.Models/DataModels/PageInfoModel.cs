@@ -187,7 +187,7 @@ public class PageInfoModel
     // список GUID страниц на которые ссылается текущая страница
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки на страницы:")]
+    [Display(Name = "Ссылки на страницы оп GUID:")]
     public string RefPages { get; set; } = string.Empty;
 
     #endregion

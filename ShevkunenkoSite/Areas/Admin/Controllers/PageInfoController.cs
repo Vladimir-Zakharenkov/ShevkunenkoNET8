@@ -149,7 +149,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на страницы сайта оп фильтру (PageFilterOut)
+            #region Ссылки на страницы сайта по фильтру (PageFilterOut)
 
             string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -554,20 +554,23 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на текущую страницу сайта по фильтру (PageFilter)
+            #region Ссылки на текущую страницу по фильтру PageFilter
 
-            string[] pageFilter = editPage.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            string[] pageFilters = editPage.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
             List<PageInfoModel> linksFromPagesByPageFilter = [];
 
-            if (pageFilter.Length > 0)
+            if (pageFilters.Length > 0)
             {
-                for (int i = 0; i < pageFilter.Length; i++)
+                for (int i = 0; i < pageFilters.Length; i++)
                 {
-                    linksFromPagesByPageFilter.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut.Contains(pageFilter[i].Trim() + ",")).ToArrayAsync());
-                    _ = linksFromPagesByPageFilter.Distinct().OrderBy(p => p.PageCardText);
+#pragma warning disable CA1862
+                    linksFromPagesByPageFilter.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut.ToLower().Contains(pageFilters[i].ToLower().Trim() + ",")).ToArrayAsync());
+#pragma warning restore CA1862
                 }
             }
+
+            _ = linksFromPagesByPageFilter.Distinct().OrderBy(p => p.PageCardText);
 
             editPage.LinksFromPagesByPageFilter = linksFromPagesByPageFilter;
 
@@ -577,18 +580,18 @@ public class PageInfoController(
 
             string[] pageFiltersOut = editPage.PageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> linksByFilterOut = [];
+            List<PageInfoModel> linksToPagesByFilterOut = [];
 
             if (pageFiltersOut.Length > 0)
             {
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
-                    linksByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
-                    _ = linksByFilterOut.Distinct().OrderBy(p => p.PageCardText);
+                    linksToPagesByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
+                    _ = linksToPagesByFilterOut.Distinct().OrderBy(p => p.PageCardText);
                 }
             }
 
-            editPage.LinksToPagesByFilterOut = linksByFilterOut;
+            editPage.LinksToPagesByFilterOut = linksToPagesByFilterOut;
 
             #endregion
 
@@ -596,7 +599,7 @@ public class PageInfoController(
 
             string[] pageIdOut = editPage.PageItem.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> linksByGuid = [];
+            List<PageInfoModel> linksToPagesByGuid = [];
 
             if (pageIdOut.Length > 0)
             {
@@ -606,14 +609,14 @@ public class PageInfoController(
                     {
                         if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
                         {
-                            linksByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
-                            _ = linksByGuid.Distinct().OrderBy(p => p.PageCardText);
+                            linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+                            _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
                         }
                     }
                 }
             }
 
-            editPage.LinksToPagesByGuid = linksByGuid;
+            editPage.LinksToPagesByGuid = linksToPagesByGuid;
 
             #endregion
 
