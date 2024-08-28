@@ -37,9 +37,35 @@
 
                 <label asp-for="ImageFileFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
 
-                @if (Context.Request.Method == "GET" && Model.PageItem.ImageFileModel != null)
+                @if (Context.Request.Method == "GET")
                 {
-                    <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="card-img-top mt-2 mx-auto  maxwidth300px shadw" icon-type="webicon300" />
+                    @if (Model.PageItem.ImageFileModel != null)
+                    {
+                        <a asp-area="Admin"
+                           asp-controller="ImageInfo"
+                           asp-action="DetailsImage"
+                           asp-route-imageid="@Model.PageItem.ImageFileModelId"
+                           class="d-block mx-auto shadw maxwidth300px imageref"
+                           title="информация о картинке"
+                           onclick="this.target='_blank'">
+                            <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="" icon-type="webimage" />
+                        </a>
+
+                        @if (!string.IsNullOrEmpty(Model.PageItem.ImageFileModel.WebImageFileName))
+                        {
+                            <p class="text_shadow my-2 fluid-font-size">@Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.WebImageFileName</p>
+                        }
+                        else
+                        {
+                            <p class="text_shadow my-2 fluid-font-size">@Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.ImageFileName</p>
+                        }
+                    }
+                    else
+                    {
+                        <p class="fs-6 form-text">
+                            картинка для страницы не выбрана
+                        </p>
+                    }
                 }
 
                 <input id="ImageFileFormFile" asp-for="ImageFileFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImageFileFormFileHelpBlock" />
@@ -332,7 +358,7 @@
 
                 <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
 
-                    @foreach (var item in Model.LinksOnPages)
+                    @foreach (var item in Model.LinksToPagesByFilterOut)
                     {
                         <vc:card-of-page page=@item />
                     }

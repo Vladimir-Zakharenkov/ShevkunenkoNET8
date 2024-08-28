@@ -6,9 +6,11 @@ public class DetailsPageViewModel
 
     public IconFileModel IconItem { get; set; } = new();
 
-    public List<PageInfoModel> LinksRefPages { get; set; } =[];
+    public List<PageInfoModel> LinksToPagesByGuid { get; set; } =[];
 
-    public List<PageInfoModel> LinksOnPages { get; set; } = [];
+    public List<PageInfoModel> LinksToPagesByFilterOut { get; set; } = [];
 
-    public List<PageInfoModel> LinksFromPages { get; set; } = [];
+    public List<PageInfoModel> LinksFromPagesByGuid { get; set; } = [];
+
+    public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];
 }
