@@ -7,7 +7,7 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
         .Include(b => b.BackgroundFileModel)
         .Include(m => m.MovieFile).ThenInclude(mi => mi!.ImageFileModel);
 
-    #region Определить страницу по адресу
+    #region Определить страницу в базе данных по запросу
 
     public async Task<PageInfoModel> GetPageInfoByPathAsync(HttpContext httpContext)
 

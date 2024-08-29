@@ -123,7 +123,7 @@
                     <label asp-for="PageItem.PagePathNickName" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PagePathNickNameInput" asp-for="PageItem.PagePathNickName" class="form-control text-center" aria-describedby="PagePathNickNameInputHelpBlock" />
                     <div id="PagePathNickNameInputHelpBlock" class="form-text">
-                        <span>альтернативный адресс страницы</span>
+                        <span>альтернативный адрес страницы</span>
                     </div>
                     <span asp-validation-for="PageItem.PagePathNickName" class="text-danger"></span>
 
@@ -165,26 +165,6 @@
                     <div id="PageCardTextInputHelpBlock" class="form-text">
                         текст для карточки страницы
                     </div>
-
-                    <hr class="liniya" />
-
-                    <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
-                    <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
-                    <div id="PageFilterInputHelpBlock" class="form-text">
-                        фильтр поиска страницы
-                    </div>
-                    <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
-
-                    <hr class="liniya" />
-
-                    <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
-                    <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
-                    <p class="fordetails">PageFilterOut</p>
-                    </textarea>
-                    <div id="PageFilterOutInputHelpBlock" class="form-text">
-                        фильтры поиска страниц
-                    </div>
-                    <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
 
                     <hr class="liniya" />
 
@@ -259,6 +239,48 @@
                         </div>
                     </div>
                     <span asp-validation-for="PageItem.Priority" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
+                    <div id="PageFilterInputHelpBlock" class="form-text">
+                        фильтр поиска страницы
+                    </div>
+                    <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    <div class="row g-2">
+                        <label asp-for="PageItem.PageLinksByFilters" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksByFiltersTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="true">
+                            <label class="form-check-label d-inline-block" for="PageLinksByFiltersTrue">
+                                <span class="">Показывать ссылки по фильтрам</span>
+                            </label>
+                        </div>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksByFiltersFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="false" checked>
+                            <label class="form-check-label d-inline-block" for="PageLinksByFiltersFalse">
+                                <span class="">Не показывать ссылки по фильтрам</span>
+                            </label>
+                        </div>
+                        <div id=".PageLinksByFiltersInputHelpBlock" class="form-text">
+                            <span>показывать ссылки по фильтрам</span>
+                        </div>
+                        <span asp-validation-for="PageItem.PageLinksByFilters" class="text-danger"></span>
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
+                    <p class="fordetails">PageFilterOut</p>
+                    </textarea>
+                    <div id="PageFilterOutInputHelpBlock" class="form-text">
+                        фильтры поиска страниц
+                    </div>
+                    <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
 
                     <hr class="liniya" />
 

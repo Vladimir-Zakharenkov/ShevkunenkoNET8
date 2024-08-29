@@ -167,27 +167,31 @@ public class PageInfoModel
     #region Связанные страницы
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить группу ссылок:")]
+    [Display(Name = "Включить ссылки по GUID:")]
     public bool PageLinks { get; set; } = false;
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Включить ссылки по фильтрам:")]
+    public bool PageLinksByFilters { get; set; } = false;
 
     // строка по которой осуществляется поиск текущей страницы
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтр поиска страницы:")]
+    [Display(Name = "Фильтр поиска текущей страницы:")]
     [DataType(DataType.Text)]
     public string PageFilter { get; set; } = string.Empty;
 
     // список фильтров (PageFilter) страниц сайта, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска страниц:")]
+    [Display(Name = "Фильтры поиска страниц сайта:")]
     [DataType(DataType.Text)]
     public string PageFilterOut { get; set; } = string.Empty;
 
     // список GUID страниц на которые ссылается текущая страница
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки на страницы оп GUID:")]
+    [Display(Name = "Ссылки на страницы по GUID:")]
     public string RefPages { get; set; } = string.Empty;
 
     #endregion

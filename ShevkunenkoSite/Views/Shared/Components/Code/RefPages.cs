@@ -6,56 +6,72 @@ public class RefPages(IPageInfoRepository pageInfoContext) : ViewComponent
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        string[] pageIdOut = pageInfoModel.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        List<List<PageInfoModel>> listsOfFilterOut = [];
 
-        List<PageInfoModel> onList = [];
+        List<PageInfoModel> linksToPagesByGuid = [];
 
-        List<PageInfoModel> outPageList = [];
-
-        PageInfoModel[] refPages = [];
-
-        if (pageIdOut.Length > 0)
-        {
-            foreach (string pageId in pageIdOut)
-            {
-                if (Guid.TryParse(pageId, out Guid pageGuid))
-                {
-                    if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
-                    {
-                        outPageList.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
-                    }
-                }
-            }
-
-            return View(outPageList.OrderBy(p => p.PageCardText));
-        }
-        else if (!string.IsNullOrEmpty(pageInfoModel.PageFilterOut))
-        {
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
-            pageIdOut = pageInfoModel.PageFilterOut.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
-
-            for (int i = 0; i < pageIdOut.Length; i++)
-            {
-                refPages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageIdOut[i].Trim() + ",")).OrderBy(p => p.PageCardText).ToArrayAsync();
-
-                onList.AddRange(refPages);
-            }
-
-            refPages = onList.Distinct().ToArray();
-        }
-        else
-        {
-            refPages = await pageInfoContext.PagesInfo.Where(p => p.RefPages.Contains(pageInfoModel.PageInfoModelId.ToString())).OrderBy(p => p.PageCardText).ToArrayAsync();
-        }
-
-        if (refPages.Length > 0 & pageInfoModel.PageLinks == true)
-        {
-            return View(refPages);
-        }
-        else
+        if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages))
         {
             return View("Empty");
+        }
+        else if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinksByFilters == false)
+        {
+            return View("Empty");
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & pageInfoModel.PageLinksByFilters == true)
+            {
+                string[] pageFilterOut = pageInfoModel.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (pageFilterOut.Length > 0)
+                {
+                    for (int i = 0; i < pageFilterOut.Length; i++)
+                    {
+#pragma warning disable CA1862
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.ToLower().Contains(pageFilterOut[i])).AnyAsync())
+                        {
+                            listsOfFilterOut.Add(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.ToLower().Contains(pageFilterOut[i])).ToListAsync());
+                        }
+#pragma warning restore CA1862
+                    }
+                }
+                _ = listsOfFilterOut.Distinct();
+            }
+
+            if (!string.IsNullOrEmpty(pageInfoModel.RefPages) & pageInfoModel.PageLinks == true)
+            {
+                string[] pageIdOut = pageInfoModel.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (pageIdOut.Length > 0)
+                {
+                    foreach (string pageId in pageIdOut)
+                    {
+                        if (Guid.TryParse(pageId, out Guid pageGuid))
+                        {
+                            if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
+                            {
+                                linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+                            }
+                        }
+                    }
+
+                    _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+                }
+            }
+        }
+
+        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1)
+        {
+            return View("Empty");
+        }
+        else
+        {
+            return View(new RefPagesViewModel
+            {
+                ListsOfFilterOut = listsOfFilterOut,
+                LinksToPagesByGuid = linksToPagesByGuid
+            });
         }
     }
 }

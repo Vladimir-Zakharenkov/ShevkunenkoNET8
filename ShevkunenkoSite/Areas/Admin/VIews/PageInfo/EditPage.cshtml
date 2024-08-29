@@ -301,19 +301,24 @@
 
                 <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
                 <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
-                <div id="PageFilterInputHelpBlock" class="form-text fs-6">
-                    фильтр поиска страницы
-                </div>
+                @if (string.IsNullOrEmpty(Model.PageItem.PageFilter))
+                {
+                    <div id="PageFilterInputHelpBlock" class="form-text fs-6">
+                        фильтр поиска страницы не задан
+                    </div>
+                }
+                else
+                {
+                    <div id="PageFilterInputHelpBlock" class="form-text fs-6">
+                        фильтр поиска страницы
+                    </div>
+                }
                 <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
 
                 @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
                 {
                     <p class="px-5 text-center text_shadow fluid-font-size">
                         @Model.PageItem.PageFilter
-                    </p>
-
-                    <p class="fs-6 form-text">
-                        фильтр поиска страницы
                     </p>
 
                     @if (Model.LinksFromPagesByPageFilter.Count > 0)
@@ -378,32 +383,52 @@
                         </p>
                     }
                 }
-                else
-                {
-                    <p class="fs-6 form-text">
-                        фильтр поиска текущей страницы не задан
-                    </p>
-                }
+
+                <hr class="liniya" />
+
+                <div class="row g-2">
+                    <label asp-for="PageItem.PageLinksByFilters" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                    <div class="col-6 form-check">
+                        <input id="PageLinksByFiltersTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="true">
+                        <label class="form-check-label d-inline-block" for="PageLinksByFiltersTrue">
+                            <span class="">Показывать ссылки по фильтрам</span>
+                        </label>
+                    </div>
+                    <div class="col-6 form-check">
+                        <input id="PageLinksByFiltersFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="false">
+                        <label class="form-check-label d-inline-block" for="PageLinksByFiltersFalse">
+                            <span class="">Не показывать ссылки по фильтрам</span>
+                        </label>
+                    </div>
+                    <div id="PageLinksByFiltersInputHelpBlock" class="form-text fs-6">
+                        <span>ссылки на страницы сайта по фильтрам</span>
+                    </div>
+                    <span asp-validation-for="PageItem.PageLinksByFilters" class="text-danger"></span>
+                </div>
 
                 <hr class="liniya" />
 
                 <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
-                <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
-                <p class="fordetails">PageFilterOut</p>
+                <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="3" class="form-control fs-5 fordetails" aria-describedby="PageFilterOutInputHelpBlock">
                 </textarea>
-                <div id="PageFilterOutInputHelpBlock" class="form-text fs-6">
-                    фильтры поиска страниц
-                </div>
+                @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
+                {
+                    <div id="PageFilterOutInputHelpBlock" class="form-text fs-6">
+                        фильтры поиска страниц сайта
+                    </div>
+                }
+                else
+                {
+                    <div id="PageFilterOutInputHelpBlock" class="form-text fs-6">
+                        фильтры поиска страниц сайта не заданы
+                    </div>
+                }
                 <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
 
                 @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
                 {
                     <p class="px-5 text-center text_shadow fluid-font-size">
                         @Model.PageItem.PageFilterOut
-                    </p>
-
-                    <p class="fs-6 form-text">
-                        фильтр поиска страниц
                     </p>
 
                     @if (Model.LinksToPagesByFilterOut.Count > 0)
@@ -468,12 +493,6 @@
                         </p>
                     }
                 }
-                else
-                {
-                    <p class="fs-6 form-text">
-                        фильтр поиска страниц не задан
-                    </p>
-                }
 
                 <hr class="liniya" />
 
@@ -500,9 +519,8 @@
                 <hr class="liniya" />
 
                 <label asp-for="PageItem.RefPages" class="form-label text-primary fs-5 fw-bold"></label>
-                <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control justify-content-start fordetails" aria-describedby="RefPagesInputHelpBlock">
-                <p class="fordetails">RefPages</p>
-                    </textarea>
+                <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock">
+                </textarea>
                 <span asp-validation-for="PageItem.RefPages" class="text-danger"></span>
 
                 @if (!string.IsNullOrEmpty(Model.PageItem.RefPages))
@@ -576,7 +594,7 @@
                     </p>
                 }
 
-                <div class="card-footer p-0 mt-2">
+                <div class="card-footer p-0 mt-5">
 
                     <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="сохранить изменения">Сохранить</button>
 

@@ -426,7 +426,20 @@
 
         <hr class="liniya" />
 
-        <h2 class="fs-5 fw-bold text-primary">Фильтры поиска страниц (PageFilterOut)&nbsp;:</h2>
+        <h2 class="fs-4 fw-bold text-primary">Фильтры поиска страниц (PageFilterOut)&nbsp;:</h2>
+
+        @if (Model.PageItem.PageLinksByFilters)
+        {
+            <p class="fs-4 mb-2 text_shadow">
+                <span>включены</span>
+            </p>
+        }
+        else
+        {
+            <p class="fs-4 mb-2 text_shadow">
+                <span>выключены</span>
+            </p>
+        }
 
         @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
         {
@@ -507,33 +520,25 @@
             </p>
         }
 
-        <hr class="liniya" />
+        <hr class="liniya my-3" />
 
-        <h2 class="fs-5 fw-bold text-primary">Ссылки на страницы по GUID (RefPages)</h2>
+        <h2 class="fs-4 fw-bold text-primary">Ссылки на страницы по GUID (RefPages)</h2>
 
         @if (Model.PageItem.PageLinks)
         {
-            <p class="fs-4 mb-4 text_shadow">
+            <p class="fs-4 mb-2 text_shadow">
                 <span>включены</span>
             </p>
         }
         else
         {
-            <p class="fs-4 mb-4 text_shadow">
+            <p class="fs-4 mb-2 text_shadow">
                 <span>выключены</span>
             </p>
         }
 
         @if (!string.IsNullOrEmpty(Model.PageItem.RefPages))
         {
-            <p class="px-5 text-center text_shadow fluid-font-size">
-                @Model.PageItem.RefPages
-            </p>
-
-            <p class="fs-6 form-text">
-                фильтр поиска страниц по GUID
-            </p>
-
             @if (Model.LinksToPagesByGuid.Count > 0)
             {
                 <div class="table-responsive mt-3">
@@ -603,7 +608,7 @@
             </p>
         }
 
-        <div class="card-footer border p-0 my-2">
+        <div class="card-footer border p-0 my-5">
 
             <a asp-area="Admin"
                asp-controller="PageInfo"

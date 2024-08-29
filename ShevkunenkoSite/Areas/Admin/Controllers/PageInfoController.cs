@@ -1,4 +1,4 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿ namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -470,6 +470,7 @@ public class PageInfoController(
             addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.Trim();
             addItem.PageItem.PageLastmod = DateTime.Now;
             addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
+            addItem.PageItem.PageLinksByFilters = addItem.PageItem.PageLinksByFilters;
             addItem.PageItem.RefPages = addItem.PageItem.RefPages.Trim();
 
             if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
@@ -837,6 +838,7 @@ public class PageInfoController(
             pageUpdate.PageLastmod = DateTime.Now;
             pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
             pageUpdate.PageLinks = editPage.PageItem.PageLinks;
+            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
             pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
             pageUpdate.Priority = editPage.PageItem.Priority.Trim();
 
