@@ -217,8 +217,27 @@
 
                 <hr class="liniya" />
 
+                <label asp-for="PageItem.PageHeading" class="form-label text-primary fs-5 fw-bold"></label>
+                <input id="PageHeadingInput" asp-for="PageItem.PageHeading" class="form-control fs-6 w-75 mx-auto" aria-describedby="PageHeadingInputHelpBlock" />
+
+                @if (!string.IsNullOrEmpty(Model.PageItem.PageHeading))
+                {
+                    <div id="PageCardTextInputHelpBlock" class="form-text fs-6">
+                        текст заголовка страницы в теге &lt;h1&gt;... &lt;/h1&gt;
+                    </div>
+
+                    <h1 class="text_shadow">@Html.Raw(Model.PageItem.PageHeading)</h1>
+                }
+                else
+                {
+                    <p class="fordetails text-center">заголовок для страницы не задан</p>
+                }
+                <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
+
+                <hr class="liniya" />
+
                 <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
-                <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center" aria-describedby="PageCardTextInputHelpBlock" />
+                <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center w-50 mx-auto" aria-describedby="PageCardTextInputHelpBlock" />
                 <div id="PageCardTextInputHelpBlock" class="form-text fs-6">
                     текст для карточки страницы
                 </div>

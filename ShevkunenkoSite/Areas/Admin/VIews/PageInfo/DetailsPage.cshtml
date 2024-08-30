@@ -194,6 +194,19 @@
 
         <hr class="w-50 mx-auto my-1" />
 
+        <h2 class="fs-4 text-primary">Заголовок страницы (PageHeading)&nbsp;:</h2>
+
+        @if (!string.IsNullOrEmpty(Model.PageItem.PageHeading))
+        {
+            <h1 class="text_shadow">@Html.Raw(Model.PageItem.PageHeading)</h1>
+        }
+        else
+        {
+            <p class="fordetails text-center">заголовок для страницы не задан</p>
+        }
+
+        <hr class="w-50 mx-auto my-1" />
+
         <h2 class="fs-4 text-primary">Текст карточки (PageCardText)&nbsp;:</h2>
 
         @if (string.IsNullOrEmpty(Model.PageItem.PageCardText))

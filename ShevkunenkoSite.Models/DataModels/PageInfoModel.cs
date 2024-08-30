@@ -162,6 +162,12 @@ public class PageInfoModel
     public Guid ImageFileModelId { get; set; }
     public ImageFileModel? ImageFileModel { get; set; }
 
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Заголовок страницы (<h1>...</h1>):")]
+    [DataType(DataType.Text)]
+    public string PageHeading { get; set; } = string.Empty;
+
     #endregion
 
     #region Связанные страницы
@@ -188,7 +194,7 @@ public class PageInfoModel
     [DataType(DataType.Text)]
     public string PageFilterOut { get; set; } = string.Empty;
 
-    // список GUID страниц на которые ссылается текущая страница
+    // список GUID страниц, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Ссылки на страницы по GUID:")]

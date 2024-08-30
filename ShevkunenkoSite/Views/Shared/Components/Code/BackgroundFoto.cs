@@ -1,22 +1,14 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
 [ViewComponent]
-public class BackgroundFoto : ViewComponent
+public class BackgroundFoto(IPageInfoRepository pageInfoContext, IMovieFileRepository movieFileContext) : ViewComponent
 {
-    private readonly IPageInfoRepository _pageInfoContext;
-    private readonly IMovieFileRepository _movieFileContext;
     private Guid pageIdGuid;
     private Guid movieIdGuid;
 
-    public BackgroundFoto(IPageInfoRepository pageInfoContext, IMovieFileRepository movieFileContext)
-    {
-        _pageInfoContext = pageInfoContext;
-        _movieFileContext = movieFileContext;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync(bool left)
     {
-        PageInfoModel pageInfoModel = await _pageInfoContext.GetPageInfoByPathAsync(HttpContext);
+        PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
         if (HttpContext.Request.Path.ToString().Contains("details")
             || HttpContext.Request.Path.ToString().Contains("update")
@@ -25,18 +17,18 @@ public class BackgroundFoto : ViewComponent
             || HttpContext.Request.Path.ToString().Contains("editmovie")
             || HttpContext.Request.Path.ToString().Contains("detailsmovie"))
         {
-            if (Guid.TryParse(HttpContext.Request.Query["pageId"].ToString(), out pageIdGuid) & await _pageInfoContext.PagesInfo.Where(g => g.PageInfoModelId == pageIdGuid).AnyAsync())
+            if (Guid.TryParse(HttpContext.Request.Query["pageId"].ToString(), out pageIdGuid) & await pageInfoContext.PagesInfo.Where(g => g.PageInfoModelId == pageIdGuid).AnyAsync())
             {
-                pageInfoModel = await _pageInfoContext.PagesInfo.AsNoTracking().FirstAsync(p => p.PageInfoModelId == pageIdGuid);
+                pageInfoModel = await pageInfoContext.PagesInfo.AsNoTracking().FirstAsync(p => p.PageInfoModelId == pageIdGuid);
             }
 
-            if (Guid.TryParse(HttpContext.Request.Query["movieId"].ToString(), out movieIdGuid) & await _movieFileContext.MovieFiles.Where(m => m.MovieFileModelId == movieIdGuid).AnyAsync())
+            if (Guid.TryParse(HttpContext.Request.Query["movieId"].ToString(), out movieIdGuid) & await movieFileContext.MovieFiles.Where(m => m.MovieFileModelId == movieIdGuid).AnyAsync())
             {
-                var movie = await _movieFileContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieIdGuid);
+                var movie = await movieFileContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieIdGuid);
 
                 if (movie.PageInfoModelId != null)
                 {
-                    pageInfoModel = await _pageInfoContext.PagesInfo.AsNoTracking().FirstAsync(p => p.PageInfoModelId == movie.PageInfoModelId);
+                    pageInfoModel = await pageInfoContext.PagesInfo.AsNoTracking().FirstAsync(p => p.PageInfoModelId == movie.PageInfoModelId);
                 }
             }
         }

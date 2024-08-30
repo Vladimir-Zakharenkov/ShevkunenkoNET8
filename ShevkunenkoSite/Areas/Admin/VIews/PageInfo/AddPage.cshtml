@@ -160,11 +160,21 @@
 
                     <hr class="liniya" />
 
+                    <label asp-for="PageItem.PageHeading" class="form-label text-primary fs-5 fw-bold"></label>
+                    <input id="PageHeadingInput" asp-for="PageItem.PageHeading" class="form-control fs-6 mx-auto w-75" aria-describedby="PageHeadingInputHelpBlock" />
+                    <div id="PageHeadingInputHelpBlock" class="form-text">
+                        текст заголовка страницы в теге &lt;h1&gt;... &lt;/h1&gt;
+                    </div>
+                    <span asp-validation-for="PageItem.PageHeading" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
                     <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
-                    <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center" aria-describedby="PageCardTextInputHelpBlock" />
+                    <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control mx-auto w-50" aria-describedby="PageCardTextInputHelpBlock" />
                     <div id="PageCardTextInputHelpBlock" class="form-text">
                         текст для карточки страницы
                     </div>
+                    <span asp-validation-for="PageItem.PageCardText" class="text-danger"></span>
 
                     <hr class="liniya" />
 
