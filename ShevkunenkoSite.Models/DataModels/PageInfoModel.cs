@@ -162,11 +162,21 @@ public class PageInfoModel
     public Guid ImageFileModelId { get; set; }
     public ImageFileModel? ImageFileModel { get; set; }
 
+    #endregion
+
+    #region Содержание страницы
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Заголовок страницы (<h1>...</h1>):")]
     [DataType(DataType.Text)]
     public string PageHeading { get; set; } = string.Empty;
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Текст страницы (<article>...</article>):")]
+    [DataType(DataType.Text)]
+    public string TextOfPage { get; set; } = string.Empty;
 
     #endregion
 

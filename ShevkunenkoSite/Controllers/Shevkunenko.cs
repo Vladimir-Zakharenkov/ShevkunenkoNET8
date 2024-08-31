@@ -1,10 +1,17 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using Microsoft.AspNetCore.Http;
 
-public class Shevkunenko(IImageFileRepository imageContext) : Controller
+namespace ShevkunenkoSite.Controllers;
+
+public class Shevkunenko(IImageFileRepository imageContext, IPageInfoRepository pageContext) : Controller
 {
     public IActionResult Index() => View();
 
-    public IActionResult Biography() => View();
+    public async Task<IActionResult> Biography()
+    {
+        var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
+
+        return View(pageInfoModel);
+    }
 
     public IActionResult Navigation() => View();
 

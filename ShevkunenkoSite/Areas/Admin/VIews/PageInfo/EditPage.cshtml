@@ -236,6 +236,23 @@
 
                 <hr class="liniya" />
 
+                <label asp-for="PageItem.TextOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+                <textarea id="TextOfPageInput" asp-for="PageItem.TextOfPage" rows="7" class="form-control fordetails px-3" aria-describedby="TextOfPageInputHelpBlock">
+                </textarea>
+
+                <article class="px-2 mt-3 border border-secondary paragraph fluid-font-size" itemprop="text">
+
+                    @Html.Raw(Model.PageItem.TextOfPage)
+
+                </article>
+
+                <div id="TextOfPageInputHelpBlock" class="form-text fs-6">
+                    текст страницы
+                </div>
+                <span asp-validation-for="PageItem.TextOfPage" class="text-danger"></span>
+
+                <hr class="liniya" />
+
                 <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
                 <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center w-50 mx-auto" aria-describedby="PageCardTextInputHelpBlock" />
                 <div id="PageCardTextInputHelpBlock" class="form-text fs-6">

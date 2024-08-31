@@ -207,6 +207,16 @@
 
         <hr class="w-50 mx-auto my-1" />
 
+        <h2 class="fs-4 text-primary">Текст страницы (TextOfPage)&nbsp;:</h2>
+
+        <article class="px-2 border border-secondary paragraph fluid-font-size" itemprop="text">
+
+            @Html.Raw(Model.PageItem.TextOfPage)
+
+        </article>
+
+        <hr class="w-50 mx-auto my-1" />
+
         <h2 class="fs-4 text-primary">Текст карточки (PageCardText)&nbsp;:</h2>
 
         @if (string.IsNullOrEmpty(Model.PageItem.PageCardText))

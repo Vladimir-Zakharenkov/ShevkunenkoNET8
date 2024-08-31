@@ -467,6 +467,7 @@ public class PageInfoController(
             addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
             addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
             addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
+            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
             addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.Trim();
             addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.Trim();
             addItem.PageItem.PageLastmod = DateTime.Now;
@@ -835,6 +836,7 @@ public class PageInfoController(
             pageUpdate.PageDescription = editPage.PageItem.PageDescription.Trim();
             pageUpdate.PageCardText = editPage.PageItem.PageCardText.Trim().ToUpper();
             pageUpdate.PageHeading = editPage.PageItem.PageHeading.Trim();
+            pageUpdate.TextOfPage = editPage.PageItem.TextOfPage;
             pageUpdate.PageFilter = editPage.PageItem.PageFilter.Trim().ToLower();
             pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim().ToLower();
             pageUpdate.PageLastmod = DateTime.Now;
