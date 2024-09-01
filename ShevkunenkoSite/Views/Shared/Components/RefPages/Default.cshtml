@@ -10,7 +10,7 @@
 
                 <hr class="liniya" />
 
-                @foreach (var item in listOfFilterOut)
+                @foreach (var item in listOfFilterOut.OrderBy(o => o.PageLastmod))
                 {
                     <vc:card-of-page page="@item" />
                 }

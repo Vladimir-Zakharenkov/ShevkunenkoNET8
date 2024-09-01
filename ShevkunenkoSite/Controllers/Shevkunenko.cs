@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ShevkunenkoSite.Controllers;
+﻿namespace ShevkunenkoSite.Controllers;
 
 public class Shevkunenko(IImageFileRepository imageContext, IPageInfoRepository pageContext) : Controller
 {
