@@ -1,5 +1,13 @@
 ﻿@model RefPagesViewModel
 
+@if (Model.ListsOfVideoFilterOut.Count > 0)
+{
+    foreach (var listsOfVideoFilterOut in Model.ListsOfVideoFilterOut)
+    {
+        <vc:video-links movies-list="@listsOfVideoFilterOut" />
+    }
+}
+
 @if (Model.ListsOfFilterOut.Count > 0)
 {
     foreach (var listOfFilterOut in Model.ListsOfFilterOut)

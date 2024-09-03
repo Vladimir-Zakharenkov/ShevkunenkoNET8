@@ -4,7 +4,7 @@ public class Shevkunenko(IImageFileRepository imageContext, IPageInfoRepository 
 {
     public IActionResult Index() => View();
 
-    public async Task<IActionResult> Biography()
+    public async Task<IActionResult> Biography() 
     {
         var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
 

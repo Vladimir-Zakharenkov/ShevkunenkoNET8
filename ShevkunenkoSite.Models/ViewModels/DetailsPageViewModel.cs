@@ -10,6 +10,10 @@ public class DetailsPageViewModel
 
     public List<PageInfoModel> LinksToPagesByFilterOut { get; set; } = [];
 
+    public List<VideoLinksViewModel> LinksToVideosByFilterOut = [];
+
+    public List<List<MovieFileModel>> ListsMoviesFileModel { get; set; } = [];
+
     public List<PageInfoModel> LinksFromPagesByGuid { get; set; } = [];
 
     public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];

@@ -1,17 +1,5 @@
 ﻿@model PageInfoModel
 
-@{
-    VideoLinksViewModel roliKino = new()
-            {
-                HeadTitleForVideoLinks = "Сергей Шевкуненко -&nbsp;роли&nbsp;в&nbsp;кино",
-                IsImage = false,
-                IconType = "webicon300",
-                SearchFilter = "Шевкуненко,",
-                MovieInMainList = true,
-                IsPartsMoreOne = true
-            };
-}
-
 <article class="paragraph fluid-font-size" itemprop="text">
 
     <vc:view-image 
@@ -22,5 +10,3 @@
     @Html.Raw(Model.TextOfPage)
 
 </article>
-
-<vc:video-links movies-list="roliKino" />

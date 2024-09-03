@@ -1,26 +1,21 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class VideoLinks : ViewComponent
+public class VideoLinks(IMovieFileRepository movieContext) : ViewComponent
 {
-    private readonly IMovieFileRepository _movieContext;
-    public VideoLinks(IMovieFileRepository movieContext)
-    {
-        _movieContext = movieContext;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync(VideoLinksViewModel moviesList)
     {
         if (moviesList.MovieInMainList == true)
         {
+#pragma warning disable CA1862
             MoviesListViewModel movies = new()
             {
-                Movies = await _movieContext.MovieFiles
+                Movies = await movieContext.MovieFiles
                   .Where(p => p.MovieInMainList == moviesList.MovieInMainList)
-                  .Where(p => p.SearchFilter.Contains(moviesList.SearchFilter ?? string.Empty))
+                  .Where(p => p.SearchFilter.ToLower().Contains(moviesList.SearchFilter.ToLower() ?? string.Empty))
                   .OrderBy(p => p.MovieDatePublished)
                   .ToArrayAsync(),
 
-               IsPartsMoreOne = moviesList.IsPartsMoreOne,
+                IsPartsMoreOne = moviesList.IsPartsMoreOne,
 
                 PageHeadTitle = moviesList.HeadTitleForVideoLinks,
 
@@ -28,6 +23,11 @@ public class VideoLinks : ViewComponent
 
                 IconType = moviesList.IconType
             };
+
+            if (movies.Movies.Where(m => m.MoviePosterGuid == null).Any())
+            {
+                movies.IsImage = true;
+            }
 
             return View(movies);
         }
@@ -35,12 +35,12 @@ public class VideoLinks : ViewComponent
         {
             MoviesListViewModel movies = new()
             {
-                Movies = await _movieContext.MovieFiles
-                 .Where(p => p.SearchFilter.Contains(moviesList.SearchFilter ?? string.Empty))
+                Movies = await movieContext.MovieFiles
+                 .Where(p => p.SearchFilter.ToLower().Contains(moviesList.SearchFilter.ToLower() ?? string.Empty))
                  .OrderBy(p => p.MovieDatePublished)
                  .ToArrayAsync(),
 
-               IsPartsMoreOne = moviesList.IsPartsMoreOne,
+                IsPartsMoreOne = moviesList.IsPartsMoreOne,
 
                 PageHeadTitle = moviesList.HeadTitleForVideoLinks,
 
@@ -51,5 +51,6 @@ public class VideoLinks : ViewComponent
 
             return View(movies);
         }
+#pragma warning restore CA1862
     }
 }

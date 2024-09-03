@@ -180,11 +180,15 @@ public class PageInfoModel
 
     #endregion
 
-    #region Связанные страницы
+    #region Связанные страницы и видео
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Включить ссылки по GUID:")]
     public bool PageLinks { get; set; } = false;
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Включить ссылки на видео:")]
+    public bool VideoLinks { get; set; } = false;
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Включить ссылки по фильтрам:")]
@@ -203,6 +207,13 @@ public class PageInfoModel
     [Display(Name = "Фильтры поиска страниц сайта:")]
     [DataType(DataType.Text)]
     public string PageFilterOut { get; set; } = string.Empty;
+
+    // список фильтров (SearchFilter) видео, для формирования ссылок на них
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Фильтры поиска видео:")]
+    [DataType(DataType.Text)]
+    public string VideoFilterOut { get; set; } = string.Empty;
 
     // список GUID страниц, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]

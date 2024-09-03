@@ -3,23 +3,11 @@
 namespace ShevkunenkoSite.Controllers;
 
 //[Route("/All-Video/[action]")]
-public class AllVideoController : Controller
+public class AllVideoController(IMovieFileRepository movieContext,
+                                    IImageFileRepository imageContext,
+                                    ITopicMovieRepository topicMovieContext,
+                                    IPageInfoRepository pageInfoContext) : Controller
 {
-    private readonly IMovieFileRepository _movieContext;
-    private readonly IImageFileRepository _imageContext;
-    private readonly ITopicMovieRepository _topicMovieContext;
-    private readonly IPageInfoRepository _pageInfoContext;
-    public AllVideoController(IMovieFileRepository movieContext,
-                                        IImageFileRepository imageContext,
-                                        ITopicMovieRepository topicMovieContext,
-                                        IPageInfoRepository pageInfoContext)
-    {
-        _movieContext = movieContext;
-        _imageContext = imageContext;
-        _topicMovieContext = topicMovieContext;
-        _pageInfoContext = pageInfoContext;
-    }
-
     public int moviesPerPage = 12;
 
     #region AllVideoController for Tests
@@ -53,13 +41,13 @@ public class AllVideoController : Controller
         List<PageInfoModel> pagesForMovies = Enumerable.Empty<PageInfoModel>().ToList();
 
         // выборка фильмов по теме
-        if (topicId.HasValue & await _topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
+        if (topicId.HasValue & await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
         {
-            TopicMovieModel topicMovie = await _topicMovieContext.TopicMovies.FirstAsync(mt => mt.TopicMovieModelId == topicId);
+            TopicMovieModel topicMovie = await topicMovieContext.TopicMovies.FirstAsync(mt => mt.TopicMovieModelId == topicId);
 
             moviesPerPage = topicMovie.NumberOfLinksPerPage;
 
-            moviesListViewModel.Movies = await _movieContext.MovieFiles
+            moviesListViewModel.Movies = await movieContext.MovieFiles
                 .Where(p => p.MovieInMainList == true & p.TopicGuidList
                 .Contains(topicMovie.TopicMovieModelId.ToString()) == true)
                 .OrderBy(p => p.MovieDatePublished)
@@ -79,7 +67,7 @@ public class AllVideoController : Controller
             {
                 CurrentPage = pageNumber,
                 ItemsPerPage = topicMovie.NumberOfLinksPerPage,
-                TotalItems = _movieContext.MovieFiles
+                TotalItems = movieContext.MovieFiles
                     .Where(p => p.MovieInMainList == true & p.TopicGuidList
                         .Contains(topicMovie.TopicMovieModelId.ToString()) == true).Count()
             };
@@ -87,7 +75,7 @@ public class AllVideoController : Controller
         // выборка всех фильмов
         else
         {
-            moviesListViewModel.Movies = await _movieContext.MovieFiles
+            moviesListViewModel.Movies = await movieContext.MovieFiles
                 .Where(p => p.MovieInMainList == true)
                 .OrderBy(p => p.MovieDatePublished)
                 .Skip((pageNumber - 1) * moviesPerPage)
@@ -106,7 +94,7 @@ public class AllVideoController : Controller
             {
                 CurrentPage = pageNumber,
                 ItemsPerPage = moviesPerPage,
-                TotalItems = _movieContext.MovieFiles
+                TotalItems = movieContext.MovieFiles
                     .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains(string.Empty))
                     .Count()
             };
@@ -119,9 +107,9 @@ public class AllVideoController : Controller
 
             foreach (var p in pagesOfMovies)
             {
-                if (await _pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == p).AnyAsync())
+                if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == p).AnyAsync())
                 {
-                    var pg = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == p);
+                    var pg = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == p);
 
                     pagesForMovies.Add(pg);
                 }
@@ -142,7 +130,7 @@ public class AllVideoController : Controller
     public async Task<ViewResult> Shevkunenko() =>
         View("Index", new MoviesListViewModel
         {
-            Movies = await _movieContext.MovieFiles
+            Movies = await movieContext.MovieFiles
                 .AsNoTracking()
                 .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains("Шевкуненко,"))
                 .OrderBy(p => p.MovieDatePublished)
@@ -160,7 +148,7 @@ public class AllVideoController : Controller
     public async Task<ViewResult> Programmy() =>
         View("Index", new MoviesListViewModel
         {
-            Movies = await _movieContext.MovieFiles
+            Movies = await movieContext.MovieFiles
                 .AsNoTracking()
                 .Where(p => p.SearchFilter.Contains("Программа,"))
                 .OrderBy(p => p.MovieDatePublished)
@@ -178,7 +166,7 @@ public class AllVideoController : Controller
     public async Task<ViewResult> Znakomye() =>
     View("Index", new MoviesListViewModel
     {
-        Movies = await _movieContext.MovieFiles
+        Movies = await movieContext.MovieFiles
             .AsNoTracking()
             .Where(p => p.SearchFilter.Contains("Знакомые,"))
             .OrderBy(p => p.MovieDatePublished)
@@ -196,7 +184,7 @@ public class AllVideoController : Controller
     public async Task<ViewResult> Lihie90() =>
         View("Index", new MoviesListViewModel
         {
-            Movies = await _movieContext.MovieFiles
+            Movies = await movieContext.MovieFiles
                 .AsNoTracking()
                 .Where(p => p.SearchFilter.Contains("Программа «Лихие 90-е»,"))
                 .OrderBy(p => p.MovieDatePublished)
@@ -218,7 +206,7 @@ public class AllVideoController : Controller
     public async Task<ViewResult> BbcTop100() =>
         View("Index", new MoviesListViewModel
         {
-            Movies = await _movieContext.MovieFiles
+            Movies = await movieContext.MovieFiles
                 .AsNoTracking()
                 .Where(p => p.SearchFilter.Contains("BBC Top 100 US,"))
                 .OrderBy(p => p.MovieUploadDate)
@@ -232,7 +220,7 @@ public class AllVideoController : Controller
 
     public async Task<ViewResult> Movie(Guid? movieId, string? videoHosting, Guid? imageID, bool? pageOfSeries = false, string? topic = null)
     {
-        if ((movieId == null & topic == null) || (topic != null & !await _movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(topic + ",")).AnyAsync()))
+        if ((movieId == null & topic == null) || (topic != null & !await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(topic + ",")).AnyAsync()))
         {
             Redirect("~/AllVideo/Index");
         }
@@ -241,7 +229,7 @@ public class AllVideoController : Controller
         {
             return View("Topic", new MoviesListViewModel
             {
-                Movies = await _movieContext.MovieFiles
+                Movies = await movieContext.MovieFiles
                 .AsNoTracking()
                 .Where(p => p.SearchFilter.Contains(topic + ","))
                 .OrderBy(p => p.MovieUploadDate)
@@ -253,13 +241,13 @@ public class AllVideoController : Controller
                 PageHeadTitle = topic
             });
         }
-        else if (await _movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieId).AnyAsync())
+        else if (await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieId).AnyAsync())
         {
-            MovieFileModel movieItem = await _movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieId);
+            MovieFileModel movieItem = await movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieId);
 
             if (pageOfSeries == true && movieItem.MovieTotalParts > 1 && !string.IsNullOrEmpty(movieItem.SeriesSearchFilter))
             {
-                MovieFileModel[] allSeries = await _movieContext.MovieFiles.Where(m => m.SeriesSearchFilter == movieItem.SeriesSearchFilter).ToArrayAsync();
+                MovieFileModel[] allSeries = await movieContext.MovieFiles.Where(m => m.SeriesSearchFilter == movieItem.SeriesSearchFilter).ToArrayAsync();
 
                 if (allSeries.Length > 0)
                 {
@@ -283,7 +271,7 @@ public class AllVideoController : Controller
 
                 if (movieItem.FullMovieID != null)
                 {
-                    fullMovie = await _movieContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieItem.FullMovieID);
+                    fullMovie = await movieContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieItem.FullMovieID);
                 }
                 else
                 {
@@ -387,21 +375,21 @@ public class AllVideoController : Controller
             }
             else if (imageID != null)
             {
-                ImageFileModel imageItem = await _imageContext.ImageFiles.FirstAsync(p => p.ImageFileModelId == imageID);
+                ImageFileModel imageItem = await imageContext.ImageFiles.FirstAsync(p => p.ImageFileModelId == imageID);
 
                 ImageFileModel[] imageArray = Array.Empty<ImageFileModel>();
 
                 if (movieItem.MovieCaption == "Пропавшая экспедиция - 1" || movieItem.MovieCaption == "Пропавшая экспедиция - 2")
                 {
-                    imageArray = await _imageContext.ImageFiles.Where(p => p.SearchFilter.Contains("Пропавшая экспедиция - альбом,")).ToArrayAsync();
+                    imageArray = await imageContext.ImageFiles.Where(p => p.SearchFilter.Contains("Пропавшая экспедиция - альбом,")).ToArrayAsync();
                 }
                 else if (movieItem.MovieCaption.Contains("Интервью"))
                 {
-                    imageArray = await _imageContext.ImageFiles.Where(p => p.SearchFilter.Contains("Криминальная звезда,")).ToArrayAsync();
+                    imageArray = await imageContext.ImageFiles.Where(p => p.SearchFilter.Contains("Криминальная звезда,")).ToArrayAsync();
                 }
                 else
                 {
-                    imageArray = await _imageContext.ImageFiles.Where(p => p.SearchFilter.Contains(movieItem.MovieCaption ?? string.Empty)).ToArrayAsync();
+                    imageArray = await imageContext.ImageFiles.Where(p => p.SearchFilter.Contains(movieItem.MovieCaption ?? string.Empty)).ToArrayAsync();
                 }
 
                 return View("Frames", new FramesViewModel

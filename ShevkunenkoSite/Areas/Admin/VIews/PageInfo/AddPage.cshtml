@@ -31,6 +31,7 @@
                         <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
                     }
 
+                    @* MVC или RazorPage *@
                     <div aria-describedby="PageAsRazorPageInputHelpBlock">
                         <div class="form-check form-check-inline me-5">
                             <input asp-for="PageItem.PageAsRazorPage" class="form-check-input" type="radio" id="inlineRadio1" value="false" checked>
@@ -62,6 +63,7 @@
 
                     <hr class="liniya" />
 
+                    @* Выбор области Area *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="PageItem.PageArea" class="col-form-label text-primary fs-5 fw-bold"></label>
@@ -178,6 +180,7 @@
 
                     <hr class="liniya" />
 
+                    @* Выбор  og:type *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="PageItem.OgType" class="col-form-label text-primary fs-5 fw-bold"></label>
@@ -198,6 +201,7 @@
 
                     <hr class="liniya" />
 
+                    @* Частота изменения страницы *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="PageItem.Changefreq" class="col-form-label text-primary fs-5 fw-bold"></label>
@@ -223,6 +227,7 @@
 
                     <hr class="liniya" />
 
+                    @* Приоритет страницы *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="PageItem.Priority" class="col-form-label text-primary fs-5 fw-bold"></label>
@@ -261,22 +266,56 @@
 
                     <hr class="liniya" />
 
+                    @* Включить ссылки на видео по фильтрам *@
+                    <div class="row g-2">
+                        <label asp-for="PageItem.VideoLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <div class="col-6 form-check">
+                            <input id="VideoLinksTrue" class="form-check-input float-none me-2" asp-for="PageItem.VideoLinks" type="radio" value="true">
+                            <label class="form-check-label d-inline-block" for="VideoLinksTrue">
+                                <span class="">включить</span>
+                            </label>
+                        </div>
+                        <div class="col-6 form-check">
+                            <input id="VideoLinksFalse" class="form-check-input float-none me-2" asp-for="PageItem.VideoLinks" type="radio" value="false" checked>
+                            <label class="form-check-label d-inline-block" for="VideoLinksFalse">
+                                <span class="">выключить</span>
+                            </label>
+                        </div>
+                        <div id="VideoLinksInputHelpBlock" class="form-text">
+                            <span>Ссылки по фильтрам на видео</span>
+                        </div>
+                        <span asp-validation-for="PageItem.VideoLinks" class="text-danger"></span>
+                    </div>
+
+                    <hr class="liniya" />
+
+                    <label asp-for="PageItem.VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="VideoFilterOutInput" asp-for="PageItem.VideoFilterOut" rows="5" class="form-control fordetails" aria-describedby="VideoFilterOutInputHelpBlock">
+                    </textarea>
+                    <div id="VideoFilterOutInputHelpBlock" class="form-text">
+                        фильтры поиска видео
+                    </div>
+                    <span asp-validation-for="PageItem.VideoFilterOut" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    @* Включить ссылки на страницы по фильтрам *@
                     <div class="row g-2">
                         <label asp-for="PageItem.PageLinksByFilters" class="col-12 form-label text-primary fs-5 fw-bold"></label>
                         <div class="col-6 form-check">
                             <input id="PageLinksByFiltersTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="true">
                             <label class="form-check-label d-inline-block" for="PageLinksByFiltersTrue">
-                                <span class="">Показывать ссылки по фильтрам</span>
+                                <span class="">включить</span>
                             </label>
                         </div>
                         <div class="col-6 form-check">
                             <input id="PageLinksByFiltersFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="false" checked>
                             <label class="form-check-label d-inline-block" for="PageLinksByFiltersFalse">
-                                <span class="">Не показывать ссылки по фильтрам</span>
+                                <span class="">выключить</span>
                             </label>
                         </div>
-                        <div id=".PageLinksByFiltersInputHelpBlock" class="form-text">
-                            <span>показывать ссылки по фильтрам</span>
+                        <div id="PageLinksByFiltersInputHelpBlock" class="form-text">
+                            <span>Ссылки по фильтрам на страницы</span>
                         </div>
                         <span asp-validation-for="PageItem.PageLinksByFilters" class="text-danger"></span>
                     </div>
@@ -285,7 +324,6 @@
 
                     <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
-                    <p class="fordetails">PageFilterOut</p>
                     </textarea>
                     <div id="PageFilterOutInputHelpBlock" class="form-text">
                         фильтры поиска страниц

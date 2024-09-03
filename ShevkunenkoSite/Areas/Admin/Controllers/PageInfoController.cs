@@ -1,10 +1,11 @@
-﻿ namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
 [Authorize]
 public class PageInfoController(
     IPageInfoRepository pageInfoContext,
+    IMovieFileRepository movieContext,
     IIconFileRepository iconContext,
     IImageFileRepository imageContext,
     IBackgroundFotoRepository backgroundContext) : Controller
@@ -149,6 +150,45 @@ public class PageInfoController(
 
             #endregion
 
+            #region  Ссылки на видео сайта по фильтру (VideoFilterOut)
+
+            List<VideoLinksViewModel> listsOfVideoFilterOut = [];
+            List<List<MovieFileModel>> moviesFileModel = [];
+
+            string[] videoFilterOut = pageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (videoFilterOut.Length > 0)
+            {
+                for (int i = 0; i < videoFilterOut.Length; i++)
+                {
+#pragma warning disable CA1862
+                    if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
+                    {
+                        var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
+                       movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel = new()
+                        {
+                            HeadTitleForVideoLinks = videoFilterOut[i],
+                            IsImage = false,
+                            IconType = "webicon300",
+                            SearchFilter = videoFilterOut[i],
+                            MovieInMainList = true,
+                            IsPartsMoreOne = true
+                        };
+
+                        listsOfVideoFilterOut.Add(videoLinksViewModel);
+
+                        moviesFileModel.Add(movies);
+                    }
+#pragma warning restore CA1862
+                }
+                _ = listsOfVideoFilterOut.Distinct();
+                _ = moviesFileModel.Distinct();
+            }
+
+            #endregion
+
             #region Ссылки на страницы сайта по фильтру (PageFilterOut)
 
             string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -195,6 +235,8 @@ public class PageInfoController(
                 IconItem = iconItem,
                 LinksToPagesByGuid = linksToPagesByGuid,
                 LinksToPagesByFilterOut = linksToPagesByFilterOut,
+                LinksToVideosByFilterOut = listsOfVideoFilterOut,
+                ListsMoviesFileModel = moviesFileModel,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter
             });
@@ -342,6 +384,8 @@ public class PageInfoController(
 
             #endregion
 
+            #region Заголовок страницы (manifest)
+
             if (addItem.PageItem.OgType == "website")
             {
                 addItem.PageItem.PageIconPath = "main/";
@@ -371,6 +415,10 @@ public class PageInfoController(
                 addItem.PageItem.BrowserConfigFolder = "/admin";
                 addItem.PageItem.Manifest = "admin.json";
             }
+
+            #endregion
+
+            #region MVC или RazorPage
 
             if (string.IsNullOrWhiteSpace(addItem.PageItem.PageArea) || string.IsNullOrEmpty(addItem.PageItem.PageArea))
             {
@@ -463,24 +511,32 @@ public class PageInfoController(
                 addItem.PageItem.PagePathNickName = "/" + addItem.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
-            addItem.PageItem.PageTitle = addItem.PageItem.PageTitle.Trim();
-            addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
-            addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
-            addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
-            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
-            addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.Trim();
-            addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.Trim();
-            addItem.PageItem.PageLastmod = DateTime.Now;
-            addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
-            addItem.PageItem.PageLinksByFilters = addItem.PageItem.PageLinksByFilters;
-            addItem.PageItem.RefPages = addItem.PageItem.RefPages.Trim();
-
             if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
             {
                 ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addItem.PageItem.PagePathNickName}» уже существует");
 
                 return View();
             }
+
+            #endregion
+
+            addItem.PageItem.PageTitle = addItem.PageItem.PageTitle.Trim();
+            addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
+            addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
+            addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
+            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
+            addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.ToLower().Trim();
+            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.ToLower().Trim();
+            addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.ToLower().Trim();
+            addItem.PageItem.PageLastmod = DateTime.Now;
+            addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
+            addItem.PageItem.VideoLinks = addItem.PageItem.VideoLinks;
+            addItem.PageItem.PageLinksByFilters = addItem.PageItem.PageLinksByFilters;
+            addItem.PageItem.RefPages = addItem.PageItem.RefPages.Trim();
+
+            await pageInfoContext.AddNewPageAsync(addItem.PageItem);
+
+            #region Открытие страницы DetailsPage
 
             string checkPageFullPathWithData = string.Empty;
 
@@ -500,11 +556,11 @@ public class PageInfoController(
                 return View();
             }
 
-            await pageInfoContext.AddNewPageAsync(addItem.PageItem);
-
             PageInfoModel newPage = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == checkPageFullPathWithData);
 
             return RedirectToAction("DetailsPage", new { pageId = newPage.PageInfoModelId, Area = "Admin" });
+
+            #endregion
         }
         else
         {
@@ -842,6 +898,8 @@ public class PageInfoController(
             pageUpdate.PageLastmod = DateTime.Now;
             pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
             pageUpdate.PageLinks = editPage.PageItem.PageLinks;
+            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
+            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim().ToLower();
             pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
             pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
             pageUpdate.Priority = editPage.PageItem.Priority.Trim();

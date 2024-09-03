@@ -76,6 +76,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 02 - Основы в ASP.NET Core", "Глава 02 - Основы в ASP.NET Core", "{7655687B-9A51-4272-BB15-A16578D31AEC}"
 	ProjectSection(SolutionItems) = preProject
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 01 - Создание и запуск приложения.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 01 - Создание и запуск приложения.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 02 - Конвейер обработки запроса и middleware.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 02 - Конвейер обработки запроса и middleware.txt
 	EndProjectSection
 EndProject
 Global

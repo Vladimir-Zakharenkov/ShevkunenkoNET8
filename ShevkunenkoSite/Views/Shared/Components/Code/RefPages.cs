@@ -1,6 +1,6 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class RefPages(IPageInfoRepository pageInfoContext) : ViewComponent
+public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository movieContext) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
     {
@@ -10,16 +10,49 @@ public class RefPages(IPageInfoRepository pageInfoContext) : ViewComponent
 
         List<PageInfoModel> linksToPagesByGuid = [];
 
-        if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages))
+        List<VideoLinksViewModel> listsOfVideoFilterOut = [];
+
+        VideoLinksViewModel videoLinksViewModel = new();
+
+        if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages) & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
         {
             return View("Empty");
         }
-        else if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinksByFilters == false)
+        else if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinksByFilters == false & pageInfoModel.VideoLinks == false)
         {
             return View("Empty");
         }
         else
         {
+            if (!string.IsNullOrEmpty(pageInfoModel.VideoFilterOut) & pageInfoModel.VideoLinks == true)
+            {
+                string[] videoFilterOut = pageInfoModel.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (videoFilterOut.Length > 0)
+                {
+                    for (int i = 0; i < videoFilterOut.Length; i++)
+                    {
+#pragma warning disable CA1862
+                        if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
+                        {
+                            videoLinksViewModel = new()
+                            {
+                                HeadTitleForVideoLinks = videoFilterOut[i],
+                                IsImage = false,
+                                IconType = "webicon300",
+                                SearchFilter = videoFilterOut[i],
+                                MovieInMainList = true,
+                                IsPartsMoreOne = true
+                            };
+
+                            listsOfVideoFilterOut.Add(videoLinksViewModel);
+                        }
+#pragma warning restore CA1862
+                    }
+                    _ = listsOfVideoFilterOut.Distinct();
+                }
+            }
+
             if (!string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & pageInfoModel.PageLinksByFilters == true)
             {
                 string[] pageFilterOut = pageInfoModel.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -69,6 +102,7 @@ public class RefPages(IPageInfoRepository pageInfoContext) : ViewComponent
         {
             return View(new RefPagesViewModel
             {
+                ListsOfVideoFilterOut = listsOfVideoFilterOut,
                 ListsOfFilterOut = listsOfFilterOut,
                 LinksToPagesByGuid = linksToPagesByGuid
             });

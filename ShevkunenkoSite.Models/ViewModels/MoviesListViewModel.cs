@@ -4,9 +4,9 @@ namespace ShevkunenkoSite.Models.ViewModels;
 
 public class MoviesListViewModel
 {
-    public IEnumerable<MovieFileModel> Movies { get; set; } = Enumerable.Empty<MovieFileModel>();
+    public IEnumerable<MovieFileModel> Movies { get; set; } = [];
 
-    public IEnumerable<PageInfoModel> MoviePages { get; set; } = Enumerable.Empty<PageInfoModel>();
+    public IEnumerable<PageInfoModel> MoviePages { get; set; } = [];
 
     public PagingInfoViewModel PagingInfo { get; set; } = new();
 
