@@ -526,7 +526,7 @@ public class PageInfoController(
             addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
             addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
             addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.ToLower().Trim();
-            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.ToLower().Trim();
+            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.Trim();
             addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.ToLower().Trim();
             addItem.PageItem.PageLastmod = DateTime.Now;
             addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
@@ -651,6 +651,48 @@ public class PageInfoController(
             }
 
             editPage.LinksToPagesByFilterOut = linksToPagesByFilterOut;
+
+            #endregion
+
+            #region  Ссылки на видео сайта по фильтру (VideoFilterOut)
+
+            List<VideoLinksViewModel> listsOfVideoFilterOut = [];
+            List<List<MovieFileModel>> moviesFileModel = [];
+
+            string[] videoFilterOut = editPage.PageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (videoFilterOut.Length > 0)
+            {
+                for (int i = 0; i < videoFilterOut.Length; i++)
+                {
+#pragma warning disable CA1862
+                    if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
+                    {
+                        var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel = new()
+                        {
+                            HeadTitleForVideoLinks = videoFilterOut[i],
+                            IsImage = false,
+                            IconType = "webicon300",
+                            SearchFilter = videoFilterOut[i],
+                            MovieInMainList = true,
+                            IsPartsMoreOne = true
+                        };
+
+                        listsOfVideoFilterOut.Add(videoLinksViewModel);
+
+                        moviesFileModel.Add(movies);
+                    }
+#pragma warning restore CA1862
+                }
+                _ = listsOfVideoFilterOut.Distinct();
+                _ = moviesFileModel.Distinct();
+            }
+
+            editPage.LinksToVideosByFilterOut = listsOfVideoFilterOut;
+            editPage.ListsMoviesFileModel = moviesFileModel;
 
             #endregion
 
@@ -899,7 +941,7 @@ public class PageInfoController(
             pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
             pageUpdate.PageLinks = editPage.PageItem.PageLinks;
             pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
-            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim().ToLower();
+            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
             pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
             pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
             pageUpdate.Priority = editPage.PageItem.Priority.Trim();

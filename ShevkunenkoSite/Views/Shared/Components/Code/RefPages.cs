@@ -94,7 +94,7 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
             }
         }
 
-        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1)
+        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1 & listsOfVideoFilterOut.Count < 1)
         {
             return View("Empty");
         }

@@ -11,7 +11,7 @@ public class VideoLinks(IMovieFileRepository movieContext) : ViewComponent
             {
                 Movies = await movieContext.MovieFiles
                   .Where(p => p.MovieInMainList == moviesList.MovieInMainList)
-                  .Where(p => p.SearchFilter.ToLower().Contains(moviesList.SearchFilter.ToLower() ?? string.Empty))
+                  .Where(p => p.SearchFilter.Contains(moviesList.SearchFilter ?? string.Empty))
                   .OrderBy(p => p.MovieDatePublished)
                   .ToArrayAsync(),
 
@@ -36,7 +36,7 @@ public class VideoLinks(IMovieFileRepository movieContext) : ViewComponent
             MoviesListViewModel movies = new()
             {
                 Movies = await movieContext.MovieFiles
-                 .Where(p => p.SearchFilter.ToLower().Contains(moviesList.SearchFilter.ToLower() ?? string.Empty))
+                 .Where(p => p.SearchFilter.Contains(moviesList.SearchFilter ?? string.Empty))
                  .OrderBy(p => p.MovieDatePublished)
                  .ToArrayAsync(),
 
