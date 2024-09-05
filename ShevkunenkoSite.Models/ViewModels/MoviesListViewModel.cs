@@ -10,8 +10,12 @@ public class MoviesListViewModel
 
     public PagingInfoViewModel PagingInfo { get; set; } = new();
 
+    public string ActionForPagination { get; set; } = string.Empty;
+
     // true - выбираем главную страницу многосерийного фильма
     public bool IsPartsMoreOne { get; set; } = true;
+
+    #region Параметры поиска
 
     public string MovieCaptionSearchString { get; set; } = string.Empty;
 
@@ -25,9 +29,9 @@ public class MoviesListViewModel
 
     public string MovieActorSearchString { get; set; } = string.Empty;
 
-    public string PageHeadTitle { get; set; } = string.Empty;
+    #endregion
 
-    public string ActionForPagination { get; set; } = string.Empty;
+    public string PageHeadTitle { get; set; } = string.Empty;
 
     // true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео
     public bool? IsImage { get; set; } = false;

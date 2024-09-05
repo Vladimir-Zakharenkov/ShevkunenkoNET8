@@ -1,37 +1,39 @@
-﻿using ShevkunenkoSite.Models.DataModels;
+﻿namespace ShevkunenkoSite.Services.Interfaces;
 
-namespace ShevkunenkoSite.Services.Interfaces;
-
-public class TopicMovieImplementation : ITopicMovieRepository
+public class TopicMovieImplementation(SiteDbContext siteContext) : ITopicMovieRepository
 {
-    private readonly SiteDbContext _siteContext;
-    public TopicMovieImplementation(SiteDbContext siteContext) => _siteContext = siteContext;
+    public IQueryable<TopicMovieModel> TopicMovies => siteContext.TopicMovie;
 
-    public IQueryable<TopicMovieModel> TopicMovies => _siteContext.TopicMovie;
-
+    #region Добавить тему видео
     public async Task AddNewTopicMovieAsync(TopicMovieModel topic)
     {
-        _ = await _siteContext.TopicMovie.AddAsync(topic);
-        _ = await _siteContext.SaveChangesAsync();
-    }
-
-    #region SaveChangesInTopicMovieAsync
-
-    public async Task SaveChangesInTopicMovieAsync()
-    {
-        _ = await _siteContext.SaveChangesAsync();
+        _ = await siteContext.TopicMovie.AddAsync(topic);
+        _ = await siteContext.SaveChangesAsync();
     }
 
     #endregion
 
+    #region Сохранить изменения при редактировании
+
+    public async Task SaveChangesInTopicMovieAsync()
+    {
+        _ = await siteContext.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Удалить тему видео
+
     public async Task DeleteTopicMovieAsync(Guid topicId)
     {
-        if (await _siteContext.TopicMovie.Where(i => i.TopicMovieModelId == topicId).AnyAsync())
+        if (await siteContext.TopicMovie.Where(i => i.TopicMovieModelId == topicId).AnyAsync())
         {
-            TopicMovieModel topicToDelete = await _siteContext.TopicMovie.FirstAsync(i => i.TopicMovieModelId == topicId);
+            TopicMovieModel topicToDelete = await siteContext.TopicMovie.FirstAsync(i => i.TopicMovieModelId == topicId);
 
-            _ = _siteContext.TopicMovie.Remove(topicToDelete);
-            _ = await _siteContext.SaveChangesAsync();
+            _ = siteContext.TopicMovie.Remove(topicToDelete);
+            _ = await siteContext.SaveChangesAsync();
         }
     }
+
+    #endregion
 }

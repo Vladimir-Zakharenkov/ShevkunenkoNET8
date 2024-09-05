@@ -4,15 +4,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
-public class TopicMovieController : Controller
+public class TopicMovieController(ITopicMovieRepository topicContext, IMovieFileRepository movieContext) : Controller
 {
-    private readonly ITopicMovieRepository _topicContext;
-    private readonly IMovieFileRepository _movieContext;
-    public TopicMovieController(ITopicMovieRepository topicContext, IMovieFileRepository movieContext)
-    {
-        _topicContext = topicContext;
-        _movieContext = movieContext;
-    }
 
     #region Список тем видео
 
@@ -21,7 +14,7 @@ public class TopicMovieController : Controller
     public async Task<IActionResult> Index(string? topicMovieSearchString,
                                                                 int pageNumber = 1)
     {
-        var allTopics = from m in _topicContext.TopicMovies
+        var allTopics = from m in topicContext.TopicMovies
             .Where
             (
                 s => s.TopicDescription.Contains((topicMovieSearchString ?? string.Empty).Trim())
@@ -52,9 +45,9 @@ public class TopicMovieController : Controller
 
     public async Task<IActionResult> DetailsTopicMovie(Guid? topicId)
     {
-        if (topicId.HasValue && await _topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
+        if (topicId.HasValue && await topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
         {
-            TopicMovieModel topicItem = await _topicContext.TopicMovies
+            TopicMovieModel topicItem = await topicContext.TopicMovies
                 .AsNoTracking()
                 .FirstAsync(t => t.TopicMovieModelId == topicId);
 
@@ -120,7 +113,7 @@ public class TopicMovieController : Controller
 
             #endregion
 
-            await _topicContext.AddNewTopicMovieAsync(topicMovieItem);
+            await topicContext.AddNewTopicMovieAsync(topicMovieItem);
 
             return RedirectToAction(nameof(Index));
         }
@@ -139,9 +132,9 @@ public class TopicMovieController : Controller
     {
         TopicMovieModel editTopicMovie = new();
 
-        if (topicId.HasValue && await _topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
+        if (topicId.HasValue && await topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
         {
-            editTopicMovie = await _topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == topicId);
+            editTopicMovie = await topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == topicId);
 
             return View(editTopicMovie);
         }
@@ -157,7 +150,7 @@ public class TopicMovieController : Controller
     {
         if (ModelState.IsValid)
         {
-            TopicMovieModel updateTopicMovie = await _topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == editTopicMovie.TopicMovieModelId);
+            TopicMovieModel updateTopicMovie = await topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == editTopicMovie.TopicMovieModelId);
 
             #region Описание
 
@@ -195,7 +188,7 @@ public class TopicMovieController : Controller
 
             #endregion
 
-            await _topicContext.SaveChangesInTopicMovieAsync();
+            await topicContext.SaveChangesInTopicMovieAsync();
 
             return RedirectToAction("DetailsTopicMovie", new { topicId = updateTopicMovie.TopicMovieModelId, Area = "Admin" });
         }
@@ -213,11 +206,11 @@ public class TopicMovieController : Controller
     {
         TopicMovieModel deleteTopicMovie = new();
 
-        if (topicId.HasValue && await _topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
+        if (topicId.HasValue && await topicContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync())
         {
-            deleteTopicMovie = await _topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == topicId);
+            deleteTopicMovie = await topicContext.TopicMovies.FirstAsync(t => t.TopicMovieModelId == topicId);
 
-            ViewBag.moviesOfTopic = await _movieContext.MovieFiles
+            ViewBag.moviesOfTopic = await movieContext.MovieFiles
                     .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true)
                     .ToArrayAsync();
 
@@ -235,7 +228,7 @@ public class TopicMovieController : Controller
     {
         if (deleteTopicMovie != null)
         {
-            var moviesOfTopic = await _movieContext.MovieFiles
+            var moviesOfTopic = await movieContext.MovieFiles
                     .Where(p => p.TopicGuidList.Contains(deleteTopicMovie.TopicMovieModelId.ToString()!) == true)
                     .ToArrayAsync();
 
@@ -258,12 +251,12 @@ public class TopicMovieController : Controller
 
                     movie.TopicGuidList = tempString.TrimEnd(',');
 
-                    await _movieContext.SaveChangesInMovieAsync();
+                    await movieContext.SaveChangesInMovieAsync();
 
                     tempString = string.Empty;
                 }
             }
-            await _topicContext.DeleteTopicMovieAsync(deleteTopicMovie.TopicMovieModelId);
+            await topicContext.DeleteTopicMovieAsync(deleteTopicMovie.TopicMovieModelId);
 
             return RedirectToAction(nameof(Index));
         }

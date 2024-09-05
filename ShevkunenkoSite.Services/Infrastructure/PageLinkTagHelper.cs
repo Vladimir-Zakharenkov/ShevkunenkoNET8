@@ -1,19 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using ShevkunenkoSite.Models.ViewModels;
-
-namespace ShevkunenkoSite.Services.Infrastructure;
+﻿namespace ShevkunenkoSite.Services.Infrastructure;
 
 [HtmlTargetElement("div", Attributes = "page-model")]
-public class PageLinkTagHelper : TagHelper
+public class PageLinkTagHelper(IUrlHelperFactory helperFactory) : TagHelper
 {
-    private readonly IUrlHelperFactory urlHelperFactory;
-
-    public PageLinkTagHelper(IUrlHelperFactory helperFactory) => urlHelperFactory = helperFactory;
-
     [ViewContext]
     [HtmlAttributeNotBound]
     public ViewContext? ViewContext { get; set; }
@@ -42,7 +31,7 @@ public class PageLinkTagHelper : TagHelper
     {
         if (ViewContext != null && PageModel != null)
         {
-            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            IUrlHelper urlHelper = helperFactory.GetUrlHelper(ViewContext);
 
             TagBuilder result = new("div");
 
@@ -51,7 +40,8 @@ public class PageLinkTagHelper : TagHelper
                 TagBuilder tag = new("a");
 
                 tag.Attributes["href"] = urlHelper.Action(PageAction, 
-                    new { pageNumber = i,  
+                    new { pageNumber = i,
+                        topicId = ViewContext.HttpContext.Request.Query["topicId"].ToString() ?? string.Empty,
                         imageSearchString = ImageSearch.ImageSearchString ?? string.Empty,
                         iconList = ImageSearch.IconList,
                         pageCard = PageSearch.PageCard,

@@ -12,9 +12,12 @@ public class DataConfig
     public static string ManifestPath { get; set; } = null!;
     public static string Test { get; set; } = string.Empty;
 
-    //каталог с каталогами иконок для страниц
+    // каталог с каталогами иконок для страниц
     public static string IconFoldersPath { get; set; } = null!;
 
-    //каталог с файлами фильмов
+    // каталог с файлами фильмов
     public static string MovieFoldersPath { get; set; } = null!;
+
+    // колличество видео на странице для постраничного представления
+    public static int NumberOfVideoPerPage { get; set; }
 }
