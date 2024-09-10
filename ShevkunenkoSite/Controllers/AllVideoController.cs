@@ -71,17 +71,18 @@ public class AllVideoController(
                 CurrentPage = pageNumber,
                 ItemsPerPage = DataConfig.NumberOfVideoPerPage,
                 TotalItems = movieContext.MovieFiles
-                    .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains(string.Empty))
+                    .Where(p => p.MovieInMainList == true)
                     .Count()
             };
         }
 
+        // если выбрана картинка для страницы видео
         if (moviesListViewModel.IsImage == null)
         {
-            var pagesOfMovies = from p in moviesListViewModel.Movies
+            var pagesIdOfMovies = from p in moviesListViewModel.Movies
                                 select p.PageInfoModelId;
 
-            foreach (var p in pagesOfMovies)
+            foreach (var p in pagesIdOfMovies)
             {
                 if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == p).AnyAsync())
                 {

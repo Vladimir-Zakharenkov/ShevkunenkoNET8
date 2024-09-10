@@ -33,7 +33,7 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
                     for (int i = 0; i < videoFilterOut.Length; i++)
                     {
 #pragma warning disable CA1862
-                        if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
+                        if (await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i])).AnyAsync())
                         {
                             videoLinksViewModel = new()
                             {

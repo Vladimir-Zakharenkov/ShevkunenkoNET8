@@ -30,7 +30,7 @@ public class TopicMovieModel
     public string IconTypeForRef { get; set; } = string.Empty;
 
     // true - выбираем главную страницу многосерийного фильма
-    [Display(Name = "Ссылка на старницу серий :")]
+    [Display(Name = "Ссылка на страницу серий :")]
     public bool GeneralPageForMovieEpisodes { get; set; } = true;
 
     [Display(Name = "Количество ссылок на странице :")]

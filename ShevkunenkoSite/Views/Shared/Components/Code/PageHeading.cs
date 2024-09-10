@@ -7,15 +7,6 @@ public class PageHeading(IPageInfoRepository pageInfoContext) : ViewComponent
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        if (!string.IsNullOrEmpty(pageInfoModel.PageHeading))
-        {
-            string pageHeading = pageInfoModel.PageHeading;
-
-            return View("Default", pageHeading);
-        }
-        else
-        {
-            return View("Empty");
-        }
+        return View(pageInfoModel);
     }
 }

@@ -1,5 +1,19 @@
 ﻿@model RefPagesViewModel
 
+@if (Model.LinksToPagesByGuid.Count > 0)
+{
+    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+        <hr class="liniya" />
+
+        @foreach (var item in Model.LinksToPagesByGuid)
+        {
+            <vc:card-of-page page="@item" />
+        }
+
+    </div>
+}
+
 @if (Model.ListsOfVideoFilterOut.Count > 0)
 {
     foreach (var listsOfVideoFilterOut in Model.ListsOfVideoFilterOut)
@@ -26,18 +40,4 @@
             </div>
         }
     }
-}
-
-@if (Model.LinksToPagesByGuid.Count > 0)
-{
-    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-        <hr class="liniya" />
-
-        @foreach (var item in Model.LinksToPagesByGuid)
-        {
-            <vc:card-of-page page="@item" />
-        }
-
-    </div>
 }

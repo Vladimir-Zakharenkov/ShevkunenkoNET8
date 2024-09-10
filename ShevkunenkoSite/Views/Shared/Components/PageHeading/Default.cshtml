@@ -1,5 +1,13 @@
-﻿@model string
+﻿@model PageInfoModel
 
-<h1 class="text_shadow">@Html.Raw(Model)</h1>
+@if (!string.IsNullOrEmpty(Model.PageHeading))
+{
+    <h1 class="text_shadow">@Html.Raw(Model.PageHeading)</h1>
 
-<hr class="liniya" />
+    <hr class="liniya" />
+}
+
+@if (Model.ImagePageHeading != null)
+{
+    <vc:view-image image-id="Model.ImagePageHeading" css-class="adp90_img maxwidth700px ten" icon-type="" />
+}

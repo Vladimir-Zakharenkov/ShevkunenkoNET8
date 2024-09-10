@@ -1,30 +1,27 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class ViewImage : ViewComponent
+public class ViewImage(IImageFileRepository imageFileContext) : ViewComponent
 {
-    private readonly IImageFileRepository _imageFileContext;
-    public ViewImage(IImageFileRepository imageFileContext) => _imageFileContext = imageFileContext;
-
-    private Guid imageIdGuid;
+    //private Guid imageIdGuid;
 
     ImageFileModel imageItem = new();
 
     public async Task<IViewComponentResult> InvokeAsync(string? imageId, string? cssClass, string? iconType)
     {
-        if (Guid.TryParse(imageId, out imageIdGuid))
+        if (Guid.TryParse(imageId, out Guid imageIdGuid))
         {
-            if (await _imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageIdGuid).AnyAsync())
+            if (await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageIdGuid).AnyAsync())
             {
-                imageItem = await _imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageIdGuid);
+                imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageIdGuid);
             }
         }
-        else if (await _imageFileContext.ImageFiles.Where(img => img.WebImageFileName == imageId || img.ImageFileName == imageId).AnyAsync())
+        else if (await imageFileContext.ImageFiles.Where(img => img.WebImageFileName == imageId || img.ImageFileName == imageId).AnyAsync())
         {
-            imageItem = await _imageFileContext.ImageFiles.FirstAsync(img => img.WebImageFileName == imageId || img.ImageFileName == imageId);
+            imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.WebImageFileName == imageId || img.ImageFileName == imageId);
         }
         else
         {
-            imageItem = await _imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == Guid.Parse("29F51581-8F24-4EDC-1F48-08DAE2B985EA"));
+            imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == Guid.Parse("29F51581-8F24-4EDC-1F48-08DAE2B985EA"));
         }
 
         if (iconType == "webimage")

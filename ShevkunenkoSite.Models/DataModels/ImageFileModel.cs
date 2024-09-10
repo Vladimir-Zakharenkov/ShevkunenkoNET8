@@ -25,7 +25,7 @@ public class ImageFileModel
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [MaxLength(50, ErrorMessage = "{0} не должно содержать больше {1} символов")]
+    [MaxLength(60, ErrorMessage = "{0} не должно содержать больше {1} символов")]
     [Display(Name = "Свойства «alt» и «title» :")]
     public string ImageAltTitle { get; set; } = string.Empty;
 

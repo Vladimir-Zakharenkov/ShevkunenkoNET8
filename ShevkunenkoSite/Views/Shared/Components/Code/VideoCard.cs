@@ -1,15 +1,10 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class VideoCard : ViewComponent
+public class VideoCard(
+    IPageInfoRepository pageInfoContext, 
+    IImageFileRepository imageFileContext
+    ) : ViewComponent
 {
-    private readonly IPageInfoRepository _pageInfoContext;
-    private readonly IImageFileRepository _imageFileContext;
-    public VideoCard(IPageInfoRepository pageInfoContext, IImageFileRepository imageFileContext)
-    {
-        _pageInfoContext = pageInfoContext;
-        _imageFileContext = imageFileContext;
-    }
-
     string pathForSeries = string.Empty;
 
     string imageForVideo = string.Empty;
@@ -22,11 +17,12 @@ public class VideoCard : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movieFileModel, bool IsPartsMoreOne, bool? isImage, string? iconType = "webicon300")
     {
-        if (IsPartsMoreOne == true & movieFileModel.PageInfoModelIdForSeries != Guid.Empty & movieFileModel.PageInfoModelIdForSeries != null)
+        // определяем страницу серий многосерийного фильма
+        if (IsPartsMoreOne == true & movieFileModel.PageInfoModelIdForSeries != null)
         {
-            if (await _pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == movieFileModel.PageInfoModelIdForSeries).AnyAsync())
+            if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == movieFileModel.PageInfoModelIdForSeries).AnyAsync())
             {
-                pageForMoreOneParts = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == movieFileModel.PageInfoModelIdForSeries);
+                pageForMoreOneParts = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == movieFileModel.PageInfoModelIdForSeries);
 
                 pathForSeries = pageForMoreOneParts.PageFullPathWithData;
             }
@@ -36,9 +32,9 @@ public class VideoCard : ViewComponent
             }
         }
 
-        if (isImage == true & await _imageFileContext.ImageFiles.Where(i => i.ImageFileModelId == movieFileModel.ImageFileModelId).AnyAsync())
+        if (isImage == true & await imageFileContext.ImageFiles.Where(i => i.ImageFileModelId == movieFileModel.ImageFileModelId).AnyAsync())
         {
-            imageVideo = await _imageFileContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == movieFileModel.ImageFileModelId);
+            imageVideo = await imageFileContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == movieFileModel.ImageFileModelId);
 
             imageForVideo = imageVideo.ImageFileName;
 
