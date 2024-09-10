@@ -173,7 +173,8 @@ public class PageInfoModel
     public string PageHeading { get; set; } = string.Empty;
 
     [Display(Name = "Картинка заголовка страницы:")]
-    public Guid? ImagePageHeading { get; set; } = null;
+    public Guid? ImagePageHeadingId { get; set; } = null;
+    public ImageFileModel? ImagePageHeading { get; set; }
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]

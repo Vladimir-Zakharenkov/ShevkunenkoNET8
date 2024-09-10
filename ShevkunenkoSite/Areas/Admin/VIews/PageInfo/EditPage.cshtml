@@ -11,6 +11,7 @@
 
 <hr class="w-25 mx-auto" />
 
+@* тег « title » *@
 <p class="fs-5">
     <span class="text-primary fw-bold">PageTitle:</span><br />
     <span class="text_shadow">
@@ -23,6 +24,7 @@
 
 <hr class="w-25 mx-auto" />
 
+@* Id страницы *@
 <p class="fs-5">
     <span class="text-primary fw-bold">PageInfoModelId:</span><br />
     <span class="text_shadow">
@@ -206,7 +208,7 @@
 
                             <hr class="w-50 liniya" />
 
-                            @* PageLoc *@
+                            @* Адрес для RazorPage *@
                             <label asp-for="PageItem.PageLoc" class="form-label text-primary fs-5 fw-bold"></label>
                             <input id="PageLocInput" asp-for="PageItem.PageLoc" class="form-control text-center w-50 mx-auto" aria-describedby="PageLocInputHelpBlock" />
                             <div id="PageLocInputHelpBlock" class="form-text fs-6">
@@ -228,6 +230,7 @@
 
                             <hr class="w-50 liniya" />
 
+                            @* Псевдоним адреса *@
                             <label asp-for="PageItem.PagePathNickName" class="form-label text-primary fs-5 fw-bold"></label>
                             <input id="PagePathNickNameInput" asp-for="PageItem.PagePathNickName" class="form-control text-center" aria-describedby="PagePathNickNameInputHelpBlock" />
                             <div id="PagePathNickNameInputHelpBlock" class="form-text fs-6">
@@ -500,6 +503,65 @@
                                 <p class="fordetails text-center">заголовок для страницы не задан</p>
                             }
                             <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Картинка заголовка страницы *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="imagePageHeading">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#ImagePageHeading" aria-expanded="true" aria-controls="ImagePageHeading">
+                            <span class="form-label text-success fs-5">Картинка заголовка страницы (ImagePageHeadingId) :</span>
+                        </button>
+                    </h2>
+
+                    <div id="ImagePageHeading" class="accordion-collapse collapse" aria-labelledby="imagePageHeading" data-bs-parent="#accordionEditPage">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <label asp-for="ImagePageHeadingFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+
+                            @if (Context.Request.Method == "GET")
+                            {
+                                @if (Model.PageItem.ImagePageHeadingId != null)
+                                {
+                                    <a asp-area="Admin"
+                                       asp-controller="ImageInfo"
+                                       asp-action="DetailsImage"
+                                       asp-route-imageid="@Model.PageItem.ImagePageHeadingId"
+                                       class="d-block mx-auto maxwidth700px shadw imageref"
+                                       title="информация о картинке"
+                                       onclick="this.target='_blank'">
+                                        <vc:view-image image-id="@Model.PageItem.ImagePageHeadingId" css-class="w-100" icon-type="webimage" />
+                                    </a>
+
+                                    @if (!string.IsNullOrEmpty(Model.PageItem.ImagePageHeading!.WebImageFileName))
+                                    {
+                                        <p class="text_shadow my-2 fluid-font-size">
+                                            @Model.PageItem.ImagePageHeading.ImagePath/@Model.PageItem.ImagePageHeading.WebImageFileName
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text_shadow my-2 fluid-font-size">
+                                            @Model.PageItem.ImagePageHeading.ImagePath/@Model.PageItem.ImagePageHeading.ImageFileName
+                                        </p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="fs-6 form-text">
+                                        картинка для заголовка страницы не выбрана
+                                    </p>
+                                }
+                            }
+
+                            <input id="ImagePageHeadingFormFile" asp-for="ImagePageHeadingFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImagePageHeadingFormFileHelpBlock" />
+                            <span asp-validation-for="ImagePageHeadingFormFile" class="text-danger"></span>
 
                         </div>
 

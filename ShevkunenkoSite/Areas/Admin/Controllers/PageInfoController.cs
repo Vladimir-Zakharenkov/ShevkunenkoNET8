@@ -100,7 +100,7 @@ public class PageInfoController(
 
             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageId).AnyAsync())
             {
-                pageItem = await pageInfoContext.PagesInfo
+                pageItem = await pageInfoContext.PagesInfo.Include(p => p.ImagePageHeading)
                     .AsNoTracking()
                     .FirstAsync(p => p.PageInfoModelId == pageId);
             }
@@ -384,6 +384,84 @@ public class PageInfoController(
                 var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
 
                 addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+            }
+
+            #endregion
+
+            #region Добавить картинку для  заголовка страницы
+
+            if (addItem.ImagePageHeadingFormFile != null)
+            {
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addItem.ImagePageHeadingFormFile.FileName);
+
+                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{addItem.ImagePageHeadingFormFile.FileName}» в базу данных");
+
+                    return View();
+                }
+            }
+            else
+            {
+                addItem.PageItem.ImagePageHeading = null;
             }
 
             #endregion
@@ -866,6 +944,84 @@ public class PageInfoController(
                     var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == "FotoPlenka.png");
 
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                }
+            }
+
+            #endregion
+
+            #region Изменить картинку для  заголовка страницы
+
+            if (editPage.ImagePageHeadingFormFile != null)
+            {
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                {
+                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{editPage.ImagePageHeadingFormFile.FileName}» в базу данных");
+
+                    return View(nameof(EditPage), new EditPageViewModel
+                    {
+                        PageItem = pageUpdate,
+                        IconItem = editPageiconItem
+                    });
                 }
             }
 

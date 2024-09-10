@@ -51,14 +51,16 @@
 
                     <hr class="liniya" />
 
+                    @* Картинка для страницы *@
                     <label asp-for="ImageFileFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
-                    <input id="ImageFormFileInput" asp-for="ImageFileFormFile" class="form-control mt-2" aria-describedby="ImageFormFileInputHelpBlock" />
+                    <input id="ImageFormFileInput" asp-for="ImageFileFormFile" class="form-control mt-2 w-50 mx-auto" aria-describedby="ImageFormFileInputHelpBlock" />
                     <span asp-validation-for="ImageFileFormFile" class="text-danger"></span>
 
                     <hr class="liniya" />
 
+                    @* Картинка для фона *@
                     <label asp-for="BackgroundFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
-                    <input id="BackgroundFormFileInput" asp-for="BackgroundFormFile" class="form-control mt-2" aria-describedby="BackgroundFormFileInputHelpBlock" />
+                    <input id="BackgroundFormFileInput" asp-for="BackgroundFormFile" class="form-control mt-2 w-50 mx-auto" aria-describedby="BackgroundFormFileInputHelpBlock" />
                     <span asp-validation-for="BackgroundFormFile" class="text-danger"></span>
 
                     <hr class="liniya" />
@@ -88,6 +90,7 @@
 
                     <hr class="liniya" />
 
+                    @* Выбор контроллера *@
                     <label asp-for="PageItem.Controller" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ControllerInput" asp-for="PageItem.Controller" class="form-control text-center" aria-describedby="ControllerInputHelpBlock" />
                     <div id="ControllerInputHelpBlock" class="form-text">
@@ -97,6 +100,7 @@
 
                     <hr class="liniya" />
 
+                    @* Выбор действия *@
                     <label asp-for="PageItem.Action" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ActionInput" asp-for="PageItem.Action" class="form-control text-center" aria-describedby="ActionInputHelpBlock" />
                     <div id="ActionInputHelpBlock" class="form-text">
@@ -105,6 +109,7 @@
 
                     <hr class="liniya" />
 
+                    @* Данные адреса *@
                     <label asp-for="PageItem.RoutData" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="RoutDataInput" asp-for="PageItem.RoutData" class="form-control text-center" aria-describedby="RoutDataInputHelpBlock" />
                     <div id="ActionInputHelpBlock" class="form-text">
@@ -113,6 +118,7 @@
 
                     <hr class="liniya" />
 
+                    @* Адрес для RazorPage *@
                     <label asp-for="PageItem.PageLoc" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PageLocInput" asp-for="PageItem.PageLoc" class="form-control text-center" aria-describedby="PageLocInputHelpBlock" />
                     <div id="PageLocInputHelpBlock" class="form-text">
@@ -122,6 +128,7 @@
 
                     <hr class="liniya" />
 
+                    @* Псевдоним адреса *@
                     <label asp-for="PageItem.PagePathNickName" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PagePathNickNameInput" asp-for="PageItem.PagePathNickName" class="form-control text-center" aria-describedby="PagePathNickNameInputHelpBlock" />
                     <div id="PagePathNickNameInputHelpBlock" class="form-text">
@@ -131,6 +138,7 @@
 
                     <hr class="liniya" />
 
+                    @* Тег «title» *@
                     <label asp-for="PageItem.PageTitle" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PageTitleInput" asp-for="PageItem.PageTitle" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
                     <div id="PageTitleInputHelpBlock" class="form-text">
@@ -140,6 +148,7 @@
 
                     <hr class="liniya" />
 
+                    @* Тег «description» *@
                     <label asp-for="PageItem.PageDescription" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="PageDescriptionInput" asp-for="PageItem.PageDescription" rows="7" class="form-control fordetails" aria-describedby="PageDescriptionInputHelpBlock">
                     <p class="fordetails">PageDescription</p>
@@ -151,6 +160,7 @@
 
                     <hr class="liniya" />
 
+                    @* Тег «keywords» *@
                     <label asp-for="PageItem.PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="PageKeyWordsInput" asp-for="PageItem.PageKeyWords" rows="7" class="form-control fordetails" aria-describedby="PageKeyWordsInputHelpBlock">
                     <p class="fordetails">PageKeyWords</p>
@@ -162,6 +172,7 @@
 
                     <hr class="liniya" />
 
+                    @* Текст заголовка страницы в теге <h1> *@
                     <label asp-for="PageItem.PageHeading" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PageHeadingInput" asp-for="PageItem.PageHeading" class="form-control fs-6 mx-auto w-75" aria-describedby="PageHeadingInputHelpBlock" />
                     <div id="PageHeadingInputHelpBlock" class="form-text">
@@ -171,6 +182,28 @@
 
                     <hr class="liniya" />
 
+                    @* Картинка заголовка страницы *@
+                    <label asp-for="ImagePageHeadingFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                    <input id="ImagePageHeadingFormFileInput" asp-for="ImagePageHeadingFormFile" class="form-control mt-2 w-50 mx-auto" aria-describedby="ImagePageHeadingFormFileInputHelpBlock" />
+                    <div id="ImagePageHeadingInputHelpBlock" class="form-text">
+                        картинка под заголовком страницы
+                    </div>
+                    <span asp-validation-for="ImagePageHeadingFormFile" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    @* Текст страницы в теге  <article> *@
+                    <label asp-for="PageItem.TextOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="TextOfPageInput" asp-for="PageItem.TextOfPage" rows="15" class="form-control text-start fordetails px-3" aria-describedby="TextOfPageInputHelpBlock">
+                    </textarea>
+                    <div id="TextOfPageInputHelpBlock" class="form-text fs-6">
+                        текст страницы
+                    </div>
+                    <span asp-validation-for="PageItem.TextOfPage" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
+                    @* Текст карточки страницы *@
                     <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control mx-auto w-50" aria-describedby="PageCardTextInputHelpBlock" />
                     <div id="PageCardTextInputHelpBlock" class="form-text">
@@ -257,6 +290,7 @@
 
                     <hr class="liniya" />
 
+                    @* Фильтры поиска страницы *@
                     <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
                     <div id="PageFilterInputHelpBlock" class="form-text">
@@ -289,6 +323,7 @@
 
                     <hr class="liniya" />
 
+                    @* Фильтры поиска связанных видео *@
                     <label asp-for="PageItem.VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="VideoFilterOutInput" asp-for="PageItem.VideoFilterOut" rows="5" class="form-control fordetails" aria-describedby="VideoFilterOutInputHelpBlock">
                     </textarea>
@@ -322,6 +357,7 @@
 
                     <hr class="liniya" />
 
+                    @* Фильтры поиска связанных страниц *@
                     <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="PageFilterOutInput" asp-for="PageItem.PageFilterOut" rows="5" class="form-control fordetails" aria-describedby="PageFilterOutInputHelpBlock">
                     </textarea>
@@ -332,6 +368,7 @@
 
                     <hr class="liniya" />
 
+                    @* Включить ссылки на страницы по GUID *@
                     <div class="row g-2">
                         <label asp-for="PageItem.PageLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
                         <div class="col-6 form-check">
@@ -354,6 +391,7 @@
 
                     <hr class="liniya" />
 
+                    @* Список GUID связанных страниц *@
                     <label asp-for="PageItem.RefPages" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control fordetails" aria-describedby="RefPagesInputHelpBlock">
                     <p class="fordetails">RefPages</p>

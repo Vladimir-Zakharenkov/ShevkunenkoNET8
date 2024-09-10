@@ -9,4 +9,8 @@ public class EditPageViewModel : DetailsPageViewModel
     [DataType(DataType.Upload)]
     [Display(Name = "Фон страницы:")]
     public IFormFile? BackgroundFormFile { get; set; }
+
+    [DataType(DataType.Upload)]
+    [Display(Name = "Картинка заголовка страницы:")]
+    public IFormFile? ImagePageHeadingFormFile { get; set; }
 }

@@ -7,7 +7,7 @@
     <hr class="liniya" />
 }
 
-@if (Model.ImagePageHeading != null)
+@if (Model.ImagePageHeadingId != null)
 {
-    <vc:view-image image-id="Model.ImagePageHeading" css-class="adp90_img maxwidth700px ten" icon-type="" />
+    <vc:view-image image-id="@Model.ImagePageHeadingId.ToString()" css-class="adp90_img maxwidth700px ten" icon-type="" />
 }
