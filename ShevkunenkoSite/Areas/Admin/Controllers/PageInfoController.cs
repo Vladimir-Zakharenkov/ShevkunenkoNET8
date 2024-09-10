@@ -96,6 +96,8 @@ public class PageInfoController(
             PageInfoModel pageItem;
             IconFileModel iconItem;
 
+            #region Инициализация pageItem и  iconItem
+
             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageId).AnyAsync())
             {
                 pageItem = await pageInfoContext.PagesInfo
@@ -117,6 +119,8 @@ public class PageInfoController(
             {
                 iconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
+
+            #endregion
 
             #region Ссылки на текущую страницу по GUID
 
@@ -165,7 +169,7 @@ public class PageInfoController(
                     if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
                     {
                         var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
-                       movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
 
                         VideoLinksViewModel videoLinksViewModel = new()
                         {
