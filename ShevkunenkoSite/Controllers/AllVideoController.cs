@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Programmy
 
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
 namespace ShevkunenkoSite.Controllers;
 
 //[Route("/All-Video/[action]")]
@@ -7,8 +9,8 @@ public class AllVideoController(
     IMovieFileRepository movieContext,
     IImageFileRepository imageContext,
     ITopicMovieRepository topicMovieContext,
-    IPageInfoRepository pageInfoContext)
-    : Controller
+    IPageInfoRepository pageContext
+    ) : Controller
 {
     #region Фильмы на сайте
 
@@ -19,14 +21,14 @@ public class AllVideoController(
         List<PageInfoModel> pagesForMovies = [];
 
         // выборка фильмов по теме (topicId)
-        if (topicId.HasValue 
-                && await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync() 
+        if (topicId.HasValue
+                && await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == topicId).AnyAsync()
                 && await movieContext.MovieFiles.Where(p => p.TopicGuidList.Contains(topicId.ToString()!)).AnyAsync())
         {
             TopicMovieModel topicMovie = await topicMovieContext.TopicMovies.FirstAsync(mt => mt.TopicMovieModelId == topicId);
 
             moviesListViewModel.Movies = await movieContext.MovieFiles
-                .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true)
+                .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true & p.MovieInMainList == true)
                 .OrderBy(p => p.MovieDatePublished)
                 .Skip((pageNumber - 1) * DataConfig.NumberOfVideoPerPage)
                 .Take(DataConfig.NumberOfVideoPerPage)
@@ -45,7 +47,7 @@ public class AllVideoController(
                 CurrentPage = pageNumber,
                 ItemsPerPage = DataConfig.NumberOfVideoPerPage,
                 TotalItems = movieContext.MovieFiles
-                    .Where(p =>p.TopicGuidList.Contains(topicId.ToString()!) == true).Count()
+                    .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true).Count()
             };
         }
         // выборка всех фильмов
@@ -80,13 +82,13 @@ public class AllVideoController(
         if (moviesListViewModel.IsImage == null)
         {
             var pagesIdOfMovies = from p in moviesListViewModel.Movies
-                                select p.PageInfoModelId;
+                                  select p.PageInfoModelId;
 
             foreach (var p in pagesIdOfMovies)
             {
-                if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == p).AnyAsync())
+                if (await pageContext.PagesInfo.Where(i => i.PageInfoModelId == p).AnyAsync())
                 {
-                    var pg = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == p);
+                    var pg = await pageContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == p);
 
                     pagesForMovies.Add(pg);
                 }
@@ -367,6 +369,15 @@ public class AllVideoController(
         {
             return View("NoMovie");
         }
+    }
+
+    public async Task<IActionResult> MoviePage()
+    {
+        var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
+
+        //Redirect("~/AllVideo/Index");
+
+        return View(pageInfoModel);
     }
 
     #endregion
