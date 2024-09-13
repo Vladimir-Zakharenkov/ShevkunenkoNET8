@@ -122,7 +122,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на текущую страницу по GUID
+            #region Ссылки на текущую страницу по GUID (1)
 
             List<PageInfoModel> linksFromPagesByGuid = [];
 
@@ -131,6 +131,18 @@ public class PageInfoController(
 #pragma warning restore CA1862
 
             _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+
+            #endregion
+
+            #region Ссылки на текущую страницу по GUID (2)
+
+            List<PageInfoModel> linksFromPagesByGuid2 = [];
+
+#pragma warning disable CA1862
+            linksFromPagesByGuid2.AddRange(await pageInfoContext.PagesInfo.Where(p => p.RefPages2.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower())).ToArrayAsync());
+#pragma warning restore CA1862
+
+            _ = linksFromPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
 
             #endregion
 
@@ -233,15 +245,41 @@ public class PageInfoController(
 
             #endregion
 
+            #region Ссылки на страницы сайта по GUID (RefPages2)
+
+            string[] pageIdOut2 = pageItem.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            List<PageInfoModel> linksToPagesByGuid2 = [];
+
+            if (pageIdOut.Length > 0)
+            {
+                foreach (string refPageId2 in pageIdOut2)
+                {
+                    if (Guid.TryParse(refPageId2, out Guid pageGuid2))
+                    {
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid2).AnyAsync())
+                        {
+                            linksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
+
+                            _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
             return View(new DetailsPageViewModel
             {
                 PageItem = pageItem,
                 IconItem = iconItem,
                 LinksToPagesByGuid = linksToPagesByGuid,
+                LinksToPagesByGuid2 = linksToPagesByGuid2,
                 LinksToPagesByFilterOut = linksToPagesByFilterOut,
                 LinksToVideosByFilterOut = listsOfVideoFilterOut,
                 ListsMoviesFileModel = moviesFileModel,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
+                LinksFromPagesByGuid2 = linksFromPagesByGuid2,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter
             });
         }
@@ -344,6 +382,12 @@ public class PageInfoController(
 
             #endregion
 
+            #region Текст карточки страницы
+
+            addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
+
+            #endregion
+
             #region Добавить фон для страницы
 
             if (addItem.BackgroundFormFile != null)
@@ -385,6 +429,56 @@ public class PageInfoController(
 
                 addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
             }
+
+            #endregion
+
+            #region Заголовок страницы (тег <head>)
+
+            addItem.PageItem.PageTitle = addItem.PageItem.PageTitle.Trim();
+            addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
+            addItem.PageItem.PageKeyWords = addItem.PageItem.PageKeyWords.Trim();
+
+            if (addItem.PageItem.OgType == "website")
+            {
+                addItem.PageItem.PageIconPath = "main/";
+                addItem.PageItem.BrowserConfig = "main.xml";
+                addItem.PageItem.BrowserConfigFolder = "/main";
+                addItem.PageItem.Manifest = "main.json";
+            }
+            else if (addItem.PageItem.OgType == "movie")
+            {
+                addItem.PageItem.PageIconPath = "movie/";
+                addItem.PageItem.BrowserConfig = "movie.xml";
+                addItem.PageItem.BrowserConfigFolder = "/movie";
+                addItem.PageItem.Manifest = "movie.json";
+            }
+            else
+            {
+                addItem.PageItem.PageIconPath = "main/";
+                addItem.PageItem.BrowserConfig = "main.xml";
+                addItem.PageItem.BrowserConfigFolder = "/main";
+                addItem.PageItem.Manifest = "main.json";
+            }
+
+            if (addItem.PageItem.PageArea == "admin")
+            {
+                addItem.PageItem.PageIconPath = "admin/";
+                addItem.PageItem.BrowserConfig = "admin.xml";
+                addItem.PageItem.BrowserConfigFolder = "/admin";
+                addItem.PageItem.Manifest = "admin.json";
+            }
+
+            #endregion
+
+            #region Оформление заголовка страницы
+
+            addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
+
+            #endregion
+
+            #region Текст страницы
+
+            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
 
             #endregion
 
@@ -462,40 +556,6 @@ public class PageInfoController(
             else
             {
                 addItem.PageItem.ImagePageHeading = null;
-            }
-
-            #endregion
-
-            #region Заголовок страницы (manifest)
-
-            if (addItem.PageItem.OgType == "website")
-            {
-                addItem.PageItem.PageIconPath = "main/";
-                addItem.PageItem.BrowserConfig = "main.xml";
-                addItem.PageItem.BrowserConfigFolder = "/main";
-                addItem.PageItem.Manifest = "main.json";
-            }
-            else if (addItem.PageItem.OgType == "movie")
-            {
-                addItem.PageItem.PageIconPath = "movie/";
-                addItem.PageItem.BrowserConfig = "movie.xml";
-                addItem.PageItem.BrowserConfigFolder = "/movie";
-                addItem.PageItem.Manifest = "movie.json";
-            }
-            else
-            {
-                addItem.PageItem.PageIconPath = "main/";
-                addItem.PageItem.BrowserConfig = "main.xml";
-                addItem.PageItem.BrowserConfigFolder = "/main";
-                addItem.PageItem.Manifest = "main.json";
-            }
-
-            if (addItem.PageItem.PageArea == "admin")
-            {
-                addItem.PageItem.PageIconPath = "admin/";
-                addItem.PageItem.BrowserConfig = "admin.xml";
-                addItem.PageItem.BrowserConfigFolder = "/admin";
-                addItem.PageItem.Manifest = "admin.json";
             }
 
             #endregion
@@ -602,19 +662,39 @@ public class PageInfoController(
 
             #endregion
 
-            addItem.PageItem.PageTitle = addItem.PageItem.PageTitle.Trim();
-            addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
-            addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
-            addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
-            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
+            #region Фильтр поиска текущей страницы
+
             addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.ToLower().Trim();
-            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.Trim();
-            addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.ToLower().Trim();
+
+            #endregion
+
+            #region Данные для Sitemap
+
             addItem.PageItem.PageLastmod = DateTime.Now;
-            addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
+            addItem.PageItem.Changefreq = addItem.PageItem.Changefreq.Trim();
+            addItem.PageItem.Priority = addItem.PageItem.Priority.Trim();
+
+            #endregion
+
+            #region Группы связанных ссылок
+
+            // связанные видео
             addItem.PageItem.VideoLinks = addItem.PageItem.VideoLinks;
+            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.Trim();
+
+            // связанные страницы по фильтрам
             addItem.PageItem.PageLinksByFilters = addItem.PageItem.PageLinksByFilters;
-            addItem.PageItem.RefPages = addItem.PageItem.RefPages.Trim();
+            addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.Trim();
+
+            // связанные страницы по GUID (1)
+            addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
+            addItem.PageItem.RefPages = addItem.PageItem.RefPages.ToLower().Trim();
+
+            // связанные страницы по GUID (2)
+            addItem.PageItem.PageLinks2 = addItem.PageItem.PageLinks2;
+            addItem.PageItem.RefPages2 = addItem.PageItem.RefPages2.ToLower().Trim();
+
+            #endregion
 
             await pageInfoContext.AddNewPageAsync(addItem.PageItem);
 
@@ -681,7 +761,7 @@ public class PageInfoController(
                 editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
-            #region Ссылки на текущую страницу по GUID
+            #region Ссылки на текущую страницу по GUID (1)
 
             List<PageInfoModel> linksFromPagesByGuid = [];
 
@@ -692,6 +772,20 @@ public class PageInfoController(
             _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
 
             editPage.LinksFromPagesByGuid = linksFromPagesByGuid;
+
+            #endregion
+
+            #region Ссылки на текущую страницу по GUID (2)
+
+            List<PageInfoModel> linksFromPagesByGuid2 = [];
+
+#pragma warning disable CA1862
+            linksFromPagesByGuid2.AddRange(await pageInfoContext.PagesInfo.Where(p => p.RefPages2.ToLower().Contains(editPage.PageItem.PageInfoModelId.ToString().ToLower())).ToArrayAsync());
+#pragma warning restore CA1862
+
+            _ = linksFromPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+
+            editPage.LinksFromPagesByGuid2 = linksFromPagesByGuid2;
 
             #endregion
 
@@ -793,6 +887,7 @@ public class PageInfoController(
                         if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
                         {
                             linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+
                             _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
                         }
                     }
@@ -800,6 +895,32 @@ public class PageInfoController(
             }
 
             editPage.LinksToPagesByGuid = linksToPagesByGuid;
+
+            #endregion
+
+            #region Ссылки на страницы сайта по GUID (RefPages2)
+
+            string[] pageIdOut2 = editPage.PageItem.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            List<PageInfoModel> linksToPagesByGuid2 = [];
+
+            if (pageIdOut2.Length > 0)
+            {
+                foreach (string refPageId2 in pageIdOut2)
+                {
+                    if (Guid.TryParse(refPageId2, out Guid pageGuid2))
+                    {
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid2).AnyAsync())
+                        {
+                            linksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
+
+                            _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+                        }
+                    }
+                }
+            }
+
+            editPage.LinksToPagesByGuid2 = linksToPagesByGuid2;
 
             #endregion
 
@@ -911,6 +1032,12 @@ public class PageInfoController(
 
             #endregion
 
+            #region Изменить текст карточки страницы
+
+            pageUpdate.PageCardText = editPage.PageItem.PageCardText.Trim().ToUpper();
+
+            #endregion
+
             #region Изменить фон страницы
 
             if (editPage.BackgroundFormFile != null)
@@ -946,6 +1073,58 @@ public class PageInfoController(
                     pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
             }
+
+            #endregion
+
+            #region Изменить заголовок страницы (тег <head>)
+
+            pageUpdate.PageTitle = editPage.PageItem.PageTitle.Trim();
+            pageUpdate.PageDescription = editPage.PageItem.PageDescription.Trim();
+            pageUpdate.PageKeyWords = editPage.PageItem.PageKeyWords.Trim();
+
+            if (editPage.PageItem.OgType == "website")
+            {
+                pageUpdate.OgType = "website";
+                pageUpdate.PageIconPath = "main/";
+                pageUpdate.BrowserConfig = "main.xml";
+                pageUpdate.BrowserConfigFolder = "/main";
+                pageUpdate.Manifest = "main.json";
+            }
+            else if (editPage.PageItem.OgType == "movie")
+            {
+                pageUpdate.OgType = "movie";
+                pageUpdate.PageIconPath = "movie/";
+                pageUpdate.BrowserConfig = "movie.xml";
+                pageUpdate.BrowserConfigFolder = "/movie";
+                pageUpdate.Manifest = "movie.json";
+            }
+            else
+            {
+                pageUpdate.PageIconPath = "main/";
+                pageUpdate.BrowserConfig = "main.xml";
+                pageUpdate.BrowserConfigFolder = "/main";
+                pageUpdate.Manifest = "main.json";
+            }
+
+            if (pageUpdate.PageArea == "/admin")
+            {
+                pageUpdate.PageIconPath = "admin/";
+                pageUpdate.BrowserConfig = "admin.xml";
+                pageUpdate.BrowserConfigFolder = "/admin";
+                pageUpdate.Manifest = "admin.json";
+            }
+
+            #endregion
+
+            #region Изменить оформление заголовка страницы
+
+            pageUpdate.PageHeading = editPage.PageItem.PageHeading.Trim();
+
+            #endregion
+
+            #region Изменить текст страницы
+
+            pageUpdate.TextOfPage = editPage.PageItem.TextOfPage;
 
             #endregion
 
@@ -1027,6 +1206,10 @@ public class PageInfoController(
 
             #endregion
 
+            #region Изменить адрес страницы (MVC или RazorPage)
+
+            pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
+
             if (string.IsNullOrEmpty(editPage.PageItem.PageArea))
             {
                 pageUpdate.PageArea = string.Empty;
@@ -1089,54 +1272,41 @@ public class PageInfoController(
                 pageUpdate.PagePathNickName = "/" + editPage.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
-            pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
-            pageUpdate.PageTitle = editPage.PageItem.PageTitle.Trim();
-            pageUpdate.PageDescription = editPage.PageItem.PageDescription.Trim();
-            pageUpdate.PageCardText = editPage.PageItem.PageCardText.Trim().ToUpper();
-            pageUpdate.PageHeading = editPage.PageItem.PageHeading.Trim();
-            pageUpdate.TextOfPage = editPage.PageItem.TextOfPage;
-            pageUpdate.PageFilter = editPage.PageItem.PageFilter.Trim().ToLower();
-            pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim().ToLower();
+            #endregion
+
+            #region Изменить фильтр поиска текущей страницы
+
+            pageUpdate.PageFilter = editPage.PageItem.PageFilter.Trim();
+
+            #endregion
+
+            #region Изменить данные для Sitemap
+
             pageUpdate.PageLastmod = DateTime.Now;
             pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
-            pageUpdate.PageLinks = editPage.PageItem.PageLinks;
-            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
-            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
-            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
-            pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
             pageUpdate.Priority = editPage.PageItem.Priority.Trim();
 
-            if (editPage.PageItem.OgType == "website")
-            {
-                pageUpdate.OgType = "website";
-                pageUpdate.PageIconPath = "main/";
-                pageUpdate.BrowserConfig = "main.xml";
-                pageUpdate.BrowserConfigFolder = "/main";
-                pageUpdate.Manifest = "main.json";
-            }
-            else if (editPage.PageItem.OgType == "movie")
-            {
-                pageUpdate.OgType = "movie";
-                pageUpdate.PageIconPath = "movie/";
-                pageUpdate.BrowserConfig = "movie.xml";
-                pageUpdate.BrowserConfigFolder = "/movie";
-                pageUpdate.Manifest = "movie.json";
-            }
-            else
-            {
-                pageUpdate.PageIconPath = "main/";
-                pageUpdate.BrowserConfig = "main.xml";
-                pageUpdate.BrowserConfigFolder = "/main";
-                pageUpdate.Manifest = "main.json";
-            }
+            #endregion
 
-            if (pageUpdate.PageArea == "/admin")
-            {
-                pageUpdate.PageIconPath = "admin/";
-                pageUpdate.BrowserConfig = "admin.xml";
-                pageUpdate.BrowserConfigFolder = "/admin";
-                pageUpdate.Manifest = "admin.json";
-            }
+            #region Изменить группы связанных ссылок
+
+            // поиск связанных страниц по фильтру
+            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
+            pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim();
+
+            // поиск связанных видео
+            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
+            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
+
+            // поиск связанных страниц поGUID (1)
+            pageUpdate.PageLinks = editPage.PageItem.PageLinks;
+            pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
+
+            // поиск связанных страниц поGUID (2)
+            pageUpdate.PageLinks2 = editPage.PageItem.PageLinks2;
+            pageUpdate.RefPages2 = editPage.PageItem.RefPages2.Trim().ToLower();
+
+            #endregion
 
             await pageInfoContext.SaveChangesInPageAsync();
 

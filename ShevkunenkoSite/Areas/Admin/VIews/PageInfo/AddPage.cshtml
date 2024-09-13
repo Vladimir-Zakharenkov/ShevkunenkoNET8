@@ -368,7 +368,7 @@
 
                     <hr class="liniya" />
 
-                    @* Включить ссылки на страницы по GUID *@
+                    @* Включить ссылки на страницы по GUID (1) *@
                     <div class="row g-2">
                         <label asp-for="PageItem.PageLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
                         <div class="col-6 form-check">
@@ -391,12 +391,40 @@
 
                     <hr class="liniya" />
 
-                    @* Список GUID связанных страниц *@
+                    @* Список GUID связанных страниц (1) *@
                     <label asp-for="PageItem.RefPages" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="RefPagesInput" asp-for="PageItem.RefPages" rows="5" class="form-control fordetails" aria-describedby="RefPagesInputHelpBlock">
                     <p class="fordetails">RefPages</p>
                     </textarea>
                     <span asp-validation-for="PageItem.RefPages" class="text-danger"></span>
+
+                    @* Включить ссылки на страницы по GUID (2) *@
+                    <div class="row g-2">
+                        <label asp-for="PageItem.PageLinks2" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksTrue2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="true">
+                            <label class="form-check-label d-inline-block" for="PageLinksTrue2">
+                                <span class="">Показывать ссылки</span>
+                            </label>
+                        </div>
+                        <div class="col-6 form-check">
+                            <input id="PageLinksFalse2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="false" checked>
+                            <label class="form-check-label d-inline-block" for="PageLinksFalse2">
+                                <span class="">Не показывать ссылки</span>
+                            </label>
+                        </div>
+                        <div id="PageLinksInputHelpBlock2" class="form-text">
+                            <span>показывать ссылки на связанные страницы</span>
+                        </div>
+                        <span asp-validation-for="PageItem.PageLinks2" class="text-danger"></span>
+                    </div>
+
+                    @* Список GUID связанных страниц (2) *@
+                    <label asp-for="PageItem.RefPages2" class="form-label text-primary fs-5 fw-bold"></label>
+                    <textarea id="RefPagesInput2" asp-for="PageItem.RefPages2" rows="5" class="form-control fordetails" aria-describedby="RefPagesInputHelpBlock2">
+                    <p class="fordetails">RefPages</p>
+                    </textarea>
+                    <span asp-validation-for="PageItem.RefPages2" class="text-danger"></span>
 
                     <div class="card-footer p-0 mt-2">
 

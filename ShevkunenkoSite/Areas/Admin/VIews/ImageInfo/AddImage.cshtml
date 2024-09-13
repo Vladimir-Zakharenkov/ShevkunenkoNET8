@@ -1,8 +1,5 @@
 ﻿@model EditImageViewModel
 
-@{
-}
-
 <div class="row">
 
     <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
@@ -59,7 +56,7 @@
                     <label asp-for="EditImage.SearchFilter" class="form-label text-primary fs-5"></label>
                     <textarea id="SearchFilterInput" asp-for="EditImage.SearchFilter" class="form-control" rows="1" aria-describedby="SearchFilterInputHelpBlock"></textarea>
                     <div id="SearchFilterInputHelpBlock" class="form-text">
-                        <span>фильтры поиска - </span>
+                        <span>фильтры поиска</span>
                     </div>
                     <span asp-validation-for="EditImage.SearchFilter" class="text-danger"></span>
 

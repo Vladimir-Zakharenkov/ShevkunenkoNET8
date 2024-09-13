@@ -2,16 +2,62 @@
 
 @if (Model.LinksToPagesByGuid.Count > 0)
 {
-    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+    @if (Model.LinksToPagesByGuid.Count < 3)
+    {
+        <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
-        <hr class="liniya" />
+            <hr class="liniya" />
 
-        @foreach (var item in Model.LinksToPagesByGuid)
-        {
-            <vc:card-of-page page="@item" />
-        }
+            @foreach (var item in Model.LinksToPagesByGuid)
+            {
+                <vc:card-of-page page="@item" />
+            }
 
-    </div>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+            <hr class="liniya" />
+
+            @foreach (var item in Model.LinksToPagesByGuid)
+            {
+                <vc:card-of-page page="@item" />
+            }
+
+        </div>
+    }
+}
+
+@if (Model.LinksToPagesByGuid2.Count > 0)
+{
+    @if (Model.LinksToPagesByGuid2.Count < 3)
+    {
+        <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+            <hr class="liniya" />
+
+            @foreach (var item in Model.LinksToPagesByGuid2)
+            {
+                <vc:card-of-page page="@item" />
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+            <hr class="liniya" />
+
+            @foreach (var item in Model.LinksToPagesByGuid2)
+            {
+                <vc:card-of-page page="@item" />
+            }
+
+        </div>
+    }
 }
 
 @if (Model.ListsOfFilterOut.Count > 0)
@@ -20,16 +66,32 @@
     {
         if (listOfFilterOut.Count > 0)
         {
-            <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+            if (listOfFilterOut.Count < 3)
+            {
+                <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
-                <hr class="liniya" />
+                    <hr class="liniya" />
 
-                @foreach (var item in listOfFilterOut.OrderBy(o => o.PageLastmod))
-                {
-                    <vc:card-of-page page="@item" />
-                }
+                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageLastmod))
+                    {
+                        <vc:card-of-page page="@item" />
+                    }
 
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                    <hr class="liniya" />
+
+                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageLastmod))
+                    {
+                        <vc:card-of-page page="@item" />
+                    }
+
+                </div>
+            }
         }
     }
 }

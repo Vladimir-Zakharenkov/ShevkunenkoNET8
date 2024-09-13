@@ -10,6 +10,8 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
 
         List<PageInfoModel> linksToPagesByGuid = [];
 
+        List<PageInfoModel> linksToPagesByGuid2 = [];
+
         List<VideoLinksViewModel> listsOfVideoFilterOut = [];
 
         VideoLinksViewModel videoLinksViewModel = new();
@@ -92,9 +94,30 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
                     _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
                 }
             }
+
+            if (!string.IsNullOrEmpty(pageInfoModel.RefPages2) & pageInfoModel.PageLinks2 == true)
+            {
+                string[] pageIdOut2 = pageInfoModel.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (pageIdOut2.Length > 0)
+                {
+                    foreach (string pageId2 in pageIdOut2)
+                    {
+                        if (Guid.TryParse(pageId2, out Guid pageGuid2))
+                        {
+                            if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid2).AnyAsync())
+                            {
+                                linksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
+                            }
+                        }
+                    }
+
+                    _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+                }
+            }
         }
 
-        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1 & listsOfVideoFilterOut.Count < 1)
+        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1 & listsOfVideoFilterOut.Count < 1 & linksToPagesByGuid2.Count < 1)
         {
             return View("Empty");
         }
@@ -104,7 +127,8 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
             {
                 ListsOfVideoFilterOut = listsOfVideoFilterOut,
                 ListsOfFilterOut = listsOfFilterOut,
-                LinksToPagesByGuid = linksToPagesByGuid
+                LinksToPagesByGuid = linksToPagesByGuid,
+                LinksToPagesByGuid2 = linksToPagesByGuid2
             });
         }
     }

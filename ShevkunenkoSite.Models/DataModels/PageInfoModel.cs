@@ -150,15 +150,18 @@ public class PageInfoModel
 
     #region Оформление
 
+    // Текст карточки страницы
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Текст карточки:")]
     [DataType(DataType.Text)]
     public string PageCardText { get; set; } = string.Empty;
 
+    // Фон страницы (фотопленка)
     public Guid BackgroundFileModelId { get; set; }
     public BackgroundFileModel? BackgroundFileModel { get; set; }
 
+    // Картинка страницы
     public Guid ImageFileModelId { get; set; }
     public ImageFileModel? ImageFileModel { get; set; }
 
@@ -187,8 +190,12 @@ public class PageInfoModel
     #region Связанные страницы и видео
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить ссылки по GUID:")]
+    [Display(Name = "Включить первые ссылки по GUID:")]
     public bool PageLinks { get; set; } = false;
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Включить вторые ссылки по GUID:")]
+    public bool PageLinks2 { get; set; } = false;
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Включить ссылки на видео:")]
@@ -222,8 +229,14 @@ public class PageInfoModel
     // список GUID страниц, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки на страницы по GUID:")]
+    [Display(Name = "Ссылки на страницы по GUID (1):")]
     public string RefPages { get; set; } = string.Empty;
+
+    // второй список GUID страниц, для формирования ссылок на них
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Ссылки на страницы по GUID (2):")]
+    public string RefPages2 { get; set; } = string.Empty;
 
     #endregion
 

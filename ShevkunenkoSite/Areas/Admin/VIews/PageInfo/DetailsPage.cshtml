@@ -969,7 +969,7 @@
 
         </div>
 
-        @* Включить поиск связанных страниц по GUID *@
+        @* Включить поиск связанных страниц по GUID (1) *@
         <div class="accordion-item mb-3 shadw">
 
             <h2 class="accordion-header" id="headingPageLinksByGUID">
@@ -1001,7 +1001,7 @@
 
         </div>
 
-        @* Поиск связанных страниц по GUID *@
+        @* Поиск связанных страниц по GUID (1) *@
         <div class="accordion-item mb-3 shadw">
 
             <h2 class="accordion-header" id="headingRefPages">
@@ -1082,6 +1082,128 @@
                     {
                         <p class="fs-6 form-text">
                             фильтр поиска страниц по GUID не задан
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @* Включить поиск связанных страниц по GUID (2) *@
+        <div class="accordion-item mb-3 shadw">
+
+            <h2 class="accordion-header" id="headingPageLinksByGUID2">
+                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageLinksByGUID2" aria-expanded="true" aria-controls="PageLinksByGUID2">
+                    <span class="form-label text-success fs-5">Включить поиск связанных страниц по GUID (PageLinks2)&nbsp;:</span>
+                </button>
+            </h2>
+
+            <div id="PageLinksByGUID2" class="accordion-collapse collapse" aria-labelledby="headingPageLinksByGUID" data-bs-parent="#accordionDetailsPage">
+
+                <div class="accordion-body accordion-body-nointend text-center">
+
+                    @if (Model.PageItem.PageLinks2)
+                    {
+                        <p class="fs-4 mb-2 text_shadow">
+                            <span>включено</span>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="fs-4 mb-2 text_shadow">
+                            <span>выключено</span>
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @* Поиск связанных страниц по GUID (2) *@
+        <div class="accordion-item mb-3 shadw">
+
+            <h2 class="accordion-header" id="headingRefPages2">
+                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#RefPages2" aria-expanded="true" aria-controls="RefPages2">
+                    <span class="form-label text-success fs-5">Поиск связанных страниц по GUID (RefPages2)&nbsp;:</span>
+                </button>
+            </h2>
+
+            <div id="RefPages2" class="accordion-collapse collapse" aria-labelledby="headingRefPages2" data-bs-parent="#accordionDetailsPage">
+
+                <div class="accordion-body accordion-body-nointend text-center">
+
+                    @if (!string.IsNullOrEmpty(Model.PageItem.RefPages2))
+                    {
+                        @if (Model.LinksToPagesByGuid2.Count > 0)
+                        {
+                            <div class="table-responsive mt-3">
+
+                                <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                    <thead>
+
+                                        <tr class="text-start text-primary">
+
+                                            <th scope="col" class="text-primary">№</th>
+                                            <th scope="col" class="text-primary">GUID</th>
+                                            <th scope="col" class="text-primary">Title</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        @foreach (var item in Model.LinksToPagesByGuid2)
+                                        {
+                                            if (l == 0)
+                                            {
+                                                l = 1;
+                                            }
+                                            else
+                                            {
+                                                l++;
+                                            }
+
+                                            <tr class="text-start fs-5">
+
+                                                <td scope="col" class="text-primary">@l</td>
+                                                <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                                <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                                @foreach (var item in Model.LinksToPagesByGuid2)
+                                {
+                                    <vc:card-of-page page=item />
+                                }
+
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="fs-6 form-text">
+                                по данным фильтрам нет ссылок
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <p class="fs-6 form-text">
+                            фильтр поиска страниц по GUID (2) не задан
                         </p>
                     }
 

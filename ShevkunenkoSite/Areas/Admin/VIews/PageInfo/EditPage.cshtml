@@ -1105,7 +1105,7 @@
 
                 </div>
 
-                @* Включить поиск связанных страниц по GUID *@
+                @* Включить поиск связанных страниц по GUID (1) *@
                 <div class="accordion-item mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingPageLinks">
@@ -1144,7 +1144,7 @@
 
                 </div>
 
-                @* Поиск связанных страниц по GUID *@
+                @* Поиск связанных страниц по GUID (1) *@
                 <div class="accordion-item mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingRefPages">
@@ -1213,6 +1213,140 @@
                                     <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
 
                                         @foreach (var item in Model.LinksToPagesByGuid)
+                                        {
+                                            <vc:card-of-page page=item />
+                                        }
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="fs-6 form-text">
+                                        по данным фильтрам нет ссылок
+                                    </p>
+                                }
+                            }
+                            else
+                            {
+                                <p class="fs-6 form-text">
+                                    фильтр поиска страниц по GUID не задан
+                                </p>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Включить поиск связанных страниц по GUID (2) *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingPageLinks2">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageLinks2" aria-expanded="true" aria-controls="PageLinks2">
+                            <span class="form-label text-success fs-5">Включить ссылки на страницы по GUID (PageLinks2)&nbsp;:</span>
+                        </button>
+                    </h2>
+
+                    <div id="PageLinks2" class="accordion-collapse collapse" aria-labelledby="headingPageLinks2" data-bs-parent="#accordionEditPage">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <div class="row g-2">
+                                <label asp-for="PageItem.PageLinks2" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                                <div class="col-6 form-check">
+                                    <input id="PageLinksTrue2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="true">
+                                    <label class="form-check-label d-inline-block" for="PageLinksTrue2">
+                                        <span class="">Показывать ссылки</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 form-check">
+                                    <input id="PageLinksFalse2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="false">
+                                    <label class="form-check-label d-inline-block" for="PageLinksFalse2">
+                                        <span class="">Не показывать ссылки</span>
+                                    </label>
+                                </div>
+                                <div id="PageLinksInputHelpBlock2" class="form-text fs-6">
+                                    <span>включить ссылки на страницы по GUID</span>
+                                </div>
+                                <span asp-validation-for="PageItem.PageLinks2" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* Поиск связанных страниц по GUID (2) *@
+                <div class="accordion-item mb-3 shadw">
+
+                    <h2 class="accordion-header" id="headingRefPages2">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#RefPages2" aria-expanded="true" aria-controls="RefPages2">
+                            <span class="form-label text-success fs-5">Фильтры поиска страниц сайта (RefPages2)&nbsp;:</span>
+                        </button>
+                    </h2>
+
+                    <div id="RefPages2" class="accordion-collapse collapse" aria-labelledby="headingRefPages2" data-bs-parent="#accordionEditPage">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <label asp-for="PageItem.RefPages2" class="form-label text-primary fs-5 fw-bold"></label>
+                            <textarea id="RefPagesInput2" asp-for="PageItem.RefPages2" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock2">
+                            </textarea>
+                            <span asp-validation-for="PageItem.RefPages2" class="text-danger"></span>
+
+                            @if (!string.IsNullOrEmpty(Model.PageItem.RefPages2))
+                            {
+                                @if (Model.LinksToPagesByGuid2.Count > 0)
+                                {
+                                    <div class="table-responsive mt-3">
+
+                                        <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                            <thead>
+
+                                                <tr class="text-start text-primary">
+
+                                                    <th scope="col" class="text-primary">№</th>
+                                                    <th scope="col" class="text-primary">GUID</th>
+                                                    <th scope="col" class="text-primary">Title</th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach (var item in Model.LinksToPagesByGuid2)
+                                                {
+                                                    if (l == 0)
+                                                    {
+                                                        l = 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        l++;
+                                                    }
+
+                                                    <tr class="text-start fs-5">
+
+                                                        <td scope="col" class="text-primary">@l</td>
+                                                        <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
+                                                        <td scope="col" class="text_shadow">@item.PageTitle</td>
+
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                    <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+                                        @foreach (var item in Model.LinksToPagesByGuid2)
                                         {
                                             <vc:card-of-page page=item />
                                         }
