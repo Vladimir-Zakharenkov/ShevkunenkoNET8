@@ -78,6 +78,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 02 - Основ�
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 01 - Создание и запуск приложения.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 01 - Создание и запуск приложения.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 02 - Конвейер обработки запроса и middleware.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 02 - Конвейер обработки запроса и middleware.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 03 - Метод Run и определение терминального middleware.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 03 - Метод Run и определение терминального middleware.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 04 - HttpResponse. Отправка ответа.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 04 - HttpResponse. Отправка ответа.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomePage", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\WelcomePage\WelcomePage.csproj", "{0D129FE2-4040-449E-8862-BCA9892D384D}"
@@ -86,7 +87,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SandBox", "SandBox", "{2839
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "Sandbox\BlazorApp\BlazorApp.csproj", "{E2D0501D-86BA-4DCF-B1CC-D6767C7ED7A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Run", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Run\Run.csproj", "{E575C154-F24F-4F35-A2B6-722738A8AC62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Run", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Run\Run.csproj", "{E575C154-F24F-4F35-A2B6-722738A8AC62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

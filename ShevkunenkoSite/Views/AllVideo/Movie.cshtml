@@ -8,7 +8,7 @@
     string posterForVideo = string.Empty;
 }
 
-<!-- Заголовок страницы -->
+@* Заголовок страницы *@
 <div class="row-col-1">
 
     <h1 class="h2 text_shadow">@Html.Raw(Model.MovieFile.MovieCaptionForOnline)</h1>
@@ -17,8 +17,10 @@
 
 </div>
 
+@* Основной блок ВИДЕО*@
 <div class="row">
 
+    @* Кадры слева от видео *@
     @if (!string.IsNullOrEmpty(Model.MovieFile.FramesAroundMovie) == true)
     {
         <vc:movie-frames image-filter="@Model.MovieFile.FramesAroundMovie" left-side="true" one-frame="false" />
@@ -28,11 +30,12 @@
         <vc:movie-frames image-filter="@Model.MovieFile.MovieCaption," left-side="true" one-frame="false" />
     }
 
+    @* Видео *@
     <div class="col-sm-12 col-md w-100 mb-3">
 
         <div class="col-12 p-0 p-sm-1 p-xl-2 mb-3 shadw">
 
-            <!-- Данные http://schema.org/VideoObject -->
+            @* Данные http://schema.org/VideoObject  *@
             <span itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
 
                 <meta itemprop="name" content="@Model.MovieFile.MovieCaption" />
@@ -160,9 +163,10 @@
 
             </span>
 
-            <!-- Видео -->
+            @* Воспроизведение видео *@
             <div class="div-adaptiv mx-auto" style="padding-bottom:@screenFormat;">
 
+                @* Video -JS *@
                 @if (Model.SergeyshefRu)
                 {
                     <video id="my-video"
@@ -204,10 +208,10 @@
 
             </div>
 
-            <!-- Списки под видео -->
+            @* Списки под видео *@
             <div id="movieDescription" class="accordion mt-4 mb-2">
 
-                <!-- Описание фильма -->
+                @* Описание фильма *@
                 <div class="accordion-item shadw">
 
                     <h2 id="heading1" class="accordion-header">
@@ -228,7 +232,7 @@
 
                 </div>
 
-                <!-- Выбрать видеохостинг -->
+                @* Выбрать видеохостинг *@
                 <div class="accordion-item shadw mt-3">
 
                     <h2 id="heading2" class="accordion-header">
@@ -336,7 +340,7 @@
 
                 </div>
 
-                <!-- Информация о фильме -->
+                @* Информация о фильме *@
                 <div class="accordion-item shadw mt-3">
 
                     <h2 id="heading3" class="accordion-header">
@@ -392,6 +396,7 @@
 
     </div>
 
+    @* Кадры справа от видео *@
     @if (!string.IsNullOrEmpty(Model.MovieFile.FramesAroundMovie) == true)
     {
         <vc:movie-frames image-filter="@Model.MovieFile.FramesAroundMovie" left-side="false" one-frame="false" />
@@ -403,13 +408,14 @@
 
 </div>
 
+@* Полная версия фильма *@
 @if (Model.MovieFile.FullMovieID != null)
 {
     <hr class="liniya" />
 
     <div class="row-col-1 mb-2">
 
-        <h2 class="h2 text_shadow">ПОЛНАЯ ВЕРСИЯ ФИЛЬМА</h2>
+        <h2 class="h2 text_shadow">ПОЛНАЯ ВЕРСИЯ</h2>
 
     </div>
 

@@ -202,7 +202,7 @@ public class AllVideoController(
                 PageHeadTitle = topic
             });
         }
-        else if (await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieId).AnyAsync())
+        else if (movieId.HasValue && await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieId).AnyAsync())
         {
             MovieFileModel movieItem = await movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieId);
 
@@ -230,13 +230,9 @@ public class AllVideoController(
             {
                 MovieFileModel? fullMovie = null;
 
-                if (movieItem.FullMovieID != null)
+                if (movieItem.FullMovieID != null && await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieItem.FullMovieID).AnyAsync())
                 {
                     fullMovie = await movieContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieItem.FullMovieID);
-                }
-                else
-                {
-                    fullMovie = null;
                 }
 
                 string queryString = HttpContext.Request.QueryString.ToString();

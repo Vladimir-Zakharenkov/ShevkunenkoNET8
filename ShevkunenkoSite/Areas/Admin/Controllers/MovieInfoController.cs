@@ -1,28 +1,18 @@
 ﻿//Ignore Spelling: Org
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
-using MetadataExtractor;
-using Microsoft.AspNetCore.Authorization;
+//using MetadataExtractor;
+//using Microsoft.AspNetCore.Authorization;
 
 [Area("Admin")]
 [Authorize]
-public class MovieInfoController : Controller
+public class MovieInfoController(
+    IMovieFileRepository movieInfoContext,
+    IPageInfoRepository pageInfoContext,
+    IImageFileRepository imageContext,
+    ITopicMovieRepository topicMovieContext
+    ) : Controller
 {
-    private readonly IMovieFileRepository _movieInfoContext;
-    private readonly IPageInfoRepository _pageInfoContext;
-    private readonly IImageFileRepository _imageInfoContext;
-    private readonly ITopicMovieRepository _topicMovieContext;
-    public MovieInfoController(IMovieFileRepository movieInfoContext,
-                                            IPageInfoRepository pageInfoContext,
-                                            IImageFileRepository imageContext,
-                                            ITopicMovieRepository topicMovieContext)
-    {
-        _movieInfoContext = movieInfoContext;
-        _pageInfoContext = pageInfoContext;
-        _imageInfoContext = imageContext;
-        _topicMovieContext = topicMovieContext;
-    }
-
     PageInfoModel? pageForSeries = new();
 
     //PageInfoModel? pageForMovie = new();
@@ -44,7 +34,7 @@ public class MovieInfoController : Controller
         string? movieActorSearchString,
         int pageNumber = 1)
     {
-        var allMovies = from m in _movieInfoContext.MovieFiles
+        var allMovies = from m in movieInfoContext.MovieFiles
                         .Where(s => s.MovieCaption.Contains((movieCaptionSearchString ?? string.Empty).Trim()))
                         .Where(s => s.MovieDescriptionForSchemaOrg.Contains((movieDescriptionForSchemaOrgSearchString ?? string.Empty).Trim()))
                         .Where(s => s.MovieGenre.Contains((movieGenreSearchString ?? string.Empty).Trim()))
@@ -94,27 +84,27 @@ public class MovieInfoController : Controller
 
     public async Task<IActionResult> DetailsMovie(Guid? movieId)
     {
-        if (movieId.HasValue && await _movieInfoContext.MovieFiles.Where(p => p.MovieFileModelId == movieId).AnyAsync())
+        if (movieId.HasValue && await movieInfoContext.MovieFiles.Where(p => p.MovieFileModelId == movieId).AnyAsync())
         {
-            MovieFileModel movieItem = await _movieInfoContext.MovieFiles
+            MovieFileModel movieItem = await movieInfoContext.MovieFiles
                 .Include(img => img.ImageForHeadSeries)
                 .AsNoTracking()
                 .FirstAsync(p => p.MovieFileModelId == movieId);
 
             #region Страница серий многосерийного фильма
 
-            if (movieItem.PageInfoModelIdForSeries != Guid.Empty && movieItem.PageInfoModelIdForSeries != null && await _pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == movieItem.PageInfoModelIdForSeries).AnyAsync())
+            if (movieItem.PageInfoModelIdForSeries != Guid.Empty && movieItem.PageInfoModelIdForSeries != null && await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == movieItem.PageInfoModelIdForSeries).AnyAsync())
             {
-                pageForSeries = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == movieItem.PageInfoModelIdForSeries);
+                pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == movieItem.PageInfoModelIdForSeries);
             }
 
             #endregion
 
             #region Полная версия фильма
 
-            if (movieItem.FullMovieID != null && await _movieInfoContext.MovieFiles.Where(p => p.MovieFileModelId == movieItem.FullMovieID).AnyAsync())
+            if (movieItem.FullMovieID != null && await movieInfoContext.MovieFiles.Where(p => p.MovieFileModelId == movieItem.FullMovieID).AnyAsync())
             {
-                fullMovie = await _movieInfoContext.MovieFiles
+                fullMovie = await movieInfoContext.MovieFiles
                     .AsNoTracking()
                     .FirstAsync(p => p.MovieFileModelId == movieItem.FullMovieID);
             }
@@ -127,13 +117,13 @@ public class MovieInfoController : Controller
 
             #region Постер для фильма
 
-            if (movieItem.MoviePosterGuid != null && await _imageInfoContext.ImageFiles.Where(img => img.ImageFileModelId == movieItem.MoviePosterGuid).AnyAsync())
+            if (movieItem.MoviePosterGuid != null && await imageContext.ImageFiles.Where(img => img.ImageFileModelId == movieItem.MoviePosterGuid).AnyAsync())
             {
-                posterForMovie = await _imageInfoContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == movieItem.MoviePosterGuid);
+                posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == movieItem.MoviePosterGuid);
             }
-            else if (!string.IsNullOrEmpty(movieItem.MoviePoster) && await _imageInfoContext.ImageFiles.Where(img => img.WebImageFileName == movieItem.MoviePoster || img.ImageFileName == movieItem.MoviePoster).AnyAsync())
+            else if (!string.IsNullOrEmpty(movieItem.MoviePoster) && await imageContext.ImageFiles.Where(img => img.WebImageFileName == movieItem.MoviePoster || img.ImageFileName == movieItem.MoviePoster).AnyAsync())
             {
-                posterForMovie = await _imageInfoContext.ImageFiles.FirstAsync(img => img.WebImageFileName == movieItem.MoviePoster || img.ImageFileName == movieItem.MoviePoster);
+                posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.WebImageFileName == movieItem.MoviePoster || img.ImageFileName == movieItem.MoviePoster);
             }
             else
             {
@@ -158,7 +148,7 @@ public class MovieInfoController : Controller
                 {
                     if (Guid.TryParse(topicFilters[i], out var guidOutput))
                     {
-                        var topic = await _topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).FirstAsync();
+                        var topic = await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).FirstAsync();
 
                         topicFilters[i] = topicFilters[i] + " - " + topic.TopicDescription;
                     }
@@ -173,8 +163,8 @@ public class MovieInfoController : Controller
                 PageForSeries = pageForSeries,
                 FullMovie = fullMovie,
                 PosterForMovie = posterForMovie,
-                SearchFilters = searchFilters ?? Array.Empty<string>(),
-                TopicFilters = topicFilters ?? Array.Empty<string>()
+                SearchFilters = searchFilters ?? [],
+                TopicFilters = topicFilters ?? []
             });
         }
         else
@@ -203,63 +193,63 @@ public class MovieInfoController : Controller
 
             if (movieItem.ImageForMovieFormFile != null)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.ImageForMovieFormFile.FileName);
 
                     movieItem.ImageFileModelId = imageFile.ImageFileModelId;
                 }
@@ -283,72 +273,72 @@ public class MovieInfoController : Controller
 
             if (movieItem.PosterForMovieFormFile != null)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.PosterForMovieFormFile.FileName);
 
                     movieItem.MoviePoster = posterFile.ImageFileName;
                     movieItem.MoviePosterGuid = posterFile.ImageFileModelId;
@@ -362,7 +352,7 @@ public class MovieInfoController : Controller
             }
             else
             {
-                var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == movieItem.ImageFileModelId);
+                var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileModelId == movieItem.ImageFileModelId);
 
                 movieItem.MoviePoster = posterFile.ImageFileName;
                 movieItem.MoviePosterGuid = movieItem.ImageFileModelId;
@@ -376,18 +366,18 @@ public class MovieInfoController : Controller
             {
                 movieItem.PageForMovie = "/" + movieItem.PageForMovie.Trim().Trim('/');
 
-                if (!await _pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForMovie).AnyAsync())
+                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForMovie).AnyAsync())
                 {
                     ModelState.AddModelError("PageForMovie", "Указанной страницы нет в базе данных");
 
                     return View();
                 }
 
-                PageInfoModel pageInfo = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForMovie);
+                PageInfoModel pageInfo = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForMovie);
 
-                if (await _movieInfoContext.MovieFiles.Where(m => m.PageInfoModelId == pageInfo.PageInfoModelId).AnyAsync())
+                if (await movieInfoContext.MovieFiles.Where(m => m.PageInfoModelId == pageInfo.PageInfoModelId).AnyAsync())
                 {
-                    MovieFileModel movieSet = await _movieInfoContext.MovieFiles.FirstAsync(m => m.PageInfoModelId == pageInfo.PageInfoModelId);
+                    MovieFileModel movieSet = await movieInfoContext.MovieFiles.FirstAsync(m => m.PageInfoModelId == pageInfo.PageInfoModelId);
 
                     ModelState.AddModelError("PageForMovie", $"Указанная страница связана с фильмом {movieSet.MovieCaption}");
 
@@ -409,63 +399,63 @@ public class MovieInfoController : Controller
 
             if (movieItem.ImageHeadForSeriesFormFile != null && movieItem.MovieTotalParts > 1 && movieItem.MoviePart == 1)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == movieItem.ImageHeadForSeriesFormFile.FileName);
 
                     movieItem.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
@@ -489,14 +479,14 @@ public class MovieInfoController : Controller
             {
                 movieItem.PageForSeries = "/" + movieItem.PageForSeries.Trim().Trim('/');
 
-                if (!await _pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForSeries).AnyAsync())
+                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForSeries).AnyAsync())
                 {
                     ModelState.AddModelError("PageForSeries", "Указанной страницы нет в базе данных");
 
                     return View();
                 }
 
-                pageForSeries = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForSeries);
+                pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForSeries);
 
                 movieItem.PageInfoModelIdForSeries = pageForSeries.PageInfoModelId;
             }
@@ -522,7 +512,7 @@ public class MovieInfoController : Controller
                     return View();
                 }
 
-                if (await _movieInfoContext.MovieFiles.Where(c => c.MovieFileName == movieItem.FileForMovieFormFile.FileName).AnyAsync())
+                if (await movieInfoContext.MovieFiles.Where(c => c.MovieFileName == movieItem.FileForMovieFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("FileForMovieFormFile", $"Файл {movieItem.FileForMovieFormFile.FileName} уже есть в базе данных"); ;
 
@@ -635,7 +625,7 @@ public class MovieInfoController : Controller
                             }
                             else
                             {
-                                movieItem.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                                movieItem.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                             }
                         }
                     }
@@ -667,9 +657,9 @@ public class MovieInfoController : Controller
 
             if (movieItem.FullMovieFormFile != null)
             {
-                if (await _movieInfoContext.MovieFiles.Where(mov => mov.MovieFileName == movieItem.FullMovieFormFile.FileName).AnyAsync())
+                if (await movieInfoContext.MovieFiles.Where(mov => mov.MovieFileName == movieItem.FullMovieFormFile.FileName).AnyAsync())
                 {
-                    fullMovie = await _movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileName == movieItem.FullMovieFormFile.FileName);
+                    fullMovie = await movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileName == movieItem.FullMovieFormFile.FileName);
 
                     movieItem.FullMovieID = fullMovie.MovieFileModelId;
                 }
@@ -692,7 +682,7 @@ public class MovieInfoController : Controller
 
             movieItem.MovieCaption = movieItem.MovieCaption.Trim();
 
-            if (await _movieInfoContext.MovieFiles.Where(c => c.MovieCaption == movieItem.MovieCaption & c.MovieTotalParts == movieItem.MovieTotalParts & c.MoviePart == movieItem.MoviePart).AnyAsync())
+            if (await movieInfoContext.MovieFiles.Where(c => c.MovieCaption == movieItem.MovieCaption & c.MovieTotalParts == movieItem.MovieTotalParts & c.MoviePart == movieItem.MoviePart).AnyAsync())
             {
                 ModelState.AddModelError("movieItem.MovieCaption", $"Фильм «{movieItem.MovieCaption}» количество серий - {movieItem.MovieTotalParts} серия {movieItem.MoviePart} уже существует");
 
@@ -779,7 +769,7 @@ public class MovieInfoController : Controller
 
             if (movieItem.FramesAroundMovie != string.Empty)
             {
-                if (!await _movieInfoContext.MovieFiles.Where(p => p.MovieCaption == movieItem.FramesAroundMovie.Trim()).AnyAsync())
+                if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == movieItem.FramesAroundMovie.Trim()).AnyAsync())
                 {
                     ModelState.AddModelError("FramesAroundMovie", $"Фильма «{movieItem.FramesAroundMovie}»  нет в базе данных");
 
@@ -804,9 +794,9 @@ public class MovieInfoController : Controller
 
             #endregion
 
-            await _movieInfoContext.AddNewMovieAsync(movieItem);
+            await movieInfoContext.AddNewMovieAsync(movieItem);
 
-            var newMovie = await _movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieCaption == movieItem.MovieCaption);
+            var newMovie = await movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieCaption == movieItem.MovieCaption);
 
             return RedirectToAction("DetailsMovie", new { movieId = newMovie.MovieFileModelId, Area = "Admin" });
         }
@@ -823,9 +813,9 @@ public class MovieInfoController : Controller
     [HttpGet]
     public async Task<IActionResult> EditMovie(Guid? movieId)
     {
-        if (movieId.HasValue && await _movieInfoContext.MovieFiles.Where(i => i.MovieFileModelId == movieId).AnyAsync())
+        if (movieId.HasValue && await movieInfoContext.MovieFiles.Where(i => i.MovieFileModelId == movieId).AnyAsync())
         {
-            var movieItem = await _movieInfoContext.MovieFiles.Include(img => img.ImageFileModel).FirstAsync(i => i.MovieFileModelId == movieId);
+            var movieItem = await movieInfoContext.MovieFiles.Include(img => img.ImageFileModel).FirstAsync(i => i.MovieFileModelId == movieId);
 
             #region Текущие темы для фильма
 
@@ -837,7 +827,7 @@ public class MovieInfoController : Controller
                 {
                     if (Guid.TryParse(topicFilters[i], out var guidOutput))
                     {
-                        var topic = await _topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).FirstAsync();
+                        var topic = await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).FirstAsync();
 
                         topicFilters[i] = topic.TopicDescription;
                     }
@@ -852,7 +842,7 @@ public class MovieInfoController : Controller
                 MovieItem = movieItem,
 
                 // все темы фильмов
-                TopicsForMovie = _topicMovieContext.TopicMovies.ToList(),
+                TopicsForMovie = [.. topicMovieContext.TopicMovies],
 
                 // текущие темы для фильма (string[])
                 TopicFilters = topicFilters
@@ -861,9 +851,9 @@ public class MovieInfoController : Controller
             // адрес страницы фильма
             if (editMovie.MovieItem.PageInfoModelId != null
                     && editMovie.MovieItem.PageInfoModelId != Guid.Empty
-                    && await _pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelId).AnyAsync())
+                    && await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelId).AnyAsync())
             {
-                var pageForMovie = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelId);
+                var pageForMovie = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelId);
 
                 editMovie.PageForMovie = pageForMovie.PageFullPathWithData;
             }
@@ -875,9 +865,9 @@ public class MovieInfoController : Controller
             // адрес страницы серий фильма
             if (editMovie.MovieItem.PageInfoModelIdForSeries != null
                     && editMovie.MovieItem.PageInfoModelIdForSeries != Guid.Empty
-                    && await _pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelIdForSeries).AnyAsync())
+                    && await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelIdForSeries).AnyAsync())
             {
-                editMovie.PageForSeries = await _pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelIdForSeries);
+                editMovie.PageForSeries = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editMovie.MovieItem.PageInfoModelIdForSeries);
 
                 editMovie.PageForSeriesString = editMovie.PageForSeries.PageFullPathWithData;
             }
@@ -889,9 +879,9 @@ public class MovieInfoController : Controller
 
             // полный вариант фильма
             if (editMovie.MovieItem?.FullMovieID != null
-                    && await _movieInfoContext.MovieFiles.Where(mov => mov.MovieFileModelId == editMovie.MovieItem.FullMovieID).AnyAsync())
+                    && await movieInfoContext.MovieFiles.Where(mov => mov.MovieFileModelId == editMovie.MovieItem.FullMovieID).AnyAsync())
             {
-                editMovie.FullMovie = await _movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileModelId == editMovie.MovieItem.FullMovieID);
+                editMovie.FullMovie = await movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileModelId == editMovie.MovieItem.FullMovieID);
             }
             else
             {
@@ -900,14 +890,14 @@ public class MovieInfoController : Controller
 
             // постер для фильма
             if (editMovie.MovieItem!.MoviePosterGuid != null
-                    && await _imageInfoContext.ImageFiles.Where(img => img.ImageFileModelId == editMovie.MovieItem.MoviePosterGuid).AnyAsync())
+                    && await imageContext.ImageFiles.Where(img => img.ImageFileModelId == editMovie.MovieItem.MoviePosterGuid).AnyAsync())
             {
-                editMovie.PosterForMovie = await _imageInfoContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == editMovie.MovieItem.MoviePosterGuid);
+                editMovie.PosterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == editMovie.MovieItem.MoviePosterGuid);
             }
             else if (!string.IsNullOrEmpty(editMovie.MovieItem!.MoviePoster)
-                    && await _imageInfoContext.ImageFiles.Where(img => img.WebImageFileName == editMovie.MovieItem.MoviePoster || img.ImageFileName == editMovie.MovieItem.MoviePoster).AnyAsync())
+                    && await imageContext.ImageFiles.Where(img => img.WebImageFileName == editMovie.MovieItem.MoviePoster || img.ImageFileName == editMovie.MovieItem.MoviePoster).AnyAsync())
             {
-                editMovie.PosterForMovie = await _imageInfoContext.ImageFiles.FirstAsync(img => img.WebImageFileName == editMovie.MovieItem.MoviePoster || img.ImageFileName == editMovie.MovieItem.MoviePoster);
+                editMovie.PosterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.WebImageFileName == editMovie.MovieItem.MoviePoster || img.ImageFileName == editMovie.MovieItem.MoviePoster);
             }
             else
             {
@@ -931,7 +921,7 @@ public class MovieInfoController : Controller
     {
         if (ModelState.IsValid)
         {
-            MovieFileModel movieUpdate = await _movieInfoContext.MovieFiles.FirstAsync(i => i.MovieFileModelId == editMovie.MovieItem.MovieFileModelId);
+            MovieFileModel movieUpdate = await movieInfoContext.MovieFiles.FirstAsync(i => i.MovieFileModelId == editMovie.MovieItem.MovieFileModelId);
 
             #region Файл фильма
 
@@ -944,7 +934,7 @@ public class MovieInfoController : Controller
                     return View(editMovie);
                 }
 
-                if (await _movieInfoContext.MovieFiles.Where(c => c.MovieFileName == editMovie.FileForMovieFormFile.FileName).AnyAsync())
+                if (await movieInfoContext.MovieFiles.Where(c => c.MovieFileName == editMovie.FileForMovieFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("FileForMovieFormFile", $"Файл {editMovie.FileForMovieFormFile.FileName} уже есть в базе данных"); ;
 
@@ -1059,7 +1049,7 @@ public class MovieInfoController : Controller
                             }
                             else
                             {
-                                movieUpdate.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.ToString().IndexOf(" ")]);
+                                movieUpdate.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
                             }
                         }
                     }
@@ -1095,9 +1085,9 @@ public class MovieInfoController : Controller
                         return View(editMovie);
                     }
                 }
-                else if (await _movieInfoContext.MovieFiles.Where(mov => mov.MovieFileName == editMovie.FullMovieFormFile!.FileName).AnyAsync())
+                else if (await movieInfoContext.MovieFiles.Where(mov => mov.MovieFileName == editMovie.FullMovieFormFile!.FileName).AnyAsync())
                 {
-                    var fullMovie = await _movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileName == editMovie.FullMovieFormFile!.FileName);
+                    var fullMovie = await movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieFileName == editMovie.FullMovieFormFile!.FileName);
 
                     movieUpdate.FullMovieID = fullMovie.MovieFileModelId;
                 }
@@ -1110,7 +1100,7 @@ public class MovieInfoController : Controller
             }
             else
             {
-                movieUpdate.FullMovieID = editMovie.MovieItem.FullMovieID;
+                movieUpdate.FullMovieID = movieUpdate.FullMovieID;
             }
 
             #endregion
@@ -1121,21 +1111,21 @@ public class MovieInfoController : Controller
             {
                 editMovie.PageForMovie = "/" + editMovie.PageForMovie.Trim().Trim('/');
 
-                if (!await _pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim()).AnyAsync()
-                        & !await _pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim()).AnyAsync())
+                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim()).AnyAsync()
+                        & !await pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim()).AnyAsync())
                 {
                     ModelState.AddModelError("PageForMovie", "Указанной страницы нет в базе данных");
 
                     return View(editMovie);
                 }
-                else if (await _pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim()).AnyAsync())
+                else if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim()).AnyAsync())
                 {
-                    var pageForMovie = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim());
+                    var pageForMovie = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == editMovie.PageForMovie.Trim());
                     movieUpdate.PageInfoModelId = pageForMovie.PageInfoModelId;
                 }
-                else if (await _pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim()).AnyAsync())
+                else if (await pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim()).AnyAsync())
                 {
-                    var pageForMovie = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim());
+                    var pageForMovie = await pageInfoContext.PagesInfo.FirstAsync(p => p.PagePathNickNameWithData == editMovie.PageForMovie.Trim());
                     movieUpdate.PageInfoModelId = pageForMovie.PageInfoModelId;
                 }
                 else
@@ -1158,63 +1148,63 @@ public class MovieInfoController : Controller
 
             if (editMovie.ImageForMovieFormFile != null)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.ImageForMovieFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.ImageForMovieFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.ImageForMovieFormFile.FileName);
 
                     movieUpdate.ImageFileModelId = imageFile.ImageFileModelId;
                 }
@@ -1236,72 +1226,72 @@ public class MovieInfoController : Controller
 
             if (editMovie.PosterForMovieFormFile != null)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.PosterForMovieFormFile.FileName).AnyAsync())
                 {
-                    var posterFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.PosterForMovieFormFile.FileName);
+                    var posterFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.PosterForMovieFormFile.FileName);
 
                     movieUpdate.MoviePoster = string.Empty;
                     movieUpdate.MoviePosterGuid = posterFile.ImageFileModelId;
@@ -1332,21 +1322,21 @@ public class MovieInfoController : Controller
             {
                 editMovie.PageForSeriesString = "/" + editMovie.PageForSeriesString.Trim().Trim('/');
 
-                if (!await _pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForSeriesString).AnyAsync()
-                        & !await _pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString).AnyAsync())
+                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForSeriesString).AnyAsync()
+                        & !await pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString).AnyAsync())
                 {
                     ModelState.AddModelError("PageOfSeries", $"{editMovie.PageForSeriesString} - страницы нет в базе данных");
 
                     return View(editMovie);
                 }
-                else if (await _pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForSeriesString).AnyAsync())
+                else if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == editMovie.PageForSeriesString).AnyAsync())
                 {
-                    var pageForSeries = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == editMovie.PageForSeriesString);
+                    var pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == editMovie.PageForSeriesString);
                     movieUpdate.PageInfoModelIdForSeries = pageForSeries.PageInfoModelId;
                 }
-                else if (await _pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString).AnyAsync())
+                else if (await pageInfoContext.PagesInfo.Where(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString).AnyAsync())
                 {
-                    var pageForSeries = await _pageInfoContext.PagesInfo.FirstAsync(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString);
+                    var pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PagePathNickNameWithData == editMovie.PageForSeriesString);
                     movieUpdate.PageInfoModelIdForSeries = pageForSeries.PageInfoModelId;
                 }
                 else
@@ -1369,63 +1359,63 @@ public class MovieInfoController : Controller
 
             if (editMovie.ImageHeadForSeriesFormFile != null && editMovie.MovieItem.MovieTotalParts > 1 && editMovie.MovieItem.MoviePart == 1)
             {
-                if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.IconFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
-                else if (await _imageInfoContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName).AnyAsync())
                 {
-                    var imageHeadSeriesFile = await _imageInfoContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
+                    var imageHeadSeriesFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editMovie.ImageHeadForSeriesFormFile.FileName);
 
                     movieUpdate.ImageForHeadSeriesImageFileModelId = imageHeadSeriesFile.ImageFileModelId;
                 }
@@ -1461,7 +1451,7 @@ public class MovieInfoController : Controller
 
             if (editMovie.MovieItem.FramesAroundMovie.Trim() != string.Empty)
             {
-                if (!await _movieInfoContext.MovieFiles.Where(p => p.MovieCaption == editMovie.MovieItem.FramesAroundMovie.Trim()).AnyAsync())
+                if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == editMovie.MovieItem.FramesAroundMovie.Trim()).AnyAsync())
                 {
                     ModelState.AddModelError("FramesAroundMovie", $"Фильма «{editMovie.MovieItem.FramesAroundMovie}»  нет в базе данных");
 
@@ -1526,7 +1516,7 @@ public class MovieInfoController : Controller
                 {
                     if (Guid.TryParse(topicFilters[i], out var guidOutput))
                     {
-                        if (!await _topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).AnyAsync())
+                        if (!await topicMovieContext.TopicMovies.Where(t => t.TopicMovieModelId == guidOutput).AnyAsync())
                         {
                             Array.Clear(topicFilters, i, 1);
                         }
@@ -1654,7 +1644,7 @@ public class MovieInfoController : Controller
 
             #endregion
 
-            await _movieInfoContext.SaveChangesInMovieAsync();
+            await movieInfoContext.SaveChangesInMovieAsync();
 
             return RedirectToAction("DetailsMovie", new { movieId = movieUpdate.MovieFileModelId, Area = "Admin" });
         }
@@ -1675,9 +1665,9 @@ public class MovieInfoController : Controller
 
         if (movieId.HasValue)
         {
-            if (await _movieInfoContext.MovieFiles.Where(i => i.MovieFileModelId == movieId).AnyAsync())
+            if (await movieInfoContext.MovieFiles.Where(i => i.MovieFileModelId == movieId).AnyAsync())
             {
-                deleteMovie = await _movieInfoContext.MovieFiles.FirstAsync(i => i.MovieFileModelId == movieId);
+                deleteMovie = await movieInfoContext.MovieFiles.FirstAsync(i => i.MovieFileModelId == movieId);
             }
             else
             {
@@ -1698,7 +1688,7 @@ public class MovieInfoController : Controller
     {
         if (deleteMovie != null)
         {
-            await _movieInfoContext.DeleteMovieAsync(deleteMovie.MovieFileModelId);
+            await movieInfoContext.DeleteMovieAsync(deleteMovie.MovieFileModelId);
 
             return RedirectToAction(nameof(Index));
         }
