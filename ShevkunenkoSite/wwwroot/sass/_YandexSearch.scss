@@ -1,3 +1,13 @@
-﻿.ya-site-form__search-input {
-    padding-bottom: 14px !important
+﻿li#yandex-search{
+    max-width:800px !important;
+    min-width:120px !important;
+}
+
+li#yandex-search * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.ya-site-form__wrap {
+    min-width: 120px !important;
 }

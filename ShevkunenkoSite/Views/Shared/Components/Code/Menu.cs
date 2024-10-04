@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
+﻿// Ignore Spelling: env
+
+namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
 [ViewComponent]
 public class Menu : ViewComponent

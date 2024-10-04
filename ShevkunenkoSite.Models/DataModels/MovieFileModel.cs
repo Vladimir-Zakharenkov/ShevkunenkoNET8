@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Org Рroduction Imbd Poisk
+﻿// Ignore Spelling: Org Рroduction Imbd Poisk Online Teatr Vk Yandex
 
 namespace ShevkunenkoSite.Models.DataModels;
 
@@ -76,6 +76,16 @@ public class MovieFileModel
 
     #endregion
 
+    #region Фильтры поиска фильма
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.MultilineText)]
+    [Display(Name = "Фильтр поиска: ")]
+    public string SearchFilter { get; set; } = string.Empty;
+
+    #endregion
+
     #region Ограничения и поиск
 
     [DataType(DataType.Text)]
@@ -86,12 +96,6 @@ public class MovieFileModel
     [DataType(DataType.Text)]
     [Display(Name = "Жанр фильма: ")]
     public string MovieGenre { get; set; } = string.Empty;
-
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска: ")]
-    public string SearchFilter { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -308,7 +312,7 @@ public class MovieFileModel
 
     public Guid? PageInfoModelIdForSeries { get; set; } // страница фильма из нескольких серий
 
-    public Guid? ImageForHeadSeriesImageFileModelId { get; set; } // картинка заголовка страницы серий
+    public Guid? ImageForHeadSeriesId { get; set; } // картинка заголовка страницы серий
     public ImageFileModel? ImageForHeadSeries { get; set; }
 
     #endregion

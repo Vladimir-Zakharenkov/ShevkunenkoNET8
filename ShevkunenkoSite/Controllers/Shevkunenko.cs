@@ -57,5 +57,5 @@ public class Shevkunenko(
 
     public IActionResult Press() => Redirect("https://shevkunenko.ru/pressa/index.htm");
 
-    public IActionResult Test() => View();
+    public IActionResult Error404() => View();
 }

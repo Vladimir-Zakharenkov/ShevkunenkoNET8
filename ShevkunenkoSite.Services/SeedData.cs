@@ -1,7 +1,7 @@
 ﻿//If you need to reset the database, then run this command in the ShevkunenkoSite.Services folder:
 //dotnet ef database --startup-project ..\ShevkunenkoSite  drop --force --context SiteDbContext
 
-namespace ShevkunenkoSite;
+namespace ShevkunenkoSite.Services;
 
 public static class SeedData
 {
@@ -606,7 +606,7 @@ public static class SeedData
                 AllMoviesFromDB3 = false,
                 Carousel = true,
                 FramesAroundMovie = string.Empty,
-                ImageForHeadSeriesImageFileModelId = null,
+                ImageForHeadSeriesId = null,
                 SeriesSearchFilter = string.Empty,
                 TopicGuidList = "59019054-7df0-42b7-7fa5-08dca3df7399"
             }

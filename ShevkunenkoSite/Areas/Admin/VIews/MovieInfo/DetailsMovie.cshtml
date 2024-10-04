@@ -269,9 +269,9 @@
 
                                 @if (Model.MovieItem.MoviePart == 1 && Model.MovieItem.ImageForHeadSeries != null)
                                 {
-                                    <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.ImageForHeadSeriesImageFileModelId</span></p>
+                                    <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.ImageForHeadSeriesId</span></p>
 
-                                    <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+                                    <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
 
                                     @if (!string.IsNullOrEmpty(Model.MovieItem.ImageForHeadSeries.WebImageFileName))
                                     {

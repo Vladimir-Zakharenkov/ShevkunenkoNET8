@@ -8,7 +8,8 @@ public class PageInfoController(
     IMovieFileRepository movieContext,
     IIconFileRepository iconContext,
     IImageFileRepository imageContext,
-    IBackgroundFotoRepository backgroundContext) : Controller
+    IBackgroundFotoRepository backgroundContext
+    ) : Controller
 {
     #region Список страниц сайта
 
@@ -166,62 +167,6 @@ public class PageInfoController(
 
             #endregion
 
-            #region  Ссылки на видео сайта по фильтру (VideoFilterOut)
-
-            List<VideoLinksViewModel> listsOfVideoFilterOut = [];
-            List<List<MovieFileModel>> moviesFileModel = [];
-
-            string[] videoFilterOut = pageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            if (videoFilterOut.Length > 0)
-            {
-                for (int i = 0; i < videoFilterOut.Length; i++)
-                {
-#pragma warning disable CA1862
-                    if (await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i])).AnyAsync())
-                    {
-                        var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.ToLower().Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
-                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
-
-                        VideoLinksViewModel videoLinksViewModel = new()
-                        {
-                            HeadTitleForVideoLinks = videoFilterOut[i],
-                            IsImage = false,
-                            IconType = "webicon300",
-                            SearchFilter = videoFilterOut[i],
-                            MovieInMainList = true,
-                            IsPartsMoreOne = true
-                        };
-
-                        listsOfVideoFilterOut.Add(videoLinksViewModel);
-
-                        moviesFileModel.Add(movies);
-                    }
-#pragma warning restore CA1862
-                }
-                _ = listsOfVideoFilterOut.Distinct();
-                _ = moviesFileModel.Distinct();
-            }
-
-            #endregion
-
-            #region Ссылки на страницы сайта по фильтру (PageFilterOut)
-
-            string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            List<PageInfoModel> linksToPagesByFilterOut = [];
-
-            if (pageFiltersOut.Length > 0)
-            {
-                for (int i = 0; i < pageFiltersOut.Length; i++)
-                {
-                    linksToPagesByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
-                    _ = linksToPagesByFilterOut.Distinct().OrderBy(p => p.PageCardText);
-                }
-            }
-
-            #endregion
-
             #region Ссылки на страницы сайта по GUID (RefPages)
 
             string[] pageIdOut = pageItem.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -269,6 +214,58 @@ public class PageInfoController(
 
             #endregion
 
+            #region Ссылки на страницы сайта по фильтру (PageFilterOut)
+
+            string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            List<PageInfoModel> linksToPagesByFilterOut = [];
+
+            if (pageFiltersOut.Length > 0)
+            {
+                for (int i = 0; i < pageFiltersOut.Length; i++)
+                {
+                    linksToPagesByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
+                    _ = linksToPagesByFilterOut.Distinct().OrderBy(p => p.PageCardText);
+                }
+            }
+
+            #endregion
+
+            #region  Ссылки на видео сайта по текстовому фильтру (VideoFilterOut)
+
+            List<VideoLinksViewModel> listOfVideoLinksViewModel = [];
+            List<List<MovieFileModel>> listOfListMoviesFileModel = [];
+
+            string[] videoFilterOut = pageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (videoFilterOut.Length > 0)
+            {
+                for (int i = 0; i < videoFilterOut.Length; i++)
+                {
+                    if (await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i])).AnyAsync())
+                    {
+                        var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel = new()
+                        {
+                            HeadTitleForVideoLinks = videoFilterOut[i],
+                            IsImage = false,
+                            IconType = "webicon300",
+                            SearchFilter = videoFilterOut[i],
+                            MovieInMainList = true,
+                            IsPartsMoreOne = true
+                        };
+
+                        listOfVideoLinksViewModel.Add(videoLinksViewModel);
+
+                        listOfListMoviesFileModel.Add(movies);
+                    }
+                }
+            }
+
+            #endregion
+
             return View(new DetailsPageViewModel
             {
                 PageItem = pageItem,
@@ -276,8 +273,8 @@ public class PageInfoController(
                 LinksToPagesByGuid = linksToPagesByGuid,
                 LinksToPagesByGuid2 = linksToPagesByGuid2,
                 LinksToPagesByFilterOut = linksToPagesByFilterOut,
-                LinksToVideosByFilterOut = listsOfVideoFilterOut,
-                ListsMoviesFileModel = moviesFileModel,
+                LinksToVideosByFilterOut = listOfVideoLinksViewModel,
+                ListsMoviesFileModel = listOfListMoviesFileModel,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter
@@ -562,6 +559,8 @@ public class PageInfoController(
 
             #region MVC или RazorPage
 
+            #region Область
+
             if (string.IsNullOrWhiteSpace(addItem.PageItem.PageArea) || string.IsNullOrEmpty(addItem.PageItem.PageArea))
             {
                 addItem.PageItem.PageArea = string.Empty;
@@ -571,7 +570,15 @@ public class PageInfoController(
                 addItem.PageItem.PageArea = "/" + addItem.PageItem.PageArea.Trim().Trim('/').ToLower();
             }
 
+            #endregion
+
+            #region MVC или RazorPage
+
             addItem.PageItem.PageAsRazorPage = addItem.PageItem.PageAsRazorPage;
+
+            #endregion
+
+            #region Контроллер
 
             if (addItem.PageItem.PageAsRazorPage)
             {
@@ -591,6 +598,10 @@ public class PageInfoController(
                 }
             }
 
+            #endregion
+
+            #region Действие
+
             if (addItem.PageItem.PageAsRazorPage)
             {
                 addItem.PageItem.Action = string.Empty;
@@ -608,6 +619,10 @@ public class PageInfoController(
                     addItem.PageItem.Action = "/" + addItem.PageItem.Action.Trim().Trim('/').ToLower();
                 }
             }
+
+            #endregion
+
+            #region Адрес без Области (для RazorPage)
 
             if (addItem.PageItem.PageAsRazorPage)
             {
@@ -631,6 +646,10 @@ public class PageInfoController(
                 addItem.PageItem.PageLoc = addItem.PageItem.Action;
             }
 
+            #endregion
+
+            #region Данные (RoutData)
+
             if (string.IsNullOrWhiteSpace(addItem.PageItem.RoutData) || string.IsNullOrEmpty(addItem.PageItem.RoutData))
             {
                 addItem.PageItem.RoutData = string.Empty;
@@ -639,6 +658,10 @@ public class PageInfoController(
             {
                 addItem.PageItem.RoutData = "?" + addItem.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
             }
+
+            #endregion
+
+            #region Псевдоним страницы
 
             if (string.IsNullOrWhiteSpace(addItem.PageItem.PagePathNickName) || string.IsNullOrEmpty(addItem.PageItem.PagePathNickName))
             {
@@ -653,6 +676,35 @@ public class PageInfoController(
                 addItem.PageItem.PagePathNickName = "/" + addItem.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
+            #endregion
+
+            #region Проверка существующих страниц
+
+            string checkPageFullPathWithData = string.Empty;
+
+            if (addItem.PageItem.PageAsRazorPage)
+            {
+                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData;
+
+                if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
+                {
+                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData}» уже существует");
+
+                    return View();
+                }
+            }
+            else
+            {
+                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData;
+
+                if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
+                {
+                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData}» уже существует");
+
+                    return View();
+                }
+            }
+
             if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
             {
                 ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addItem.PageItem.PagePathNickName}» уже существует");
@@ -662,9 +714,11 @@ public class PageInfoController(
 
             #endregion
 
+            #endregion
+
             #region Фильтр поиска текущей страницы
 
-            addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.ToLower().Trim();
+            addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.Trim();
 
             #endregion
 
@@ -699,24 +753,6 @@ public class PageInfoController(
             await pageInfoContext.AddNewPageAsync(addItem.PageItem);
 
             #region Открытие страницы DetailsPage
-
-            string checkPageFullPathWithData = string.Empty;
-
-            if (addItem.PageItem.PageAsRazorPage)
-            {
-                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData;
-            }
-            else
-            {
-                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData;
-            }
-
-            if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
-            {
-                ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData}» уже существует");
-
-                return View();
-            }
 
             PageInfoModel newPage = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == checkPageFullPathWithData);
 
@@ -1290,14 +1326,6 @@ public class PageInfoController(
 
             #region Изменить группы связанных ссылок
 
-            // поиск связанных страниц по фильтру
-            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
-            pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim();
-
-            // поиск связанных видео
-            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
-            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
-
             // поиск связанных страниц поGUID (1)
             pageUpdate.PageLinks = editPage.PageItem.PageLinks;
             pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
@@ -1305,6 +1333,14 @@ public class PageInfoController(
             // поиск связанных страниц поGUID (2)
             pageUpdate.PageLinks2 = editPage.PageItem.PageLinks2;
             pageUpdate.RefPages2 = editPage.PageItem.RefPages2.Trim().ToLower();
+
+            // поиск связанных страниц по фильтру
+            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
+            pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim();
+
+            // поиск связанных видео
+            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
+            pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
 
             #endregion
 

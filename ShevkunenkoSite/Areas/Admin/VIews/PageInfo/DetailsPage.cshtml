@@ -5,7 +5,7 @@
     int j = 0;
     int k = 0;
     int l = 0;
-    int m = 0;
+    int videoRef = 0;
 
     // var dict = Model.PageItem!.RoutData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
     //            .Select(part => part.Split('='))
@@ -781,18 +781,18 @@
 
                                             @foreach (var item in listOfMovies)
                                             {
-                                                if (m == 0)
+                                                if (videoRef == 0)
                                                 {
-                                                    m = 1;
+                                                    videoRef = 1;
                                                 }
                                                 else
                                                 {
-                                                    m++;
+                                                    videoRef++;
                                                 }
 
                                                 <tr class="text-start fs-5">
 
-                                                    <td scope="col" class="text-primary">@m</td>
+                                                    <td scope="col" class="text-primary">@videoRef</td>
                                                     <td scope="col" class="text_shadow">@item.MovieFileModelId</td>
                                                     <td scope="col" class="text_shadow">@item.MovieCaption</td>
                                                     <td scope="col" class="text-center">
@@ -814,9 +814,9 @@
                                 </div>
                             }
 
-                            foreach (var listsOfVideoFilterOut in Model.LinksToVideosByFilterOut)
+                            foreach (var listOfVideoFilterOut in Model.LinksToVideosByFilterOut)
                             {
-                                <vc:video-links movies-list="@listsOfVideoFilterOut" />
+                                <vc:video-links movies-list="@listOfVideoFilterOut" />
                             }
                         }
                         else

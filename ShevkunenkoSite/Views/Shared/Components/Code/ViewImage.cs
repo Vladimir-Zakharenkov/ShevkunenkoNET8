@@ -2,8 +2,6 @@
 
 public class ViewImage(IImageFileRepository imageFileContext) : ViewComponent
 {
-    //private Guid imageIdGuid;
-
     ImageFileModel imageItem = new();
 
     public async Task<IViewComponentResult> InvokeAsync(string? imageId, string? cssClass, string? iconType)

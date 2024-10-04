@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShevkunenkoSite.Services;
 
@@ -11,9 +12,11 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class SiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918212505_19-09-2024-00-24")]
+    partial class _190920240024
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -397,7 +400,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<Guid?>("ImageFileModelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ImageForHeadSeriesId")
+                    b.Property<Guid?>("ImageForHeadSeriesImageFileModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("IsImage1")
@@ -633,7 +636,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasIndex("ImageFileModelId");
 
-                    b.HasIndex("ImageForHeadSeriesId");
+                    b.HasIndex("ImageForHeadSeriesImageFileModelId");
 
                     b.HasIndex("PageInfoModelId")
                         .IsUnique()
@@ -844,7 +847,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImageForHeadSeries")
                         .WithMany()
-                        .HasForeignKey("ImageForHeadSeriesId");
+                        .HasForeignKey("ImageForHeadSeriesImageFileModelId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
                         .WithOne("MovieFile")

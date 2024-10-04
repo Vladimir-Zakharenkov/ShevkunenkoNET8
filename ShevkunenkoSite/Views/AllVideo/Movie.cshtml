@@ -447,22 +447,29 @@
 
     </div>
 }
+else
+{
+}
 
+@* Фотокарусель *@
 @if (Model.MovieFile.Carousel)
 {
     <vc:multiple-carousel movie-carousel="@Model.MovieFile" />
 }
 
+@* Ссылки 1 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter1))
 {
     <vc:links-below1 movie="@Model.MovieFile" />
 }
 
+@* Ссылки 2 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter2))
 {
     <vc:links-below2 movie="@Model.MovieFile" />
 }
 
+@* Скрипты для фотокарусели *@
 @section Scripts {
     <script>
 

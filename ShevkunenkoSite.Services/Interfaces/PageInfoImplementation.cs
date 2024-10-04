@@ -10,15 +10,18 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
     #region Определить страницу в базе данных по запросу
 
     public async Task<PageInfoModel> GetPageInfoByPathAsync(HttpContext httpContext)
-
     {
         string pagePath = httpContext.Request.Path.ToString().ToLower().TrimEnd('/');
 
+        IQueryCollection pageQuery = httpContext.Request.Query;
+
+        string pageQueryString = httpContext.Request.QueryString.ToString();
+        
         string routData = string.Empty;
 
-        if (!string.IsNullOrEmpty(httpContext.Request.QueryString.ToString()))
+        if (pageQuery.Count >0)
         {
-            foreach (var item in httpContext.Request.Query)
+            foreach (var item in pageQuery)
             {
                 if (routData == string.Empty)
                 {
@@ -35,6 +38,10 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
                 if (await PagesInfo.Where(p => p.PageFullPath == pagePath & p.RoutData == routData).AnyAsync())
                 {
                     return await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath & p.RoutData == routData);
+                }
+                else if (await PagesInfo.Where(p => p.PageFullPath == pagePath + "/index" & p.RoutData == routData).AnyAsync())
+                {
+                    return await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath + "/index" & p.RoutData == routData);
                 }
                 else if (await PagesInfo.Where(p => p.PagePathNickName == pagePath & p.RoutData == routData).AnyAsync())
                 {
@@ -69,7 +76,14 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
             }
             else if (await PagesInfo.Where(p => p.PageFullPath == pagePath).AnyAsync())
             {
-                return await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath); ;
+                var pageInfo = await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath);
+
+                if (!string.IsNullOrEmpty(pageInfo.RoutData)) 
+                {
+                    return await PagesInfo.FirstAsync(p => p.PageFullPath == "/shevkunenko/error404");
+                }
+
+                return (pageInfo);
             }
             else if (await PagesInfo.Where(p => p.PagePathNickName == pagePath).AnyAsync())
             {
@@ -85,12 +99,12 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
             }
             else
             {
-                return await PagesInfo.FirstAsync(p => p.PageFullPath == "/error404");
+                return await PagesInfo.FirstAsync(p => p.PageFullPath == "/shevkunenko/error404");
             }
         }
         else
         {
-            return await PagesInfo.FirstAsync(p => p.PageFullPath == "/error404");
+            return await PagesInfo.FirstAsync(p => p.PageFullPath == "/shevkunenko/error404");
         }
     }
 

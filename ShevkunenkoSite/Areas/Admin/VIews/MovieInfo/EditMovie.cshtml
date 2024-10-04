@@ -42,6 +42,7 @@
                     <input asp-for="MovieItem.MovieMimeType" type="hidden" />
                     <input asp-for="MovieItem.MovieFileSize" type="hidden" />
                     <input asp-for="MovieItem.ImageFileModelId" type="hidden" />
+                    <input asp-for="MovieItem.ImageForHeadSeriesId" type="hidden" />
                     <input asp-for="MovieItem.MoviePosterGuid" type="hidden" />
 
                     @* название фильма *@
@@ -400,11 +401,11 @@
                                     <!-- картинка для заголовка страницы серий -->
                                     @if (Context.Request.Method == "GET")
                                     {
-                                        @if (Model.MovieItem.ImageForHeadSeriesImageFileModelId != null)
+                                        @if (Model.MovieItem.ImageForHeadSeriesId != null)
                                         {
                                             <h2 class="fs-4 text_shadow">Картинка страницы серий</h2>
 
-                                            <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+                                            <vc:view-image image-id="@Model.MovieItem.ImageForHeadSeriesId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
 
                                             if (Model.MovieItem.ImageForHeadSeries is not null)
                                             {

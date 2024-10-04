@@ -1,7 +1,5 @@
 ﻿// Ignore Spelling: Programmy
 
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace ShevkunenkoSite.Controllers;
 
 //[Route("/All-Video/[action]")]
@@ -28,7 +26,7 @@ public class AllVideoController(
             TopicMovieModel topicMovie = await topicMovieContext.TopicMovies.FirstAsync(mt => mt.TopicMovieModelId == topicId);
 
             moviesListViewModel.Movies = await movieContext.MovieFiles
-                .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true & p.MovieInMainList == true)
+                .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true /*& p.MovieInMainList == true*/)
                 .OrderBy(p => p.MovieDatePublished)
                 .Skip((pageNumber - 1) * DataConfig.NumberOfVideoPerPage)
                 .Take(DataConfig.NumberOfVideoPerPage)
@@ -111,7 +109,7 @@ public class AllVideoController(
         {
             Movies = await movieContext.MovieFiles
                 .AsNoTracking()
-                .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains("Шевкуненко,"))
+                .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains("Сергей Шевкуненко - роли в кино,"))
                 .OrderBy(p => p.MovieDatePublished)
                 .ToArrayAsync(),
 
@@ -179,11 +177,12 @@ public class AllVideoController(
             PageHeadTitle = "<h1 class=\"fs-2 text_shadow\">The&nbsp;100&nbsp;greatest American&nbsp;films&nbsp;by&nbsp;BBC</h1>"
         });
 
-    public async Task<ViewResult> Movie(Guid? movieId, string? videoHosting, Guid? imageID, bool? pageOfSeries = false, string? topic = null)
+    public async Task<ActionResult> Movie(Guid? movieId, string? videoHosting, Guid? imageID, bool? pageOfSeries = false, string? topic = null)
     {
-        if ((movieId == null & topic == null) || (topic != null & !await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(topic + ",")).AnyAsync()))
+        if ((movieId == null & topic == null) || (topic != null & !await movieContext.MovieFiles.Where(p => p.TopicGuidList.Contains(topic + ',')).AnyAsync()))
         {
-            Redirect("~/AllVideo/Index");
+            return RedirectToAction(nameof(Index));
+           //Redirect("~/AllVideo/Index");
         }
 
         if (topic != null)
@@ -218,7 +217,7 @@ public class AllVideoController(
                 return View("Series", new SeriesViewModel
                 {
                     AllSeriesMovies = allSeries,
-                    HeadImageSeries = allSeries[0].ImageForHeadSeriesImageFileModelId,
+                    HeadImageSeries = allSeries[0].ImageForHeadSeriesId,
                     IsImage = true,
                     IconType = "webicon300",
                     IsPartsMoreOne = false,
@@ -367,13 +366,16 @@ public class AllVideoController(
         }
     }
 
-    public async Task<IActionResult> MoviePage()
+    public ViewResult MoviePage()
     {
-        var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
+        //var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
 
-        //Redirect("~/AllVideo/Index");
+        //if (pageInfoModel.PageFullPath == "/shevkunenko/error404")
+        //{
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        return View(pageInfoModel);
+        return View();
     }
 
     #endregion

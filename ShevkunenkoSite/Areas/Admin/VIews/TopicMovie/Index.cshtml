@@ -1,9 +1,6 @@
 ﻿@model TopicMovieViewModel
 
-@{
-}
-
-<!-- Строка поиска -->
+@*  Строка поиска *@
 <div class="row">
 
     @if (!String.IsNullOrEmpty(Model.TopicMovieSearchString))
@@ -15,7 +12,7 @@
 
 </div>
 
-<!-- Количество тем -->
+@* Количество тем *@
 @if (Model.AllTopics.Count() == 0)
 {
     <div class="row">
@@ -43,7 +40,7 @@ else
 
 <hr class="liniya" />
 
-<!-- Добавить тему - Поиск темы -->
+@* Добавить тему - Поиск темы *@
 <div class="row row-cols-2 text-start ps-1 ps-md-5">
 
     <div class="col-2">
@@ -71,7 +68,7 @@ else
 
 <hr class="liniya" />
 
-<!-- Страницы -->
+@* Страницы *@
 @if (Model.PagingInfo.TotalPages > 1)
 {
     <div class="row p-2 m-2">
@@ -180,7 +177,7 @@ else
 
 </div>
 
-<!-- Страницы -->
+@* Страницы *@
 @if (Model.PagingInfo.TotalPages > 1)
 {
     <div class="row p-2 m-2">

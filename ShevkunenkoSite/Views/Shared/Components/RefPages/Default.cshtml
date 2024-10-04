@@ -1,7 +1,9 @@
 ﻿@model RefPagesViewModel
 
+@* Ссылки на связанные страницы по GUID (1) *@
 @if (Model.LinksToPagesByGuid.Count > 0)
 {
+    @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
     @if (Model.LinksToPagesByGuid.Count < 3)
     {
         <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
@@ -15,6 +17,7 @@
 
         </div>
     }
+    @* Стандартный размер картинки ссылки *@
     else
     {
         <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
@@ -29,9 +32,12 @@
         </div>
     }
 }
+<!---->
 
+@* Ссылки на связанные страницы по GUID (2) *@
 @if (Model.LinksToPagesByGuid2.Count > 0)
 {
+    @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
     @if (Model.LinksToPagesByGuid2.Count < 3)
     {
         <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
@@ -45,6 +51,7 @@
 
         </div>
     }
+    @* Стандартный размер картинки ссылки *@
     else
     {
         <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
@@ -59,7 +66,9 @@
         </div>
     }
 }
+<!---->
 
+@* Ссылки на связанные страницы по фильтру *@
 @if (Model.ListsOfFilterOut.Count > 0)
 {
     foreach (var listOfFilterOut in Model.ListsOfFilterOut)
@@ -95,11 +104,13 @@
         }
     }
 }
+<!---->
 
-@if (Model.ListsOfVideoFilterOut.Count > 0)
+@* Ссылки на связанные видео *@
+@if (Model.ListOfVideoLinksViewModel.Count > 0)
 {
-    foreach (var listsOfVideoFilterOut in Model.ListsOfVideoFilterOut)
+    foreach (var videoLinksViewModel in Model.ListOfVideoLinksViewModel)
     {
-        <vc:video-links movies-list="@listsOfVideoFilterOut" />
+        <vc:video-links movies-list="@videoLinksViewModel" />
     }
 }

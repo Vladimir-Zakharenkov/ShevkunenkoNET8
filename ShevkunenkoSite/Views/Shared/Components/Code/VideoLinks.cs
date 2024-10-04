@@ -1,12 +1,13 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class VideoLinks(IMovieFileRepository movieContext) : ViewComponent
+public class VideoLinks(
+    IMovieFileRepository movieContext
+    ) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync(VideoLinksViewModel moviesList)
     {
         if (moviesList.MovieInMainList == true)
         {
-#pragma warning disable CA1862
             MoviesListViewModel movies = new()
             {
                 Movies = await movieContext.MovieFiles
@@ -51,6 +52,5 @@ public class VideoLinks(IMovieFileRepository movieContext) : ViewComponent
 
             return View(movies);
         }
-#pragma warning restore CA1862
     }
 }
