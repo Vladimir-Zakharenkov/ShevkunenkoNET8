@@ -368,13 +368,6 @@ public class AllVideoController(
 
     public ViewResult MoviePage()
     {
-        //var pageInfoModel = await pageContext.GetPageInfoByPathAsync(HttpContext);
-
-        //if (pageInfoModel.PageFullPath == "/shevkunenko/error404")
-        //{
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         return View();
     }
 

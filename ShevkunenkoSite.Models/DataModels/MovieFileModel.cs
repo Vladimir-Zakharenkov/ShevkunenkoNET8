@@ -4,24 +4,34 @@ namespace ShevkunenkoSite.Models.DataModels;
 
 public class MovieFileModel
 {
+    #region Guid фильма
+
+    [Key]
     [Display(Name = "Идентификатор фильма :")]
     [Column("MovieFileId")]
     public Guid MovieFileModelId { get; set; } = Guid.Empty;
 
-    #region Description
+    #endregion
+
+    #region Название фильма в базе данных
 
     [Required(ErrorMessage = "Введите название фильма")]
     [DataType(DataType.Text)]
     [Display(Name = "Название фильма:")]
     public string MovieCaption { get; set; } = string.Empty;
 
-    [Display(Name = "Включать фильм в список видео:")]
-    public bool MovieInMainList { get; set; } = true;
+    #endregion
+
+    #region Заголовок страницы видео
 
     [Required(ErrorMessage = "Введите заголовок страницы")]
     [DataType(DataType.Text)]
     [Display(Name = "Заголовок страницы фильма: ")]
     public string MovieCaptionForOnline { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Содержание фильма
 
     [Required(ErrorMessage = "Введите содержание фильма")]
     [DataType(DataType.MultilineText)]
@@ -33,6 +43,10 @@ public class MovieFileModel
     [Display(Name = "Краткое содержание (HTML):")]
     public string MovieDescriptionHtml { get; set; } = string.Empty;
 
+    #endregion
+
+    #region Примечания
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
@@ -41,7 +55,14 @@ public class MovieFileModel
 
     #endregion
 
-    #region Автозаполнение
+    #region Включать фильм в MainList
+
+    [Display(Name = "Включать фильм в список видео:")]
+    public bool MovieInMainList { get; set; } = true;
+
+    #endregion
+
+    #region Автозаполнение параметров файла фильма
 
     //[Required(ErrorMessage = "Введите продолжительность фильма")]
     [DataType(DataType.Duration)]
@@ -81,27 +102,39 @@ public class MovieFileModel
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска: ")]
+    [Display(Name = "Фильтры поиска: ")]
     public string SearchFilter { get; set; } = string.Empty;
 
     #endregion
 
-    #region Ограничения и поиск
+    #region Формат изображения
 
     [DataType(DataType.Text)]
     [Display(Name = "Формат изображения:")]
     public string MovieScreenFormat { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Жанр фильма
 
     [Required(ErrorMessage = "Введите жанр фильма")]
     [DataType(DataType.Text)]
     [Display(Name = "Жанр фильма: ")]
     public string MovieGenre { get; set; } = string.Empty;
 
+    #endregion
+
+    #region Список тем фильма
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Список тем: ")]
     public string TopicGuidList { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Ограничения по возрасту
 
     [Required(ErrorMessage = "Выберите ограничения по возрасту")]
     [Display(Name = "Нет ограничений по возрасту:")]
@@ -110,21 +143,26 @@ public class MovieFileModel
     [Display(Name = "Фильм для взрослых (18+):")]
     public bool MovieAdult { get; set; } = false;
 
+    #endregion
+
+    #region Полная версия фильма
+
     [Display(Name = "Полная версия фильма:")]
-    public Guid? FullMovieID { get; set; } // идентификатор полной версии фильма
+    public Guid? FullMovieID { get; set; } // Guid идентификатор полной версии фильма
+    public MovieFileModel? FullMovie { get; set; }
 
     #endregion
 
-    #region Dates
+    #region Дата премьеры, создания, загрузки
 
     [Required(ErrorMessage = "Введите дату создания")]
     [DataType(DataType.Date)]
     [Display(Name = "Дата создания фильма:")]
     public DateTime MovieDateCreated { get; set; }
 
-    [Required(ErrorMessage = "Введите дату примьеры")]
+    [Required(ErrorMessage = "Введите дату премьеры")]
     [DataType(DataType.Date)]
-    [Display(Name = "Дата примьеры фильма:")]
+    [Display(Name = "Дата премьеры фильма:")]
     public DateTime MovieDatePublished { get; set; }
 
     [Required(ErrorMessage = "Введите дату загрузки на сервер")]
@@ -134,7 +172,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region MovieLanguage
+    #region Язык фильма и субтитров
 
     [Required(ErrorMessage = "Введите язык звуковой дорожки")]
     [DataType(DataType.Text)]
@@ -161,7 +199,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region FilmCrew
+    #region Кинокомпания и съемочная группа
 
     [Required(ErrorMessage = "Введите название кинокомпании")]
     [DataType(DataType.Text)]
@@ -248,7 +286,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region RefsForMovie
+    #region Ссылки на видеохостинги
 
     [DataType(DataType.Url)]
     [Display(Name = "Адрес файла в интернете: ")]
@@ -276,7 +314,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region InforForMovie
+    #region Ссылки на информацию о фильме
 
     [DataType(DataType.Url)]
     [Display(Name = "Kino-Teatr: ")]
@@ -292,17 +330,17 @@ public class MovieFileModel
 
     #endregion
 
-    #region Многосерийный фильм
+    #region Данные для многосерийного фильм
 
     [Required(ErrorMessage = "Введите количество серий")]
     [Range(1, 100)]
     [Display(Name = "Количество серий:")]
-    public uint MovieTotalParts { get; set; } = 1;
+    public int MovieTotalParts { get; set; } = 1;
 
     [Required(ErrorMessage = "Введите номер серии фильма")]
     [Range(1, 100)]
     [Display(Name = "Номер серии фильма:")]
-    public uint MoviePart { get; set; } = 1;
+    public int MoviePart { get; set; } = 1;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -310,31 +348,37 @@ public class MovieFileModel
     [Display(Name = "Фильтр поиска серий: ")]
     public string SeriesSearchFilter { get; set; } = string.Empty;
 
-    public Guid? PageInfoModelIdForSeries { get; set; } // страница фильма из нескольких серий
+    public Guid? PageForMovieSeriesId { get; set; } // Guid страницы фильма из нескольких серий
+    public PageInfoModel? PageForMovieSeries { get; set; }
 
-    public Guid? ImageForHeadSeriesId { get; set; } // картинка заголовка страницы серий
+    public Guid? ImageForHeadSeriesId { get; set; } // Guid картинки заголовка страницы серий
     public ImageFileModel? ImageForHeadSeries { get; set; }
 
     #endregion
 
-    #region PageForMovie
+    #region Страница фильма
 
-    public Guid? PageInfoModelId { get; set; } // страница фильма
+    public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
 
-    #region PictureForMovie
+    #region Картинка и постер фильма
 
     public Guid? ImageFileModelId { get; set; } // картинка для карточки фильма
     public ImageFileModel? ImageFileModel { get; set; }
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Постер к фильму FileName:")] // постер к фильму FileName
-    public string? MoviePoster { get; set; }
+    public string? MoviePosterString { get; set; }
 
     [Display(Name = "Постер к фильму Guid:")] // постер к фильм Guid
-    public Guid? MoviePosterGuid { get; set; }
+    public Guid? MoviePosterId { get; set; }
+    public ImageFileModel? MoviePoster { get; set; }
+
+    #endregion
+
+    #region Карусель кадров
 
     [Display(Name = "Карусель кадров фильма:")] // карусель кадров фильма
     public bool Carousel { get; set; } = false;
@@ -346,7 +390,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region UnderMovie1
+    #region Ссылки на видео (1)
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -377,7 +421,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region UnderMovie2
+    #region Ссылки на видео (2)
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -408,7 +452,7 @@ public class MovieFileModel
 
     #endregion
 
-    #region UnderMovie3
+    #region Ссылки на видео (3)
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]

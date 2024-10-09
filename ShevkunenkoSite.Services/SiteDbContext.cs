@@ -31,5 +31,10 @@ public class SiteDbContext : DbContext
         modelBuilder.Entity<PageInfoModel>()
             .Property(p => p.PagePathNickNameWithData)
             .HasComputedColumnSql("[PagePathNickName] + [RoutData]");
+
+        modelBuilder.Entity<MovieFileModel>()
+            .HasOne(o => o.PageForMovieSeries)
+            .WithMany()
+            .HasForeignKey(o => o.PageForMovieSeriesId);
     }
 }

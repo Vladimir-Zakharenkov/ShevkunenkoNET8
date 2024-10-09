@@ -25,7 +25,7 @@ public class VideoLinks(
                 IconType = moviesList.IconType
             };
 
-            if (movies.Movies.Where(m => m.MoviePosterGuid == null).Any())
+            if (movies.Movies.Where(m => m.MoviePosterId == null).Any())
             {
                 movies.IsImage = true;
             }

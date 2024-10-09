@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ShevkunenkoSite.Models.ViewModels;
+﻿namespace ShevkunenkoSite.Models.ViewModels;
 
 public class EditMovieViewModel : DetailsMovieViewModel
 {
     [DataType(DataType.Upload)]
-    [Display(Name = "файл фильма:")]
+    [Display(Name = "Файл фильма:")]
     public IFormFile? FileForMovieFormFile { get; set; }
 
     [DataType(DataType.Upload)]
-    [Display(Name = "полный вариант фильма:")]
+    [Display(Name = "Полный вариант фильма:")]
     public IFormFile? FullMovieFormFile { get; set; }
 
     [DataType(DataType.Upload)]
-    [Display(Name = "картинка фильма:")]
+    [Display(Name = "Картинка фильма:")]
     public IFormFile? ImageForMovieFormFile { get; set; }
 
     [DataType(DataType.Upload)]
-    [Display(Name = "постер фильма:")]
+    [Display(Name = "Постер фильма:")]
     public IFormFile? PosterForMovieFormFile { get; set; }
 
     [DataType(DataType.Upload)]
@@ -39,5 +37,20 @@ public class EditMovieViewModel : DetailsMovieViewModel
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Темы видео:")]
-    public List<TopicMovieModel> TopicsForMovie { get; set; } = new List<TopicMovieModel>();
+    public List<TopicMovieModel> TopicsForMovie { get; set; } = [];
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Тип картинки для ссылок (1):")]
+    public string ImageTypeForRef1 { get; set; } = string.Empty;
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Тип картинки для ссылок (2):")]
+    public string ImageTypeForRef2 { get; set; } = string.Empty;
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Тип картинки для ссылок (3):")]
+    public string ImageTypeForRef3 { get; set; } = string.Empty;
 }

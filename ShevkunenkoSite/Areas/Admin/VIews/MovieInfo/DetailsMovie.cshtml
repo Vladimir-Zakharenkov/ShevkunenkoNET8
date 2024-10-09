@@ -1,8 +1,5 @@
 ﻿@model DetailsMovieViewModel
 
-@{
-}
-
 <div class="row">
 
     @* Лента кадров слева *@
@@ -19,9 +16,11 @@
 
         @* Название фильма *@
         <h1 class="fs-5">
-            <span class="text-primary">MovieFileName :</span><br />
-            <span class="fs-3 text_shadow">@Model.MovieItem.MovieCaption</span><br />
-            <span class="fs-6 form-text">
+            <span class="text-primary">MovieFileName :</span>
+            <br />
+            <span class="fs-3 text_shadow">@Model.MovieItem.MovieCaption</span>
+            <br />
+            <span class="fs-6 form-text text-bg-primary px-2">
                 название фильма в базе данных
             </span>
         </h1>
@@ -30,11 +29,13 @@
 
         @* Идентификатор в базе данных *@
         <h2 class="lh-1">
-            <span class="fs-5 text-primary">MovieFileModelId :</span><br />
+            <span class="fs-5 text-primary">MovieFileModelId :</span>
+            <br />
             <span class="fs-5 text_shadow">
                 @Model.MovieItem.MovieFileModelId
-            </span><br />
-            <span class="fs-6 form-text">
+            </span>
+            <br />
+            <span class="fs-6 form-text text-bg-primary px-2">
                 идентификатор в базе данных (GUID)
             </span>
         </h2>
@@ -45,6 +46,7 @@
             @* Изменить, удалить, смотреть *@
             <div class="card-footer p-0 my-2">
 
+                @* Изменить *@
                 <a class="btn btn-outline-success py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
@@ -52,6 +54,7 @@
                    asp-route-movieId="@Model.MovieItem.MovieFileModelId"
                    title="изменить данные">Изменить</a>
 
+                @* Удалить *@
                 <a class="btn btn-outline-danger py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
@@ -59,51 +62,64 @@
                    asp-route-movieId="@Model.MovieItem.MovieFileModelId"
                    title="удалить фильм">Удалить</a>
 
+                @* Список фильмов сайта *@
                 <a class="btn btn-outline-primary py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
                    asp-action="Index" title="список фильмов">Список</a>
 
-                @if (Model.MovieItem.PageInfoModel != null && Model.MovieItem.PageInfoModel?.PageInfoModelId != Guid.Empty)
+                @* Страница фильма *@
+                @if (Model.MovieItem.PageInfoModel != null)
                 {
                     <a class="btn btn-outline-success py-1 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="PageInfo"
                        asp-action="DetailsPage"
                        asp-route-pageId="@Model.MovieItem.PageInfoModelId"
-                       title="данные страницы фильма">Старница</a>
+                       title="данные страницы фильма">Страница</a>
 
                     <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.MovieItem.PageInfoModel?.PageFullPathWithData)"
+                       href="@Url.Content(Model.MovieItem.PageInfoModel.PageFullPathWithData)"
                        title="страница фильма">Смотреть</a>
                 }
-
-                @if (Model.PageForSeries != null && Model.PageForSeries?.PageInfoModelId != Guid.Empty)
+                else
                 {
-                    <a class="btn btn-outline-success py-1 m-2 shadw"
-                       asp-area="Admin"
-                       asp-controller="PageInfo"
-                       asp-action="DetailsPage"
-                       asp-route-pageId="@Model.PageForSeries?.PageInfoModelId"
-                       title="данные страницы серий">Старница серий</a>
-
-                    <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.PageForSeries?.PageFullPathWithData)"
-                       title="серии фильма">Серии</a>
                 }
 
-                @if (Model.FullMovie != null)
+                @* Страница серий *@
+                @if (Model.MovieItem.PageForMovieSeries != null)
                 {
                     <a class="btn btn-outline-success py-1 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="PageInfo"
                        asp-action="DetailsPage"
-                       asp-route-pageId="@Model.FullMovie.PageInfoModelId"
-                       title="страница полной версии">Станица полной версии</a>
+                       asp-route-pageId="@Model.MovieItem.PageForMovieSeriesId"
+                       title="данные страницы серий">Страница серий</a>
 
                     <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.FullMovie.PageInfoModel?.PageFullPathWithData)"
-                       title="полная версия">Полный фильм</a>
+                       href="@Url.Content(Model.MovieItem.PageForMovieSeries.PageFullPathWithData)"
+                       title="серии фильма">Серии</a>
+                }
+                else
+                {
+                }
+
+                @* Полная версия фильма *@
+                @if (Model.MovieItem.FullMovie != null)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.MovieItem.FullMovie.PageInfoModelId"
+                       title="страница полной версии">Станица полной версии</a>
+
+                    @if (Model.MovieItem.FullMovie.PageInfoModel != null)
+                    {
+                        <a class="btn btn-outline-primary py-1 m-2 shadw"
+                           href="@Url.Content(Model.MovieItem.FullMovie.PageInfoModel.PageFullPathWithData)"
+                           title="полная версия">Полный фильм</a>
+                    }
                 }
 
             </div>
@@ -174,13 +190,16 @@
 
                                 <vc:view-image image-id="@Model.MovieItem.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
 
-                                @if (!string.IsNullOrEmpty(Model.MovieItem.ImageFileModel?.WebImageFileName))
+                                @if (Model.MovieItem.ImageFileModel != null)
                                 {
-                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.WebImageFileName</p>
-                                }
-                                else
-                                {
-                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel?.ImagePath/@Model.MovieItem.ImageFileModel?.ImageFileName</p>
+                                    @if (!string.IsNullOrEmpty(Model.MovieItem.ImageFileModel.WebImageFileName))
+                                    {
+                                        <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel.ImagePath/@Model.MovieItem.ImageFileModel.WebImageFileName</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageFileModel.ImagePath/@Model.MovieItem.ImageFileModel.ImageFileName</p>
+                                    }
                                 }
 
                                 <p class="fs-6 form-text">картинка для видео</p>
@@ -211,7 +230,7 @@
 
                             @if (Model.PosterForMovie != null)
                             {
-                                <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.MoviePosterGuid</span></p>
+                                <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.MoviePosterId</span></p>
 
                                 <vc:view-image image-id="@Model.PosterForMovie.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
 
@@ -1523,6 +1542,7 @@
             @* Изменить, удалить, смотреть *@
             <div class="card-footer p-0 my-2">
 
+                @* Изменить *@
                 <a class="btn btn-outline-success py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
@@ -1530,6 +1550,7 @@
                    asp-route-movieId="@Model.MovieItem.MovieFileModelId"
                    title="изменить данные">Изменить</a>
 
+                @* Удалить *@
                 <a class="btn btn-outline-danger py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
@@ -1537,51 +1558,64 @@
                    asp-route-movieId="@Model.MovieItem.MovieFileModelId"
                    title="удалить фильм">Удалить</a>
 
+                @* Список фильмов сайта *@
                 <a class="btn btn-outline-primary py-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="MovieInfo"
                    asp-action="Index" title="список фильмов">Список</a>
 
-                @if (Model.MovieItem.PageInfoModel != null && Model.MovieItem.PageInfoModel?.PageInfoModelId != Guid.Empty)
+                @* Страница фильма *@
+                @if (Model.MovieItem.PageInfoModel != null)
                 {
                     <a class="btn btn-outline-success py-1 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="PageInfo"
                        asp-action="DetailsPage"
                        asp-route-pageId="@Model.MovieItem.PageInfoModelId"
-                       title="данные страницы фильма">Старница</a>
+                       title="данные страницы фильма">Страница</a>
 
                     <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.MovieItem.PageInfoModel?.PageFullPathWithData)"
+                       href="@Url.Content(Model.MovieItem.PageInfoModel.PageFullPathWithData)"
                        title="страница фильма">Смотреть</a>
                 }
-
-                @if (Model.PageForSeries != null && Model.PageForSeries?.PageInfoModelId != Guid.Empty)
+                else
                 {
-                    <a class="btn btn-outline-success py-1 m-2 shadw"
-                       asp-area="Admin"
-                       asp-controller="PageInfo"
-                       asp-action="DetailsPage"
-                       asp-route-pageId="@Model.PageForSeries?.PageInfoModelId"
-                       title="данные страницы серий">Старница серий</a>
-
-                    <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.PageForSeries?.PageFullPathWithData)"
-                       title="серии фильма">Серии</a>
                 }
 
-                @if (Model.FullMovie != null)
+                @* Страница серий *@
+                @if (Model.MovieItem.PageForMovieSeries != null)
                 {
                     <a class="btn btn-outline-success py-1 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="PageInfo"
                        asp-action="DetailsPage"
-                       asp-route-pageId="@Model.FullMovie.PageInfoModelId"
-                       title="страница полной версии">Станица полной версии</a>
+                       asp-route-pageId="@Model.MovieItem.PageForMovieSeriesId"
+                       title="данные страницы серий">Страница серий</a>
 
                     <a class="btn btn-outline-primary py-1 m-2 shadw"
-                       href="@Url.Content(Model.FullMovie.PageInfoModel?.PageFullPathWithData)"
-                       title="полная версия">Полный фильм</a>
+                       href="@Url.Content(Model.MovieItem.PageForMovieSeries.PageFullPathWithData)"
+                       title="серии фильма">Серии</a>
+                }
+                else
+                {
+                }
+
+                @* Полная версия фильма *@
+                @if (Model.MovieItem.FullMovie != null)
+                {
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="PageInfo"
+                       asp-action="DetailsPage"
+                       asp-route-pageId="@Model.MovieItem.FullMovie.PageInfoModelId"
+                       title="страница полной версии">Станица полной версии</a>
+
+                    @if (Model.MovieItem.FullMovie.PageInfoModel != null)
+                    {
+                        <a class="btn btn-outline-primary py-1 m-2 shadw"
+                           href="@Url.Content(Model.MovieItem.FullMovie.PageInfoModel.PageFullPathWithData)"
+                           title="полная версия">Полный фильм</a>
+                    }
                 }
 
             </div>

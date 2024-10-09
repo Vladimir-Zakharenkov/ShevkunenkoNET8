@@ -1,30 +1,23 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class LinksBelow1 : ViewComponent
+public class LinksBelow1(IMovieFileRepository movieContext, IPageInfoRepository pageContext) : ViewComponent
 {
-    private readonly IMovieFileRepository _movieContext;
-    public LinksBelow1(IMovieFileRepository movieContext)
-    {
-        _movieContext = movieContext;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movie)
     {
-        string[] movieFilters = Array.Empty<string>();
+        string[] movieFilters = movie.SearchFilter1.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-        IEnumerable<MovieFileModel> refMovies = Enumerable.Empty<MovieFileModel>();
+        IEnumerable<MovieFileModel> refMovies = [];
 
-        List<MovieFileModel> onList = new();
+        List<MovieFileModel> onList = [];
 
-        if (!string.IsNullOrEmpty(movie.SearchFilter1))
+        if (movie.IsImage1 != null)
         {
-            movieFilters = movie.SearchFilter1.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (!movie.AllMoviesFromDB1)
             {
                 for (int i = 0; i < movieFilters.Length; i++)
                 {
-                    refMovies = await _movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",") & mov.MovieInMainList == true).ToArrayAsync();
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",") & mov.MovieInMainList == true).ToArrayAsync();
 
                     onList.AddRange(refMovies);
                 }
@@ -33,24 +26,54 @@ public class LinksBelow1 : ViewComponent
             {
                 for (int i = 0; i < movieFilters.Length; i++)
                 {
-                    refMovies = await _movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
 
                     onList.AddRange(refMovies);
                 }
             }
+
+            refMovies = onList.Distinct();
+
+            MoviesListViewModel movies = new()
+            {
+                Movies = refMovies,
+                IsImage = movie.IsImage1,
+                IconType = movie.IconType1,
+                IsPartsMoreOne = movie.IsPartsMoreOne1,
+                PageHeadTitle = movie.HeadTitleForVideoLinks1
+            };
+
+            return View(movies);
         }
-
-        refMovies = onList.Distinct();
-
-        MoviesListViewModel movies = new()
+        else
         {
-            Movies = refMovies,
-            IsImage = movie.IsImage1,
-            IconType = movie.IconType1,
-            IsPartsMoreOne = movie.IsPartsMoreOne1,
-            PageHeadTitle = movie.HeadTitleForVideoLinks1
-        };
+            List<PageInfoModel> listOfPageLinks = [];
 
-        return View(movies);
+            List<List<PageInfoModel>> listsOfPageLinks = [];
+
+            if (movieFilters.Length > 0)
+            {
+                for (int i = 0; i < movieFilters.Length; i++)
+                {
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
+
+                    foreach (var item in refMovies)
+                    {
+                        if (item.PageInfoModelId != null)
+                        {
+                            var pageModel = await pageContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == item.PageInfoModelId);
+
+                            listOfPageLinks.Add(pageModel);
+                        }
+                    }
+
+                    listsOfPageLinks.Add(listOfPageLinks);
+
+                    listOfPageLinks = [];
+                }
+            }
+
+            return View("PageLinks", listsOfPageLinks);
+        }
     }
 }

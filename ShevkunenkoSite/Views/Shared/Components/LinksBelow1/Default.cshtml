@@ -4,15 +4,29 @@
 
     <hr class="liniya" />
 
-    <h1 class="mb-4 text_shadow">@Html.Raw(Model.PageHeadTitle)</h1>
+    <h1 class="mb-2 text_shadow">@Html.Raw(Model.PageHeadTitle)</h1>
 
-    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-2 justify-content-center">
+    @if (Model.Movies.Count() < 3)
+    {
+        <div class="row row row-cols-md-2 row-cols-xxl-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
 
-        @foreach (var movieFile in Model.Movies ?? Enumerable.Empty<MovieFileModel>())
-        {
-            <vc:video-card movie-file-model=@movieFile is-parts-more-one=@Model!.IsPartsMoreOne is-image="@Model.IsImage" icon-type="@Model.IconType" />
-        }
+            @foreach (var movieFile in Model.Movies ?? Enumerable.Empty<MovieFileModel>())
+            {
+                <vc:video-card movie-file-model=@movieFile is-parts-more-one=@Model!.IsPartsMoreOne is-image="@Model.IsImage" icon-type="@Model.IconType" />
+            }
 
-    </div>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+
+            @foreach (var movieFile in Model.Movies ?? Enumerable.Empty<MovieFileModel>())
+            {
+                <vc:video-card movie-file-model=@movieFile is-parts-more-one=@Model!.IsPartsMoreOne is-image="@Model.IsImage" icon-type="@Model.IconType" />
+            }
+
+        </div>
+    }
 
 </div>

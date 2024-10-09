@@ -1,16 +1,10 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class MovieOnline : ViewComponent
+public class MovieOnline(IPageInfoRepository pageInfoContext) : ViewComponent
 {
-    private readonly IPageInfoRepository _pageInfoContext;
-    public MovieOnline(IPageInfoRepository pageInfoContext)
-    {
-        _pageInfoContext = pageInfoContext;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync(HttpContext httpContext)
     {
-        PageInfoModel pageInfoModel = await _pageInfoContext.GetPageInfoByPathAsync(httpContext);
+        PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(httpContext);
 
         if (pageInfoModel.OgType != "movie" || pageInfoModel.MovieFile == null)
         {

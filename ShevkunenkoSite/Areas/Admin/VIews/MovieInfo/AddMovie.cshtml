@@ -332,7 +332,7 @@
                             </div>
 
                         </div>
-                       
+
                         <!-- даты формат фильтры фильма -->
                         <div class="accordion-item">
 
@@ -856,7 +856,7 @@
 
                         </div>
 
-                        <!-- блоки ссылок под видео -->
+                        @* блоки ссылок под видео *@
                         <div class="accordion-item">
 
                             <h2 class="accordion-header" id="headingAddLinks">
@@ -869,7 +869,7 @@
 
                             <div id="accordionLinks" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionAddMovie">
 
-                                <!-- фотокарусель -->
+                                @* фотокарусель *@
                                 <div class="accordion-item">
 
                                     <h2 class="accordion-header" id="FotoCarousel">
@@ -908,7 +908,7 @@
 
                                 </div>
 
-                                <!-- блок ссылок под видео 1 -->
+                                @* Блок ссылок под видео 1 *@
                                 <div class="accordion-item">
 
                                     <h2 class="accordion-header" id="headingAddLinks1">
@@ -919,10 +919,11 @@
 
                                     </h2>
 
-                                    <div id="AddLinks1" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+                                    <div id="AddLinks1" class="accordion-collapse collapse" aria-labelledby="headingAddLinks1" data-bs-parent="#accordionLinks">
 
                                         <div class="accordion-body">
 
+                                            @* Заголовок связанных видео 1 *@
                                             <label asp-for="HeadTitleForVideoLinks1" class="col-form-label text-primary fs-5 fw-bold me-2"></label>
                                             <br />
                                             <input id="HeadTitleForVideoLinks1Input" asp-for="HeadTitleForVideoLinks1" class="align-text-bottom col-11" aria-describedby="HeadTitleForVideoLinks1InputHelpBlock" />
@@ -933,32 +934,34 @@
 
                                             <hr class="liniya" />
 
+                                            @* Фильтр поиска связанных видео 1 *@
                                             <label asp-for="SearchFilter1" class="form-label text-primary fs-5 fw-bold"></label>
                                             <textarea id="SearchFilter1Input" rows="3" asp-for="SearchFilter1" class="form-control" aria-describedby="SearchFilter1InputHelpBlock"></textarea>
                                             <div id="SearchFilter1InputHelpBlock" class="form-text">
-                                                <span>фильтры поиска (1) связанных видео</span>
+                                                <span>фильтры поиска связанных видео (1)</span>
                                             </div>
                                             <span asp-validation-for="SearchFilter1" class="text-danger"></span>
 
                                             <hr class="liniya" />
 
-                                            <label asp-for="IsImage1" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage1true" class="form-check-input" asp-for="IsImage1" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage1true">
-                                                    Картинка
-                                                </label>
+                                            @* Тип картинки связанных видео 1 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef1" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef1Input" asp-for="@Model.ImageTypeForRef1" class="form-select" aria-describedby="ImageTypeForRef1InputHelpBlock">
+                                                        <option value="картинка">картинка</option>
+                                                        <option value="постер" selected>постер</option>
+                                                        <option value="страница">страница</option>
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef1InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (1)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef1" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage1false" class="form-check-input" asp-for="IsImage1" type="radio" value="false" checked>
-                                                <label class="form-check-label" for="IsImage1false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage1InputHelpBlock" class="form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="IsImage1" class="text-danger"></span>
 
                                             <hr class="liniya" />
 
@@ -1034,7 +1037,7 @@
 
                                 </div>
 
-                                <!-- блок ссылок под видео 2 -->
+                                @* Блок ссылок под видео 2 *@
                                 <div class="accordion-item">
 
                                     <h2 class="accordion-header" id="headingAddLinks2">
@@ -1068,23 +1071,24 @@
 
                                             <hr class="liniya" />
 
-                                            <label asp-for="IsImage2" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage2true" class="form-check-input" asp-for="IsImage2" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage2true">
-                                                    Картинка
-                                                </label>
+                                            @* Тип картинки связанных видео 2 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef2" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef2Input" asp-for="@Model.ImageTypeForRef2" class="form-select" aria-describedby="ImageTypeForRef2InputHelpBlock">
+                                                        <option value="картинка">картинка</option>
+                                                        <option value="постер" selected>постер</option>
+                                                        <option value="страница">страница</option>
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef2InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (2)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef2" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage2false" class="form-check-input" asp-for="IsImage2" type="radio" value="false" checked>
-                                                <label class="form-check-label" for="IsImage2false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage2InputHelpBlock" class="form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="IsImage1" class="text-danger"></span>
 
                                             <hr class="liniya" />
 
@@ -1160,7 +1164,7 @@
 
                                 </div>
 
-                                <!-- блок ссылок под видео 3 -->
+                                @* Блок ссылок под видео 3 *@
                                 <div class="accordion-item">
 
                                     <h2 class="accordion-header" id="headingAddLinks3">
@@ -1194,23 +1198,24 @@
 
                                             <hr class="liniya" />
 
-                                            <label asp-for="IsImage3" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage3true" class="form-check-input" asp-for="IsImage3" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage3true">
-                                                    Картинка
-                                                </label>
+                                            @* Тип картинки связанных видео 3 *@
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef3" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef3Input" asp-for="@Model.ImageTypeForRef3" class="form-select" aria-describedby="ImageTypeForRef3InputHelpBlock">
+                                                        <option value="картинка">картинка</option>
+                                                        <option value="постер" selected>постер</option>
+                                                        <option value="страница">страница</option>
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef3InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (3)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef3" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage3false" class="form-check-input" asp-for="IsImage3" type="radio" value="false" checked>
-                                                <label class="form-check-label" for="IsImage3false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage3InputHelpBlock" class="form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="IsImage3" class="text-danger"></span>
 
                                             <hr class="liniya" />
 

@@ -43,7 +43,7 @@
                     <input asp-for="MovieItem.MovieFileSize" type="hidden" />
                     <input asp-for="MovieItem.ImageFileModelId" type="hidden" />
                     <input asp-for="MovieItem.ImageForHeadSeriesId" type="hidden" />
-                    <input asp-for="MovieItem.MoviePosterGuid" type="hidden" />
+                    <input asp-for="MovieItem.MoviePosterId" type="hidden" />
 
                     @* название фильма *@
                     @if (Context.Request.Method == "GET")
@@ -398,7 +398,7 @@
 
                                     </div>
 
-                                    <!-- картинка для заголовка страницы серий -->
+                                    @*  картинка для заголовка страницы серий *@
                                     @if (Context.Request.Method == "GET")
                                     {
                                         @if (Model.MovieItem.ImageForHeadSeriesId != null)
@@ -425,7 +425,7 @@
                                         }
                                     }
 
-                                    <!-- выбрать файл картинки для заголовка страницы серий -->
+                                    @* выбрать файл картинки для заголовка страницы серий *@
                                     <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
@@ -455,7 +455,7 @@
 
                                     </div>
 
-                                    <!-- адрес страницы серий фильма -->
+                                    @* адрес страницы серий фильма *@
                                     <div>
 
                                         <label asp-for="PageForSeriesString" class="form-label text-primary fs-5 await"></label>
@@ -1348,23 +1348,44 @@
                                             <hr class="liniya" />
 
                                             @* тип картинки группы 1 *@
-                                            <label asp-for="MovieItem.IsImage1" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage1true" class="form-check-input" asp-for="MovieItem.IsImage1" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage1true">
-                                                    Картинка
-                                                </label>
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef1" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef1Input" asp-for="@Model.ImageTypeForRef1" class="form-select" aria-describedby="ImageTypeForRef1InputHelpBlock">
+                                                        @if (Model.ImageTypeForRef1 == "картинка")
+                                                        {
+                                                            <option value="картинка" selected>картинка</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="картинка">картинка</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef1 == "постер")
+                                                        {
+                                                            <option value="постер" selected>постер</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="постер">постер</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef1 == "страница")
+                                                        {
+                                                            <option value="страница" selected>страница</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="страница">страница</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef1InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (1)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef1" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage1false" class="form-check-input" asp-for="MovieItem.IsImage1" type="radio" value="false">
-                                                <label class="form-check-label" for="IsImage1false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage1InputHelpBlock" class="fs-6 form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="MovieItem.IsImage1" class="text-danger"></span>
 
                                             <hr class="liniya" />
 
@@ -1482,23 +1503,44 @@
                                             <hr class="liniya" />
 
                                             @* тип картинки группы 2 *@
-                                            <label asp-for="@Model.MovieItem.IsImage2" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage2true" class="form-check-input" asp-for="@Model.MovieItem.IsImage2" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage2true">
-                                                    Картинка
-                                                </label>
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef2" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef2Input" asp-for="@Model.ImageTypeForRef2" class="form-select" aria-describedby="ImageTypeForRef2InputHelpBlock">
+                                                        @if (Model.ImageTypeForRef2 == "картинка")
+                                                        {
+                                                            <option value="картинка" selected>картинка</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="картинка">картинка</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef2 == "постер")
+                                                        {
+                                                            <option value="постер" selected>постер</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="постер">постер</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef2 == "страница")
+                                                        {
+                                                            <option value="страница" selected>страница</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="страница">страница</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef2InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (2)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef2" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage2false" class="form-check-input" asp-for="@Model.MovieItem.IsImage2" type="radio" value="false">
-                                                <label class="form-check-label" for="IsImage2false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage2InputHelpBlock" class="fs-6 form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="@Model.MovieItem.IsImage2" class="text-danger"></span>
 
                                             <hr class="liniya" />
 
@@ -1580,7 +1622,7 @@
                                 @* блок ссылок под видео 3 *@
                                 <div class="accordion-item mb-3 shadw">
 
-                                    @* заголовок группы 2 *@
+                                    @* заголовок группы 3 *@
                                     <h2 class="accordion-header" id="headingAddLinks3">
 
                                         <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks3" aria-expanded="true" aria-controls="AddLinks3">
@@ -1616,23 +1658,44 @@
                                             <hr class="liniya" />
 
                                             @* тип картинки группы 3 *@
-                                            <label asp-for="@Model.MovieItem.IsImage3" class="form-label text-primary fs-5 fw-bold"></label>
-                                            <div class="form-check">
-                                                <input id="IsImage3true" class="form-check-input" asp-for="@Model.MovieItem.IsImage3" type="radio" value="true">
-                                                <label class="form-check-label" for="IsImage3true">
-                                                    Картинка
-                                                </label>
+                                            <div class="row g-2 justify-content-center">
+                                                <div class="col-auto">
+                                                    <label asp-for="@Model.ImageTypeForRef3" class="form-label text-primary fs-5 fw-bold"></label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <select id="ImageTypeForRef3Input" asp-for="@Model.ImageTypeForRef3" class="form-select" aria-describedby="ImageTypeForRef3InputHelpBlock">
+                                                        @if (Model.ImageTypeForRef3 == "картинка")
+                                                        {
+                                                            <option value="картинка" selected>картинка</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="картинка">картинка</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef3 == "постер")
+                                                        {
+                                                            <option value="постер" selected>постер</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="постер">постер</option>
+                                                        }
+                                                        @if (Model.ImageTypeForRef3 == "страница")
+                                                        {
+                                                            <option value="страница" selected>страница</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="страница">страница</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div id="ImageTypeForRef3InputHelpBlock" class="col-12 text-center">
+                                                    <span class="text-success">выбрать тип картинки для ссылок (3)</span>
+                                                </div>
+                                                <span asp-validation-for="@Model.ImageTypeForRef3" class="text-danger"></span>
                                             </div>
-                                            <div class="form-check">
-                                                <input id="IsImage3false" class="form-check-input" asp-for="@Model.MovieItem.IsImage3" type="radio" value="false">
-                                                <label class="form-check-label" for="IsImage3false">
-                                                    Постер
-                                                </label>
-                                            </div>
-                                            <div id="IsImage3InputHelpBlock" class="fs-6 form-text">
-                                                <span>выбрать изображение как постер или как картинка</span>
-                                            </div>
-                                            <span asp-validation-for="@Model.MovieItem.IsImage3" class="text-danger"></span>
 
                                             <hr class="liniya" />
 

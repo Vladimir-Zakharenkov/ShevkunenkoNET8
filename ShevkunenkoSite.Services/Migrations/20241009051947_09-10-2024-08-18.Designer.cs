@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShevkunenkoSite.Services;
 
@@ -11,9 +12,11 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class SiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009051947_09-10-2024-08-18")]
+    partial class _091020240818
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -559,11 +562,11 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("MoviePart")
                         .HasColumnType("int");
 
+                    b.Property<string>("MoviePoster")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("MoviePosterId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("MoviePosterString")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MovieScreenFormat")
                         .IsRequired()
@@ -636,8 +639,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasIndex("ImageFileModelId");
 
                     b.HasIndex("ImageForHeadSeriesId");
-
-                    b.HasIndex("MoviePosterId");
 
                     b.HasIndex("PageForMovieSeriesId");
 
@@ -856,10 +857,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithMany()
                         .HasForeignKey("ImageForHeadSeriesId");
 
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "MoviePoster")
-                        .WithMany()
-                        .HasForeignKey("MoviePosterId");
-
                     b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageForMovieSeries")
                         .WithMany()
                         .HasForeignKey("PageForMovieSeriesId");
@@ -873,8 +870,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("ImageFileModel");
 
                     b.Navigation("ImageForHeadSeries");
-
-                    b.Navigation("MoviePoster");
 
                     b.Navigation("PageForMovieSeries");
 

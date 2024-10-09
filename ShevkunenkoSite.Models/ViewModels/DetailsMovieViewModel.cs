@@ -10,7 +10,7 @@ public class DetailsMovieViewModel
 
     public ImageFileModel? PosterForMovie { get; set; }
 
-    public string[] SearchFilters { get; set; } = Array.Empty<string>();
+    public string[] SearchFilters { get; set; } = [];
 
-    public string[] TopicFilters { get; set; } = Array.Empty<string>();
+    public string[] TopicFilters { get; set; } = [];
 }

@@ -16,11 +16,11 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
 
         VideoLinksViewModel videoLinksViewModel = new();
 
-        if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinksByFilters == false & pageInfoModel.VideoLinks == false)
+        if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinks2 == false & pageInfoModel.PageLinksByFilters == false & pageInfoModel.VideoLinks == false)
         {
             return View("Empty");
         }
-        else if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages) & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
+        else if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages) & string.IsNullOrEmpty(pageInfoModel.RefPages2) & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
         {
             return View("Empty");
         }
@@ -80,9 +80,9 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
                     for (int i = 0; i < pageFilterOut.Length; i++)
                     {
 #pragma warning disable CA1862
-                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.ToLower().Contains(pageFilterOut[i])).AnyAsync())
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).AnyAsync())
                         {
-                            listsOfFilterOut.Add(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.ToLower().Contains(pageFilterOut[i])).ToListAsync());
+                            listsOfFilterOut.Add(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).OrderBy(od => od.PageCardText).ToListAsync());
                         }
 #pragma warning restore CA1862
                     }
