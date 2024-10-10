@@ -127,7 +127,7 @@
             @* Разделы информации (accordion) *@
             <div class="accordion" id="accordionDetailsMovie">
 
-                @* файл фильма *@
+                @* Файл фильма *@
                 <div class="accordion-item mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingFilmFile">
@@ -147,7 +147,7 @@
                                     <span class="text_shadow">
                                         @Model.MovieItem.MovieContentUrl
                                     </span><br />
-                                    <span class="fs-6 form-text">
+                                    <span class="fs-6 form-text text-bg-primary px-2">
                                         адрес файла на сайте
                                     </span>
                                 </p>
@@ -159,7 +159,7 @@
                                     <span class="text_shadow">
                                         файл фильма отсутствует
                                     </span><br />
-                                    <span class="fs-6 form-text">
+                                    <span class="fs-6 form-text text-bg-primary px-2">
                                         адрес файла на сайте
                                     </span>
                                 </p>
@@ -171,7 +171,7 @@
 
                 </div>
 
-                @* картинка фильма *@
+                @* Картинка фильма *@
                 <div class="accordion-item  mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingFilmImage">
@@ -202,7 +202,9 @@
                                     }
                                 }
 
-                                <p class="fs-6 form-text">картинка для видео</p>
+                                <p>
+                                    <span class="fs-6 form-text text-bg-primary px-2">картинка для видео</span>
+                                </p>
                             }
                             else
                             {
@@ -215,7 +217,7 @@
 
                 </div>
 
-                @* постер фильма *@
+                @* Постер фильма *@
                 <div class="accordion-item  mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingFilmPoster">
@@ -228,22 +230,24 @@
 
                         <div class="accordion-body accordion-body-nointend  text-center">
 
-                            @if (Model.PosterForMovie != null)
+                            @if (Model.MovieItem.MoviePoster != null)
                             {
                                 <p class="fs-5"><span class="text-primary">ImageFileModelId :</span><br /><span class="text_shadow">@Model.MovieItem.MoviePosterId</span></p>
 
-                                <vc:view-image image-id="@Model.PosterForMovie.ImageFileModelId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
+                                <vc:view-image image-id="@Model.MovieItem.MoviePosterId" css-class="card-img-top m-2 width50percent shadw" icon-type="webimage" />
 
-                                @if (!string.IsNullOrEmpty(Model.PosterForMovie.WebImageFileName))
+                                @if (!string.IsNullOrEmpty(Model.MovieItem.MoviePoster.WebImageFileName))
                                 {
-                                    <p class="fs-5 mb-0 text_shadow">@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.WebImageFileName</p>
+                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.MoviePoster.ImagePath/@Model.MovieItem.MoviePoster.WebImageFileName</p>
                                 }
                                 else
                                 {
-                                    <p class="fs-5 mb-0 text_shadow">@Model.PosterForMovie.ImagePath/@Model.PosterForMovie.ImageFileName</p>
+                                    <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.MoviePoster.ImagePath/@Model.MovieItem.MoviePoster.ImageFileName</p>
                                 }
 
-                                <p class="fs-6 form-text">постер для видео</p>
+                                <p>
+                                    <span class="fs-6 form-text text-bg-primary px-2">постер для видео</span>
+                                </p>
                             }
                             else
                             {
@@ -275,6 +279,8 @@
 
                                 <p class="fs-5 mb-0"><span class="text-primary">Серия:</span> <span class="text_shadow">@Model.MovieItem.MoviePart</span></p>
 
+                                <hr class="liniya" />
+
                                 @if (!string.IsNullOrEmpty(Model.MovieItem.SeriesSearchFilter))
                                 {
                                     <p class="fs-5 mb-0"><span class="text-primary">Текст поиска серий:</span> <span class="text_shadow">@Model.MovieItem.SeriesSearchFilter</span></p>
@@ -301,7 +307,9 @@
                                         <p class="fs-5 mb-0 text_shadow">@Model.MovieItem.ImageForHeadSeries.ImagePath/@Model.MovieItem.ImageForHeadSeries.ImageFileName</p>
                                     }
 
-                                    <p class="fs-6 form-text">картинка для заголовка страницы серий</p>
+                                    <p>
+                                        <span class="fs-6 form-text text-bg-primary px-2">картинка для заголовка страницы серий</span>
+                                    </p>
                                 }
                                 else if (Model.MovieItem.MoviePart > 1)
                                 {
@@ -312,11 +320,27 @@
                                     <h2 class="fs-5 text_shadow">Картинка заголовка страницы серий отсутствует</h2>
                                 }
 
+                                @if (Model.MovieItem.PageForMovieSeries != null)
+                                {
+                                    <hr class="liniya" />
+
+                                    <p class="fs-5"><span class="text-primary">Адрес страницы серий :</span></p>
+
+                                    <p class="fs-5 mb-0 text_shadow">
+                                        <a class="link-dark" href="@Url.Content(Model.MovieItem.PageForMovieSeries.PageFullPathWithData)" title="серии фильма">
+                                            @Model.MovieItem.PageForMovieSeries.PageFullPathWithData
+                                        </a>
+                                    </p>
+                                }
+
                             </div>
 
                         </div>
 
                     </div>
+                }
+                else
+                {
                 }
 
                 @* Заголовок страницы, описание, лента кадров *@
@@ -347,12 +371,12 @@
                                         <span class="fs-6">
                                             (@Model.MovieItem.MovieCaptionForOnline)
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             заголовок страницы фильма (HTML)
                                         </span>
                                     </li>
 
-                                    @* Содержание *@
+                                    @* Краткое содержание *@
                                     <li class="list-group-item">
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieDescriptionHtml&nbsp;:
@@ -362,12 +386,12 @@
                                             @Html.Raw(Model.MovieItem.MovieDescriptionHtml)
                                         </div>
 
-                                        <div class="border border-1 border-secondary p-2 paragraph">
+                                        <div class="border border-1 border-secondary p-2 mb-2 paragraph">
                                             <p class="text-center text-primary fw-bold fs-5">(HTML код)</p>
                                             @Model.MovieItem.MovieDescriptionHtml
                                         </div>
 
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             краткое содержание
                                         </span>
                                     </li>
@@ -382,7 +406,7 @@
                                             <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.FramesAroundMovie
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 название фильма для ленты кадров
                                             </span>
                                         </li>
@@ -396,7 +420,7 @@
                                             <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieCaption
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 лента кадров по названию фильма
                                             </span>
                                         </li>
@@ -412,7 +436,7 @@
                                             <span class="fs-6">
                                                 @Model.MovieItem.MovieNote
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 примечания к фильму
                                             </span>
                                         </li>
@@ -423,7 +447,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieNote&nbsp;:
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 примечания к фильму не заданы
                                             </span>
                                         </li>
@@ -439,7 +463,7 @@
 
                 </div>
 
-                @* формат кадра *@
+                @* Формат кадра *@
                 <div class="accordion-item  mb-3 shadw">
 
                     <h2 class="accordion-header" id="headingScreenFormat">
@@ -462,7 +486,7 @@
                                     <span class="fs-5 text_shadow">
                                         @Model.MovieItem.MovieScreenFormat
                                     </span><br />
-                                    <span class="fs-6 form-text">
+                                    <span class="fs-6 form-text text-bg-primary px-2">
                                         формат изображения
                                     </span>
                                 </li>
@@ -475,7 +499,7 @@
 
                 </div>
 
-                @* размер кадра *@
+                @* Размер кадра *@
                 @if (Model.MovieItem.MovieWidth != 0 && Model.MovieItem.MovieHeight != 0)
                 {
                     <div class="accordion-item  mb-3 shadw">
@@ -500,7 +524,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieWidth px x @Model.MovieItem.MovieHeight px
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             размер кадра фильма
                                         </span>
                                     </li>
@@ -512,6 +536,9 @@
                         </div>
 
                     </div>
+                }
+                else
+                {
                 }
 
                 @* Размер файла фильма *@
@@ -539,7 +566,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieFileSize.ToString("#,#") байт
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             размер файла фильма
                                         </span>
                                     </li>
@@ -551,6 +578,9 @@
                         </div>
 
                     </div>
+                }
+                else
+                {
                 }
 
                 @* Продолжительность фильма *@
@@ -566,11 +596,11 @@
 
                         <div id="Duration" class="accordion-collapse collapse" aria-labelledby="headingDuration" data-bs-parent="#accordionDetailsMovie">
 
-                            <div class="accordion-body accordion-body-nointend  text-center">
+                            <div class="accordion-body accordion-body-nointend text-center">
 
                                 <ul class="list-group list-group-flush text-center">
 
-                                    @* Размер файла фильма *@
+                                    @* Продолжительность фильма *@
                                     <li class="list-group-item">
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieDuration&nbsp;:
@@ -578,7 +608,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieDuration.ToString(@"hh\:mm\:ss")
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             продолжительность фильма
                                         </span>
                                     </li>
@@ -590,6 +620,9 @@
                         </div>
 
                     </div>
+                }
+                else
+                {
                 }
 
                 @* Даты *@
@@ -617,7 +650,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieDateCreated.ToString("dd-MM-yyyy")
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             дата создания фильма
                                         </span>
                                     </li>
@@ -630,7 +663,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieDatePublished.ToString("dd-MM-yyyy")
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             дата примьеры фильма
                                         </span>
                                     </li>
@@ -643,7 +676,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieUploadDate.ToString("dd-MM-yyyy")
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             дата публикации на сайте
                                         </span>
                                     </li>
@@ -683,7 +716,7 @@
                                         <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieGenre
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             жанр фильма
                                         </span>
                                     </li>
@@ -695,20 +728,20 @@
                                         </span><br />
                                         @if (Model.SearchFilters.Length > 0)
                                         {
-                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start">
+                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start mb-2">
                                                 @foreach (var filter in Model.SearchFilters)
                                                 {
                                                     <p>@filter</p>
                                                 }
                                             </div>
 
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 фильтры поиска
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 фильтры поиска не заданы
                                             </span>
                                         }
@@ -721,20 +754,20 @@
                                         </span><br />
                                         @if (Model.TopicFilters.Length > 0)
                                         {
-                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start">
+                                            <div class="border border-1 border-secondary p-2 text_shadow fs-6 text-start mb-2">
                                                 @foreach (var filter in Model.TopicFilters)
                                                 {
                                                     <p>@filter</p>
                                                 }
                                             </div>
 
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 список тем (Guid - Тема)
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 темы не заданы
                                             </span>
                                         }
@@ -782,7 +815,7 @@
                                             <span class="fs-5 text_shadow">Нет</span>
                                         }
                                         <br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             нет ограничений по возрасту
                                         </span>
                                     </li>
@@ -802,7 +835,7 @@
                                             <span class="fs-5 text_shadow">Нет</span>
                                         }
                                         <br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             фильм для взрослых (18+)
                                         </span>
                                     </li>
@@ -821,7 +854,7 @@
                                             <span class="fs-5 text_shadow">Нет</span>
                                         }
                                         <br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             в основном списке фильмов сайта
                                         </span>
                                     </li>
@@ -857,10 +890,10 @@
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieInLanguage1&nbsp;:
                                         </span><br />
-                                        <span class="fs-5">
+                                        <span class="fs-4 text_shadow">
                                             @Model.MovieItem.MovieInLanguage1
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             звуковая дорожка 1
                                         </span>
                                     </li>
@@ -871,10 +904,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieInLanguage2&nbsp;:
                                             </span><br />
-                                            <span class="fs-6">
+                                            <span class="fs-4 text_shadow">
                                                 @Model.MovieItem.MovieInLanguage2
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 звуковая дорожка (1)
                                             </span>
                                         </li>
@@ -886,10 +919,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieSubtitles1&nbsp;:
                                             </span><br />
-                                            <span class="fs-6">
+                                            <span class="fs-4 text_shadow">
                                                 @Model.MovieItem.MovieSubtitles1
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 язык субтитров (1)
                                             </span>
                                         </li>
@@ -901,10 +934,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieSubtitles2&nbsp;:
                                             </span><br />
-                                            <span class="fs-6">
+                                            <span class="fs-4 text_shadow">
                                                 @Model.MovieItem.MovieSubtitles2
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 язык субтитров (2)
                                             </span>
                                         </li>
@@ -941,10 +974,10 @@
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieРroductionCompany&nbsp;:
                                         </span><br />
-                                        <span class="fs-5">
+                                        <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieРroductionCompany
                                         </span><br />
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             кинокомпания
                                         </span>
                                     </li>
@@ -955,10 +988,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieDirector1&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieDirector1
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 режиссер
                                             </span>
                                         </li>
@@ -970,10 +1003,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieDirector2&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieDirector2
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 режиссер
                                             </span>
                                         </li>
@@ -985,10 +1018,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieMusicBy&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieMusicBy
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 композитор
                                             </span>
                                         </li>
@@ -1000,10 +1033,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor01&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor01
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1015,10 +1048,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor02&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor02
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1030,10 +1063,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor03&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor03
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1045,10 +1078,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor04&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor04
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1060,10 +1093,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor05&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor05
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1075,10 +1108,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor06&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor06
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1090,10 +1123,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor07&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor07
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1105,10 +1138,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor08&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor08
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1120,10 +1153,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor09&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor09
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1135,10 +1168,10 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieActor10&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieActor10
                                             </span><br />
-                                            <span class="fs-6 form-text">
+                                            <span class="fs-6 form-text text-bg-primary px-2">
                                                 актёр (актриса)
                                             </span>
                                         </li>
@@ -1173,7 +1206,7 @@
 
                                 <ul class="list-group list-group-flush text-center">
 
-                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieContentUrl?.ToString()))
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.MovieContentUrl!.ToString()))
                                     {
                                         <li class="list-group-item">
                                             <span class="fw-bold fs-5 text-danger">
@@ -1190,7 +1223,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieContentUrl&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieContentUrl
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieContentUrl" onclick="this.target='_blank'" title="sergeyshef.ru" itemprop="relatedLink">
@@ -1218,7 +1251,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieYouTube&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieYouTube
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieYouTube" onclick="this.target='_blank'" title="youtube.com" itemprop="relatedLink">
@@ -1246,7 +1279,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieVkVideo&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieVkVideo
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieVkVideo" onclick="this.target='_blank'" title="vk.com" itemprop="relatedLink">
@@ -1274,7 +1307,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieMailRuVideo&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieMailRuVideo
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieMailRuVideo" onclick="this.target='_blank'" title="mail.ru" itemprop="relatedLink">
@@ -1302,7 +1335,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieOkVideo&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieOkVideo
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieOkVideo" onclick="this.target='_blank'" title="ok.ru" itemprop="relatedLink">
@@ -1330,7 +1363,7 @@
                                             <span class="fw-bold fs-5 text-primary">
                                                 MovieYandexDiskVideo&nbsp;:
                                             </span><br />
-                                            <span class="fs-5">
+                                            <span class="fs-5 text_shadow">
                                                 @Model.MovieItem.MovieYandexDiskVideo
                                             </span><br />
                                             <a href="@Model.MovieItem.MovieYandexDiskVideo" onclick="this.target='_blank'" title="disk.yandex.ru" itemprop="relatedLink">
@@ -1374,7 +1407,7 @@
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieKinoTeatrRu&nbsp;:
                                         </span><br />
-                                        <span class="fs-5">
+                                        <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieKinoTeatrRu
                                         </span><br />
                                         <a href="@Model.MovieItem.MovieKinoTeatrRu" onclick="this.target='_blank'" title="kino-teatr.ru" itemprop="relatedLink">
@@ -1388,7 +1421,7 @@
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieKinoPoisk&nbsp;:
                                         </span><br />
-                                        <span class="fs-5">
+                                        <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieKinoPoisk
                                         </span><br />
                                         <a href="@Model.MovieItem.MovieKinoPoisk" onclick="this.target='_blank'" title="kinopoisk.ru" itemprop="relatedLink">
@@ -1402,7 +1435,7 @@
                                         <span class="fw-bold fs-5 text-primary">
                                             MovieImbd&nbsp;:
                                         </span><br />
-                                        <span class="fs-5">
+                                        <span class="fs-5 text_shadow">
                                             @Model.MovieItem.MovieImbd
                                         </span><br />
                                         <a href="@Model.MovieItem.MovieImbd" onclick="this.target='_blank'" title="imbd.com" itemprop="relatedLink">
@@ -1444,15 +1477,22 @@
                                     @if (Model.MovieItem.Carousel)
                                     {
                                         <li class="list-group-item">
-                                            <span class="fw-bold fs-5 text-primary">
+
+                                            <span class="fs-4 text_shadow">
                                                 Фотокарусель запущена
                                             </span>
+
+                                            <vc:multiple-carousel movie-carousel="@Model.MovieItem" />
+
+                                            <br />
+                                            <hr class="liniya" />
+
                                         </li>
                                     }
                                     else
                                     {
                                         <li class="list-group-item">
-                                            <span class="fw-bold fs-5 text-primary">
+                                            <span class="fs-4 text_shadow">
                                                 Фотокарусель остановлена
                                             </span>
                                         </li>
@@ -1476,7 +1516,7 @@
                                             @Model.MovieItem.SearchFilter1
                                         </div>
 
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             фильтры поиска связанных фильмов (1)
                                         </span>
                                     </li>
@@ -1499,7 +1539,7 @@
                                             @Model.MovieItem.SearchFilter2
                                         </div>
 
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             фильтры поиска связанных фильмов (2)
                                         </span>
                                     </li>
@@ -1522,7 +1562,7 @@
                                             @Model.MovieItem.SearchFilter3
                                         </div>
 
-                                        <span class="fs-6 form-text">
+                                        <span class="fs-6 form-text text-bg-primary px-2">
                                             фильтры поиска связанных фильмов (3)
                                         </span>
                                     </li>

@@ -182,7 +182,6 @@ public class AllVideoController(
         if ((movieId == null & topic == null) || (topic != null & !await movieContext.MovieFiles.Where(p => p.TopicGuidList.Contains(topic + ',')).AnyAsync()))
         {
             return RedirectToAction(nameof(Index));
-           //Redirect("~/AllVideo/Index");
         }
 
         if (topic != null)

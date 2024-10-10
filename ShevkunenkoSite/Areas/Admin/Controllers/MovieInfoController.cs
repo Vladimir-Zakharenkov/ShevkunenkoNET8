@@ -14,7 +14,7 @@ public class MovieInfoController(
 
     MovieFileModel? fullMovie = new();
 
-    ImageFileModel? posterForMovie = new();
+    //ImageFileModel? posterForMovie = new();
 
     #region Список фильмов на сайте
 
@@ -84,9 +84,10 @@ public class MovieInfoController(
             MovieFileModel movieItem = await movieInfoContext.MovieFiles
                 .Include(img => img.ImageFileModel)
                 .Include(img => img.ImageForHeadSeries)
+                .Include(img => img.MoviePoster)
                 .Include(page => page.PageInfoModel)
                 .Include(page => page.PageForMovieSeries)
-                 .Include(mov => mov.FullMovie).ThenInclude(page => page!.PageInfoModel)
+                .Include(mov => mov.FullMovie).ThenInclude(page => page!.PageInfoModel)
                 .AsNoTracking()
                 .FirstAsync(p => p.MovieFileModelId == movieId);
 
@@ -116,18 +117,18 @@ public class MovieInfoController(
 
             #region Постер для фильма
 
-            if (movieItem.MoviePosterId != null && await imageContext.ImageFiles.Where(img => img.ImageFileModelId == movieItem.MoviePosterId).AnyAsync())
-            {
-                posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == movieItem.MoviePosterId);
-            }
-            else if (!string.IsNullOrEmpty(movieItem.MoviePosterString) && await imageContext.ImageFiles.Where(img => img.WebImageFileName == movieItem.MoviePosterString || img.ImageFileName == movieItem.MoviePosterString).AnyAsync())
-            {
-                posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.WebImageFileName == movieItem.MoviePosterString || img.ImageFileName == movieItem.MoviePosterString);
-            }
-            else
-            {
-                posterForMovie = null;
-            }
+            //if (movieItem.MoviePosterId != null && await imageContext.ImageFiles.Where(img => img.ImageFileModelId == movieItem.MoviePosterId).AnyAsync())
+            //{
+            //    posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == movieItem.MoviePosterId);
+            //}
+            //else if (!string.IsNullOrEmpty(movieItem.MoviePosterString) && await imageContext.ImageFiles.Where(img => img.WebImageFileName == movieItem.MoviePosterString || img.ImageFileName == movieItem.MoviePosterString).AnyAsync())
+            //{
+            //    posterForMovie = await imageContext.ImageFiles.FirstAsync(img => img.WebImageFileName == movieItem.MoviePosterString || img.ImageFileName == movieItem.MoviePosterString);
+            //}
+            //else
+            //{
+            //    posterForMovie = null;
+            //}
 
             #endregion
 
@@ -161,7 +162,7 @@ public class MovieInfoController(
                 MovieItem = movieItem,
                 //PageForSeries = pageForSeries,
                 //FullMovie = fullMovie,
-                PosterForMovie = posterForMovie,
+                //PosterForMovie = posterForMovie,
                 SearchFilters = searchFilters ?? [],
                 TopicFilters = topicFilters ?? []
             });

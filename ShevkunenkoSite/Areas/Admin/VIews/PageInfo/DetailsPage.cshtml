@@ -795,14 +795,21 @@
                                                     <td scope="col" class="text-primary">@videoRef</td>
                                                     <td scope="col" class="text_shadow">@item.MovieFileModelId</td>
                                                     <td scope="col" class="text_shadow">@item.MovieCaption</td>
-                                                    <td scope="col" class="text-center">
-                                                        <a asp-area="Admin"
-                                                           asp-controller="MovieInfo"
-                                                           asp-action="DetailsMovie"
-                                                           asp-route-movieid="@item.MovieFileModelId"
-                                                           class="btn btn-outline-primary p-1 shadw"
-                                                           title="информация о фильме">Info</a>
-                                                    </td>
+                                                    @if (item.PageInfoModelId != null)
+                                                    {
+                                                        <td scope="col" class="text-center">
+                                                            <a asp-area="Admin"
+                                                               asp-controller="MovieInfo"
+                                                               asp-action="DetailsMovie"
+                                                               asp-route-movieid="@item.MovieFileModelId"
+                                                               class="btn btn-outline-primary p-1 shadw"
+                                                               title="информация о фильме">Info</a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td scope="col" class="text-center"></td>
+                                                    }
 
                                                 </tr>
                                             }

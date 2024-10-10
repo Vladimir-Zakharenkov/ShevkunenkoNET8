@@ -1,43 +1,37 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class MultipleCarousel : ViewComponent
+public class MultipleCarousel(
+    IImageFileRepository imageContext, 
+    IPageInfoRepository pageInfoContext, 
+    IMovieFileRepository movieContext
+    ) : ViewComponent
 {
-    private readonly IImageFileRepository _imageContext;
-    private readonly IPageInfoRepository _pageInfoContext;
-    private readonly IMovieFileRepository _movieContext;
-    public MultipleCarousel(IImageFileRepository imageContext, IPageInfoRepository pageInfoContext, IMovieFileRepository movieContext)
-    {
-        _imageContext = imageContext;
-        _pageInfoContext = pageInfoContext;
-        _movieContext = movieContext;
-    }
-
-    public ImageFileModel[] firstGroup = Array.Empty<ImageFileModel>();
-    public ImageFileModel[] secondGroup = Array.Empty<ImageFileModel>();
-    public ImageFileModel[] thirdGroup = Array.Empty<ImageFileModel>();
+    public ImageFileModel[] firstGroup = [];
+    public ImageFileModel[] secondGroup = [];
+    public ImageFileModel[] thirdGroup = [];
 
     public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movieCarousel)
     {
-        PageInfoModel pageInfoModel = await _pageInfoContext.GetPageInfoByPathAsync(HttpContext);
+        PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        ImageFileModel[] pictures = Array.Empty<ImageFileModel>();
+        ImageFileModel[] pictures = [];
 
         MovieFileModel? fullMovie = null;
 
-        if (await _movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieCarousel.FullMovieID).AnyAsync())
+        if (await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieCarousel.FullMovieID).AnyAsync())
         {
-            fullMovie = await _movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieCarousel.FullMovieID);
+            fullMovie = await movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieCarousel.FullMovieID);
         }
 
         if (movieCarousel.MovieCaption.Contains("Интервью"))
         {
-            pictures = await _imageContext.ImageFiles
+            pictures = await imageContext.ImageFiles
                 .Where(p => p.SearchFilter.Contains("Криминальная звезда," ?? string.Empty))
                 .ToArrayAsync();
         }
         else
         {
-            pictures = await _imageContext.ImageFiles
+            pictures = await imageContext.ImageFiles
             .Where(p => p.SearchFilter.Contains($"{movieCarousel.MovieCaption}," ?? string.Empty))
             .ToArrayAsync();
         }
