@@ -1,5 +1,9 @@
 ﻿@model DetailsMovieViewModel
 
+@{
+    int videoRef = 0;
+}
+
 <div class="row">
 
     @* Лента кадров слева *@
@@ -41,7 +45,7 @@
         </h2>
 
         @* Информация по разделам *@
-        <div class="card p-2">
+        <div class="card w-100 mx-auto p-2">
 
             @* Изменить, удалить, смотреть *@
             <div class="card-footer p-0 my-2">
@@ -1458,116 +1462,476 @@
                 @* Группы ссылок под видео *@
                 <div class="accordion-item shadw">
 
-                    <h2 class="accordion-header" id="headingAddLinks">
-
-                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks" aria-expanded="true" aria-controls="AddLinks">
-                            <span class="form-label text-success fs-5">Группы ссылок под видео :</span>
+                    @* Заголовок групп ссылок под видео*@
+                    <h2 class="accordion-header mb-2" id="headingAddLinks">
+                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
+                            <span class="form-label text-success fs-5">Группа ссылок под видео :</span>
                         </button>
-
                     </h2>
 
-                    <div id="AddLinks" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionDetailsMovie">
+                    <div id="accordionLinks" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionDetailsMovie">
 
-                        <div class="accordion-body">
+                        @* Фотокарусель *@
+                        <div class="accordion-item mb-3 shadw">
 
-                            <div class="card-body mx-0 p-0">
+                            @* Заголовок группы  Фотокарусель*@
+                            <h2 class="accordion-header" id="FotoCarousel">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Carousel" aria-expanded="true" aria-controls="Carousel">
+                                    <span class="form-label text-success fs-5">Фотокарусель :</span>
+                                </button>
+                            </h2>
 
-                                <ul class="list-group list-group-flush text-center">
+                            @* Фотокарусель *@
+                            <div id="Carousel" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                <div class="accordion-body">
 
                                     @if (Model.MovieItem.Carousel)
                                     {
-                                        <li class="list-group-item">
+                                        <p class="fs-4 text_shadow text-center">
+                                            Фотокарусель запущена
+                                        </p>
 
-                                            <span class="fs-4 text_shadow">
-                                                Фотокарусель запущена
-                                            </span>
+                                        <vc:multiple-carousel movie-carousel="@Model.MovieItem" />
 
-                                            <vc:multiple-carousel movie-carousel="@Model.MovieItem" />
-
-                                            <br />
-                                            <hr class="liniya" />
-
-                                        </li>
+                                        <br />
+                                        <hr class="liniya" />
                                     }
                                     else
                                     {
-                                        <li class="list-group-item">
-                                            <span class="fs-4 text_shadow">
-                                                Фотокарусель остановлена
-                                            </span>
-                                        </li>
+                                        <p class="fs-4 text_shadow text-center">
+                                            Фотокарусель остановлена
+                                        </p>
                                     }
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            Заголовок (1)&nbsp;:
-                                        </span><br />
-                                        <span class="fs-5 text-danger">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* Блок ссылок под видео 1 *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* Заголовок группы *@
+                            <h2 class="accordion-header" id="headingAddLinks1">
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks1" aria-expanded="true" aria-controls="AddLinks1">
+                                    <span class="form-label text-success fs-5">Ссылки 1 :</span>
+                                </button>
+                            </h2>
+
+                            @* Группа ссылок 1 *@
+                            <div id="AddLinks1" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* Заголовок группы ссылок 1*@
+                                    <p class="fs-5 text-center text-primary">
+                                        Заголовок группы ссылок (1) :
+                                    </p>
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks1))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="px-5 text-center text_shadow fluid-font-size">
                                             @Model.MovieItem.HeadTitleForVideoLinks1
-                                        </span><br />
-                                    </li>
+                                        </p>
+                                    }
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            SearchFilter1&nbsp;:
-                                        </span><br />
+                                    <hr class="liniya" />
 
-                                        <div class="border border-1 border-secondary p-2 paragraph">
-                                            @Model.MovieItem.SearchFilter1
-                                        </div>
+                                    @* Фильтр поиска группы ссылок 1 *@
+                                    <p class="fs-5 text-center text-primary mb-2">
+                                        Фильтр поиска группы ссылок (1) :
+                                    </p>
 
-                                        <span class="fs-6 form-text text-bg-primary px-2">
-                                            фильтры поиска связанных фильмов (1)
-                                        </span>
-                                    </li>
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.SearchFilter1))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-center text_shadow fluid-font-size">
+                                            <span class="px-2 py-1 border border-1 border-secondary">@Model.MovieItem.SearchFilter1</span>
+                                        </p>
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            Заголовок (2)&nbsp;:
-                                        </span><br />
-                                        <span class="fs-5 text-danger">
+                                        @if (Model.ListsMoviesFileModel1.Count > 0)
+                                        {
+                                            foreach (var listOfMovies in Model.ListsMoviesFileModel1)
+                                            {
+                                                <div class="table-responsive mt-3">
+
+                                                    <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                                        <thead>
+
+                                                            <tr class="text-start text-primary">
+
+                                                                <th scope="col" class="text-primary">№</th>
+                                                                <th scope="col" class="text-primary">GUID</th>
+                                                                <th scope="col" class="text-primary">Название</th>
+                                                                <th scope="col"></th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody>
+
+                                                            @foreach (var item in listOfMovies)
+                                                            {
+                                                                if (videoRef == 0)
+                                                                {
+                                                                    videoRef = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    videoRef++;
+                                                                }
+
+                                                                <tr class="text-start fs-5">
+
+                                                                    <td scope="col" class="text-primary">@videoRef</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieFileModelId</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieCaption</td>
+                                                                    @if (item.PageInfoModelId != null)
+                                                                    {
+                                                                        <td scope="col" class="text-center">
+                                                                            <a asp-area="Admin"
+                                                                               asp-controller="MovieInfo"
+                                                                               asp-action="DetailsMovie"
+                                                                               asp-route-movieid="@item.MovieFileModelId"
+                                                                               class="btn btn-outline-primary p-1 shadw"
+                                                                               title="информация о фильме">Info</a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td scope="col" class="text-center"></td>
+                                                                    }
+
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+                                            }
+
+                                            foreach (var linksToVideos1 in Model.LinksToVideosByFilter1)
+                                            {
+                                                <vc:video-links movies-list="@linksToVideos1" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-6 form-text">
+                                                по данным фильтрам нет ссылок
+                                            </p>
+                                        }
+
+                                    }
+
+                                    <p class="text-center mt-2">
+                                        <span class="fs-6 form-text text-bg-primary px-2">группа ссылок под видео (1)</span>
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* Блок ссылок под видео 2 *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* Заголовок группы ссылок 2 *@
+                            <h2 class="accordion-header" id="headingAddLinks2">
+
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks2" aria-expanded="true" aria-controls="AddLinks2">
+                                    <span class="form-label text-success fs-5">Ссылки 2 :</span>
+                                </button>
+
+                            </h2>
+
+                            @* Группа ссылок 2 *@
+                            <div id="AddLinks2" class="accordion-collapse collapse" aria-labelledby="headingAddLinks" data-bs-parent="#accordionLinks">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* Заголовок группы ссылок 2*@
+                                    <p class="fs-5 text-center text-primary">
+                                        Заголовок группы ссылок (2) :
+                                    </p>
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks2))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="px-5 text-center text_shadow fluid-font-size">
                                             @Model.MovieItem.HeadTitleForVideoLinks2
-                                        </span><br />
-                                    </li>
+                                        </p>
+                                    }
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            SearchFilter2&nbsp;:
-                                        </span><br />
+                                    <hr class="liniya" />
 
-                                        <div class="border border-1 border-secondary p-2 paragraph">
-                                            @Model.MovieItem.SearchFilter2
-                                        </div>
+                                    @* Фильтр поиска группы ссылок 2 *@
+                                    <p class="fs-5 text-center text-primary mb-2">
+                                        Фильтр поиска группы ссылок (2) :
+                                    </p>
 
-                                        <span class="fs-6 form-text text-bg-primary px-2">
-                                            фильтры поиска связанных фильмов (2)
-                                        </span>
-                                    </li>
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.SearchFilter2))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-center text_shadow fluid-font-size">
+                                            <span class="px-2 py-1 border border-1 border-secondary">@Model.MovieItem.SearchFilter2</span>
+                                        </p>
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            Заголовок (3)&nbsp;:
-                                        </span><br />
-                                        <span class="fs-5 text-danger">
+                                        @if (Model.ListsMoviesFileModel2.Count > 0)
+                                        {
+                                            foreach (var listOfMovies in Model.ListsMoviesFileModel2)
+                                            {
+                                                <div class="table-responsive mt-3">
+
+                                                    <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                                        <thead>
+
+                                                            <tr class="text-start text-primary">
+
+                                                                <th scope="col" class="text-primary">№</th>
+                                                                <th scope="col" class="text-primary">GUID</th>
+                                                                <th scope="col" class="text-primary">Название</th>
+                                                                <th scope="col"></th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody>
+
+                                                            @foreach (var item in listOfMovies)
+                                                            {
+                                                                if (videoRef == 0)
+                                                                {
+                                                                    videoRef = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    videoRef++;
+                                                                }
+
+                                                                <tr class="text-start fs-5">
+
+                                                                    <td scope="col" class="text-primary">@videoRef</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieFileModelId</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieCaption</td>
+                                                                    @if (item.PageInfoModelId != null)
+                                                                    {
+                                                                        <td scope="col" class="text-center">
+                                                                            <a asp-area="Admin"
+                                                                               asp-controller="MovieInfo"
+                                                                               asp-action="DetailsMovie"
+                                                                               asp-route-movieid="@item.MovieFileModelId"
+                                                                               class="btn btn-outline-primary p-1 shadw"
+                                                                               title="информация о фильме">Info</a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td scope="col" class="text-center"></td>
+                                                                    }
+
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+                                            }
+
+                                            foreach (var linksToVideos2 in Model.LinksToVideosByFilter2)
+                                            {
+                                                <vc:video-links movies-list="@linksToVideos2" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-6 form-text">
+                                                по данным фильтрам нет ссылок
+                                            </p>
+                                        }
+
+                                    }
+
+                                    <p class="text-center mt-2">
+                                        <span class="fs-6 form-text text-bg-primary px-2">группа ссылок под видео (2)</span>
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* Блок ссылок под видео 3 *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* Заголовок группы ссылок 3 *@
+                            <h2 class="accordion-header" id="headingAddLinks3">
+
+                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks3" aria-expanded="true" aria-controls="AddLinks3">
+                                    <span class="form-label text-success fs-5">Ссылки 3 :</span>
+                                </button>
+
+                            </h2>
+
+                            @* Группа ссылок 3 *@
+                            <div id="AddLinks3" class="accordion-collapse collapse" aria-labelledby="headingAddLinks3" data-bs-parent="#accordionLinks">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* Заголовок группы ссылок 3*@
+                                    <p class="fs-5 text-center text-primary">
+                                        Заголовок группы ссылок (3) :
+                                    </p>
+
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks3))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="px-5 text-center text_shadow fluid-font-size">
                                             @Model.MovieItem.HeadTitleForVideoLinks3
-                                        </span><br />
-                                    </li>
+                                        </p>
+                                    }
 
-                                    <li class="list-group-item">
-                                        <span class="fw-bold fs-5 text-primary">
-                                            SearchFilter3&nbsp;:
-                                        </span><br />
+                                    <hr class="liniya" />
 
-                                        <div class="border border-1 border-secondary p-2 paragraph">
-                                            @Model.MovieItem.SearchFilter3
-                                        </div>
+                                    @* Фильтр поиска группы ссылок 3 *@
+                                    <p class="fs-5 text-center text-primary mb-2">
+                                        Фильтр поиска группы ссылок (3) :
+                                    </p>
 
-                                        <span class="fs-6 form-text text-bg-primary px-2">
-                                            фильтры поиска связанных фильмов (3)
-                                        </span>
-                                    </li>
+                                    @if (string.IsNullOrEmpty(Model.MovieItem.SearchFilter3))
+                                    {
+                                        <p class="fs-5 text-center text_shadow">
+                                            не задан
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-center text_shadow fluid-font-size">
+                                            <span class="px-2 py-1 border border-1 border-secondary">@Model.MovieItem.SearchFilter3</span>
+                                        </p>
 
-                                </ul>
+                                        @if (Model.ListsMoviesFileModel3.Count > 0)
+                                        {
+                                            foreach (var listOfMovies in Model.ListsMoviesFileModel3)
+                                            {
+                                                <div class="table-responsive mt-3">
+
+                                                    <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+
+                                                        <thead>
+
+                                                            <tr class="text-start text-primary">
+
+                                                                <th scope="col" class="text-primary">№</th>
+                                                                <th scope="col" class="text-primary">GUID</th>
+                                                                <th scope="col" class="text-primary">Название</th>
+                                                                <th scope="col"></th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody>
+
+                                                            @foreach (var item in listOfMovies)
+                                                            {
+                                                                if (videoRef == 0)
+                                                                {
+                                                                    videoRef = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    videoRef++;
+                                                                }
+
+                                                                <tr class="text-start fs-5">
+
+                                                                    <td scope="col" class="text-primary">@videoRef</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieFileModelId</td>
+                                                                    <td scope="col" class="text_shadow">@item.MovieCaption</td>
+                                                                    @if (item.PageInfoModelId != null)
+                                                                    {
+                                                                        <td scope="col" class="text-center">
+                                                                            <a asp-area="Admin"
+                                                                               asp-controller="MovieInfo"
+                                                                               asp-action="DetailsMovie"
+                                                                               asp-route-movieid="@item.MovieFileModelId"
+                                                                               class="btn btn-outline-primary p-1 shadw"
+                                                                               title="информация о фильме">Info</a>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td scope="col" class="text-center"></td>
+                                                                    }
+
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+                                            }
+
+                                            foreach (var linksToVideos3 in Model.LinksToVideosByFilter3)
+                                            {
+                                                <vc:video-links movies-list="@linksToVideos3" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-6 form-text">
+                                                по данным фильтрам нет ссылок
+                                            </p>
+                                        }
+
+                                    }
+
+                                    <p class="text-center mt-2">
+                                        <span class="fs-6 form-text text-bg-primary px-2">группа ссылок под видео (3)</span>
+                                    </p>
+
+                                </div>
 
                             </div>
 

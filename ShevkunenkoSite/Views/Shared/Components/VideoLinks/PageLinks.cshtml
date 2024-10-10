@@ -1,0 +1,37 @@
+﻿@model List<List<PageInfoModel>>
+
+@if (Model.Count > 0)
+{
+    foreach (var listOfPageLinks in Model)
+    {
+        if (listOfPageLinks.Count > 0)
+        {
+            if (listOfPageLinks.Count < 3)
+            {
+                <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                    <hr class="liniya" />
+
+                    @foreach (var item in listOfPageLinks.OrderBy(o => o.PageCardText))
+                    {
+                        <vc:card-of-page page="@item" />
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                    <hr class="liniya" />
+
+                    @foreach (var item in listOfPageLinks.OrderBy(o => o.PageCardText))
+                    {
+                        <vc:card-of-page page="@item" />
+                    }
+
+                </div>
+            }
+        }
+    }
+}

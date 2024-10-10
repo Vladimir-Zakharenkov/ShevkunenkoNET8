@@ -248,87 +248,76 @@
                             <div class="row row-cols-3 g-1 g-sm-2 justify-content-center">
 
                                 <!-- YouTube-->
-                                <a 
-                                    asp-area="" 
-                                    asp-controller="AllVideo"
-                                    asp-action="Movie"
+                                <a asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Movie"
                                    asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                                    asp-route-videohosting="@Model.MovieFile.MovieYouTube">
 
-                                    <vc:view-image 
-                                        image-id="454a9adb-58d7-4cd2-8b78-08db0babccab" 
-                                        css-class="col shadw imageref @Model.YoutubeImageBorder" 
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="454a9adb-58d7-4cd2-8b78-08db0babccab"
+                                                   css-class="col shadw imageref @Model.YoutubeImageBorder"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
                                 <!-- vk.com -->
-                                <a 
-                                    asp-area="" 
-                                    asp-controller="AllVideo" 
-                                    asp-action="Movie"
+                                <a asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Movie"
                                    asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                                    asp-route-videohosting="@Model.MovieFile.MovieVkVideo">
 
-                                    <vc:view-image 
-                                        image-id="3dc5ea15-b873-4f01-b103-08db0baedb98" 
-                                        css-class="col shadw imageref @Model.VkImageBorder"
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="3dc5ea15-b873-4f01-b103-08db0baedb98"
+                                                   css-class="col shadw imageref @Model.VkImageBorder"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
                                 <!-- mail.ru -->
-                                <a 
-                                    asp-area="" 
-                                    asp-controller="AllVideo" 
-                                    asp-action="Movie"
+                                <a asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Movie"
                                    asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                                    asp-route-videohosting="@Model.MovieFile.MovieMailRuVideo">
 
-                                    <vc:view-image 
-                                        image-id="1e1619fc-50a5-4afa-58ea-08db0bafe8f2" 
-                                        css-class="col shadw imageref @Model.MailruImageBorder"
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="1e1619fc-50a5-4afa-58ea-08db0bafe8f2"
+                                                   css-class="col shadw imageref @Model.MailruImageBorder"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
                                 <!-- ok.ru -->
-                                <a 
-                                    asp-area="" 
-                                    asp-controller="AllVideo" 
-                                    asp-action="Movie"
+                                <a asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Movie"
                                    asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                                    asp-route-videohosting="@Model.MovieFile.MovieOkVideo">
 
-                                    <vc:view-image 
-                                        image-id="78ea8336-1037-470b-d6dd-08db0bb1124f" 
-                                        css-class="col shadw imageref @Model.OkImageBorder" 
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="78ea8336-1037-470b-d6dd-08db0bb1124f"
+                                                   css-class="col shadw imageref @Model.OkImageBorder"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
                                 <!-- sergeyshef.ru -->
-                                <a 
-                                    asp-area="" 
-                                    asp-controller="AllVideo" 
-                                    asp-action="Movie"
+                                <a asp-area=""
+                                   asp-controller="AllVideo"
+                                   asp-action="Movie"
                                    asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                                    asp-route-videohosting="@Model.MovieFile.MovieContentUrl">
 
-                                    <vc:view-image 
-                                        image-id="dedf73e6-ad9a-456b-d279-08db0c783914" 
-                                        css-class="col shadw imageref @Model.SergeyshefBorder" 
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="dedf73e6-ad9a-456b-d279-08db0c783914"
+                                                   css-class="col shadw imageref @Model.SergeyshefBorder"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
                                 <!-- Yandex Disk -->
                                 <a onClick="this.target='_blank'" href="@Model.MovieFile.MovieYandexDiskVideo">
 
-                                    <vc:view-image 
-                                        image-id="4c047241-d660-41fd-b7d5-08db0bad8e49" 
-                                        css-class="col shadw imageref"
-                                        icon-type="webicon300" />
+                                    <vc:view-image image-id="4c047241-d660-41fd-b7d5-08db0bad8e49"
+                                                   css-class="col shadw imageref"
+                                                   icon-type="webicon300" />
 
                                 </a>
 
@@ -357,27 +346,24 @@
 
                                 <a onClick="this.target='_blank'" href="@Model.MovieFile.MovieKinoTeatrRu">
 
-                                    <vc:view-image 
-                                        image-id="abe41ec7-67b5-4010-205f-08db0b95d168" 
-                                        css-class="col-12 shadw imageref"
+                                    <vc:view-image image-id="abe41ec7-67b5-4010-205f-08db0b95d168"
+                                                   css-class="col-12 shadw imageref"
                                                    icon-type="webicon300" />
 
                                 </a>
 
                                 <a onClick="this.target='_blank'" href="@Model.MovieFile.MovieKinoPoisk">
 
-                                    <vc:view-image 
-                                        image-id="31eec46d-5556-4cdb-67a7-08db0b99fb42" 
-                                        css-class="col-12 shadw imageref"
+                                    <vc:view-image image-id="31eec46d-5556-4cdb-67a7-08db0b99fb42"
+                                                   css-class="col-12 shadw imageref"
                                                    icon-type="webicon300" />
 
                                 </a>
 
                                 <a onClick="this.target='_blank'" href="@Model.MovieFile.MovieImbd">
 
-                                    <vc:view-image 
-                                        image-id="9923aec8-f82b-4032-00f2-08db0b9fc418" 
-                                        css-class="col-12 shadw imageref"
+                                    <vc:view-image image-id="9923aec8-f82b-4032-00f2-08db0b9fc418"
+                                                   css-class="col-12 shadw imageref"
                                                    icon-type="webicon300" />
 
                                 </a>
@@ -458,27 +444,25 @@ else
 }
 else
 {
-    
+
 }
 
-@* Ссылки 1 *@
+@* Ссылки под видео 1 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter1))
 {
     <vc:links-below1 movie="@Model.MovieFile" />
 }
 else
 {
-    
 }
 
-@* Ссылки 2 *@
+@* Ссылки под видео 2 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter2))
 {
     <vc:links-below2 movie="@Model.MovieFile" />
 }
 else
 {
-    
 }
 
 @* Скрипты для фотокарусели *@

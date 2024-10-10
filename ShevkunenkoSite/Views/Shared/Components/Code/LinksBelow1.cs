@@ -1,6 +1,9 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class LinksBelow1(IMovieFileRepository movieContext, IPageInfoRepository pageContext) : ViewComponent
+public class LinksBelow1(
+    IMovieFileRepository movieContext,
+    IPageInfoRepository pageContext
+    ) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movie)
     {

@@ -21,7 +21,8 @@
     <span class="text-primary fw-bold">PageTitle:</span><br />
     <span class="text_shadow">
         @Model.PageItem.PageTitle
-    </span><br />
+    </span>
+    <br />
     <span class="fs-6 form-text">
         тег « title »
     </span>
@@ -34,7 +35,8 @@
     <span class="text-primary">PageInfoModelId:</span><br />
     <span class="text_shadow">
         @Model.PageItem.PageInfoModelId
-    </span><br />
+    </span>
+    <br />
     <span class="fs-6 form-text">
         идентификатор в базе данных (GUID)
     </span>
@@ -736,6 +738,7 @@
         @* Фильтры поиска связанных видео *@
         <div class="accordion-item mb-3 shadw">
 
+            @* Заголовок группы *@
             <h2 class="accordion-header" id="headingPageVideoFilters">
                 <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageVideoFilters" aria-expanded="true" aria-controls="PageVideoFilters">
                     <span class="form-label text-success fs-5">Фильтры поиска связанных видео (VideoFilterOut)&nbsp;:</span>

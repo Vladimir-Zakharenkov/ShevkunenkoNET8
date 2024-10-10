@@ -157,12 +157,126 @@ public class MovieInfoController(
 
             #endregion
 
+            #region Ссылки под видео по фильтру 1
+
+            List<VideoLinksViewModel> linksToVideosByFilter1 = [];
+            List<List<MovieFileModel>> listsMoviesFileModel1 = [];
+
+            string[] refLinks1 = movieItem.SearchFilter1.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (refLinks1.Length > 0)
+            {
+                for (int i = 0; i < refLinks1.Length; i++)
+                {
+                    if (await movieInfoContext.MovieFiles.Where(p => p.SearchFilter.Contains(refLinks1[i])).AnyAsync())
+                    {
+                        var movies = await movieInfoContext.MovieFiles.Where(mov => mov.SearchFilter.Contains(refLinks1[i])).ToListAsync();
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel1 = new()
+                        {
+                            HeadTitleForVideoLinks = movieItem.HeadTitleForVideoLinks1,
+                            IsImage = movieItem.IsImage1,
+                            IconType = movieItem.IconType1,
+                            SearchFilter = refLinks1[i],
+                            MovieInMainList = !movieItem.AllMoviesFromDB1,
+                            IsPartsMoreOne = movieItem.IsPartsMoreOne1
+                        };
+
+                        // данные для иконок фильмов
+                        linksToVideosByFilter1.Add(videoLinksViewModel1);
+
+                        // данные для таблицы
+                        listsMoviesFileModel1.Add(movies);
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Ссылки под видео по фильтру 2
+
+            List<VideoLinksViewModel> linksToVideosByFilter2 = [];
+            List<List<MovieFileModel>> listsMoviesFileModel2 = [];
+
+            string[] refLinks2 = movieItem.SearchFilter2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (refLinks2.Length > 0)
+            {
+                for (int i = 0; i < refLinks2.Length; i++)
+                {
+                    if (await movieInfoContext.MovieFiles.Where(p => p.SearchFilter.Contains(refLinks2[i])).AnyAsync())
+                    {
+                        var movies = await movieInfoContext.MovieFiles.Where(mov => mov.SearchFilter.Contains(refLinks2[i])).ToListAsync();
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel2 = new()
+                        {
+                            HeadTitleForVideoLinks = movieItem.HeadTitleForVideoLinks2,
+                            IsImage = movieItem.IsImage2,
+                            IconType = movieItem.IconType2,
+                            SearchFilter = refLinks2[i],
+                            MovieInMainList = !movieItem.AllMoviesFromDB2,
+                            IsPartsMoreOne = movieItem.IsPartsMoreOne2
+                        };
+
+                        // данные для иконок фильмов
+                        linksToVideosByFilter2.Add(videoLinksViewModel2);
+
+                        // данные для таблицы
+                        listsMoviesFileModel2.Add(movies);
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Ссылки под видео по фильтру 3
+
+            List<VideoLinksViewModel> linksToVideosByFilter3 = [];
+            List<List<MovieFileModel>> listsMoviesFileModel3 = [];
+
+            string[] refLinks3 = movieItem.SearchFilter3.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (refLinks3.Length > 0)
+            {
+                for (int i = 0; i < refLinks3.Length; i++)
+                {
+                    if (await movieInfoContext.MovieFiles.Where(p => p.SearchFilter.Contains(refLinks3[i])).AnyAsync())
+                    {
+                        var movies = await movieInfoContext.MovieFiles.Where(mov => mov.SearchFilter.Contains(refLinks3[i])).ToListAsync();
+                        movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
+
+                        VideoLinksViewModel videoLinksViewModel3 = new()
+                        {
+                            HeadTitleForVideoLinks = movieItem.HeadTitleForVideoLinks3,
+                            IsImage = movieItem.IsImage3,
+                            IconType = movieItem.IconType3,
+                            SearchFilter = refLinks3[i],
+                            MovieInMainList = !movieItem.AllMoviesFromDB3,
+                            IsPartsMoreOne = movieItem.IsPartsMoreOne3
+                        };
+
+                        // данные для иконок фильмов
+                        linksToVideosByFilter3.Add(videoLinksViewModel3);
+
+                        // данные для таблицы
+                        listsMoviesFileModel3.Add(movies);
+                    }
+                }
+            }
+
+            #endregion
+
             return View(new DetailsMovieViewModel
             {
                 MovieItem = movieItem,
-                //PageForSeries = pageForSeries,
-                //FullMovie = fullMovie,
-                //PosterForMovie = posterForMovie,
+                LinksToVideosByFilter1 = linksToVideosByFilter1,
+                ListsMoviesFileModel1 = listsMoviesFileModel1,
+                LinksToVideosByFilter2 = linksToVideosByFilter2,
+                ListsMoviesFileModel2 = listsMoviesFileModel2,
+                LinksToVideosByFilter3 = linksToVideosByFilter3,
+                ListsMoviesFileModel3 = listsMoviesFileModel3,
                 SearchFilters = searchFilters ?? [],
                 TopicFilters = topicFilters ?? []
             });
