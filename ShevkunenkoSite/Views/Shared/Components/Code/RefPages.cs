@@ -82,7 +82,9 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
 #pragma warning disable CA1862
                         if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).AnyAsync())
                         {
-                            listsOfFilterOut.Add(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).OrderBy(od => od.PageCardText).ToListAsync());
+                            var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).ToListAsync();
+                            //listOfFilterOut.Sort((page1, page2) =>page1.PageCardText.CompareTo(page2.PageCardText));
+                            listsOfFilterOut.Add(listOfFilterOut);
                         }
 #pragma warning restore CA1862
                     }

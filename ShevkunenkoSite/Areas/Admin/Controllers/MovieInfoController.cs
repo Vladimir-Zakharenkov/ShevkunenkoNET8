@@ -10,11 +10,9 @@ public class MovieInfoController(
     ITopicMovieRepository topicMovieContext
     ) : Controller
 {
-    PageInfoModel? pageForSeries = new();
+    //PageInfoModel? pageForSeries = new();
 
     MovieFileModel? fullMovie = new();
-
-    //ImageFileModel? posterForMovie = new();
 
     #region Список фильмов на сайте
 
@@ -593,14 +591,14 @@ public class MovieInfoController(
             {
                 movieItem.PageForSeries = "/" + movieItem.PageForSeries.Trim().Trim('/');
 
-                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForSeries).AnyAsync())
+                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == movieItem.PageForSeries).AnyAsync())
                 {
                     ModelState.AddModelError("PageForSeries", "Указанной страницы нет в базе данных");
 
                     return View();
                 }
 
-                pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForSeries);
+                var pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == movieItem.PageForSeries);
 
                 movieItem.PageForMovieSeriesId = pageForSeries.PageInfoModelId;
             }

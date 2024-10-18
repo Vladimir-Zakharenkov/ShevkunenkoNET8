@@ -4,9 +4,9 @@
 @if (Model.LinksToPagesByGuid.Count > 0)
 {
     @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
-    @if (Model.LinksToPagesByGuid.Count < 3)
+    @if (Model.LinksToPagesByGuid.Count < 4)
     {
-        <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+        <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
             <hr class="liniya" />
 
@@ -75,9 +75,9 @@
     {
         if (listOfFilterOut.Count > 0)
         {
-            if (listOfFilterOut.Count < 3)
+            if (listOfFilterOut.Count < 4)
             {
-                <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+                <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
                     <hr class="liniya" />
 
@@ -94,7 +94,7 @@
 
                     <hr class="liniya" />
 
-                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageLastmod))
+                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageCardText))
                     {
                         <vc:card-of-page page="@item" />
                     }
