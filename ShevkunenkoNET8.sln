@@ -80,6 +80,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 02 - Основ�
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 03 - Метод Run и определение терминального middleware.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 03 - Метод Run и определение терминального middleware.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 04 - HttpResponse. Отправка ответа.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 04 - HttpResponse. Отправка ответа.txt
 		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 05 - HttpRequest. Получение данных запроса.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 05 - HttpRequest. Получение данных запроса.txt
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 06 - Отправка файлов.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\Страница 06 - Отправка файлов.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomePage", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\WelcomePage\WelcomePage.csproj", "{0D129FE2-4040-449E-8862-BCA9892D384D}"
@@ -96,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Let’s Encrypt on IIS", "L
 	ProjectSection(SolutionItems) = preProject
 		Let’s Encrypt on IIS\Let’s Encrypt on IIS.txt = Let’s Encrypt on IIS\Let’s Encrypt on IIS.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendFile", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\SendFile\SendFile.csproj", "{3B04411B-B2C6-404F-A47B-64B7BE36711A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +174,10 @@ Global
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +201,7 @@ Global
 		{E2D0501D-86BA-4DCF-B1CC-D6767C7ED7A7} = {2839ED17-8389-4025-89A0-AA0947B1FE53}
 		{E575C154-F24F-4F35-A2B6-722738A8AC62} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C} = {7655687B-9A51-4272-BB15-A16578D31AEC}
+		{3B04411B-B2C6-404F-A47B-64B7BE36711A} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
