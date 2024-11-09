@@ -12080,6 +12080,7 @@ body {
 
 .container-fluid-1920 {
   max-width: 1920px;
+  min-width: 320px;
 }
 
 /* тег hr */
@@ -12181,18 +12182,18 @@ body {
 }
 
 .imageref {
-  border: 0.3rem ridge transparent;
-  border-radius: 0.4rem;
+  border: 0.1rem ridge transparent;
+  border-radius: 0.3rem;
   transition: all 0.3s ease-in-out;
 }
 
 .imageref:hover {
-  border: 0.3rem rgba(194, 10, 41, 0.9) ridge;
+  border: 0.1rem rgba(194, 10, 41, 0.9) ridge;
   opacity: 0.9;
 }
 
 .setimage_border {
-  border: 0.3rem rgba(194, 10, 41, 0.9) ridge;
+  border: 0.1rem rgba(194, 10, 41, 0.9) ridge;
 }
 
 .footer-image img {

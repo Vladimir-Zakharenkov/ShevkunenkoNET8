@@ -240,6 +240,14 @@ public class PageInfoModel
 
     #endregion
 
+    #region Значение для сортировки страницы
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Значение для сортировки:")]
+    public int SortOfPage { get; set; } = 1;
+
+    #endregion
+
     // навигационное свойство
     public MovieFileModel? MovieFile { get; set; }
 }

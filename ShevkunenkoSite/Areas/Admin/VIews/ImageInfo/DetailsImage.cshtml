@@ -36,52 +36,52 @@
                 <ul class="list-group list-group-flush text-center">
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-primary">ImageFileModelId&nbsp;:</span><br />
-                        <span id="ImageItemID" class="fs-5 text_shadow">@Model.ImageItem.ImageFileModelId</span><br />
-                        <span id="ImageItemIDHelpBlock" class="fs-6 form-text">
+                        <span class="fw-bold fs-5 text-danger lh-lg">ImageFileModelId&nbsp;:</span><br />
+                        <span id="ImageItemID" class="fs-5 text_shadow border border-1 border-secondary p-2">@Model.ImageItem.ImageFileModelId</span><br />
+                        <span id="ImageItemIDHelpBlock" class="fs-6 form-text lh-lg text-success">
                             идентификатор в базе данных (GUID)
                         </span>
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-primary">ImageCaption&nbsp;:</span><br />
+                        <span class="fw-bold fs-5 text-danger">ImageCaption&nbsp;:</span><br />
                         <span id="ImageItemCaption" class="fs-5 text_shadow">@Model.ImageItem.ImageCaption</span><br />
-                        <span id="ImageItemCaptionHelpBlock" class="fs-6 form-text">
+                        <span id="ImageItemCaptionHelpBlock" class="fs-6 form-text lh-lg text-success">
                             «caption» и «name» для Microdata
                         </span>
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-primary">ImageItemDescription&nbsp;:</span><br />
+                        <span class="fw-bold fs-5 text-danger">ImageItemDescription&nbsp;:</span><br />
                         <span id="ImageItemDescription" class="fs-5 text_shadow">@Model.ImageItem.ImageDescription</span><br />
-                        <span id="ImageItemDescriptionHelpBlock" class="fs-6 form-text">
+                        <span id="ImageItemDescriptionHelpBlock" class="fs-6 form-text lh-lg text-success">
                             «description» для Microdata
                         </span>
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-primary">ImageItemAltTitle&nbsp;:</span><br />
+                        <span class="fw-bold fs-5 text-danger">ImageItemAltTitle&nbsp;:</span><br />
                         <span id="ImageItemAltTitle" class="fs-5 text_shadow">@Model.ImageItem.ImageAltTitle</span><br />
-                        <span id="ImageItemAltTitleHelpBlock" class="fs-6 form-text">
+                        <span id="ImageItemAltTitleHelpBlock" class="fs-6 form-text lh-lg text-success">
                             «alt» и «title» для тега «img»
                         </span>
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-primary">SearchFilter&nbsp;:</span><br />
+                        <span class="fw-bold fs-5 text-danger">SearchFilter&nbsp;:</span><br />
 
                         @if (!string.IsNullOrEmpty(Model.ImageItem.SearchFilter))
                         {
                             <div class="border border-1 border-secondary p-2 fs-5 text_shadow">
                                 @Html.Raw(Model.ImageItem.SearchFilter)
                             </div>
-                            <span class="fs-6 form-text">
+                            <span class="fs-6 form-text lh-lg text-success">
                                 фильтр поиска
                             </span>
                         }
                         else
                         {
-                            <span class="fs-6 form-text">
+                            <span class="fs-6 form-text lh-lg text-success">
                                 фильтр поиска не задан
                             </span>
                         }

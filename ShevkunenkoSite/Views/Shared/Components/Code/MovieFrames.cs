@@ -1,11 +1,10 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class MovieFrames : ViewComponent
+public class MovieFrames(
+    IImageFileRepository imageFileContext
+    ) : ViewComponent
 {
-    private readonly IImageFileRepository _imageFileContext;
-    public MovieFrames(IImageFileRepository imageFileContext) => _imageFileContext = imageFileContext;
-
-    ImageFileModel[] imageItems = Array.Empty<ImageFileModel>();
+    ImageFileModel[] imageItems = [];
 
     private readonly int frameAroundMovie = 10;
 
@@ -13,9 +12,9 @@ public class MovieFrames : ViewComponent
     {
         if (!string.IsNullOrEmpty(imageFilter))
         {
-            if (await _imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).AnyAsync())
+            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).AnyAsync())
             {
-                imageItems = await _imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).OrderBy(img => img.WebImageFileName).ToArrayAsync();
+                imageItems = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).OrderBy(img => img.WebImageFileName).ToArrayAsync();
 
                 if (imageItems.Length > frameAroundMovie)
                 {

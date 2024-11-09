@@ -4,7 +4,7 @@
     string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
 }
 
-<div class="col">
+<div class="col p-1 p-lg-2">
 
     <div class="card shadw rounded-3 cardborder" title="@Model.PageTitle">
 
@@ -161,13 +161,12 @@
 
                 @if (!string.IsNullOrEmpty(Model.PageCardText))
                 {
-                    <div class="card-body p-0 mt-2 shadw cardBodyBg">
+                    <div class="d-none d-sm-block card-body p-0 mt-2 shadw cardBodyBg">
 
                         <p class="card-title lh-1 fontadaptive my-1 mt-2">@Model.PageCardText</p>
 
                     </div>
                 }
-
             </a>
 
         }
@@ -314,7 +313,7 @@
 
                 @if (!string.IsNullOrEmpty(Model.PageCardText))
                 {
-                    <div class="card-body p-0 mt-2 shadw cardBodyBg">
+                    <div class="d-none d-sm-block card-body p-0 mt-2 shadw cardBodyBg">
 
                         <p class="card-title lh-1 fw-medium fontadaptive my-1 mt-2">@Model.PageCardText</p>
 

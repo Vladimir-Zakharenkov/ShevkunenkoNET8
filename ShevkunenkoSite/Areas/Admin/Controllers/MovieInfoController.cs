@@ -790,7 +790,7 @@ public class MovieInfoController(
 
             #endregion
 
-            #region Название фильма
+            #region Название (заголовок) фильма
 
             movieItem.MovieCaption = movieItem.MovieCaption.Trim();
 
@@ -800,6 +800,8 @@ public class MovieInfoController(
 
                 return View();
             }
+
+            movieItem.MovieCaptionForOnline = movieItem.MovieCaptionForOnline.Trim();
 
             #endregion
 
@@ -893,13 +895,27 @@ public class MovieInfoController(
 
             #endregion
 
-            #region Остальные данные фильма
+            #region Описание фильма
 
             movieItem.MovieDescriptionForSchemaOrg = movieItem.MovieDescriptionForSchemaOrg.Trim();
             movieItem.MovieDescriptionHtml = movieItem.MovieDescriptionHtml.Trim();
-            movieItem.MovieCaptionForOnline = movieItem.MovieCaptionForOnline.Trim();
-            movieItem.MovieNote = movieItem.MovieNote.Trim();
+
+            #endregion
+
+            #region Жанр фильма
+
             movieItem.MovieGenre = movieItem.MovieGenre.Trim();
+
+            #endregion
+
+            #region Примечания
+
+            movieItem.MovieNote = movieItem.MovieNote.Trim();
+
+            #endregion
+
+            #region Съёмочная группа
+
             movieItem.MovieРroductionCompany = movieItem.MovieРroductionCompany.Trim();
             movieItem.MovieDirector1 = movieItem.MovieDirector1.Trim();
             movieItem.MovieDirector2 = movieItem.MovieDirector2.Trim();
@@ -915,6 +931,10 @@ public class MovieInfoController(
             movieItem.MovieActor09 = movieItem.MovieActor09.Trim();
             movieItem.MovieActor10 = movieItem.MovieActor10.Trim();
 
+            #endregion
+
+            #region Фильтр поиска фильма
+
             if (movieItem.SearchFilter != null)
             {
                 movieItem.SearchFilter = movieItem.SearchFilter.Trim();
@@ -924,21 +944,9 @@ public class MovieInfoController(
                 movieItem.SearchFilter = string.Empty;
             }
 
-            if (movieItem.FramesAroundMovie != string.Empty)
-            {
-                if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == movieItem.FramesAroundMovie.Trim()).AnyAsync())
-                {
-                    ModelState.AddModelError("FramesAroundMovie", $"Фильма «{movieItem.FramesAroundMovie}»  нет в базе данных");
+            #endregion
 
-                    return View();
-                }
-
-                movieItem.FramesAroundMovie = movieItem.FramesAroundMovie.Trim();
-            }
-            else
-            {
-                movieItem.FramesAroundMovie = string.Empty;
-            }
+            #region Возрастная категория фильма
 
             if (movieItem.MovieAdult == true)
             {
@@ -951,16 +959,42 @@ public class MovieInfoController(
 
             #endregion
 
+            #region Кадры справа и слева от фильма
+
+            if (movieItem.FramesAroundMovie != string.Empty)
+            {
+                //if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == movieItem.FramesAroundMovie.Trim()).AnyAsync())
+                //{
+                //    ModelState.AddModelError("FramesAroundMovie", $"Фильма «{movieItem.FramesAroundMovie}»  нет в базе данных");
+
+                //    return View();
+                //}
+
+                movieItem.FramesAroundMovie = movieItem.FramesAroundMovie.Trim();
+            }
+            else
+            {
+                movieItem.FramesAroundMovie = string.Empty;
+            }
+
+            #endregion
+
+            #region Сохранить данные
+
             await movieInfoContext.AddNewMovieAsync(movieItem);
 
             var newMovie = await movieInfoContext.MovieFiles.FirstAsync(mov => mov.MovieCaption == movieItem.MovieCaption);
 
             return RedirectToAction("DetailsMovie", new { movieId = newMovie.MovieFileModelId, Area = "Admin" });
+
+            #endregion
+
         }
         else
         {
             return View();
         }
+
     }
 
     #endregion
@@ -1683,16 +1717,17 @@ public class MovieInfoController(
 
             if (editMovie.MovieItem.FramesAroundMovie.Trim() != string.Empty)
             {
-                if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == editMovie.MovieItem.FramesAroundMovie.Trim()).AnyAsync())
-                {
-                    ModelState.AddModelError("FramesAroundMovie", $"Фильма «{editMovie.MovieItem.FramesAroundMovie}»  нет в базе данных");
+                //if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == editMovie.MovieItem.FramesAroundMovie.Trim()).AnyAsync())
+                //{
+                //    ModelState.AddModelError("FramesAroundMovie", $"Фильма «{editMovie.MovieItem.FramesAroundMovie}»  нет в базе данных");
 
-                    return View(editMovie);
-                }
-                else
-                {
-                    movieUpdate.FramesAroundMovie = editMovie.MovieItem.FramesAroundMovie.Trim();
-                }
+                //    return View(editMovie);
+                //}
+                //else
+                //{
+                //    movieUpdate.FramesAroundMovie = editMovie.MovieItem.FramesAroundMovie.Trim();
+                //}
+                movieUpdate.FramesAroundMovie = editMovie.MovieItem.FramesAroundMovie.Trim();
             }
             else
             {

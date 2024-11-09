@@ -310,21 +310,13 @@ public class AllVideoController(
                 return View("Movie", new MoviePageViewModel
                 {
                     MovieFile = movieItem,
-
                     FullMovie = fullMovie,
-
                     SergeyshefRu = sergeyshefRu,
-
                     VideoRef = videoRef!,
-
                     YoutubeImageBorder = youtubeImageBorder,
-
                     OkImageBorder = okImageBorder,
-
                     MailruImageBorder = mailruImageBorder,
-
                     VkImageBorder = vkImageBorder,
-
                     SergeyshefBorder = sergeyshefImageBorder
                 });
             }

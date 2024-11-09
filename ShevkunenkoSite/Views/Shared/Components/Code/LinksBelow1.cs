@@ -15,7 +15,6 @@ public class LinksBelow1(
 
         if (movie.IsImage1 != null)
         {
-
             if (!movie.AllMoviesFromDB1)
             {
                 for (int i = 0; i < movieFilters.Length; i++)
@@ -59,6 +58,8 @@ public class LinksBelow1(
                 for (int i = 0; i < movieFilters.Length; i++)
                 {
                     refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
+
+                    _= refMovies.OrderBy(s => s.MoviePart);
 
                     foreach (var item in refMovies)
                     {

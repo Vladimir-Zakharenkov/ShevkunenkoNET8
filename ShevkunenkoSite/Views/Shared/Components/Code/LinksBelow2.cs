@@ -1,30 +1,49 @@
-﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-public class LinksBelow2 : ViewComponent
+namespace ShevkunenkoSite.Views.Shared.Components.Code;
+
+public class LinksBelow2(
+    IMovieFileRepository movieContext,
+    IPageInfoRepository pageContext
+    ) : ViewComponent
 {
-    private readonly IMovieFileRepository _movieContext;
-    public LinksBelow2(IMovieFileRepository movieContext)
-    {
-        _movieContext = movieContext;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movie)
     {
-        if (!movie.AllMoviesFromDB2)
+        string[] movieFilters = movie.SearchFilter2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+        IEnumerable<MovieFileModel> refMovies = [];
+
+        List<MovieFileModel> onList = [];
+
+        if (movie.IsImage2 != null)
         {
+            if (!movie.AllMoviesFromDB2)
+            {
+                for (int i = 0; i < movieFilters.Length; i++)
+                {
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",") & mov.MovieInMainList == true).ToArrayAsync();
+
+                    onList.AddRange(refMovies);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < movieFilters.Length; i++)
+                {
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
+
+                    onList.AddRange(refMovies);
+                }
+            }
+
+            refMovies = onList.Distinct();
+
             MoviesListViewModel movies = new()
             {
-                Movies = await _movieContext.MovieFiles
-                    .Where(p => p.MovieInMainList == true & p.SearchFilter.Contains(movie.SearchFilter2 ?? string.Empty))
-                    .OrderBy(p => p.MovieDatePublished)
-                    .ToArrayAsync(),
-
+                Movies = refMovies,
                 IsImage = movie.IsImage2,
-
                 IconType = movie.IconType2,
-
-               IsPartsMoreOne = movie.IsPartsMoreOne2,
-
+                IsPartsMoreOne = movie.IsPartsMoreOne2,
                 PageHeadTitle = movie.HeadTitleForVideoLinks2
             };
 
@@ -32,23 +51,35 @@ public class LinksBelow2 : ViewComponent
         }
         else
         {
-            MoviesListViewModel movies = new()
+            List<PageInfoModel> listOfPageLinks = [];
+
+            List<List<PageInfoModel>> listsOfPageLinks = [];
+
+            if (movieFilters.Length > 0)
             {
-                Movies = await _movieContext.MovieFiles
-                      .Where(p => p.SearchFilter.Contains(movie.SearchFilter2 ?? string.Empty))
-                      .OrderBy(p => p.MovieDatePublished)
-                      .ToArrayAsync(),
+                for (int i = 0; i < movieFilters.Length; i++)
+                {
+                    refMovies = await movieContext.MovieFiles.AsNoTracking().Where(mov => mov.SearchFilter.Contains(movieFilters[i].Trim() + ",")).ToArrayAsync();
 
-                IsImage = movie.IsImage2,
+                    _ = refMovies.OrderBy(s => s.MoviePart);
 
-                IconType = movie.IconType2,
+                    foreach (var item in refMovies)
+                    {
+                        if (item.PageInfoModelId != null)
+                        {
+                            var pageModel = await pageContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == item.PageInfoModelId);
 
-               IsPartsMoreOne = movie.IsPartsMoreOne2,
+                            listOfPageLinks.Add(pageModel);
+                        }
+                    }
 
-                PageHeadTitle = movie.HeadTitleForVideoLinks2
-            };
+                    listsOfPageLinks.Add(listOfPageLinks);
 
-            return View(movies);
+                    listOfPageLinks = [];
+                }
+            }
+
+            return View("PageLinks", listsOfPageLinks);
         }
     }
 }

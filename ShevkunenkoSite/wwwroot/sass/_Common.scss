@@ -1,5 +1,6 @@
 ﻿.container-fluid-1920 {
     max-width: 1920px;
+    min-width: 320px;
 }
 
 /* тег hr */
@@ -31,8 +32,8 @@
     box-shadow: .5rem .4rem .4rem hsla(0,0%,0%,.6);
 }
 
-.maxwidthcontent{
-    max-width:max-content;
+.maxwidthcontent {
+    max-width: max-content;
 }
 
 .maxwidth28percent {

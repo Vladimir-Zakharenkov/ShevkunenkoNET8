@@ -1,6 +1,8 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository movieContext) : ViewComponent
+public class RefPages(
+    IPageInfoRepository pageInfoContext,
+    IMovieFileRepository movieContext) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
     {
@@ -79,14 +81,21 @@ public class RefPages(IPageInfoRepository pageInfoContext, IMovieFileRepository 
                 {
                     for (int i = 0; i < pageFilterOut.Length; i++)
                     {
-#pragma warning disable CA1862
                         if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).AnyAsync())
                         {
                             var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i])).ToListAsync();
-                            //listOfFilterOut.Sort((page1, page2) =>page1.PageCardText.CompareTo(page2.PageCardText));
+
+                            if (listOfFilterOut.Count > 9)
+                            {
+                                listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
+                            }
+                            else
+                            {
+                                listOfFilterOut.Sort((page1, page2) => page1.PageCardText.CompareTo(page2.PageCardText));
+                            }
+
                             listsOfFilterOut.Add(listOfFilterOut);
                         }
-#pragma warning restore CA1862
                     }
                 }
                 _ = listsOfFilterOut.Distinct();

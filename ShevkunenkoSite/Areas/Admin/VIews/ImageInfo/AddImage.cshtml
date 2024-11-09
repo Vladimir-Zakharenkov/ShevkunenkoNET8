@@ -14,10 +14,10 @@
 
             <div class="card-body mx-0 p-0">
 
-                <form method="post" enctype="multipart/form-data" 
-                    asp-area="Admin" 
-                    asp-controller="ImageInfo" 
-                    asp-action="AddImage">
+                <form method="post" enctype="multipart/form-data"
+                      asp-area="Admin"
+                      asp-controller="ImageInfo"
+                      asp-action="AddImage">
 
                     @if (Context.Request.Method == "POST")
                     {
@@ -26,6 +26,7 @@
 
                     <input asp-for="EditImage.ImageFileModelId" type="hidden" />
 
+                    @* Заголовок картинки *@
                     <label asp-for="EditImage.ImageCaption" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ImageCaptionInput" asp-for="EditImage.ImageCaption" class="form-control text-center" aria-describedby="ImageCaptionInputHelpBlock" />
                     <div id="ImageCaptionInputHelpBlock" class="form-text">
@@ -35,6 +36,7 @@
 
                     <hr class="liniya" />
 
+                    @* Описание картинки *@
                     <label asp-for="EditImage.ImageDescription" class="form-label text-primary fs-5 fw-bold"></label>
                     <textarea id="ImageDescriptionInput" asp-for="EditImage.ImageDescription" class="form-control text-center" rows="1" aria-describedby="ImageDescriptionInputHelpBlock"></textarea>
                     <div id="ImageDescriptionInputHelpBlock" class="form-text">
@@ -44,17 +46,19 @@
 
                     <hr class="liniya" />
 
+                    @* «alt» и «title» для картинки *@
                     <label asp-for="EditImage.ImageAltTitle" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ImageAltTitleInput" asp-for="EditImage.ImageAltTitle" class="form-control text-center" aria-describedby="ImageAltTitleInputHelpBlock" />
                     <div id="ImageAltTitleInputHelpBlock" class="form-text col-12">
-                        «alt» и «title» для тега «img» - по умолчанию равно «caption» с маленкой буквы
+                        «alt» и «title» для тега «img» - по умолчанию равно «caption» с маленькой буквы
                     </div>
                     <span asp-validation-for="EditImage.ImageAltTitle" class="text-danger"></span>
 
                     <hr class="liniya" />
 
+                    @* Фильтр поиска картинки в базе данных *@
                     <label asp-for="EditImage.SearchFilter" class="form-label text-primary fs-5"></label>
-                    <textarea id="SearchFilterInput" asp-for="EditImage.SearchFilter" class="form-control" rows="1" aria-describedby="SearchFilterInputHelpBlock"></textarea>
+                    <textarea id="SearchFilterInput" asp-for="EditImage.SearchFilter" class="form-control text-center" rows="1" aria-describedby="SearchFilterInputHelpBlock"></textarea>
                     <div id="SearchFilterInputHelpBlock" class="form-text">
                         <span>фильтры поиска</span>
                     </div>
@@ -62,6 +66,7 @@
 
                     <hr class="liniya" />
 
+                    @* Каталог картинки *@
                     <label asp-for="EditImage.ImagePath" class="form-label text-primary fs-5 fw-bold"></label>
                     <select asp-for="EditImage.ImagePath" asp-items="Model.ImageDirectories" aria-describedby="ImagePathInputHelpBlock">
                         <option selected value="/images">Выберите каталог</option>
@@ -72,6 +77,7 @@
 
                     <hr class="liniya" />
 
+                    @* Новый каталог для картинки *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="NewImagePath" class="form-label text-primary fs-5 fw-bold"></label>
@@ -87,8 +93,10 @@
 
                     <hr class="liniya" />
 
+                    @* Выбор картинок *@
                     <div class="accordion" id="accordionAddImage">
 
+                        @* Выбор картинок WEBM*@
                         <div class="accordion-item">
 
                             <h2 class="accordion-header" id="headingDescription">
@@ -101,6 +109,7 @@
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
+                                    @* Выбор картинки HD WEBM *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="WebImageHDFormFile" class="form-label text-primary fs-5"></label>
@@ -116,6 +125,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки WEBM 720 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="WebImageFormFile" class="form-label text-primary fs-5"></label>
@@ -131,6 +141,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки WEBM 300 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="WebIconFormFile" class="form-label text-primary fs-5"></label>
@@ -146,6 +157,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки WEBM 200 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="WebIcon200FormFile" class="form-label text-primary fs-5"></label>
@@ -161,6 +173,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки WEBM 100 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="WebIcon100FormFile" class="form-label text-primary fs-5"></label>
@@ -180,6 +193,7 @@
 
                         </div>
 
+                        @* Выбор картинок PNG*@
                         <div class="accordion-item">
 
                             <h2 class="accordion-header" id="headingDescription">
@@ -192,6 +206,7 @@
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
+                                    @* Выбор картинки HD PNG *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="ImageHDFormFile" class="form-label text-primary fs-5"></label>
@@ -207,6 +222,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки PNG 720 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="ImageFormFile" class="form-label text-primary fs-5"></label>
@@ -222,6 +238,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки PNG 300 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="IconFormFile" class="form-label text-primary fs-5"></label>
@@ -237,6 +254,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки PNG 200 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="Icon200FormFile" class="form-label text-primary fs-5"></label>
@@ -252,6 +270,7 @@
 
                                     <hr class="liniya" />
 
+                                    @* Выбор картинки PNG 1000 px *@
                                     <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="Icon100FormFile" class="form-label text-primary fs-5"></label>
@@ -275,16 +294,17 @@
 
                     </div>
 
+                    @* Сохранить картинку *@
                     <div class="card-footer p-0 mt-2">
 
-                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="добавить картинку">Сохранить</button>
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="добавить картинку">Добавить</button>
 
-                        <a class="btn btn-outline-danger m-2 shadw" 
-                            asp-area="Admin" 
-                            asp-controller="ImageInfo" 
-                            asp-action="Index" 
-                            asp-route-iconlist="false" 
-                            title="отменить изменения">Отмена</a>
+                        <a class="btn btn-outline-danger m-2 shadw"
+                           asp-area="Admin"
+                           asp-controller="ImageInfo"
+                           asp-action="Index"
+                           asp-route-iconlist="false"
+                           title="не сохранять">Отмена</a>
 
                     </div>
 

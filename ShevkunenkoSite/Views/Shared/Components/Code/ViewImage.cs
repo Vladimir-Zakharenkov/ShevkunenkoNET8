@@ -1,6 +1,8 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class ViewImage(IImageFileRepository imageFileContext) : ViewComponent
+public class ViewImage(
+    IImageFileRepository imageFileContext
+    ) : ViewComponent
 {
     ImageFileModel imageItem = new();
 

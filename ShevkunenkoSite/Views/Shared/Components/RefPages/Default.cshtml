@@ -81,20 +81,20 @@
 
                     <hr class="liniya" />
 
-                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageCardText))
+                    @foreach (var item in listOfFilterOut)
                     {
                         <vc:card-of-page page="@item" />
                     }
 
                 </div>
             }
-            else if (listOfFilterOut.Count == 4)
+            else if (listOfFilterOut.Count%4 == 0)
             {
                 <div class="row row-cols-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
                     <hr class="liniya" />
 
-                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageCardText))
+                    @foreach (var item in listOfFilterOut)
                     {
                         <vc:card-of-page page="@item" />
                     }
@@ -107,7 +107,7 @@
 
                     <hr class="liniya" />
 
-                    @foreach (var item in listOfFilterOut.OrderBy(o => o.PageCardText))
+                    @foreach (var item in listOfFilterOut)
                     {
                         <vc:card-of-page page="@item" />
                     }
@@ -124,6 +124,7 @@
 {
     foreach (var videoLinksViewModel in Model.ListOfVideoLinksViewModel)
     {
-        <vc:video-links movies-list="@videoLinksViewModel" />
+        <vc:video-links 
+            movies-list="@videoLinksViewModel" />
     }
 }
