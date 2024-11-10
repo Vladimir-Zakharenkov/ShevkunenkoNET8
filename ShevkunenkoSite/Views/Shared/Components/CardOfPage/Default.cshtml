@@ -2,6 +2,7 @@
 
 @{
     string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
+    string cssOfRef = "rounded-3 p-0 p-md-1";
 }
 
 <div class="col p-1 p-lg-2">
@@ -19,7 +20,7 @@
                asp-controller="PageInfo"
                asp-action="DetailsPage"
                asp-route-pageId="@Model.PageInfoModelId"
-               class="rounded-3"
+               class="@cssOfRef"
                title="информация о странице">
 
                 @if (Model.OgType == "movie" && Model.MovieFile != null && Model.MovieFile.ImageFileModel != null)
@@ -152,27 +153,36 @@
 
                     </span>
 
-                    <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId" css-class="card-img-top shadw rounded-3" icon-type="webicon300" />
+                    <vc:view-image 
+                        image-id="@Model.ImageFileModel!.ImageFileModelId" 
+                        css-class="card-img-top shadw rounded-3" 
+                        icon-type="webicon300" />
                 }
                 else
                 {
-                    <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId" css-class="card-img-top shadw rounded-3" icon-type="webicon300" />
+                    <vc:view-image 
+                        image-id="@Model.ImageFileModel!.ImageFileModelId" 
+                        css-class="card-img-top shadw rounded-3" 
+                        icon-type="webicon300" />
                 }
 
                 @if (!string.IsNullOrEmpty(Model.PageCardText))
                 {
-                    <div class="d-none d-sm-block card-body p-0 mt-2 shadw cardBodyBg">
+                    <div class="d-none d-sm-block card-body rounded-2 p-0 mt-2 shadw cardBodyBg">
 
                         <p class="card-title lh-1 fontadaptive my-1 mt-2">@Model.PageCardText</p>
 
                     </div>
                 }
             </a>
-
         }
         else
         {
-            <a class="rounded-3" href="@Url.Content(Model.PageFullPathWithData)" title="@Model.PageTitle" itemprop="url">
+            <a 
+                class="@cssOfRef" 
+                href="@Url.Content(Model.PageFullPathWithData)"
+                title="@Model.PageTitle" 
+                itemprop="url">
 
                 @if (Model.OgType == "movie" && Model.MovieFile != null && Model.MovieFile.ImageFileModel != null)
                 {
@@ -304,18 +314,24 @@
 
                     </span>
 
-                    <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId" css-class="card-img-top shadw rounded-3" icon-type="webicon300" />
+                    <vc:view-image 
+                        image-id="@Model.ImageFileModel!.ImageFileModelId" 
+                        css-class="card-img-top shadw rounded-3" 
+                        icon-type="webicon300" />
                 }
                 else
                 {
-                    <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId" css-class="card-img-top shadw rounded-3" icon-type="webicon300" />
+                    <vc:view-image 
+                        image-id="@Model.ImageFileModel!.ImageFileModelId" 
+                        css-class="card-img-top shadw rounded-3" 
+                        icon-type="webicon300" />
                 }
 
                 @if (!string.IsNullOrEmpty(Model.PageCardText))
                 {
-                    <div class="d-none d-sm-block card-body p-0 mt-2 shadw cardBodyBg">
+                    <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
 
-                        <p class="card-title lh-1 fw-medium fontadaptive my-1 mt-2">@Model.PageCardText</p>
+                        <p class="card-title p-0 mb-0 fw-medium fontadaptive">@Model.PageCardText</p>
 
                     </div>
                 }

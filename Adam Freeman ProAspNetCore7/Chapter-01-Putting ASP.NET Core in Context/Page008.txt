@@ -1,0 +1,57 @@
+Most of Part 1 is given over to the development of a project called SportsStore, 
+through which I show you a realistic development process from inception 
+to deployment, touching on all the main features of ASP.NET Core and showing 
+how they fit together—something that can be lost in the deep-dive chapters 
+in the rest of the book.
+
+Part 2: The ASP.NET Core Platform
+
+The chapters in this part of the book describe the key features of 
+the ASP.NET Core platform. I explain how HTTP requests are processed, 
+how to create and use middleware components, how to create routes, how
+to define and consume services, and how to work with Entity Framework Core. 
+These chapters explain the foundations of ASP.NET Core, and understanding 
+them is essential for effective ASP.NET Core development.
+
+Part 3: ASP.NET Core Applications
+
+The chapters in this part of the book explain how to create different 
+types of applications, including RESTful web services and HTML applications 
+using controllers and Razor Pages. These chapters also describe the
+features that make it easy to generate HTML, including the views, 
+view components, and tag helpers.
+
+Part 4: Advanced ASP.NET Core Features
+
+The final part of the book explains how to create applications using 
+Blazor Server, how to use the experimental Blazor WebAssembly, and how 
+to authenticate users and authorize access using ASP.NET Core Identity.
+
+1.2.6	What Doesn’t This Book Cover?
+
+This book doesn’t cover basic web development topics, such as HTML and CSS, 
+and doesn’t teach basic C# (although Chapter 5 does describe C# features useful 
+for ASP.NET Core development that may not be familiar to developers using 
+older versions of .NET).
+
+As much as I like to dive into the details in my books, not every ASP.NET Core 
+feature is useful in mainstream development, and I have to keep my books 
+to a printable size. When I decide to omit a feature, it is because I don’t 
+think it is important or because the same outcome can be achieved using 
+a technique that I do cover.
+
+As noted earlier, I have not described the ASP.NET Core support for SignalR 
+and gRPC, and I note other features in later chapters that I don’t describe, 
+either because they are not broadly applicable or because there are better 
+alternatives available. In each case, I explain why I have omitted 
+a description and provide a reference to the Microsoft documentation 
+for that topic.
+
+1.2.7	How Do I Contact the Author?
+
+You can email me at adam@adam-freeman.com. It has been a few years since 
+I first published an email address in my books. I wasn’t entirely sure that 
+it was a good idea, but I am glad that I did it. I have received
+emails from around the world, from readers working or studying in every industry, 
+and—for the most part anyway—the emails are positive, polite, and 
+a pleasure to receive.

@@ -1,0 +1,45 @@
+Figure 1-1. The structure of ASP.NET Core
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-1-1.webp)
+
+UNDERSTANDING .NET CORE, .NET FRAMEWORK, AND .NET
+
+If you have never worked for a large corporation, you might have the impression 
+that Microsoft is a disciplined organization with a clear strategy and an army 
+of programmers working together to deliver complex products like ASP.NET Core.
+
+In reality, Microsoft is a chaotic collection of dysfunctional tribes that are constantly 
+trying to undermine each other to get prestige and promotions. Products are released during 
+lulls in the fighting, and successes are often entirely unexpected. This isn’t unique 
+to Microsoft — it is true of any large company — but it has a particular bearing on ASP.NET Core 
+and the naming confusion that Microsoft has created.
+
+Several years ago, the part of Microsoft responsible for ASP.NET created its own version 
+of the .NET platform, allowing ASP.NET to be updated more often than the rest of 
+.NET. ASP.NET Core and .NET Core were created, allowing cross-platform development, 
+and using a subset of the original .NET APIs, many of which were specific to Windows. 
+It was a painful transition, but it meant that web development could evolve independently 
+of the “legacy” Windows-only development, which would continue under the
+renamed .NET Framework.
+
+But no one wants to be in the “legacy” tribe because there is no glory in keeping 
+the lights on at Microsoft. .NET Core was clearly the future and, one by one, the.NET 
+groups at Microsoft argued that their technology and APIs should be part of .NET Core. 
+The .NET Core APIs were gradually expanded, and the result was an incoherent mess, 
+with half-hearted attempts to differentiate .NET Core and .NET Framework and 
+standardize the APIs.
+
+To clean up the mess, Microsoft has merged .NET Core and .NET Framework into .NET, dropping the
+Core part of the name. “.NET” is a name I like to think was chosen on the way 
+out of the office on a holiday weekend but which I suspect is the result of many months 
+of heated argument.
+
+The problem with dropping Core from the name is that it cannot be carried out consistently. 
+The name ASP.NET Core originally denoted the .NET Core version of ASP.NET, and going back 
+to that name would be even more confusing.
+
+The result is that even Microsoft can’t decide what name to use. You will see 
+the term ASP.NET Core 6 in a lot of the developer documentation — and that’s the name 
+I use in this book — but you will also see ASP.NET Core in .NET 6, especially in press 
+releases and marketing material. It is not clear which name will win out, but until 
+there is clarity, you should take care to determine whether you are using .NET
+Framework, .NET Core, or .NET.

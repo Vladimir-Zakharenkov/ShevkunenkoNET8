@@ -98,7 +98,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Let’s Encrypt on IIS", "L
 		Let’s Encrypt on IIS\Let’s Encrypt on IIS.txt = Let’s Encrypt on IIS\Let’s Encrypt on IIS.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendFile", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\SendFile\SendFile.csproj", "{3B04411B-B2C6-404F-A47B-64B7BE36711A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SendFile", "Metanit.com\Руководство по ASP.NET Core 8\Глава 02 - Основы в ASP.NET Core\SendFile\SendFile.csproj", "{3B04411B-B2C6-404F-A47B-64B7BE36711A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adam Freeman ProAspNetCore7", "Adam Freeman ProAspNetCore7", "{4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-01-Putting ASP.NET Core in Context", "Chapter-01-Putting ASP.NET Core in Context", "{B00B94CD-E5CC-4AC8-BF11-1F9951E9D27D}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page001.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page001.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page002.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page002.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page003.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page003.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page004.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page004.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page005.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page005.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page006.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page006.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page007.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page007.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page008.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page008.txt
+		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page009.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page009.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -202,6 +217,7 @@ Global
 		{E575C154-F24F-4F35-A2B6-722738A8AC62} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A} = {7655687B-9A51-4272-BB15-A16578D31AEC}
+		{B00B94CD-E5CC-4AC8-BF11-1F9951E9D27D} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

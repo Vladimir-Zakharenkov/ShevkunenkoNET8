@@ -1,0 +1,51 @@
+PUTTING PATTERNS IN THEIR PLACE
+
+Design patterns provoke strong reactions, as the emails I receive from readers will testify. 
+A substantial proportion of the messages I receive are complaints that I have not applied 
+a pattern correctly.
+
+Patterns are just other people’s solutions to the problems they encountered in other 
+projects. If you find yourself facing the same problem, understanding how it has been 
+solved before can be helpful. But that doesn’t mean you have to follow the pattern exactly, 
+or at all, as long as you understand the consequences. If a pattern is intended to make 
+projects manageable, for example, and you choose to deviate from that pattern, then you 
+must accept that your project may be more difficult to manage. But a pattern followed 
+slavishly can be worse than no pattern at all, and no pattern is suited to every project.
+
+My advice is to use patterns freely, adapt them as necessary, and ignore zealots 
+who confuse patterns with commandments.
+
+1.1.2	Understanding Razor Pages
+
+One drawback of the MVC Framework is that it can require a lot of preparatory work before 
+an application can start producing content. Despite its structural problems, one advantage 
+of Web Pages was that simple applications could be created in a couple of hours.
+
+Razor Pages takes the development ethos of Web Pages and implements it using 
+the platform features originally developed for the MVC Framework. Code and 
+content are mixed to form self-contained pages; this re-creates the speed 
+of Web Pages development without some of the underlying technical problems
+(although the issue of scaling up complex projects can still be an issue).
+
+Razor Pages can be used alongside the MVC Framework, which is how I tend 
+to use them. I write the main parts of the application using the MVC Framework 
+and use Razor Pages for the secondary features, such as administration 
+and reporting tools. You can see this approach in Chapters 7–11, where I develop a
+realistic ASP.NET Core application called SportsStore.
+
+1.1.3	Understanding Blazor
+
+The rise of JavaScript client-side frameworks can be a barrier for C# developers, 
+who must learn a different— and somewhat idiosyncratic—programming language. 
+I have come to love JavaScript, which is as fluid and expressive as C#. 
+But it takes time and commitment to become proficient in a new programming language,
+especially one that has fundamental differences from C#.
+
+Blazor attempts to bridge this gap by allowing C# to be used to write client-side 
+applications. There are two versions of Blazor: Blazor Server and Blazor WebAssembly. 
+Blazor Server is a stable and supported part of ASP.NET Core, and it works by using 
+a persistent HTTP connection to the ASP.NET Core server, where the application’s 
+C# code is executed. Blazor WebAssembly is an experimental release that goes one 
+step further and executes the application’s C# code in the browser. Neither version 
+of Blazor is suited for all situations, as I explain in Chapter 33, but they both 
+give a sense of direction for the future of ASP.NET Core development.

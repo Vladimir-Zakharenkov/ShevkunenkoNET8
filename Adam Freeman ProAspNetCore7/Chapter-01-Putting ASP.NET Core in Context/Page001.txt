@@ -1,0 +1,23 @@
+CHAPTER 1
+
+Putting ASP.NET Core in Context
+
+This chapter covers
+
+•	Putting ASP.NET Core in context
+•	Understanding the role of the ASP.NET Core platform
+•	Putting the ASP.NET Core application frame works in context
+•	Understanding the structure of this book
+•	Getting support when something doesn’t work
+
+ASP.NET Core is Microsoft’s web development platform. The original ASP.NET was introduced 
+in 2002, and it has been through several reinventions and reincarnations to become 
+ASP.NET Core 7, which is the topic of this book.
+
+ASP.NET Core consists of a platform for processing HTTP requests, a series of principal 
+frameworks for creating applications, and secondary utility frameworks that provide 
+supporting features, as illustrated by Figure 1-1.
+
+Figure 1-1. The structure of ASP.NET Core
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-1-1.png)
+

@@ -1,0 +1,49 @@
+gRPC is an emerging standard for cross-platform remote procedure calls (RPCs) 
+over HTTP that was originally created by Google (the g in gRPC) and offers efficiency 
+and scalability benefits. gRPC may be the future standard for web services, 
+but it cannot be used in web applications because it requires low-level
+control of the HTTP messages that it sends, which browsers do not allow. 
+(There is a browser library that allows gRPC to be used via a proxy server, 
+but that undermines the benefits of using gRPC.) Until gRPC can be used in the browser, 
+its inclusion in ASP.NET Core is of interest only for projects that use it for
+communication between back-end servers, for which many alternative protocols exist. 
+I may cover gRPC in future editions of this book but not until it can be used 
+in the browser or becomes the dominant data-center protocol.
+
+1.2	Understanding This Book
+
+To get the most from this book, you should be familiar with the basics of web development, 
+understand how HTML and CSS work, and have a working knowledge of C#. Don’t worry 
+if you haven’t done any client-side development, such as JavaScript. The emphasis 
+in this book is on C# and ASP.NET Core, and you will be able to pick up everything 
+you need to know as you progress through the chapters. In Chapter 5, I summarize the
+most important C# features for ASP.NET Core development.
+
+1.2.1	What Software Do I Need to Follow the Examples?
+
+You need a code editor (either Visual Studio or Visual Studio Code), the .NET Core 
+Software Development Kit, and SQL Server LocalDB. All are available for use 
+from Microsoft without charge, and Chapter 2 contains instructions for installing 
+everything you need.
+
+1.2.2	What Platform Do I Need to Follow the Examples?
+
+This book is written for Windows. I used Windows 10 Pro, but any version of Windows 
+supported by Visual Studio, Visual Studio Code, and .NET Core should work. ASP.NET Core 
+is supported on other platforms, but the examples in this book rely on 
+the SQL Server LocalDB feature, which is specific to Windows. You can
+contact me at adam@adam-freeman.com if you are trying to use another platform, 
+and I will give you some general pointers for adapting the examples, albeit 
+with the caveat that I won’t be able to provide detailed help if you get stuck.
+
+1.2.3	What If I Have Problems Following the Examples?
+
+The first thing to do is to go back to the start of the chapter and begin again. 
+Most problems are caused by missing a step or not fully following a listing. 
+Pay close attention to the emphasis in code listings, which
+highlights the changes that are required.
+
+Next, check the errata/corrections list, which is included in the book’s 
+GitHub repository. Technical books are complex, and mistakes are inevitable, 
+despite my best efforts and those of my editors. Check the
+errata list for the list of known errors and instructions to resolve them.

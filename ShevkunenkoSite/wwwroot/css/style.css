@@ -12091,7 +12091,7 @@ body {
   border-color: hsla(0deg, 90%, 40%, 0.9);
   box-shadow: 0.1em 0.1em 0.1em hsla(0deg, 0%, 0%, 0.6);
   opacity: 0.9 !important;
-  margin: 0.6rem auto 0.8rem;
+  margin: 0.5rem auto;
 }
 
 .footer-image img {
@@ -12253,13 +12253,13 @@ a:active, .dropdown:active {
 }
 
 .cardborder a, .borderforitem {
-  border: 0.2rem ridge transparent;
+  border: 2px ridge transparent;
   transition: all 0.6s ease-in-out;
   color: black;
 }
 
 .cardborder a:hover, .borderforitem:hover {
-  border: 0.2rem ridge rgba(194, 10, 41, 0.9);
+  border: 2px ridge rgba(194, 10, 41, 0.9);
   opacity: 0.9;
   transition: all 0.6s ease-in-out;
   color: rgba(194, 10, 41, 0.9);

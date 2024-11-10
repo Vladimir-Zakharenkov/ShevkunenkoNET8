@@ -1,0 +1,51 @@
+If you still have problems, then download the project for the chapter 
+you are reading from the book’s GitHub repository, 
+https://github.com/apress/pro-asp.net-core-6,
+and compare it to your project. I create the code for the GitHub repository 
+by working through each chapter, so you should have the same
+files with the same contents in your project.
+
+If you still can’t get the examples working, then you can contact me 
+at adam@adam-freeman.com for help. Please make it clear in your email which 
+book you are reading and which chapter/example is causing the problem. 
+Please remember that I get a lot of emails and that I may not respond immediately.
+
+1.2.4	What If I Find an Error in the Book?
+
+You can report errors to me by email at adam@adam-freeman.com, although I ask 
+that you first check the errata/corrections list for this book, which you 
+can find in the book’s GitHub repository at https://github.com/apress/pro-asp.net-core-6,
+in case it has already been reported.
+
+I add errors that are likely to cause confusion to readers, especially problems 
+with example code, to the errata/corrections file on the GitHub repository, 
+with a grateful acknowledgment to the first reader who reported them. 
+I keep a list of less serious issues, which usually means errors in the text surrounding
+examples, and I fix them when I write a new edition.
+
+ERRATA BOUNTY
+
+Manning has agreed to give a free ebook to readers who are the first to report errors
+that make it onto the GitHub errata list for this book, which is for serious issues that will
+disrupt a reader’s progress. Readers can select any Manning ebook, not just my books.
+
+This is an entirely discretionary and experimental program. Discretionary means that
+only I decide which errors are listed in the errata and which reader is the first to make a
+report. Experimental means Manning may decide not to give away any more books at any
+time for any reason. There are no appeals, and this is not a promise or a contract or any
+kind of formal offer or competition. Or, put another way, this is a nice and informal way
+to say thank you and to encourage readers to report mistakes that I have missed when
+writing this book.
+
+1.2.5	What Does This Book Cover?
+
+I have tried to cover the features that will be required by most ASP.NET Core 
+projects. This book is split into four parts, each of which covers a set 
+of related topics.
+
+Part 1: Introducing ASP.NET Core
+
+This part of the book introduces ASP.NET Core. In addition to setting up your 
+development environment and creating your first application, you’ll learn about 
+the most important C# features for ASP.NET Core development and how 
+to use the ASP.NET Core development tools.

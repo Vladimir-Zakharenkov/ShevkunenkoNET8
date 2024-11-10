@@ -1,0 +1,46 @@
+1.1.4	Understanding the Utility Frameworks
+
+Two frameworks are closely associated with ASP.NET Core but are not used directly 
+to generate HTML content or data. Entity Framework Core is Microsoft’s object-relational 
+mapping (ORM) framework, which represents data stored in a relational database 
+as .NET objects. Entity Framework Core can be used in any .NET application, 
+and it is commonly used to access databases in ASP.NET Core applications.
+
+ASP.NET Core Identity is Microsoft’s authentication and authorization framework, 
+and it is used to validate user credentials in ASP.NET Core applications 
+and restrict access to application features.
+
+I describe only the basic features of both frameworks in this book, focusing 
+on the capabilities required by most ASP.NET Core applications. But these are 
+both complex frameworks that are too large to describe in
+detail in what is already a large book about ASP.NET Core.
+
+TOPICS FOR FUTURE EDITIONS
+
+I don’t have space in this book to cover every ASP.NET Core, Entity Framework Core, 
+and ASP.NET Core Identity feature, so I have focused on those aspects that most 
+projects require. If there are topics you think I should include in the next 
+edition or in new deep-dive books, then please send me your suggestions at 
+adam@adam-freeman.com.
+
+1.1.5	Understanding the ASP.NET Core Platform
+
+The ASP.NET Core platform contains the low-level features required to receive 
+and process HTTP requests and create responses. There is an integrated HTTP server, 
+a system of middleware components to handle requests, and core features that 
+the application frameworks depend on, such as URL routing and the Razor
+view engine.
+
+Most of your development time will be spent with the application frameworks, 
+but effective ASP.NET Core use requires an understanding of the powerful capabilities 
+that the platform provides, without which the higher-level frameworks could not function. 
+I demonstrate how the ASP.NET Core platform works in detail in Part 2 of this 
+book and explain how the features it provides underpin every aspect of ASP.NET Core
+development.
+
+I have not described two notable platform features in this book: SignalR and gRPC. 
+SignalR is used to create low-latency communication channels between applications. 
+It provides the foundation for the Blazor Server framework that I describe in 
+Part 4 of this book, but SignalR is rarely used directly, and there are
+better alternatives for those few projects that need low-latency messaging, 
+such as Azure Event Grid or Azure Service Bus.

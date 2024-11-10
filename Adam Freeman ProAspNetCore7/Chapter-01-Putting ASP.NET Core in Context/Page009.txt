@@ -1,0 +1,41 @@
+I try to reply promptly, but I get a lot of email, and sometimes I get a backlog, 
+especially when I have my head down trying to finish writing a book. I always 
+try to help readers who are stuck with an example in the book, although 
+I ask that you follow the steps described earlier in this chapter before 
+contacting me.
+
+While I welcome reader emails, there are some common questions for which 
+the answers will always be no. I am afraid that I won’t write the code for your 
+new startup, help you with your college assignment, get involved in 
+your development team’s design dispute, or teach you how to program.
+
+1.2.8	What If I Really Enjoyed This Book?
+
+Please email me at adam@adam-freeman.com and let me know. It is always 
+a delight to hear from a happy reader, and I appreciate the time it takes 
+to send those emails. Writing these books can be difficult, and those
+emails provide essential motivation to persist at an activity that can 
+sometimes feel impossible.
+
+1.2.9	What If This Book Has Made Me Angry and I Want to Complain?
+
+You can still email me at adam@adam-freeman.com, and I will still try to help you. 
+Bear in mind that I can only help if you explain what the problem is and what 
+you would like me to do about it. You should understand that sometimes the only 
+outcome is to accept I am not the writer for you and that we will have closure only
+when you return this book and select another. I’ll give careful thought to whatever 
+has upset you, but after 25 years of writing books, I have come to understand 
+that not everyone enjoys reading the books I like to write.
+
+Summary
+
+•	ASP.NET Core is a cross-platform framework for creating web applications.
+•	The ASP.NET Core platform is a powerful foundation on which application
+	frameworks have been built.
+•	The MVC Framework was the original ASP.NET Core framework. It is powerful
+	and flexible but takes time to prepare.
+•	The Razor Pages framework is a newer addition, which requires less initial preparation
+	but can be more difficult to manage in complex projects.
+•	Blazor is a framework that allows client-side applications to be written in C#,
+	rather than JavaScript. There are versions of Blazor that execute the C# code
+	within the ASP.NET Core server and entirely within the browser.
