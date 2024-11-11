@@ -1,0 +1,22 @@
+Note This book describes ASP.NET Core development for Windows. It is possible 
+to develop and run ASP. NET Core applications on Linux and macOS, but most readers 
+use Windows, and that is what I have chosen to focus on. Almost all the examples 
+in this book rely on LocalDB, which is a Windows-only feature provided by
+SQL Server that is not available on other platforms. If you want to follow 
+this book on another platform, then you can contact me using the email 
+address in Chapter 1, and I will try to help you get started.
+
+Installing Visual Studio
+
+ASP.NET Core 6 requires Visual Studio 2022. I use the free Visual Studio 2022 
+Community Edition, which can be downloaded from www.visualstudio.com. 
+Run the installer, and you will see the prompt shown in Figure 2-1.
+
+Figure 2-1. Starting the Visual Studio installer
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-1.webp)
+
+Click the Continue button, and the installer will download the installation files, as
+shown in figure 2.2.
+
+Figure 2.2 Downloading the Visual Studio installer files
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-2.webp)

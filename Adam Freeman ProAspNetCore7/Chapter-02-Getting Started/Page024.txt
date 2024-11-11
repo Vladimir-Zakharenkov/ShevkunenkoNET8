@@ -1,0 +1,60 @@
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using FirstProject.Models;
+
+namespace FirstProject.Controllers;
+
+public class HomeController : Controller {
+		private readonly ILogger<HomeController> _logger;
+
+	public HomeController(ILogger<HomeController> logger) {
+		_logger = logger;
+	}
+
+	public IActionResult Index() {
+		return View();
+	}
+
+	public IActionResult Privacy() {
+		return View();
+	}
+
+	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
+		NoStore = true)]
+	public IActionResult Error() {
+
+		return View(new ErrorViewModel { RequestId = Activity.Current?.Id
+			?? HttpContext.TraceIdentifier });
+	}
+}
+
+Using the code editor, replace the contents of the HomeController.cs file so that it
+matches listing 2.6. I have removed all but one of the methods, changed the result type
+and its implementation, and removed the using statements for unused namespaces.
+
+Listing 2.6 Changing the HomeController.cs file in the Controllers folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace FirstProject.Controllers {
+	public class HomeController : Controller {
+
+	public string Index() {
+			return "Hello World";
+		}
+	}
+}
+
+The result is that the Home controller defines a single action, named Index. These
+changes don’t produce a dramatic effect, but they make for a nice demonstration. I
+have changed the method named Index so that it returns the string Hello World.
+Using the PowerShell prompt, run the dotnet run command in the FirstProject
+folder again and use the browser to request http://localhost:5000. The configuration
+of the project created by the template in listing 2.3 means the HTTP request will be
+processed by the Index action defined by the Home controller. Put another way, the
+request will be processed by the Index method defined by the HomeController class.
+The string produced by the Index method is used as the response to the browser’s
+HTTP request, as shown in figure 2-15.
+
+Figure 2-15 The output from the action method
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-15.webp)

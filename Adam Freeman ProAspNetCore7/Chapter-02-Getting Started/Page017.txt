@@ -1,0 +1,44 @@
+Installing the .NET SDK
+
+The Visual Studio Code installer does not include the .NET SDK, which 
+must be installed separately. Go to
+https://dotnet.microsoft.com/download/dotnet-core/7.0 and download 
+the installer for version 7.0.0 of the .NET SDK, which is the long-term 
+support release at the time of writing. Run the installer; once the
+installation is complete, open a new PowerShell command prompt from 
+the Windows Start menu and run the command shown in Listing 2-2, 
+which displays a list of the installed .NET SDKs.
+
+Listing 2-2. Listing the Installed SDKs
+
+dotnet --list-sdks
+
+Here is the output from a fresh installation on a Windows machine that has not been
+used for .NET:
+
+7.0.100 [C:\Program Files\dotnet\sdk]
+
+If you have been working with different versions of .NET, you may see a longer list, like
+this one:
+
+5.0.100 [C:\Program Files\dotnet\sdk]
+6.0.100 [C:\Program Files\dotnet\sdk]
+6.0.113 [C:\Program Files\dotnet\sdk]
+6.0.202 [C:\Program Files\dotnet\sdk]
+6.0.203 [C:\Program Files\dotnet\sdk]
+7.0.100 [C:\Program Files\dotnet\sdk]
+
+Regardless of how many entries there are, you must ensure there is one for the 7.0.1xx
+version, where the last two digits may differ.
+
+Installing SQL Server LocalDB
+
+The database examples in this book require LocalDB, which is a zero-configuration
+version of SQL Server that can be installed as part of the SQL Server Express edition,
+which is available for use without charge from 
+https://www.microsoft.com/en-in/sql-server/sql-server-downloads. 
+Download and run the Express edition installer and
+select the Custom option, as shown in figure 2-6.
+
+Figure 2-6 Selecting the installation option for SQL Server
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-6.webp)

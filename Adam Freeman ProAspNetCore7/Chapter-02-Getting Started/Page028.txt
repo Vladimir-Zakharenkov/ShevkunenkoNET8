@@ -1,0 +1,36 @@
+This is an expression that will be interpreted by Razor, which is the component that
+processes the contents of views and generates HTML that is sent to the browser. Razor
+is a view engine, and the expressions in views are known as Razor expressions.
+
+The Razor expression in listing 2.8 tells Razor that I chose not to use a layout, which
+is like a template for the HTML that will be sent to the browser (and which I describe in
+chapter 22). To see the effect of creating the view, use Control+C to stop ASP.NET Core
+if it is running and use the dotnet run command to compile and start the application
+again. Use a browser to request http://localhost:5000, and you will see the result shown
+in figure 2-18.
+
+Figure 2-18 Rendering a view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-18.webp)
+
+When I first edited the Index action method, it returned a string value. This meant
+that ASP.NET Core did nothing except pass the string value as is to the browser. Now
+that the Index method returns a ViewResult, Razor is used to process a view and render
+an HTML response. Razor was able to locate the view because I followed the standard
+naming convention, which is to put view files in a folder whose name matched the
+controller that contains the action method. In this case, this meant putting the view file
+in the Views/Home folder, since the action method is defined by the Home controller.
+
+I can return other results from action methods besides strings and ViewResult
+objects. For example, if I return a RedirectResult, the browser will be redirected to
+another URL. If I return an HttpUnauthorizedResult, I can prompt the user to log
+in. These objects are collectively known as action results. The action result system lets you
+encapsulate and reuse common responses in actions. I’ll tell you more about them and
+explain the different ways they can be used in chapter 19.
+
+Adding dynamic output
+
+The whole point of a web application is to construct and display dynamic output. The
+job of the action method is to construct data and pass it to the view so it can be used to
+create HTML content based on the data values. Action methods provide data to views
+by passing arguments to the View method, as shown in listing 2.9. The data provided to
+the view is known as the view model.

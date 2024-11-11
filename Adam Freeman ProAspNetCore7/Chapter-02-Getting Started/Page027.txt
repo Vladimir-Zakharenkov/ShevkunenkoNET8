@@ -1,0 +1,38 @@
+Figure 2-17 Selecting a Visual Studio item template
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-17.webp)
+
+Visual Studio Code doesn’t provide item templates. Instead, right-click the Views/
+Home folder in the file explorer pane and select New File from the pop-up menu. Set
+the name of the file to MyView.cshtml and press Return. The file will be created and
+opened for editing. Add the content shown in listing 2.8.
+
+TIP
+It is easy to end up creating the view file in the wrong folder. If you didn’t
+end up with a file called MyView.cshtml in the Views/Home folder, then either
+drag the file into the correct folder or delete the file and try again.
+
+Listing 2.8 The contents of the MyView.cshtml file in the Views/Home folder
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width" />
+		<title>Index</title>
+	</head>
+	<body>
+		<div>
+			Hello World (from the view)
+		</div>
+	</body>
+</html>
+The new contents of the view file are mostly HTML. The exception is the part that
+looks like this:
+...
+@{
+Layout = null;
+}
+...

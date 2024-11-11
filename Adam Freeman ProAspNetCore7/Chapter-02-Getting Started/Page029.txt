@@ -1,0 +1,52 @@
+Listing 2.9 Using a view model in the HomeController.cs file in the Controllers folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace FirstProject.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			int hour = DateTime.Now.Hour;
+			string viewModel =
+				hour < 12 ? "Good Morning" : "Good Afternoon";
+			return View("MyView", viewModel);
+		}
+	}
+}
+
+The view model in this example is a string, and it is provided to the view as the second
+argument to the View method. Listing 2.10 updates the view so that it receives and uses
+the view model in the HTML it generates.
+
+Listing 2.10 Using a view model in the MyView.cshtml file in the Views/Home folder
+
+@model string
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width" />
+		<title>Index</title>
+	</head>
+	<body>
+		<div>
+			@Model World (from the view)
+		</div>
+	</body>
+</html>
+
+The type of the view model is specified using the @model expression, with a lowercase m.
+The view model value is included in the HTML output using the @Model expression,
+with an uppercase M. (It can be difficult at first to remember which is lowercase and
+which is uppercase, but it soon becomes second nature.)
+
+When the view is rendered, the view model data provided by the action method is
+inserted into the HTML response. Use Control+C to stop ASP.NET Core and use the
+dotnet run command to build and start it again. Use a browser to request http://
+localhost:5000, and you will see the output shown in figure 2-19 (although you may see
+the morning greeting if you are following this example before midday).
+
+Figure 2-19 Generating dynamic content
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-19.webp)

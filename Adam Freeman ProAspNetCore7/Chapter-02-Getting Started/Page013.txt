@@ -1,0 +1,36 @@
+CHAPTER 2
+
+Getting Started
+
+This chapter covers
+
+•	Installing the code editor and SDK required for ASP.NET Core development
+•	Creating a simple ASP.NET Core project
+•	Responding to HTTP requests using a combination of code and markup
+
+The best way to appreciate a software development framework is to jump 
+right in and use it. In this chapter, I explain how to prepare for 
+ASP.NET Core development and how to create and run an ASP.NET Core
+application.
+
+2.1	Choosing a Code Editor
+
+Microsoft provides a choice of tools for ASP.NET Core development: 
+Visual Studio and Visual Studio Code. Visual Studio is the traditional 
+development environment for .NET applications, and it offers an enormous
+range of tools and features for developing all sorts of applications. 
+But it can be resource-hungry and slow, and some of the features are 
+so determined to be helpful they get in the way of development.
+
+Visual Studio Code is a lightweight alternative that doesn’t have 
+the bells and whistles of Visual Studio but is perfectly capable 
+of handling ASP.NET Core development.
+
+All the examples in this book include instructions for both editors, 
+and both Visual Studio and Visual Studio Code can be used without charge, 
+so you can use whichever suits your development style.
+
+If you are new to .NET development, then start with Visual Studio. It provides 
+more structured support for creating the different types of files used in ASP.NET 
+Core development, which will help ensure you get the expected results 
+from the code examples.

@@ -1,0 +1,31 @@
+When I return a ViewResult object from an action method, I am instructing ASP.NET
+Core to render a view. I create the ViewResult by calling the View method, specifying
+the name of the view that I want to use, which is MyView.
+
+Use Control+C to stop ASP.NET Core and then use the dotnet run command to
+compile and start it again. Use the browser to request http://localhost:5000, and you
+will see ASP.NET Core trying to find the view, as shown by the error message displayed
+in figure 2-16.
+
+Figure 2-16 Trying to find a view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-16.webp)
+
+This is a helpful error message. It explains that ASP.NET Core could not find the view
+I specified for the action method and explains where it looked. Views are stored in the
+Views folder, organized into subfolders. Views that are associated with the Home controller,
+for example, are stored in a folder called Views/Home. Views that are not specific
+to a single controller are stored in a folder called Views/Shared. The template
+used to create the project added the Home and Shared folders automatically and added
+some placeholder views to get the project started.
+
+If you are using Visual Studio, right-click the Views/Home folder in the Solution
+Explorer and select Add > New Item from the pop-up menu. Visual Studio will present
+you with a list of templates for adding items to the project. Locate the Razor View
+- Empty item, which can be found in the ASP.NET Core > Web > ASP.NET section, as
+shown in figure 2-17.
+
+For Visual Studio, you may need to click the Show All Templates button before the
+list of templates is displayed. Set the name of the new file to MyView.cshtml and click
+the Add button. Visual Studio will add a file named MyView.cshtml to the Views/Home
+folder and will open it for editing. Replace the contents of the file with those shown in
+listing 2.8.

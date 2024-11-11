@@ -1,0 +1,27 @@
+When the installer files have been downloaded, you will be presented 
+with a set of installation options, grouped into workloads. Ensure that the 
+“ASP.NET and web development” workload is checked, as shown in Figure 2-3.
+
+Figure 2-3. Selecting the workload
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-3.webp)
+
+Select the “Individual components” section at the top of the window and ensure 
+the SQL Server Express 2019 LocalDB option is checked, as shown in Figure 2-4. 
+This is the database component that I will be using to store data in later chapters.
+
+Figure 2-4. Ensuring LocalDB is installed
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-4.webp)
+
+Click the Install button, and the files required for the selected workload will 
+be downloaded and installed. To complete the installation, a reboot may be required.
+
+NOTE 
+You must also install the SDK, as described in the following section.
+
+Installing the .NET SDK
+
+The Visual Studio installer will install the .NET Software Development Kit (SDK), 
+but it may not install the version required for the examples in this book. 
+Go to https://dotnet.microsoft.com/download/dotnet-core/7.0
+and download the installer for version 7.0.0 of the .NET SDK, which is 
+the long-term support release at the time of writing.

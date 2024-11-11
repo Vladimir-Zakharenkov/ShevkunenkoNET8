@@ -1,0 +1,38 @@
+On the Instance Configuration page, select the “Default instance” option, as shown in
+figure 2-9.
+
+Figure 2-9 Configuring the database
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-9.webp)
+
+Continue to work through the installation process, selecting the default values, and
+complete the installation.
+
+2.2 Creating an ASP.NET Core project
+
+The most direct way to create a project is to use the command line. Open a new Power-
+Shell command prompt from the Windows Start menu, navigate to the folder where
+you want to create your ASP.NET Core projects, and run the commands shown in listing 2.3.
+
+TIP
+You can download the example project for this chapter—and for all the
+other chapters in this book—from https://github.com/manningbooks/pro-asp.net-core-7. 
+See chapter 1 for how to get help if you have problems running the examples.
+
+Listing 2.3 Creating a new project
+
+dotnet new globaljson --sdk-version 7.0.100 --output FirstProject
+dotnet new mvc --no-https --output FirstProject --framework net7.0
+dotnet new sln -o FirstProject
+dotnet sln FirstProject add FirstProject
+
+The first command creates a folder named FirstProject and adds to it a file named
+global.json, which specifies the version of .NET that the project will use; this ensures
+you get the expected results when following the examples. The second command creates
+a new ASP.NET Core project. The .NET SDK includes a range of templates for
+starting new projects, and the mvc template is one of the options available for ASP.NET
+Core applications. This project template creates a project that is configured for the
+MVC Framework, which is one of the application types supported by ASP.NET Core.
+Don’t be intimidated by the idea of choosing a framework, and don’t worry if you have
+not heard of MVC—by the end of the book, you will understand the features that each
+offers and how they fit together. The remaining commands create a solution file, which
+allows multiple projects to be used together.

@@ -1,0 +1,26 @@
+2.3.1 Understanding endpoints
+
+In an ASP.NET Core application, incoming requests are handled by endpoints. The endpoint
+that produced the response in figure 2.14 is an action, which is a method that is
+written in C#. An action is defined in a controller, which is a C# class that is derived from
+the Microsoft.AspNetCore.Mvc.Controller class, the built-in controller base class.
+
+Each public method defined by a controller is an action, which means you can invoke
+the action method to handle an HTTP request. The convention in ASP.NET Core projects
+is to put controller classes in a folder named Controllers, which was created by
+the template used to set up the project.
+
+The project template added a controller to the Controllers folder to help jumpstart
+development. The controller is defined in the class file named HomeController.
+cs. Controller classes contain a name followed by the word Controller, which
+means that when you see a file called HomeController.cs, you know that it contains
+a controller called Home, which is the default controller that is used in ASP.NET Core
+applications.
+
+TIP
+Don’t worry if the terms controller and action don’t make immediate sense.
+Just keep following the example, and you will see how the HTTP request sent by
+the browser is handled by C# code.
+
+Find the HomeController.cs file in the Solution Explorer or Explorer pane and click
+it to open it for editing. You will see the following code:

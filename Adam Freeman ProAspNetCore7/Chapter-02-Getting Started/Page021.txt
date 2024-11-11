@@ -1,0 +1,22 @@
+2.2.2 Opening the project with Visual Studio Code
+
+Start Visual Studio Code and select File > Open Folder. Navigate to the FirstProject
+folder and click the Select Folder button. Visual Studio Code will open the project and
+display its contents in the Explorer pane, as shown in figure 2-12. (The default dark
+theme used in Visual Studio Code doesn’t show well on the page, so I have changed to
+the light theme for the screenshots in this book.)
+
+Figure 2-12 Opening the project in Visual Studio Code
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-12.webp)
+
+Additional configuration is required the first time you open a .NET project in Visual
+Studio Code. The first step is to click the Program.cs file in the Explorer pane. This
+will trigger a prompt from Visual Studio Code to install the features required for C#
+development, as shown in figure 2.13. If you have not opened a C# project before, you
+will see a prompt that offers to install the required assets, also shown in figure 2-13.
+
+Figure 2-13 Installing Visual Studio Code C# features
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-13.webp)
+
+Click the Install or Yes button, as appropriate, and Visual Studio Code will download
+and install the features required for .NET projects.

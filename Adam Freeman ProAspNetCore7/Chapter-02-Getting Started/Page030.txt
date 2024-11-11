@@ -1,0 +1,26 @@
+2.3.4 Putting the pieces together
+
+It is a simple result, but this example reveals all the building blocks you need to create
+a simple ASP.NET Core web application and to generate a dynamic response.
+The ASP.NET Core platform receives an HTTP request and uses the routing system
+to match the request URL to an endpoint. The endpoint, in this case, is the Index
+action method defined by the Home controller. The method is invoked and produces
+a ViewResult object that contains the name of a view and a view model object. The
+Razor view engine locates and processes the view, evaluating the @Model expression
+to insert the data provided by the action method into the response, which is returned
+to the browser and displayed to the user. There are, of course, many other features
+available, but this is the essence of ASP.NET Core, and it is worth bearing this simple
+sequence in mind as you read the rest of the book.
+
+Summary
+
+•	ASP.NET Core development can be done with Visual Studio or Visual Studio
+	Code, or you can choose your own code editor.
+
+•	Most code editors provide integrated code builds, but the most reliable way to get
+	consistent results across tools and platforms is by using the dotnet command.
+
+•	ASP.NET Core relies on endpoints to process HTTP requests.
+
+•	Endpoints can be written entirely in C# or use HTML that has been annotated
+	with code expressions.

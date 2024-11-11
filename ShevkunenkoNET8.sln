@@ -115,6 +115,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-01-Putting ASP.NET 
 		Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page009.txt = Adam Freeman ProAspNetCore7\Chapter-01-Putting ASP.NET Core in Context\Page009.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-02-Getting Started", "Chapter-02-Getting Started", "{BF8B993E-FB35-4F65-9155-4D3F8B5DCA78}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page013.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page013.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\page014.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\page014.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page015.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page015.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page016.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page016.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page017.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page017.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page018.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page018.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page019.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page019.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page020.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page020.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page021.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page021.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page022.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page022.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page023.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page023.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page024.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page024.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page025.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page025.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page026.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page026.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page027.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page027.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page028.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page028.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page029.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page029.txt
+		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page030.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page030.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -218,6 +240,7 @@ Global
 		{64DAAD68-7B15-4FB6-B291-F189C9DE366C} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{B00B94CD-E5CC-4AC8-BF11-1F9951E9D27D} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{BF8B993E-FB35-4F65-9155-4D3F8B5DCA78} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

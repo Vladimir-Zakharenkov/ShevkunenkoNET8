@@ -1,0 +1,59 @@
+2.3 Running the ASP.NET Core application
+
+Visual Studio and Visual Studio Code can both run projects directly, but I use the command
+line tools throughout this book because they are more reliable and work more
+consistently, helping to ensure you get the expected results from the examples.
+
+When the project is created, a file named launchSettings.json is created in the
+Properties folder, and it is this file that determines which HTTP port ASP.NET Core
+will use to listen for HTTP requests. Open this file in your chosen editor and change the
+ports in the URLs it contains to 5000, as shown in listing 2.4.
+
+Listing 2.4 Setting the Port in the launchSettings.json File in the Properties Folder
+
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:5000",
+			"sslPort": 0
+		}
+	},
+	"profiles": {
+		"FirstProject": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5000",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+		}
+	},
+	"IIS Express": {
+		"commandName": "IISExpress",
+		"launchBrowser": true,
+		"environmentVariables": {
+			"ASPNETCORE_ENVIRONMENT": "Development"
+	}
+	}
+	}
+}
+
+It is only the URL in the profiles section that affects the .NET command-line tools,
+but I have changed both of them to avoid any problems. Open a new PowerShell command
+prompt from the Windows Start menu; navigate to the FirstProject project
+folder, which is the folder that contains the FirstProject.csproj file; and run the
+command shown in listing 2.5.
+
+Listing 2.5 Starting the example application
+dotnet run
+
+The dotnet run command compiles and starts the project. Once the application has
+started, open a new browser window and request http://localhost:5000, which will produce
+the response shown in figure 2-14.
+
+Figure 2-14 Running the example project
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-14.webp)
+
+When you are finished, use Control+C to stop the ASP.NET Core application.

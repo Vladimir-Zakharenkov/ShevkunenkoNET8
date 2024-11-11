@@ -1,0 +1,24 @@
+NOTE
+This is one of a small number of chapters in which I use a project template
+that contains placeholder content. I don’t like using predefined project
+templates because they encourage developers to treat important features, such
+as authentication, as black boxes. My goal in this book is to give you the knowledge
+to understand and manage every aspect of your ASP.NET Core applications,
+and that’s why I start with an empty ASP.NET Core project. This chapter is
+about getting started quickly, for which the mvc template is well-suited.
+
+2.2.1 Opening the project using Visual Studio
+
+Start Visual Studio and click the “Open a project or solution” button, as shown in figure
+2-10.
+
+Figure 2-10 Opening the ASP.NET Core project
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-10.webp)
+
+Navigate to the FirstProject folder, select the FirstProject.sln file, and click the
+Open button. Visual Studio will open the project and display its contents in the Solution
+Explorer window, as shown in figure 2-11. The files in the project were created by
+the project template.
+
+Figure 2-11 Opening the project in Visual Studio
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-11.webp)

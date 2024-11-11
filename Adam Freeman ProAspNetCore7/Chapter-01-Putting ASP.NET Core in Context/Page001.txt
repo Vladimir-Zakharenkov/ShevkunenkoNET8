@@ -19,5 +19,5 @@ frameworks for creating applications, and secondary utility frameworks that prov
 supporting features, as illustrated by Figure 1-1.
 
 Figure 1-1. The structure of ASP.NET Core
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-1-1.png)
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-1-1.webp)
 

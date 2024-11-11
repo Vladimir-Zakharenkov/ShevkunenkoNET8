@@ -1,0 +1,18 @@
+Once you have selected the Custom option, you will be prompted to select 
+a download location for the installation files. Click the Install button, 
+and the download will begin.
+
+When prompted, select the option to create a new SQL Server installation, 
+as shown in Figure 2-7.
+
+Figure 2-7. Selecting an installation option
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-7.webp)
+
+Work through the installation process, selecting the default options as they are presented.
+When you reach the Feature Selection page, ensure that the LocalDB option
+is checked, as shown in figure 2-8. (You may want to uncheck the Machine Learning
+Services option, which is not used in this book and takes a long time to download and
+install.)
+
+Figure 2-8. Selecting the LocalDB feature
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-8.webp)

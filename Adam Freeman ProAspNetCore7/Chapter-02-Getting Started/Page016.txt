@@ -1,0 +1,36 @@
+
+Run the installer; once the installation is complete, open a new PowerShell 
+command prompt from the Windows Start menu and run the command shown 
+in Listing 2-1, which displays a list of the installed .NET SDKs.
+
+Listing 2-1. Listing the Installed SDKs
+
+dotnet --list-sdks
+
+Here is the output from a fresh installation on a Windows machine that has not been
+used for .NET:
+
+7.0.100 [C:\Program Files\dotnet\sdk]
+
+If you have been working with different versions of .NET, you may see a longer list, like
+this one:
+
+5.0.100 [C:\Program Files\dotnet\sdk]
+6.0.100 [C:\Program Files\dotnet\sdk]
+6.0.113 [C:\Program Files\dotnet\sdk]
+6.0.202 [C:\Program Files\dotnet\sdk]
+6.0.203 [C:\Program Files\dotnet\sdk]
+7.0.100 [C:\Program Files\dotnet\sdk]
+
+Regardless of how many entries there are, you must ensure there is one for the 7.0.1xx
+version, where the last two digits may differ.
+
+2.1.2 Installing Visual Studio Code
+
+If you have chosen to use Visual Studio Code, download the installer from 
+https://code.visualstudio.com. No specific version is required, and you should select the current
+stable build. Run the installer and ensure you check the Add to PATH option, as
+shown in figure 2-5.
+
+Figure 2-5. Configuring the Visual Studio Code installation
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-2-5.webp)
