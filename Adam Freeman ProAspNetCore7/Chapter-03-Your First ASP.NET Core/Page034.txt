@@ -1,0 +1,33 @@
+﻿Once the project has started, a new browser window will be opened, and 
+you will see the details of the party (well, the placeholder for the details, 
+but you get the idea), as shown in Figure 3-1.
+
+Figure 3-1. Adding to the view HTML
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-1.webp)
+
+Leave the dotnet watch command running. As you make changes to the project, 
+you will see that the code is automatically recompiled and that changes 
+are automatically displayed in the browser.
+
+If you make a mistake following the examples, 
+you may find that the dotnet watch command indicates that it can’t automatically 
+update the browser. If that happens, select the option to restart the application.
+
+3.2.2	Adding a Data Model
+
+The data model is the most important part of any ASP.NET Core application. 
+The model is the representation of the real-world objects, processes, and rules 
+that define the subject, known as the domain, of the application. The model, 
+often referred to as a domain model, contains the C# objects (known as domain
+objects) that make up the universe of the application and the methods that 
+manipulate them. In most projects, the job of the ASP.NET Core application 
+is to provide the user with access to the data model and the features that 
+allow the user to interact with it.
+
+The convention for an ASP.NET Core application is that the data model classes 
+are defined in a folder named Models, which was added to the project by the 
+template used in Listing 3-1.
+
+I don’t need a complex model for the PartyInvites project because it is 
+such a simple application. I need just one domain class that I will call 
+GuestResponse. This object will represent an RSVP from an invitee.

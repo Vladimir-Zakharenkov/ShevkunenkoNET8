@@ -1,0 +1,62 @@
+The HTML produced by the Thanks.cshtml view depends on the values assigned 
+to the GuestResponse view model provided by the RsvpForm action method. 
+To access the value of a property in the domain object, I use an @Model.<PropertyName> 
+expression. So, for example, to get the value of the Name property, I use the
+@Model.Name expression. Don’t worry if the Razor syntax doesn’t make sense — 
+I explain it in more detail in Chapter 21.
+
+Now that I have created the Thanks view, I have a basic working example of handling 
+a form. Use the browser to request http://localhost:5000, click the RSVP Now link,
+add some data to the form, and click the Submit RSVP button. You will see the response 
+shown in Figure 3-5 (although it will differ if your name is not Joe or you said you 
+could not attend).
+
+Figure 3-5. The Thanks view
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-5.png)
+
+Displaying the Responses
+
+At the end of the Thanks.cshtml view, I added an a element to create a link to display 
+the list of people who are coming to the party. I used the asp-action tag helper 
+attribute to create a URL that targets an action method called ListResponses, like this:
+
+...
+<div>Click <a asp-action="ListResponses">here</a> to see who is coming.</div>
+...
+
+If you hover the mouse over the link that is displayed by the browser, you will see 
+that it targets the /Home/ListResponses URL. This doesn’t correspond to any of the 
+action methods in the Home controller, and if you click the link, you will see a 
+404 Not Found error response.
+
+To add an endpoint that will handle the URL, I need to add another action method 
+to the Home controller, as shown in Listing 3-15.
+
+Listing 3-15. Adding an Action Method in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+
+		[HttpGet]
+		public ViewResult RsvpForm() {
+			return View();
+		}
+
+		[HttpPost]
+		public ViewResult RsvpForm(GuestResponse guestResponse) {
+			Repository.AddResponse(guestResponse);
+			return View("Thanks", guestResponse);
+		}
+
+		public ViewResult ListResponses() {
+			return View(Repository.Responses.Where(r => r.WillAttend == true));
+		}
+	}
+}

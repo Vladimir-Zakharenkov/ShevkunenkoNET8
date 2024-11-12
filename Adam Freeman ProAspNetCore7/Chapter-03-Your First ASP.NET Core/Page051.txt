@@ -1,0 +1,33 @@
+﻿For comparison, here is the same HTML element after the user has submitted the form 
+without entering data into the text field (which is a validation error because 
+I applied the Required attribute to the Phone property of the GuestResponse class):
+
+<input type="text" class="input-validation-error" data-val="true" data-valrequired="
+Please enter your phone number" id="Phone" name="Phone" value="">
+
+I have highlighted the difference: the asp-for tag helper attribute added the input 
+element to a class called input-validation-error. I can take advantage of this 
+feature by creating a stylesheet that contains CSS styles for this class and 
+the others that different HTML helper attributes use.
+
+The convention in ASP.NET Core projects is that static content is placed into 
+the wwwroot folder and organized by content type so that CSS stylesheets go into 
+the wwwroot/css folder, JavaScript files go into the wwwroot/js folder, and so on.
+
+Tip
+The project template used in Listing 3-1 creates a site.css file in the wwwroot/css 
+folder. You can ignore this file, which I don’t use in this chapter.
+
+If you are using Visual Studio, right-click the wwwroot/css folder and select 
+Add ➤ New Item from the pop-up menu. Locate the Style Sheet item template, 
+as shown in Figure 3-8; set the name of the file to styles.css; and click 
+the Add button.
+
+Figure 3-8. Creating a CSS stylesheet
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-8.png)
+
+
+If you are using Visual Studio Code, right-click the wwwroot/css folder, select 
+New File from the pop-up menu, and use styles.css as the file name. Regardless 
+of which editor you use, replace the contents of the file with the styles 
+shown in Listing 3-20.

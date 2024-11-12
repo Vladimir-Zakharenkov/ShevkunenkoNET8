@@ -1,0 +1,10 @@
+Figure 3-13. Styling the ListResponses view
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-13.png)
+
+
+Summary
+
+In this chapter, I created a new ASP.NET Core project and used it to construct 
+a simple data-entry application, giving you a glimpse of important ASP.NET features, 
+such as tag helpers, model binding, and data validation. In the next chapter, 
+I describe the development tools that are used for ASP.NET Core development.

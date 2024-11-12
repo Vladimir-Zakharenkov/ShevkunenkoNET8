@@ -1,0 +1,58 @@
+Styling the Content
+
+All the functional goals for the application are complete, but the overall 
+appearance of the application is poor. When you create a project using 
+the mvc template, as I did for the example in this chapter, some common 
+client-side development packages are installed. While I am not a fan of 
+using template projects, I do like the client-side libraries that Microsoft 
+has chosen. One of them is called Bootstrap, which is a good CSS framework 
+originally developed by Twitter that has become a major open-source project 
+and a mainstay of web application development.
+
+Styling the Welcome View
+
+The basic Bootstrap features work by applying classes to elements that correspond 
+to CSS selectors defined in the files added to the wwwroot/lib/bootstrap folder. 
+You can get full details of the classes that Bootstrap defines from http://getbootstrap.com, 
+but you can see how I have applied some basic styling to the Index.cshtml 
+view file in Listing 3-22.
+
+Listing 3-22. Adding Bootstrap to the Index.cshtml File in the Views/Home Folder
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+	<title>Index</title>
+</head>
+<body>
+	<div class="text-center m-2">
+		<h3> We're going to have an exciting party!</h3>
+
+		<h4>And YOU are invited!</h4>
+
+		<a class="btn btn-primary" asp-action="RsvpForm">RSVP Now</a>
+	</div>
+</body>
+</html>
+
+I have added a link element whose href attribute loads the bootstrap.css file 
+from the wwwroot/lib/bootstrap/dist/css folder. The convention is that third-party 
+CSS and JavaScript packages are installed into the wwwroot/lib folder, and 
+I describe the tool that is used to manage these packages in Chapter 4.
+
+Having imported the Bootstrap stylesheets, I need to style my elements. 
+This is a simple example, so I need to use only a small number of Bootstrap 
+CSS classes: text-center, btn, and btn-primary.
+
+The text-center class centers the contents of an element and its children. 
+The btn class styles a button, input, or a element as a pretty button, and 
+the btn-primary class specifies which of a range of colors I want the button 
+to be. You can see the effect by running the application, 
+as shown in Figure 3-10.

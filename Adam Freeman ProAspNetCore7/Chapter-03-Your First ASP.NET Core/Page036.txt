@@ -1,0 +1,42 @@
+﻿Both action methods invoke the View method without arguments, which may seem odd, 
+but remember that the Razor view engine will use the name of the action method 
+when looking for a view file, as explained in Chapter 2. That means the result 
+from the Index action method tells Razor to look for a view called Index.cshtml, 
+while the result from the RsvpForm action method tells Razor to look for a view 
+called RsvpForm.cshtml.
+
+If you are using Visual Studio, right-click the Views/Home folder and select 
+Add ➤ New Item from the pop-up menu. Select the Razor View - Empty item, set 
+the name to RsvpForm.cshtml, and click the Add button to create the file. 
+Replace the contents with those shown in Listing 3-8.
+
+If you are using Visual Studio Code, right-click the Views/Home folder and select 
+New File from the pop-up menu. Set the name of the file to RsvpForm.cshtml and 
+add the contents shown in Listing 3-8.
+
+Listing 3-8. The Contents of the RsvpForm.cshtml File in the Views/Home Folder
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>RsvpForm</title>
+</head>
+<body>
+	<div>
+		This is the RsvpForm.cshtml View
+	</div>
+</body>
+</html>
+
+This content is just static HTML for the moment. Use the browser to request 
+http://localhost:5000/home/rsvpform. The Razor view engine locates the RsvpForm.cshtml 
+file and uses it to produce a response, as shown in Figure 3-2.
+
+Figure 3-2. Rendering a second view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-2.webp)

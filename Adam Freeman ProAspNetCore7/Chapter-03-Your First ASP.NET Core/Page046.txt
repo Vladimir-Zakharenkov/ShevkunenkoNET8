@@ -1,0 +1,43 @@
+The new action method is called ListResponses, and it calls the View method, 
+using the Repository.Responses property as the argument. This will cause Razor 
+to render the default view, using the action method name as the name of the view file, 
+and to use the data from the repository as the view model. The view model data is 
+filtered using LINQ so that only positive responses are provided to the view.
+
+Add a Razor View named ListResponses.cshtml to the Views/Home folder with 
+the content shown in Listing 3-16.
+
+Listing 3-16. Displaying Acceptances in the ListResponses.cshtml File in the Views/Home Folder
+
+@model IEnumerable<PartyInvites.Models.GuestResponse>
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Responses</title>
+</head>
+<body>
+	<h2>Here is the list of people attending the party</h2>
+
+	<table>
+		<thead>
+			<tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+		</thead>
+		<tbody>
+			@foreach (PartyInvites.Models.GuestResponse r in Model!) {
+			<tr>
+			<td>@r.Name</td>
+			<td>@r.Email</td>
+			<td>@r.Phone</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</body>
+</html>

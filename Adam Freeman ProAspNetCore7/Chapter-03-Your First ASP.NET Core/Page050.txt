@@ -1,0 +1,30 @@
+The asp-validation-summary attribute is applied to a div element, and it displays 
+a list of validation errors when the view is rendered. The value for the 
+asp-validation-summary attribute is a value from an enumeration called ValidationSummary, 
+which specifies what types of validation errors the summary will contain. I specified All, 
+which is a good starting point for most applications, and I describe the other values
+and explain how they work in Chapter 29.
+
+To see how the validation summary works, run the application, fill out the Name field, 
+and submit the form without entering any other data. You will see a summary of 
+validation errors, as shown in Figure 3-7.
+
+Figure 3-7. Displaying validation errors
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-7.png)
+
+The RsvpForm action method will not render the Thanks view until all the validation 
+constraints applied to the GuestResponse class have been satisfied. Notice that 
+the data entered in the Name field was preserved and displayed again when Razor 
+rendered the view with the validation summary. This is another benefit of
+model binding, and it simplifies working with form data.
+
+Highlighting Invalid Fields
+
+The tag helper attributes that associate model properties with elements have a handy 
+feature that can be used in conjunction with model binding. When a model class property 
+has failed validation, the helper attributes will generate slightly different HTML. 
+Here is the input element that is generated for the Phone field when there is 
+no validation error:
+
+<input type="text" data-val="true" data-val-required="Please enter your phone number"
+id="Phone" name="Phone" value="">

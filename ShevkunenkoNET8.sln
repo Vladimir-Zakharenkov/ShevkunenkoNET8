@@ -137,6 +137,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-02-Getting Started"
 		Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page030.txt = Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\Page030.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-03-Your First ASP.NET Core", "Chapter-03-Your First ASP.NET Core", "{4AC5BE06-12CD-46D5-B24D-E85F318A51CB}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page031.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page031.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page032.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page032.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page033.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page033.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page034.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page034.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page035.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page035.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page036.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page036.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page037.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page037.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page038.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page038.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page039.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page039.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstProject", "Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\FirstProject\FirstProject.csproj", "{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyInvites", "Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\PartyInvites\PartyInvites.csproj", "{C455B081-BE62-4D0F-A160-6E1AA6F8227B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -215,6 +232,14 @@ Global
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C455B081-BE62-4D0F-A160-6E1AA6F8227B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C455B081-BE62-4D0F-A160-6E1AA6F8227B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C455B081-BE62-4D0F-A160-6E1AA6F8227B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C455B081-BE62-4D0F-A160-6E1AA6F8227B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,6 +266,9 @@ Global
 		{3B04411B-B2C6-404F-A47B-64B7BE36711A} = {7655687B-9A51-4272-BB15-A16578D31AEC}
 		{B00B94CD-E5CC-4AC8-BF11-1F9951E9D27D} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 		{BF8B993E-FB35-4F65-9155-4D3F8B5DCA78} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{4AC5BE06-12CD-46D5-B24D-E85F318A51CB} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{7F21E64B-C3D5-4105-9333-3F18FA10B1A3} = {BF8B993E-FB35-4F65-9155-4D3F8B5DCA78}
+		{C455B081-BE62-4D0F-A160-6E1AA6F8227B} = {4AC5BE06-12CD-46D5-B24D-E85F318A51CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

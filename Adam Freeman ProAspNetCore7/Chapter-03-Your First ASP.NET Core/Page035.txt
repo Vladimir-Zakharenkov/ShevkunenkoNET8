@@ -1,0 +1,60 @@
+﻿If you are using Visual Studio, right-click the Models folder and select 
+Add ➤ Class from the pop-up menu. Set the name of the class to GuestResponse.cs 
+and click the Add button. If you are using Visual Studio Code, right-click 
+the Models folder, select New File, and enter GuestResponse.cs as the file name. 
+Use the new file to define the class shown in Listing 3-6.
+
+Listing 3-6. The Contents of the GuestResponse.cs File in the Models Folder
+
+namespace PartyInvites.Models 
+{
+	public class GuestResponse
+	{
+		public string? Name { get; set; }
+		public string? Email { get; set; }
+		public string? Phone { get; set; }
+		public bool? WillAttend { get; set; }
+	}
+}
+
+Notice that all the properties defined by the GuestResponse class are nullable. 
+I explain why this is important in the “Adding Validation” section later 
+in the chapter.
+
+Restarting the automatic build
+
+You may see a warning produced by the dotnet watch command telling you that a hot
+reload cannot be applied. The dotnet watch command can’t cope with every type of
+change, and some changes cause the automatic rebuild process to fail. You will see this
+prompt at the command line:
+
+watch : Do you want to restart your app
+- Yes (y) / No (n) / Always (a) / Never (v)?
+
+Press a to always rebuild the project. Microsoft makes frequent improvements to the
+dotnet watch command and so the actions that trigger this problem change.
+
+3.2.3	Creating a Second Action and View
+
+One of my application goals is to include an RSVP form, which means I need to define 
+an action method that can receive requests for that form. A single controller class 
+can define multiple action methods, and the convention is to group related actions 
+in the same controller. Listing 3-7 adds a new action method to the
+Home controller.
+
+Listing 3-7. Adding an Action Method in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+
+		public ViewResult RsvpForm() {
+			return View();
+		}
+	}
+}

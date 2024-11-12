@@ -1,0 +1,48 @@
+3.2.4	Linking Action Methods
+
+I want to be able to create a link from the Index view so that guests can see 
+the RsvpForm view without having to know the URL that targets a specific action 
+method, as shown in Listing 3-9.
+
+Listing 3-9. Adding a Link in the Index.cshtml File in the Views/Home Folder
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Party!</title>
+</head>
+<body>
+	<div>
+		<div>
+			We're going to have an exciting party.<br />
+			(To do: sell it better. Add pictures or something.)
+		</div>
+		<a asp-action="RsvpForm">RSVP Now</a>
+	</div>
+</body>
+</html>
+
+The addition to the listing is an a element that has an asp-action attribute. 
+The attribute is an example of a tag helper attribute, which is an instruction 
+for Razor that will be performed when the view is rendered. The asp-action attribute 
+is an instruction to add an href attribute to the a element that contains a URL for
+an action method. I explain how tag helpers work in Chapters 25–27, but this tag helper 
+tells Razor to insert a URL for an action method defined by the same controller 
+for which the current view is being rendered.
+
+Use the browser to request http://localhost:5000, and you will see the link that 
+the helper has created, as shown in Figure 3-3.
+
+Figure 3-3. Linking between action methods
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-3.webp)
+
+Roll the mouse over the RSVP Now link in the browser. You will see that the link 
+points to the following URL:
+
+http://localhost:5000/Home/RsvpForm

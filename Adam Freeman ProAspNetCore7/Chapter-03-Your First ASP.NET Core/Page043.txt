@@ -1,0 +1,62 @@
+Add a class file named Repository.cs to the Models folder and use it to define 
+the class shown in Listing 3-12.
+
+Listing 3-12. The Contents of the Repository.cs File in the Models Folder
+
+namespace PartyInvites.Models {
+	public static class Repository {
+		private static List<GuestResponse> responses = new();
+
+			public static IEnumerable<GuestResponse> Responses => responses;
+
+			public static void AddResponse(GuestResponse response) {
+				Console.WriteLine(response);
+				responses.Add(response);
+		}
+	}
+}
+
+The Repository class and its members are static, which will make it easy for me to store 
+and retrieve data from different places in the application. ASP.NET Core provides 
+a more sophisticated approach for defining common functionality, called dependency injection, 
+which I describe in Chapter 14, but a static class is a good way to get started for a simple 
+application like this one.
+
+If you are using Visual Studio, saving the contents of the Repository.cs file will 
+trigger a warning produced by the dotnet watch command telling you that a hot reload 
+cannot be applied, which is the same warning described earlier in the chapter for 
+Visual Studio Code users. You will see this prompt at the command line:
+
+watch : Do you want to restart your app - Yes (y) / No (n) / Always (a) / Never (v)?
+
+Press a to always rebuild the project.
+
+Storing Responses
+
+Now that I have somewhere to store the data, I can update the action method that receives 
+the HTTP POST requests, as shown in Listing 3-13.
+
+Listing 3-13. Updating an Action Method in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+
+		[HttpGet]
+		public ViewResult RsvpForm() {
+			return View();
+		}
+
+		[HttpPost]
+		public ViewResult RsvpForm(GuestResponse guestResponse) {
+			Repository.AddResponse(guestResponse);
+			return View("Thanks", guestResponse);
+		}
+	}
+}

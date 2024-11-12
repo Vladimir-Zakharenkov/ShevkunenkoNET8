@@ -1,0 +1,50 @@
+Replace the contents of the HomeController.cs file in the Controllers folder 
+with the code shown in Listing 3-3.
+
+Listing 3-3. Replacing the Contents of the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+	}
+}
+
+This provides a clean starting point for the new application, defining 
+a single action method that selects the default view for rendering. 
+To provide a welcome message to party invitees, open the Index.cshtml file
+in the Views/Home folder and replace the contents with those shown in Listing 3-4.
+
+Listing 3-4. Replacing the Contents of the Index.cshtml File in the Views/Home Folder
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Party!</title>
+</head>
+<body>
+	<div>
+		<div>
+			We're going to have an exciting party.<br />
+			(To do: sell it better. Add pictures or something.)
+		</div>
+	</div>
+</body>
+</html>
+
+Run the command shown in Listing 3-5 in the PartyInvites project to compile 
+and execute the project.
+
+Listing 3-5. Compiling and Running the Project
+
+dotnet watch

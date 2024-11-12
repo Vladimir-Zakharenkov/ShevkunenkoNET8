@@ -1,0 +1,8 @@
+The Bootstrap classes in this example create a header, just to give structure 
+to the layout. To style the form, I have used the form-group class, which is used 
+to style the element that contains the label and the associated input or select 
+element, which is assigned to the form-control class. You can see the effect of 
+the styles in Figure 3-11.
+
+Figure 3-11. Styling the RsvpForm view
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-11.png)

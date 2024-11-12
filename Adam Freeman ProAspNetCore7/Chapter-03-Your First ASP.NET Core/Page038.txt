@@ -1,0 +1,54 @@
+There is an important principle at work here, which is that you should use the features 
+provided by ASP.NET Core to generate URLs, rather than hard-code them into your views. 
+When the tag helper created the href attribute for the a element, it inspected 
+the configuration of the application to figure out what the URL should be. This allows 
+the configuration of the application to be changed to support different URL formats
+without needing to update any views.
+
+3.2.5	Building the Form
+
+Now that I have created the view and can reach it from the Index view, I am going 
+to build out the contents of the RsvpForm.cshtml file to turn it into an HTML form 
+for editing GuestResponse objects, as shown in Listing 3-10.
+
+Listing 3-10. Creating a Form View in the RsvpForm.cshtml File in the Views/Home Folder
+
+@model PartyInvites.Models.GuestResponse
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>RsvpForm</title>
+</head>
+<body>
+	<form asp-action="RsvpForm" method="post">
+		<div>
+			<label asp-for="Name">Your name:</label>
+			<input asp-for="Name" />
+		</div>
+		<div>
+			<label asp-for="Email">Your email:</label>
+			<input asp-for="Email" />
+		</div>
+		<div>
+			<label asp-for="Phone">Your phone:</label>
+			<input asp-for="Phone" />
+		</div>
+		<div>
+			<label asp-for="WillAttend">Will you attend?</label>
+			<select asp-for="WillAttend">
+				<option value="">Choose an option</option>
+				<option value="true">Yes, I'll be there</option>
+				<option value="false">No, I can't come</option>
+			</select>
+		</div>
+		<button type="submit">Submit RSVP</button>
+	</form>
+</body>
+</html>
