@@ -1,0 +1,48 @@
+		•	A method that responds to HTTP GET requests: A GET request is what a browser
+		issues normally each time someone clicks a link. This version of the action will
+		be responsible for displaying the initial blank form when someone first visits
+		/Home/RsvpForm.
+
+		•	A method that responds to HTTP POST requests: The form element defined in
+		Listing 3-10 sets the method attribute to post, which causes the form data to be
+		sent to the server as a POST request. This version of the action will be responsible
+		for receiving submitted data and deciding what to do with it.
+
+Handing GET and POST requests in separate C# methods helps to keep my controller code 
+tidy since the two methods have different responsibilities. Both action methods are 
+invoked by the same URL, but ASP.NET Core makes sure that the appropriate method 
+is called, based on whether I am dealing with a GET or POST request. 
+Listing 3-11 shows the changes to the HomeController class.
+
+Listing 3-11. Adding a Method in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+		public IActionResult Index() {
+			return View();
+		}
+
+		[HttpGet]
+		public ViewResult RsvpForm() {
+			return View();
+		}
+
+		[HttpPost]
+		public ViewResult RsvpForm(GuestResponse guestResponse) {
+			// TODO: store response from guest
+			return View();
+		}
+	}
+}
+
+I have added the HttpGet attribute to the existing RsvpForm action method, 
+which declares that this method should be used only for GET requests. 
+I then added an overloaded version of the RsvpForm method, which accepts 
+a GuestResponse object. I applied the HttpPost attribute to this method, 
+which declares it will deal with POST requests. I explain how these additions 
+to the listing work in the following sections. I also imported the 
+PartyInvites.Models namespace—this is just so I can refer to the GuestResponse 
+model type without needing to qualify the class name.

@@ -1,62 +1,47 @@
-Add a class file named Repository.cs to the Models folder and use it to define 
-the class shown in Listing 3-12.
+Listing 3-14. The Contents of the Thanks.cshtml File in the Views/Home Folder
 
-Listing 3-12. The Contents of the Repository.cs File in the Models Folder
+@model PartyInvites.Models.GuestResponse
 
-namespace PartyInvites.Models {
-	public static class Repository {
-		private static List<GuestResponse> responses = new();
-
-			public static IEnumerable<GuestResponse> Responses => responses;
-
-			public static void AddResponse(GuestResponse response) {
-				Console.WriteLine(response);
-				responses.Add(response);
-		}
-	}
+@{
+    Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thanks</title>
+</head>
+<body>
+    <div>
+        <h1>Thank you, @Model?.Name!</h1>
+        @if (Model?.WillAttend == true)
+        {
+            @:It's great that you're coming.
+            @:The drinks are already in the fridge!
+        }
+        else
+        {
+            @:Sorry to hear that you can't make it,
+            @:but thanks for letting us know.
+        }
+    </div>
+    Click
+    <a asp-action="ListResponses">here</a> to see who is coming.
+</body>
+</html>
 
-The Repository class and its members are static, which will make it easy for me to store 
-and retrieve data from different places in the application. ASP.NET Core provides 
-a more sophisticated approach for defining common functionality, called dependency injection, 
-which I describe in Chapter 14, but a static class is a good way to get started for a simple 
-application like this one.
+The HTML produced by the Thanks.cshtml view depends on the values assigned 
+to the GuestResponse view model provided by the RsvpForm action method. 
+To access the value of a property in the domain object, I use an @Model.<PropertyName> 
+expression. So, for example, to get the value of the Name property, I use the
+@Model.Name expression. Don’t worry if the Razor syntax doesn’t make sense — 
+I explain it in more detail in Chapter 21.
 
-If you are using Visual Studio, saving the contents of the Repository.cs file will 
-trigger a warning produced by the dotnet watch command telling you that a hot reload 
-cannot be applied, which is the same warning described earlier in the chapter for 
-Visual Studio Code users. You will see this prompt at the command line:
+Now that I have created the Thanks view, I have a basic working example of handling 
+a form. Use the browser to request http://localhost:5000, click the RSVP Now link,
+add some data to the form, and click the Submit RSVP button. You will see the response 
+shown in Figure 3-5 (although it will differ if your name is not Joe or you said you 
+could not attend).
 
-watch : Do you want to restart your app - Yes (y) / No (n) / Always (a) / Never (v)?
-
-Press a to always rebuild the project.
-
-Storing Responses
-
-Now that I have somewhere to store the data, I can update the action method that receives 
-the HTTP POST requests, as shown in Listing 3-13.
-
-Listing 3-13. Updating an Action Method in the HomeController.cs File in the Controllers Folder
-
-using Microsoft.AspNetCore.Mvc;
-using PartyInvites.Models;
-
-namespace PartyInvites.Controllers {
-	public class HomeController : Controller {
-
-		public IActionResult Index() {
-			return View();
-		}
-
-		[HttpGet]
-		public ViewResult RsvpForm() {
-			return View();
-		}
-
-		[HttpPost]
-		public ViewResult RsvpForm(GuestResponse guestResponse) {
-			Repository.AddResponse(guestResponse);
-			return View("Thanks", guestResponse);
-		}
-	}
-}
+Figure 3-5. The Thanks view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-5.webp)

@@ -53,7 +53,87 @@
 
 #region Listing 3-7
 
+//using Microsoft.AspNetCore.Mvc;
+
+//namespace PartyInvites.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public IActionResult Index()
+//        {
+//            return View();
+//        }
+//        public ViewResult RsvpForm()
+//        {
+//            return View();
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 3-11
+
+//using Microsoft.AspNetCore.Mvc;
+//using PartyInvites.Models;
+
+//namespace PartyInvites.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public IActionResult Index()
+//        {
+//            return View();
+//        }
+//        [HttpGet]
+//        public ViewResult RsvpForm()
+//        {
+//            return View();
+//        }
+//        [HttpPost]
+//        public ViewResult RsvpForm(GuestResponse guestResponse)
+//        {
+//            // TODO: store response from guest
+//            return View();
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 3-13
+
+//using Microsoft.AspNetCore.Mvc;
+//using PartyInvites.Models;
+
+//namespace PartyInvites.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public IActionResult Index()
+//        {
+//            return View();
+//        }
+//        [HttpGet]
+//        public ViewResult RsvpForm()
+//        {
+//            return View();
+//        }
+//        [HttpPost]
+//        public ViewResult RsvpForm(GuestResponse guestResponse)
+//        {
+//            Repository.AddResponse(guestResponse);
+//            return View("Thanks", guestResponse);
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 3-15
+
 using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
 
 namespace PartyInvites.Controllers
 {
@@ -63,9 +143,24 @@ namespace PartyInvites.Controllers
         {
             return View();
         }
+
+        [HttpGet]
         public ViewResult RsvpForm()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ViewResult RsvpForm(GuestResponse guestResponse)
+        {
+            Repository.AddResponse(guestResponse);
+            return View("Thanks", guestResponse);
+        }
+
+        public ViewResult ListResponses()
+        {
+            return View(Repository.Responses
+                .Where(r => r.WillAttend == true));
         }
     }
 }

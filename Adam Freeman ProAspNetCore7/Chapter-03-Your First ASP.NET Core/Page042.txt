@@ -1,10 +1,25 @@
-Listing 3-11. Adding a Method in the HomeController.cs File in the Controllers Folder
+If you are using Visual Studio, saving the contents of the Repository.cs file will 
+trigger a warning produced by the dotnet watch command telling you that a hot reload 
+cannot be applied, which is the same warning described earlier in the chapter for 
+Visual Studio Code users. You will see this prompt at the command line:
+
+watch : Do you want to restart your app - Yes (y) / No (n) / Always (a) / Never (v)?
+
+Press a to always rebuild the project.
+
+Storing Responses
+
+Now that I have somewhere to store the data, I can update the action method that receives 
+the HTTP POST requests, as shown in Listing 3-13.
+
+Listing 3-13. Updating an Action Method in the HomeController.cs File in the Controllers Folder
 
 using Microsoft.AspNetCore.Mvc;
 using PartyInvites.Models;
 
 namespace PartyInvites.Controllers {
 	public class HomeController : Controller {
+
 		public IActionResult Index() {
 			return View();
 		}
@@ -16,46 +31,24 @@ namespace PartyInvites.Controllers {
 
 		[HttpPost]
 		public ViewResult RsvpForm(GuestResponse guestResponse) {
-			// TODO: store response from guest
-			return View();
+			Repository.AddResponse(guestResponse);
+			return View("Thanks", guestResponse);
 		}
 	}
-}
 
-I have added the HttpGet attribute to the existing RsvpForm action method, 
-which declares that this method should be used only for GET requests. 
-I then added an overloaded version of the RsvpForm method, which accepts 
-a GuestResponse object. I applied the HttpPost attribute to this method, 
-which declares it will deal with POST requests. I explain how these additions 
-to the listing work in the following sections. I also imported the 
-PartyInvites.Models namespace—this is just so I can refer to the GuestResponse 
-model type without needing to qualify the class name.
 
-Understanding Model Binding
+Before the POST version of the RsvpForm method is invoked, the ASP.NET Core 
+model binding feature extracts values from the HTML form and assigns them to 
+the properties of the GuestResponse object. The result is used as the argument 
+when the method is invoked to handle the HTTP request, and all I have to do
+to deal with the form data sent in a request is to work with the GuestResponse 
+object that is passed to the action method — in this case, to pass it as an argument 
+to the Repository.AddResponse method so that the response can be stored.
 
-The first overload of the RsvpForm action method renders the same view as 
-before — the RsvpForm.cshtml file — to generate the form shown in Figure 3-4. The second 
-overload is more interesting because of the parameter, but given that the action 
-method will be invoked in response to an HTTP POST request and that
-the GuestResponse type is a C# class, how are the two connected?
+Adding the Thanks View
 
-The answer is model binding, a useful ASP.NET Core feature whereby incoming data 
-is parsed and the key-value pairs in the HTTP request are used to populate properties 
-of domain model types.
-
-Model binding is a powerful and customizable feature that eliminates 
-the grind of dealing with HTTP requests directly and lets you work with 
-C# objects rather than dealing with individual data values sent by
-the browser. The GuestResponse object that is passed as the parameter 
-to the action method is automatically populated with the data from 
-the form fields. I dive into the details of model binding in Chapter 28.
-
-To demonstrate how model binding works, I need to do some preparatory work. 
-One of the application goals is to present a summary page with details of who 
-is attending the party, which means that I need to keep track of the responses 
-that I receive. I am going to do this by creating an in-memory collection of
-objects. This isn’t useful in a real application because the response data will 
-be lost when the application is stopped or restarted, but this approach will 
-allow me to keep the focus on ASP.NET Core and create an application that can 
-easily be reset to its initial state. Later chapters will demonstrate 
-persistent data storage.
+The call to the View method in the RsvpForm action method creates a ViewResult 
+that selects a view called Thanks and uses the GuestResponse object created 
+by the model binder as the view model. Add a Razor View named Thanks.cshtml 
+to the Views/Home folder with the content shown in Listing 3-14 to present 
+a response to the user.

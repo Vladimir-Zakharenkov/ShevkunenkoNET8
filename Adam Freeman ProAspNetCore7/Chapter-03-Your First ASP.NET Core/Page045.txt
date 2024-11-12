@@ -1,62 +1,88 @@
-The HTML produced by the Thanks.cshtml view depends on the values assigned 
-to the GuestResponse view model provided by the RsvpForm action method. 
-To access the value of a property in the domain object, I use an @Model.<PropertyName> 
-expression. So, for example, to get the value of the Name property, I use the
-@Model.Name expression. Don’t worry if the Razor syntax doesn’t make sense — 
-I explain it in more detail in Chapter 21.
+Add a Razor View named ListResponses.cshtml to the Views/Home folder with 
+the content shown in Listing 3-16.
 
-Now that I have created the Thanks view, I have a basic working example of handling 
-a form. Use the browser to request http://localhost:5000, click the RSVP Now link,
-add some data to the form, and click the Submit RSVP button. You will see the response 
-shown in Figure 3-5 (although it will differ if your name is not Joe or you said you 
-could not attend).
+Listing 3-16. Displaying Acceptances in the ListResponses.cshtml File in the Views/Home Folder
 
-Figure 3-5. The Thanks view
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-5.png)
+@model IEnumerable<PartyInvites.Models.GuestResponse>
 
-Displaying the Responses
+@{
+	Layout = null;
+}
 
-At the end of the Thanks.cshtml view, I added an a element to create a link to display 
-the list of people who are coming to the party. I used the asp-action tag helper 
-attribute to create a URL that targets an action method called ListResponses, like this:
+<!DOCTYPE html>
 
-...
-<div>Click <a asp-action="ListResponses">here</a> to see who is coming.</div>
-...
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Responses</title>
+</head>
+<body>
+	<h2>Here is the list of people attending the party</h2>
 
-If you hover the mouse over the link that is displayed by the browser, you will see 
-that it targets the /Home/ListResponses URL. This doesn’t correspond to any of the 
-action methods in the Home controller, and if you click the link, you will see a 
-404 Not Found error response.
+	<table>
+		<thead>
+			<tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+		</thead>
+		<tbody>
+			@foreach (PartyInvites.Models.GuestResponse r in Model!) {
+			<tr>
+			<td>@r.Name</td>
+			<td>@r.Email</td>
+			<td>@r.Phone</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</body>
+</html>
 
-To add an endpoint that will handle the URL, I need to add another action method 
-to the Home controller, as shown in Listing 3-15.
+Razor view files have the .cshtml file extension to denote a mix of C# code 
+and HTML elements. You can see this in Listing 3-16 where I have used an 
+@foreach expression to process each of the GuestResponse objects that 
+the action method passes to the view using the View method. Unlike a normal 
+C# foreach loop, the body of a Razor @foreach expression contains HTML 
+elements that are added to the response that will be sent back to the browser. 
+In this view, each GuestResponse object generates a tr element that contains td
+elements populated with the value of an object property.
 
-Listing 3-15. Adding an Action Method in the HomeController.cs File in the Controllers Folder
+Use the browser to request http://localhost:5000, click the RSVP Now link, and 
+fill in the form. Submit the form and then click the link to see a summary 
+of the data that has been entered since the application was first started, 
+as shown in Figure 3-6. The view does not present the data in an appealing way,
+but it is enough for the moment, and I will address the styling of the application 
+later in this chapter.
 
-using Microsoft.AspNetCore.Mvc;
-using PartyInvites.Models;
+Figure 3-6. Showing a list of party attendees
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-6.png)
 
-namespace PartyInvites.Controllers {
-	public class HomeController : Controller {
+Adding Validation
 
-		public IActionResult Index() {
-			return View();
-		}
+I can now add data validation to the application. Without validation, users 
+could enter nonsense data or even submit an empty form. In an ASP.NET Core 
+application, validation rules are defined by applying attributes to model classes, 
+which means the same validation rules can be applied in any form that uses that
+class. ASP.NET Core relies on attributes from the System.ComponentModel.DataAnnotations 
+namespace, which I have applied to the GuestResponse class in Listing 3-17.
 
-		[HttpGet]
-		public ViewResult RsvpForm() {
-			return View();
-		}
+Listing 3-17. Applying Validation in the GuestResponse.cs File in the Models Folder
 
-		[HttpPost]
-		public ViewResult RsvpForm(GuestResponse guestResponse) {
-			Repository.AddResponse(guestResponse);
-			return View("Thanks", guestResponse);
-		}
+using System.ComponentModel.DataAnnotations;
 
-		public ViewResult ListResponses() {
-			return View(Repository.Responses.Where(r => r.WillAttend == true));
-		}
+namespace PartyInvites.Models {
+
+	public class GuestResponse {
+
+		[Required(ErrorMessage = "Please enter your name")]
+		public string? Name { get; set; }
+
+		[Required(ErrorMessage = "Please enter your email address")]
+		[EmailAddress]
+		public string? Email { get; set; }
+
+		[Required(ErrorMessage = "Please enter your phone number")]
+		public string? Phone { get; set; }
+
+		[Required(ErrorMessage = "Please specify whether you'll attend")]
+		public bool? WillAttend { get; set; }
 	}
 }

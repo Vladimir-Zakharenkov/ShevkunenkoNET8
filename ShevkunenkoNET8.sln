@@ -148,6 +148,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-03-Your First ASP.N
 		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page037.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page037.txt
 		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page038.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page038.txt
 		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page039.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page039.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page040.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page040.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page041.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page041.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page042.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page042.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page043.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page043.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page044.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page044.txt
+		Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page045.txt = Adam Freeman ProAspNetCore7\Chapter-03-Your First ASP.NET Core\Page045.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstProject", "Adam Freeman ProAspNetCore7\Chapter-02-Getting Started\FirstProject\FirstProject.csproj", "{7F21E64B-C3D5-4105-9333-3F18FA10B1A3}"

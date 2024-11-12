@@ -41,19 +41,3 @@ in the form. That is because the form posts back to the RsvpForm action method i
 Home controller, which just renders the view again. To receive and process submitted 
 form data, I am going to use an important feature of controllers. I will add a
 second RsvpForm action method to create the following:
-
-		A method that responds to HTTP GET requests: A GET request is what a browser
-		issues normally each time someone clicks a link. This version of the action will
-		be responsible for displaying the initial blank form when someone first visits
-		/Home/RsvpForm.
-
-		A method that responds to HTTP POST requests: The form element defined in
-		Listing 3-10 sets the method attribute to post, which causes the form data to be
-		sent to the server as a POST request. This version of the action will be responsible
-		for receiving submitted data and deciding what to do with it.
-
-Handing GET and POST requests in separate C# methods helps to keep my controller code 
-tidy since the two methods have different responsibilities. Both action methods are 
-invoked by the same URL, but ASP.NET Core makes sure that the appropriate method 
-is called, based on whether I am dealing with a GET or POST request. 
-Listing 3-11 shows the changes to the HomeController class.

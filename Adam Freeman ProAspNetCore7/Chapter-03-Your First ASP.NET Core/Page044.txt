@@ -1,44 +1,52 @@
-Before the POST version of the RsvpForm method is invoked, the ASP.NET Core 
-model binding feature extracts values from the HTML form and assigns them to 
-the properties of the GuestResponse object. The result is used as the argument 
-when the method is invoked to handle the HTTP request, and all I have to do
-to deal with the form data sent in a request is to work with the GuestResponse 
-object that is passed to the action method — in this case, to pass it as an argument 
-to the Repository.AddResponse method so that the response can be stored.
+3.2.8   Displaying the Responses
 
-Adding the Thanks View
+At the end of the Thanks.cshtml view, I added an a element to create a link to display 
+the list of people who are coming to the party. I used the asp-action tag helper 
+attribute to create a URL that targets an action method called ListResponses, like this:
 
-The call to the View method in the RsvpForm action method creates a ViewResult 
-that selects a view called Thanks and uses the GuestResponse object created 
-by the model binder as the view model. Add a Razor View named Thanks.cshtml 
-to the Views/Home folder with the content shown in Listing 3-14 to present 
-a response to the user.
+...
+<div>Click <a asp-action="ListResponses">here</a> to see who is coming.</div>
+...
 
-Listing 3-14. The Contents of the Thanks.cshtml File in the Views/Home Folder
+If you hover the mouse over the link that is displayed by the browser, you will see 
+that it targets the /Home/ListResponses URL. This doesn’t correspond to any of the 
+action methods in the Home controller, and if you click the link, you will see a 
+404 Not Found error response.
 
-@model PartyInvites.Models.GuestResponse
+To add an endpoint that will handle the URL, I need to add another action method 
+to the Home controller, as shown in Listing 3-15.
 
-@{
-Layout = null;
+Listing 3-15. Adding an Action Method in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+
+		[HttpGet]
+		public ViewResult RsvpForm() {
+			return View();
+		}
+
+		[HttpPost]
+		public ViewResult RsvpForm(GuestResponse guestResponse) {
+			Repository.AddResponse(guestResponse);
+			return View("Thanks", guestResponse);
+		}
+
+		public ViewResult ListResponses() {
+			return View(Repository.Responses.Where(r => r.WillAttend == true));
+		}
+	}
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>Thanks</title>
-</head>
-<body>
-	<div>
-		<h1>Thank you, @Model?.Name!</h1>
-
-		@if (Model?.WillAttend == true) {
-			@:It's great that you're coming. The drinks are already in the fridge!
-		} else {
-			@:Sorry to hear that you can't make it, but thanks for letting us know.
-		}
-	</div>
-	Click <a asp-action="ListResponses">here</a> to see who is coming.
-</body>
-</html>
+The new action method is called ListResponses, and it calls the View method, 
+using the Repository.Responses property as the argument. This will cause Razor 
+to render the default view, using the action method name as the name of the view file, 
+and to use the data from the repository as the view model. The view model data is 
+filtered using LINQ so that only positive responses are provided to the view.
