@@ -1,0 +1,55 @@
+As noted earlier, I used nullable types to define the GuestResponse properties. 
+This is useful for denoting properties that may not be assigned values, 
+but it has a special value for the WillAttend property because it allows 
+the Required validation attribute to work. If I had used a regular non-nullable bool, 
+the value I received through model binding could be only true or false, 
+and I would not be able to tell whether the user had selected a value. 
+A nullable bool has three possible values: true, false, and null. The value
+of the WillAttend property will be null if the user has not selected a value, 
+and this causes the Required attribute to report a validation error. 
+This is a nice example of how ASP.NET Core elegantly blends C# features 
+with HTML and HTTP.
+
+I check to see whether there has been a validation problem using 
+the ModelState.IsValid property in the action method that receives 
+the form data, as shown in Listing 3-18.
+
+Listing 3-18. Checking for Validation Errors in the HomeController.cs File 
+	in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using PartyInvites.Models;
+
+namespace PartyInvites.Controllers {
+	public class HomeController : Controller {
+
+		public IActionResult Index() {
+			return View();
+		}
+
+		[HttpGet]
+		public ViewResult RsvpForm() {
+			return View();
+		}
+
+		[HttpPost]
+		public ViewResult RsvpForm(GuestResponse guestResponse) {
+			if (ModelState.IsValid) {
+				Repository.AddResponse(guestResponse);
+				return View("Thanks", guestResponse);
+			} else {
+				return View();
+			}
+		}
+
+		public ViewResult ListResponses() {
+			return View(Repository.Responses.Where(r => r.WillAttend == true));
+		}
+	}
+}
+
+The Controller base class provides a property called ModelState that provides 
+details of the outcome of the model binding process. If the ModelState.IsValid 
+property returns true, then I know that the model binder has been able to satisfy 
+the validation constraints I specified through the attributes on the GuestResponse class. 
+When this happens, I render the Thanks view, just as I did previously.

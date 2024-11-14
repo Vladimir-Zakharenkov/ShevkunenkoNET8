@@ -1,8 +1,46 @@
-The Bootstrap classes in this example create a header, just to give structure 
-to the layout. To style the form, I have used the form-group class, which is used 
-to style the element that contains the label and the associated input or select 
-element, which is assigned to the form-control class. You can see the effect of 
-the styles in Figure 3-11.
+Listing 3-24. Applying Bootstrap to the Thanks.cshtml File in the Views/Home Folder
 
-Figure 3-11. Styling the RsvpForm view
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-11.png)
+@model PartyInvites.Models.GuestResponse
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thanks</title>
+    <link rel="stylesheet"
+          href="/lib/bootstrap/dist/css/bootstrap.css" />
+</head>
+<body class="text-center">
+    <div>
+        <h1>Thank you, @Model?.Name!</h1>
+        @if (Model?.WillAttend == true)
+        {
+            @:It's great that you're coming.
+            @:The drinks are already in the fridge!
+        }
+        else
+        {
+            @:Sorry to hear that you can't make it,
+            @:but thanks for letting us know.
+        }
+    </div>
+    Click
+    <a asp-action="ListResponses">here</a> to see who is coming.
+</body>
+</html>
+
+Figure 3-12 shows the effect of the styles.
+
+Figure 3-12. Styling the Thanks view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-12.webp)
+
+
+Styling the List View
+
+The final view to style is ListResponses, which presents the list of attendees. 
+Styling the content follows the same approach as used for the other views, 
+as shown in Listing 3-25.

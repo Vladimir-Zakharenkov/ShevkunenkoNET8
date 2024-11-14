@@ -1,30 +1,56 @@
-Listing 3-20. The Contents of the styles.css File in the wwwroot/css Folder
+3.2.10	Styling the Content
 
-.field-validation-error {color: #f00;}
-.field-validation-valid { display: none;}
-.input-validation-error { border: 1px solid #f00; background-color: #fee; }
-.validation-summary-errors { font-weight: bold; color: #f00;}
-.validation-summary-valid { display: none;}
+All the functional goals for the application are complete, but the overall 
+appearance of the application is poor. When you create a project using 
+the mvc template, as I did for the example in this chapter, some common 
+client-side development packages are installed. While I am not a fan of 
+using template projects, I do like the client-side libraries that Microsoft 
+has chosen. One of them is called Bootstrap, which is a good CSS framework 
+originally developed by Twitter that has become a major open-source project 
+and a mainstay of web application development.
 
-To apply this stylesheet, I added a link element to the head section of the RsvpForm 
-view, as shown in Listing 3-21.
+Styling the Welcome View
 
-Listing 3-21. Applying a Stylesheet in the RsvpForm.cshtml File in the Views/Home Folder
+The basic Bootstrap features work by applying classes to elements that correspond 
+to CSS selectors defined in the files added to the wwwroot/lib/bootstrap folder. 
+You can get full details of the classes that Bootstrap defines from http://getbootstrap.com, 
+but you can see how I have applied some basic styling to the Index.cshtml 
+view file in Listing 3-22.
 
-...
+Listing 3-22. Adding Bootstrap to the Index.cshtml File in the Views/Home Folder
+
+@{
+Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
 <head>
-<meta name="viewport" content="width=device-width" />
-<title>RsvpForm</title>
-<link rel="stylesheet" href="/css/styles.css" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+	<title>Index</title>
 </head>
-...
+<body>
+	<div class="text-center m-2">
+		<h3> We're going to have an exciting party!</h3>
+		<h4>And YOU are invited!</h4>
+		<a class="btn btn-primary" asp-action="RsvpForm">RSVP Now</a>
+	</div>
+</body>
+</html>
 
-The link element uses the href attribute to specify the location of the stylesheet. 
-Notice that the wwwroot folder is omitted from the URL. The default configuration 
-for ASP.NET includes support for serving static content, such as images, CSS stylesheets, 
-and JavaScript files, and it maps requests to the wwwroot folder automatically. 
-With the application of the stylesheet, a more obvious validation error will be displayed
-when data is submitted that causes a validation error, as shown in Figure 3-9.
+I have added a link element whose href attribute loads the bootstrap.css file 
+from the wwwroot/lib/bootstrap/dist/css folder. The convention is that third-party 
+CSS and JavaScript packages are installed into the wwwroot/lib folder, and 
+I describe the tool that is used to manage these packages in Chapter 4.
 
-Figure 3-9. Automatically highlighted validation errors
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-9.png)
+Having imported the Bootstrap stylesheets, I need to style my elements. 
+This is a simple example, so I need to use only a small number of Bootstrap 
+CSS classes: text-center, btn, and btn-primary.
+
+The text-center class centers the contents of an element and its children. 
+The btn class styles a button, input, or a element as a pretty button, and 
+the btn-primary class specifies which of a range of colors I want the button 
+to be. You can see the effect by running the application, 
+as shown in Figure 3-10.

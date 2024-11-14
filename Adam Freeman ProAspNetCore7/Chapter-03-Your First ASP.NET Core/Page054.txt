@@ -1,70 +1,19 @@
-Figure 3-10. Styling a view
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-3-10.png)
+The Bootstrap classes in this example create a header, just to give structure 
+to the layout. To style the form, I have used the form-group class, which is used 
+to style the element that contains the label and the associated input or select 
+element, which is assigned to the form-control class. You can see the effect of 
+the styles in Figure 3-11.
+
+Figure 3-11. Styling the RsvpForm view
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-11.webp)
 
 
-It will be obvious to you that I am not a web designer. In fact, as a child, 
-I was excused from art lessons on the basis that I had absolutely no talent 
-whatsoever. This had the happy result of making more time for math lessons 
-but meant that my artistic skills have not developed beyond those of 
-the average 10-year-old. For a real project, I would seek a professional 
-to help design and style the content, but for this example, I am going it alone, 
-and that means applying Bootstrap with as much restraint and consistency as 
-I can muster.
+Styling the Thanks View
 
-Styling the Form View
-
-Bootstrap defines classes that can be used to style forms. I am not going to go 
-into detail, but you can see how I have applied these classes in Listing 3-23.
-
-Listing 3-23. Adding Bootstrap to the RsvpForm.cshtml File in the Views/Home Folder
-
-@model PartyInvites.Models.GuestResponse
-
-@{
-	Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>RsvpForm</title>
-	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" href="/css/styles.css" />
-</head>
-<body>
-	<h5 class="bg-primary text-white text-center m-2 p-2">RSVP</h5>
-
-	<form asp-action="RsvpForm" method="post" class="m-2">
-		<div asp-validation-summary="All"></div>
-		
-		<div class="form-group">
-			<label asp-for="Name" class="form-label">Your name:</label>
-			<input asp-for="Name" class="form-control" />
-		</div>
-		
-		<div class="form-group">
-			<label asp-for="Email" class="form-label">Your email:</label>
-			<input asp-for="Email" class="form-control" />
-		</div>
-		
-		<div class="form-group">
-			<label asp-for="Phone" class="form-label">Your phone:</label>
-			<input asp-for="Phone" class="form-control" />
-		</div>
-		
-		<div class="form-group">
-			<label asp-for="WillAttend" class="form-label">
-				Will you attend?
-			</label>
-			<select asp-for="WillAttend" class="form-control">
-				<option value="">Choose an option</option>
-				<option value="true">Yes, I'll be there</option>
-				<option value="false">No, I can't come</option>
-			</select>
-		</div>
-		<button type="submit" class="btn btn-primary mt-3">Submit RSVP</button>
-	</form>
-</body>
-</html>
+The next view file to style is Thanks.cshtml, and you can see how I have done 
+this in Listing 3-24, using CSS classes that are similar to the ones I used 
+for the other views. To make an application easier to manage, it is a good 
+principle to avoid duplicating code and markup wherever possible. ASP.NET Core 
+provides several features to help reduce duplication, which I describe in later 
+chapters. These features include Razor layouts (Chapter 22), partial views (Chapter 22), 
+and view components (Chapter 24).

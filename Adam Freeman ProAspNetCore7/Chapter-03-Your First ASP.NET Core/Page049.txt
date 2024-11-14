@@ -1,60 +1,39 @@
-The Controller base class provides a property called ModelState that provides 
-details of the outcome of the model binding process. If the ModelState.IsValid 
-property returns true, then I know that the model binder has been able to satisfy 
-the validation constraints I specified through the attributes on the GuestResponse class. 
-When this happens, I render the Thanks view, just as I did previously.
+ï»¿The asp-validation-summary attribute is applied to a div element, and it displays 
+a list of validation errors when the view is rendered. The value for the 
+asp-validation-summary attribute is a value from an enumeration called ValidationSummary, 
+which specifies what types of validation errors the summary will contain. I specified All, 
+which is a good starting point for most applications, and I describe the other values
+and explain how they work in Chapter 29.
 
-If the ModelState.IsValid property returns false, then I know that there are 
-validation errors. The object returned by the ModelState property provides 
-details of each problem that has been encountered, but I don’t need to get into 
-that level of detail because I can rely on a useful feature that automates 
-the process of asking the user to address any problems by calling the View 
-method without any parameters.
+To see how the validation summary works, run the application, fill out the Name field, 
+and submit the form without entering any other data. You will see a summary of 
+validation errors, as shown in Figure 3-7.
 
-When it renders a view, Razor has access to the details of any validation 
-errors associated with the request, and tag helpers can access the details 
-to display validation errors to the user. Listing 3-19 shows the
-addition of validation tag helper attributes to the RsvpForm view.
+Figure 3-7. Displaying validation errors
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-3-7.webp)
 
-Listing 3-19. Adding a Validation Summary to the RsvpForm.cshtml File in the Views/Home Folder
+The RsvpForm action method will not render the Thanks view until all the validation 
+constraints applied to the GuestResponse class have been satisfied. Notice that 
+the data entered in the Name field was preserved and displayed again when Razor 
+rendered the view with the validation summary. This is another benefit of
+model binding, and it simplifies working with form data.
 
-@model PartyInvites.Models.GuestResponse
+Highlighting Invalid Fields
 
-@{
-	Layout = null;
-}
+The tag helper attributes that associate model properties with elements have a handy 
+feature that can be used in conjunction with model binding. When a model class property 
+has failed validation, the helper attributes will generate slightly different HTML. 
+Here is the input element that is generated for the Phone field when there is 
+no validation error:
 
-<!DOCTYPE html>
+<input type="text" data-val="true"
+	data-val-required="Please enter your phone number" id="Phone"
+	name="Phone" value="">
 
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>RsvpForm</title>
-</head>
-<body>
-	<form asp-action="RsvpForm" method="post">
-		<div asp-validation-summary="All"></div>
-		<div>
-			<label asp-for="Name">Your name:</label>
-			<input asp-for="Name" />
-		</div>
-		<div>
-			<label asp-for="Email">Your email:</label>
-			<input asp-for="Email" />
-		</div>
-		<div>
-			<label asp-for="Phone">Your phone:</label>
-			<input asp-for="Phone" />
-		</div>
-		<div>
-			<label asp-for="WillAttend">Will you attend?</label>
-			<select asp-for="WillAttend">
-				<option value="">Choose an option</option>
-				<option value="true">Yes, I'll be there</option>
-				<option value="false">No, I can't come</option>
-			</select>
-		</div>
-		<button type="submit">Submit RSVP</button>
-	</form>
-</body>
-</html>
+For comparison, here is the same HTML element after the user has submitted the form 
+without entering data into the text field (which is a validation error because 
+I applied the Required attribute to the Phone property of the GuestResponse class):
+
+<input type="text" class="input-validation-error"
+	data-val="true" data-val-required="Please enter your phone number" id="Phone"
+	name="Phone" value="">

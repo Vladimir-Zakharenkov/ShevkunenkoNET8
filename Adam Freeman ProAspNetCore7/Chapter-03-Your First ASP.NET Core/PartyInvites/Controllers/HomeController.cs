@@ -132,6 +132,43 @@
 
 #region Listing 3-15
 
+//using Microsoft.AspNetCore.Mvc;
+//using PartyInvites.Models;
+
+//namespace PartyInvites.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public IActionResult Index()
+//        {
+//            return View();
+//        }
+
+//        [HttpGet]
+//        public ViewResult RsvpForm()
+//        {
+//            return View();
+//        }
+
+//        [HttpPost]
+//        public ViewResult RsvpForm(GuestResponse guestResponse)
+//        {
+//            Repository.AddResponse(guestResponse);
+//            return View("Thanks", guestResponse);
+//        }
+
+//        public ViewResult ListResponses()
+//        {
+//            return View(Repository.Responses
+//                .Where(r => r.WillAttend == true));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 3.18 Checking for errors in the HomeController.cs file in the Controllers folder
+
 using Microsoft.AspNetCore.Mvc;
 using PartyInvites.Models;
 
@@ -143,24 +180,28 @@ namespace PartyInvites.Controllers
         {
             return View();
         }
-
         [HttpGet]
         public ViewResult RsvpForm()
         {
             return View();
         }
-
         [HttpPost]
         public ViewResult RsvpForm(GuestResponse guestResponse)
         {
-            Repository.AddResponse(guestResponse);
-            return View("Thanks", guestResponse);
-        }
+            if (ModelState.IsValid)
+            {
+                Repository.AddResponse(guestResponse);
 
+                return View("Thanks", guestResponse);
+            }
+            else
+            {
+                return View();
+            }
+        }
         public ViewResult ListResponses()
         {
-            return View(Repository.Responses
-                .Where(r => r.WillAttend == true));
+            return View(Repository.Responses.Where(r => r.WillAttend == true));
         }
     }
 }
