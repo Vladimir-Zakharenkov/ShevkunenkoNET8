@@ -1,0 +1,46 @@
+To access the Product class, I added a using statement for the namespace that 
+contains it, which is LanguageFeatures.Models. The code file already contains 
+a using statement for the Microsoft.AspNetCore.Mvc namespace, which provides 
+access to the Controller class, from which the HomeController class is derived.
+
+In most projects, some namespaces are required throughout the application, 
+such as those containing data model classes. This can result in a long list 
+of using statements, duplicated in every code file. Global using statements 
+address this problem by allowing using statements for commonly required 
+namespaces to be defined in a single location. Add a code file named GlobalUsings.cs 
+to the LanguageFeatures project with the content shown in Listing 5-9.
+
+Listing 5-9. The Contents of the GlobalUsings.cs File in the LanguageFeatures Folder
+
+global using LanguageFeatures.Models;
+global using Microsoft.AspNetCore.Mvc;
+
+The global keyword is used to denote a global using. The statements in Listing 5-9 
+make the LanguageFeatures.Models and Microsoft.AspNetCore.Mvc namespaces available 
+throughout the application, which means they can be removed from the HomeController.cs 
+file, as shown in Listing 5-10.
+
+Listing 5-10. Removing using Statements in the HomeController.cs File in the Controllers Folder
+
+//using Microsoft.AspNetCore.Mvc;
+//using LanguageFeatures.Models;
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			Product[] products = Product.GetProducts();
+			return View(new string[] { products[0].Name });
+		}
+	}
+}
+
+If you run the example, you will see the following results displayed in the browser window:
+
+Kayak
+
+You will receive warnings when compiling the project, which I explain in 
+the “Understanding Null State Analysis” section.
+
+Note
+Global using statements are a good idea, but I have not used them in this book 
+because I want to make it obvious when I add a dependency to a new namespace.

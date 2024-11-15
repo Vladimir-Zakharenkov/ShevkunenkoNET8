@@ -1,0 +1,39 @@
+﻿Opening the Project
+
+To open the project, start Visual Studio, select Open a Project or Solution, 
+and open the MySolution.sln file in the MySolution folder. Visual Studio will 
+open the solution file, discover the reference to the project that
+was added by the final command in Listing 4-2, and open the project as well.
+
+Visual Studio Code works differently. Start Visual Studio Code, select 
+File ➤ Open Folder, and navigate to the MySolution folder. Click Select Folder, 
+and Visual Studio Code will open the project.
+
+Although Visual Studio Code and Visual Studio are working with the same project, 
+each displays the contents differently. Visual Studio Code shows you a simple 
+list of files, ordered alphabetically, as shown on the left of Figure 4-1. 
+Visual Studio hides some files and nests others within related file items, 
+as shown on the right of Figure 4-1.
+
+Figure 4-1. Opening a project in Visual Studio Code and Visual Studio
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-4-1.webp)
+
+There are buttons at the top of the Visual Studio Solution Explorer that 
+disable file nesting and show the hidden items in the project. When you open 
+a project for the first time in Visual Studio Code, you may be
+prompted to add assets for building and debugging the project. 
+Click the Yes button.
+
+4.2	Adding Code and Content to Projects
+
+If you are using Visual Studio Code, then you add items to the project 
+by right-clicking the folder that should contain the file and selecting 
+New File from the pop-up menu (or selecting New Folder if you are adding a
+folder).
+
+Note
+You are responsible for ensuring that the file extension matches the type 
+of item you want to add; for example, an HTML file must be added with 
+the .html extension. I give the complete file name and the name
+of the containing folder for every item added to a project throughout 
+this book, so you will always know exactly what files you need to add.

@@ -1,0 +1,51 @@
+﻿Preparing for This Chapter
+
+To create the example project for this chapter, open a new PowerShell 
+command prompt and run the commands shown in Listing 5-1. If you are 
+using Visual Studio and prefer not to use the command line, you
+can create the project using the process described in Chapter 4.
+
+Tip
+You can download the example project for this chapter—and for all 
+the other chapters in this book — from 
+https://github.com/apress/pro-asp.net-core-6.
+See Chapter 1 for how to get help if you have problems running 
+the examples.
+
+Listing 5-1. Creating the Example Project
+
+dotnet new globaljson --sdk-version 6.0.403 --output LanguageFeatures
+dotnet new web --no-https --output LanguageFeatures --framework net6.0
+dotnet new sln -o LanguageFeatures
+dotnet sln LanguageFeatures add LanguageFeatures
+
+Opening the Project
+
+If you are using Visual Studio, select File ➤ Open ➤ Project/Solution, 
+select the LanguageFeatures.sln file in the LanguageFeatures folder, and 
+click the Open button to open the solution file and the project it
+references. If you are using Visual Studio Code, select File ➤ Open Folder, 
+navigate to the LanguageFeatures folder, and click the Select Folder button.
+
+Enabling the MVC Framework
+
+The web project template creates a project that contains a minimal ASP.NET Core 
+configuration. This means the placeholder content that is added by the mvc 
+template used in Chapter 3 is not available and that extra steps are required 
+to reach the point where the application can produce useful output. In this 
+section, I make the changes required to set up the MVC Framework, which is 
+one of the application frameworks supported by ASP.NET Core, as I explained 
+in Chapter 1. First, to enable the MVC framework, make the changes shown
+in Listing 5-2 to the Program.cs file.
+
+Listing 5-2. Enabling MVC in the Program.cs File in the LanguageFeatures Folder
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+//app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
+
+app.Run();

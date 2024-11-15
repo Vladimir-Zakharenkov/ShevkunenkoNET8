@@ -1,0 +1,28 @@
+This resolves one warning and introduces another, as shown in Figure 5-3.
+
+Figure 5-3. An additional null state analysis warning
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-5-3.png)
+
+The statement flagged by the compiler attempts to access the Name field 
+of the element at index zero in the array, which might be null since 
+the array type is Product?[]. Addressing this issue requires a check for
+null values, as shown in Listing 5-14.
+
+Listing 5-14. Guarding Against a null Value in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			Product? p = products[0];
+			string val;
+			if (p != null) {
+				val = p.Name;
+			} else {
+				val = "No value";
+			}
+			return View(new string[] { val });
+		}
+	}
+}

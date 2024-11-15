@@ -1,0 +1,53 @@
+Listing 4-16. Installing the LibMan Tool Package
+
+dotnet tool uninstall --global Microsoft.Web.LibraryManager.Cli
+dotnet tool install --global Microsoft.Web.LibraryManager.Cli --version 2.1.113
+
+These commands remove any existing LibMan package and install the version that 
+is used throughout this book. The next step is to initialize the project, 
+which creates the file that LibMan uses to keep track of the client packages 
+it installs. Run the command shown in Listing 4-17 in the MyProject folder 
+to initialize the example project.
+
+Listing 4-17. Initializing the Example Project
+
+libman init -p cdnjs
+
+LibMan can download packages from different repositories. The -p argument 
+in Listing 4-17 specifies the repository at https://cdnjs.com, which is 
+the most widely used. Once the project is initialized, clientside
+packages can be installed. To install the Bootstrap CSS framework that I use 
+to style HTML content throughout this book, run the command shown in 
+Listing 4-18 in the MyProject folder.
+
+Listing 4.18 Installing the Bootstrap CSS framework
+
+libman install bootstrap@5.2.3 -d wwwroot/lib/bootstrap
+
+The command installs version 5.2.3 of the Bootstrap package, which is known by the
+name bootstrap on the CDNJS repository. The -d argument specifies the location
+into which the package is installed. The convention in ASP.NET Core projects is to
+install client-side packages into the wwwroot/lib folder.
+
+Once the package has been installed, add the classes shown in listing 4.19 to the elements
+in the demo.html file. This is how the features provided by the Bootstrap package
+are applied.
+
+NOTE
+I don’t get into the details of using the Bootstrap CSS framework in this
+book. See https://getbootstrap.com for the Bootstrap documentation.
+
+Listing 4.19 Applying Bootstrap classes in the demo.html file in the wwwroot folder
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	</head>
+	<body>
+		<h3 class="bg-primary text-white text-center p-2">New Message</h3>
+	</body>
+</html>

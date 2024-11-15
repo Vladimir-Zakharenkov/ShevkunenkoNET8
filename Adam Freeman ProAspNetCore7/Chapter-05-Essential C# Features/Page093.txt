@@ -1,0 +1,51 @@
+Using an Index Initializer
+
+Recent versions of C# tidy up the way collections that use indexes, 
+such as dictionaries, are initialized. Listing 5-22 shows the Index action 
+rewritten to define a collection using the traditional C# approach to
+initializing a dictionary.
+
+Listing 5-22. Initializing a Dictionary in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Dictionary<string, Product> products = new Dictionary<string, Product> {
+				{ "Kayak", new Product { Name = "Kayak", Price = 275M } },
+				{ "Lifejacket", new Product{ Name = "Lifejacket", Price = 48.95M } }
+			};
+			return View("Index", products.Keys);
+		}
+	}
+}
+
+The syntax for initializing this type of collection relies too much on the { and } characters, 
+especially when the collection values are created using object initializers. The latest 
+versions of C# support a more natural approach to initializing indexed collections 
+that is consistent with the way that values are retrieved or modified once the collection 
+has been initialized, as shown in Listing 5-23.
+
+Listing 5-23. Using Collection Initializer Syntax in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+		Dictionary<string, Product> products = new Dictionary<string, Product> {
+			["Kayak"] = new Product { Name = "Kayak", Price = 275M },
+			["Lifejacket"] = new Product { Name = "Lifejacket", Price = 48.95M }
+			};
+			return View("Index", products.Keys);
+		}
+	}
+}
+
+The effect is the same — to create a dictionary whose keys are Kayak and Lifejacket 
+and whose values are Product objects — but the elements are created using the index 
+notation that is used for other collection operations. Restart ASP.NET Core and 
+request http://localhost:5000, and you will see the following results in the browser:
+
+Kayak
+Lifejacket

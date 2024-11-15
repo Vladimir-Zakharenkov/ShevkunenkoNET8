@@ -1,0 +1,51 @@
+Using Type Inference and Anonymous Types
+
+The var keyword allows you to define a local variable without explicitly 
+specifying the variable type, as demonstrated by Listing 5-43. This is called 
+type inference, or implicit typing.
+
+Listing 5-43. Using Type Inference in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			var names = new[] { "Kayak", "Lifejacket", "Soccer ball" };
+			return View(names);
+		}
+	}
+}
+
+It is not that the names variable does not have a type; instead, I am asking 
+the compiler to infer the type from the code. The compiler examines the array 
+declaration and works out that it is a string array. Running the example produces 
+the following output:
+
+Kayak
+Lifejacket
+Soccer ball
+
+Using Anonymous Types
+
+By combining object initializers and type inference, I can create simple view model 
+objects that are useful for transferring data between a controller and a view without 
+having to define a class or struct, as shown in Listing 5-44.
+
+Listing 5-44. Creating an Anonymous Type in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			var products = new[] {
+				new { Name = "Kayak", Price = 275M },
+				new { Name = "Lifejacket", Price = 48.95M },
+				new { Name = "Soccer ball", Price = 19.50M },
+				new { Name = "Corner flag", Price = 34.95M }
+			};
+
+			return View(products.Select(p => p.Name));
+		}
+	}
+}

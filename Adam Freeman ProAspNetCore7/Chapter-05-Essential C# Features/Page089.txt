@@ -1,0 +1,56 @@
+﻿Using the Null-Coalescing Operator
+
+The null-coalescing operator is two question mark characters (??) and is used 
+to provide a fallback value, often used in conjunction with the null conditional 
+operator, as shown in Listing 5-16.
+
+Listing 5-16. Using the Null-Coalescing Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			return View(new string[] { products[0]?.Name ?? "No Value" });
+		}
+	}
+}
+
+The ?? operator returns the value of its left-hand operand if it isn’t null. 
+If the left-hand operand is null, then the ?? operator returns the value of 
+its right-hand operand. This behavior works well with the null conditional 
+operator. If products[0] is null, then the ? operator will return null, and 
+the ?? operator will return "No Value". If products[0] isn’t null, then 
+the result will be the value of its Name property. This is a more concise 
+way of performing the same null checks shown in earlier examples.
+
+Note
+The ? and ?? operators cannot always be used, and you will see examples in later 
+chapters where I use an if statement to check for null values. One common example 
+is when using the await/async keywords, which are described later in this chapter, 
+and which do not integrate well with the null conditional operator.
+
+Overriding Null State Analysis
+
+The C# compiler has a sophisticated understanding of when a variable can be null, 
+but it doesn’t always get it right, and there are times when you have a better 
+understanding of whether a null value can arise than the compiler. In these situations, 
+the null - forgiving operator can be used to tell the compiler that a variable isn’t
+null, regardless of what the null state analysis suggests, as shown in Listing 5-17.
+
+Listing 5-17. Using the Null-Forgiving Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			return View(new string[] { products[0]!.Name });
+		}
+	}
+}
+
+The null-forgiving operator is an exclamation mark and is used in this example 
+to tell the compiler that products[0] isn’t null, even though null state analysis 
+has identified that it might be.

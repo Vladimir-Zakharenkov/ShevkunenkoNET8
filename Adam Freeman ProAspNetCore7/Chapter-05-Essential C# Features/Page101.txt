@@ -1,0 +1,72 @@
+Listing 5-34. Using the Filtering Extension Method in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts()};
+
+			Product[] productArray = {
+			new Product {Name = "Kayak", Price = 275M},
+			new Product {Name = "Lifejacket", Price = 48.95M},
+			new Product {Name = "Soccer ball", Price = 19.50M},
+			new Product {Name = "Corner flag", Price = 34.95M}
+			};
+
+			decimal arrayTotal = productArray.FilterByPrice(20).TotalPrices();
+
+			return View("Index", new string[] { $"Array Total: {arrayTotal:C2}" });
+		}
+	}
+}
+
+When I call the FilterByPrice method on the array of Product objects, only those 
+that cost more than $20 are received by the TotalPrices method and used to calculate 
+the total. If you run the application, you will see the following output in 
+the browser window:
+
+Total: $358.90
+
+Using Lambda Expressions
+
+Lambda expressions are a feature that causes a lot of confusion, not least because 
+the feature they simplify is also confusing. To understand the problem that is being 
+solved, consider the FilterByPrice extension method that I defined in the previous 
+section. This method is written so that it can filter Product objects by price, 
+which means I must create a second method if I want to filter by name, as shown 
+in Listing 5-35.
+
+Listing 5-35. Adding a Filter Method in the MyExtensionMethods.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public static class MyExtensionMethods {
+
+		public static decimal TotalPrices(this IEnumerable<Product?> products) {
+			decimal total = 0;
+			foreach (Product? prod in products) {
+				total += prod?.Price ?? 0;
+			}
+			return total;
+		}
+
+		public static IEnumerable<Product?> FilterByPrice(
+		this IEnumerable<Product?> productEnum, decimal minimumPrice) {
+			foreach (Product? prod in productEnum) {
+				if ((prod?.Price ?? 0) >= minimumPrice) {
+					yield return prod;
+				}
+			}
+		}
+
+		public static IEnumerable<Product?> FilterByName(
+		this IEnumerable<Product?> productEnum, char firstLetter) {
+			foreach (Product? prod in productEnum) {
+				if (prod?.Name?[0] == firstLetter) {
+					yield return prod;
+				}
+			}
+		}
+	}
+}

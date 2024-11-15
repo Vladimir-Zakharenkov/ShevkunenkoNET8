@@ -1,0 +1,48 @@
+Listing 5-56. Using an Asynchronous Enumerable in the MyAsyncMethods.cs File 
+in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public class MyAsyncMethods {
+
+		public async static Task<long?> GetPageLength() {
+			HttpClient client = new HttpClient();
+			var httpMessage = await client.GetAsync("http://apress.com");
+			return httpMessage.Content.Headers.ContentLength;
+		}
+
+		public static async IAsyncEnumerable<long?>
+			GetPageLengths(List<string> output, params string[] urls) {
+			HttpClient client = new HttpClient();
+			foreach (string url in urls) {
+				output.Add($"Started request for {url}");
+				var httpMessage = await client.GetAsync($"http://{url}");
+				output.Add($"Completed request for {url}");
+				yield return httpMessage.Content.Headers.ContentLength;
+			}
+		}
+	}
+}
+
+The methods result is IAsyncEnumerable<long?>, which denotes an asynchronous 
+sequence of nullable long values. This result type has special support in .NET Core 
+and works with standard yield return statements, which isn’t otherwise possible 
+because the result constraints for asynchronous methods conflict with the yield 
+keyword. Listing 5-57 updates the controller to use the revised method.
+
+Listing 5-57. Using an Asynchronous Enumerable in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public async Task<ViewResult> Index() {
+			List<string> output = new List<string>();
+			await foreach (long? len in MyAsyncMethods.GetPageLengths(output,
+					"apress.com", "microsoft.com", "amazon.com")) {
+				output.Add($"Page length: { len}");
+			}
+			return View(output);
+		}
+	}
+}

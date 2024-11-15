@@ -1,0 +1,31 @@
+CHAPTER 4
+
+Using the Development Tools
+
+This chapter covers
+
+•	Using command-line tools to create an ASP.NET Core project
+•	Adding code and content to a project
+•	Building and running an ASP.NET Core project
+•	Using the hot reload feature
+•	Installing NuGet packages
+•	Installing tool packages
+•	Installing client-side packages
+•	Using the debugger
+
+In this chapter, I introduce the tools that Microsoft provides for ASP.NET Core 
+development and that are used throughout this book.
+
+Unlike earlier editions of this book, I rely on the command-line tools provided 
+by the .NET SDK and additional tool packages that Microsoft publishes. In part, 
+I have done this to help ensure you get the expected results from the examples 
+but also because the command-line tools provide access to all the features 
+required for ASP.NET Core development, regardless of which editor/IDE 
+you have chosen.
+
+Visual Studio — and, to a lesser extent, Visual Studio Code — offers access 
+to some of the tools through user interfaces, which I describe in this chapter, 
+but Visual Studio and Visual Studio Code don’t support all the features that are 
+required for ASP.NET Core development, so there are times that using the command
+line is inevitable.
+

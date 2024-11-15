@@ -1,0 +1,59 @@
+Note
+Extension methods do not let you break through the access rules that classes 
+define for methods, fields, and properties. You can extend the functionality 
+of a class by using an extension method but only using the class members 
+that you had access to anyway.
+
+Listing 5-29. Applying an Extension Method in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			ShoppingCart cart
+			= new ShoppingCart { Products = Product.GetProducts()};
+			decimal cartTotal = cart.TotalPrices();
+			return View("Index", new string[] { $"Total: {cartTotal:C2}" });
+		}
+	}
+}
+
+The key statement is this one:
+
+...
+decimal cartTotal = cart.TotalPrices();
+...
+
+I call the TotalPrices method on a ShoppingCart object as though it were part 
+of the ShoppingCart class, even though it is an extension method defined 
+by a different class altogether. .NET will find extension classes if they are 
+in the scope of the current class, meaning that they are part of the same namespace
+or in a namespace that is the subject of a using statement. Restart ASP.NET Core 
+and request http://localhost:5000, which will produce the following output 
+in the browser window:
+
+Total: $323.95
+
+Applying Extension Methods to an Interface
+
+Extension methods can also be applied to an interface, which allows me to call 
+the extension method on all the classes that implement the interface. Listing 5-30 
+shows the ShoppingCart class updated to implement the IEnumerable<Product> interface.
+
+Listing 5-30. Implementing an Interface in the ShoppingCart.cs File 
+in the Models Folder
+
+using System.Collections;
+
+namespace LanguageFeatures.Models {
+
+	public class ShoppingCart : IEnumerable<Product?> {
+		public IEnumerable<Product?>? Products { get; set; }
+		public IEnumerator<Product?> GetEnumerator() => Products?.GetEnumerator()
+			?? Enumerable.Empty<Product?>().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+}

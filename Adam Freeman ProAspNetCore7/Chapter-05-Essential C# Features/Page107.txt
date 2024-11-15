@@ -1,0 +1,58 @@
+The action method gets a collection of Product objects from the static 
+Product.GetProducts method and uses LINQ to project the values of the Name 
+properties, which are then used as the view model for the default view. 
+If you run the application, you will see the following output displayed 
+in the browser window:
+
+Kayak
+Lifejacket
+
+There will be an empty list item in the browser window as well because 
+the GetProducts method includes a null reference in its results, but 
+that doesn’t matter for this section of the chapter.
+
+When a constructor or method body consists of a single statement, it can 
+be rewritten as a lambda expression, as shown in Listing 5-41.
+
+Listing 5-41. A Lambda Action Method in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+	}
+}
+
+Lambda expressions for methods omit the return keyword and use => (goes to) 
+to associate the method signature (including its arguments) with its implementation. 
+The Index method shown in Listing 5-41 works in the same way as the one shown 
+in Listing 5-40 but is expressed more concisely. The same basic approach
+can also be used to define properties. Listing 5-42 shows the addition of 
+a property that uses a lambda expression to the Product class.
+
+Listing 5-42. A Lambda Property in the Product.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public class Product {
+		public string Name { get; set; } = string.Empty;
+
+		public decimal? Price { get; set; }
+
+		public bool NameBeginsWithS => Name?[0] == 'S';
+
+		public static Product?[] GetProducts() {
+
+			Product kayak = new Product {
+				Name = "Kayak", Price = 275M
+			};
+
+			Product lifejacket = new Product {
+				Name = "Lifejacket", Price = 48.95M
+			};
+
+			return new Product?[] { kayak, lifejacket, null };
+		}
+	}
+}

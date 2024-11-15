@@ -1,0 +1,46 @@
+A variable of type Product[]? is an array that can hold only Product values and 
+not null values, but the array itself may be null:
+
+...
+Product[]? arr1 = new Product?[] { kayak, lifejacket, null }; // Not OK
+Product[]? arr2 = null; // OK
+...
+
+A variable of type Product?[]? is an array that can contain Product or null 
+values and that can itself be null:
+
+...
+Product?[]? arr1 = new Product?[] { kayak, lifejacket, null }; // OK
+Product?[]? arr2 = null; // Also OK
+...
+
+Null state analysis is a useful feature, but that doesn’t mean it is always 
+easy to understand.
+
+Checking for Null Values
+
+I explained that dealing with null state analysis warnings can feel like chasing 
+a problem through code, and you can see a simple example of this in the HomeController.cs 
+file in the Controllers folder. In Listing 5-12, I changed the type returned by 
+the GetProducts method to allow null values, but that has created a mismatch in 
+the HomeController class, which invokes that method and assigns the result to an
+array of non-nullable Product values:
+
+...
+Product[] products = Product.GetProducts();
+...
+
+This is easily resolved by changing the type of the products variable to match 
+the type returned by the GetProducts method, as shown in Listing 5-13.
+
+Listing 5-13. Changing Type in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			return View(new string[] { products[0].Name });
+		}
+	}
+}

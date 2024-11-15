@@ -1,0 +1,47 @@
+Listing 5-50. Using a Default Implementation in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			IProductSelection cart = new ShoppingCart(
+				new Product { Name = "Kayak", Price = 275M },
+				new Product { Name = "Lifejacket", Price = 48.95M },
+				new Product { Name = "Soccer ball", Price = 19.50M },
+				new Product { Name = "Corner flag", Price = 34.95M }
+			);
+			return View(cart.Names);
+		}
+	}
+}
+
+The ShoppingCart class has not been modified, but the Index method can use 
+the default implementation of the Names property. Restart ASP.NET Core and 
+request http://localhost:5000, and you will see the following output 
+in the browser:
+
+Kayak
+Lifejacket
+Soccer ball
+Corner flag
+
+Using Asynchronous Methods
+
+Asynchronous methods perform work in the background and notify you when they are 
+complete, allowing your code to take care of other business while the background 
+work is performed. Asynchronous methods are an important tool in removing bottlenecks 
+from code and allow applications to take advantage of multiple processors and 
+processor cores to perform work in parallel.
+
+In ASP.NET Core, asynchronous methods can be used to improve the overall performance 
+of an application by allowing the server more flexibility in the way that requests 
+are scheduled and executed. Two C# keywords — async and await — are used to perform 
+work asynchronously.
+
+Working with Tasks Directly
+
+C# and .NET have excellent support for asynchronous methods, but the code has tended 
+to be verbose, and developers who are not used to parallel programming often get 
+bogged down by the unusual syntax. To create an example, add a class file called 
+MyAsyncMethods.cs to the Models folder and add the code shown in Listing 5-51.

@@ -1,0 +1,54 @@
+The first filter selects all the products with a price of $20 or more, and 
+the second filter selects products whose name starts with the letter S. 
+You will see the following output in the browser window if you run the
+example application:
+
+Price Total: $358.90
+Name Total: $19.50
+
+Defining Functions
+
+I can repeat this process indefinitely to create filter methods for every property 
+and every combination of properties that I am interested in. A more elegant approach 
+is to separate the code that processes the enumeration from the selection criteria. 
+C# makes this easy by allowing functions to be passed around as objects. Listing 5-37 
+shows a single extension method that filters an enumeration of Product objects but that
+delegates the decision about which ones are included in the results to a separate function.
+
+Listing 5-37. Creating a General Filter Method in the MyExtensionMethods.cs File 
+in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public static class MyExtensionMethods {
+
+		public static decimal TotalPrices(this IEnumerable<Product?> products) {
+				decimal total = 0;
+				foreach (Product? prod in products) {
+					total += prod?.Price ?? 0;
+			}
+			return total;
+		}
+
+		public static IEnumerable<Product?> FilterByPrice(
+		this IEnumerable<Product?> productEnum, decimal minimumPrice) {
+
+			foreach (Product? prod in productEnum) {
+				if ((prod?.Price ?? 0) >= minimumPrice) {
+					yield return prod;
+				}
+			}
+		}
+
+		public static IEnumerable<Product?> Filter(
+			this IEnumerable<Product?> productEnum,
+				Func<Product?, bool> selector) {
+				
+				foreach (Product? prod in productEnum) {
+					if (selector(prod)) {
+						yield return prod;
+				}
+			}
+		}
+	}
+}

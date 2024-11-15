@@ -1,0 +1,54 @@
+Listing 5-27. The Contents of the ShoppingCart.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+	public class ShoppingCart {
+		public IEnumerable<Product?>? Products { get; set; }
+	}
+}
+
+This is a simple class that acts as a wrapper around a sequence of Product 
+objects (I only need a basic class for this example). Note the type of 
+the Products property, which denotes a nullable enumerable of nullable 
+Products, meaning that the Products property may be null and that any 
+sequence of elements assigned to the property may contain null values.
+
+Suppose I need to be able to determine the total value of the Product 
+objects in the ShoppingCart class, but I cannot modify the class because 
+it comes from a third party, and I do not have the source code. I can
+use an extension method to add the functionality I need.
+
+Add a class file named MyExtensionMethods.cs in the Models folder and use 
+it to define the class shown in Listing 5-28.
+
+Listing 5-28. The Contents of the MyExtensionMethods.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public static class MyExtensionMethods {
+
+		public static decimal TotalPrices(this ShoppingCart cartParam) {
+			decimal total = 0;
+			if (cartParam.Products != null) {
+				foreach (Product? prod in cartParam.Products) {
+					total += prod?.Price ?? 0;
+				}
+			}
+			return total;
+		}
+	}
+}
+
+Extension methods are defined in static classes within the same namespace 
+as the class to which the extension methods applies. In this case, the static 
+MyExtensionMethods class is in the LanguageFeatures. Models namespace, which 
+means that it can contain extension methods for classes in that namespace.
+
+Extension methods are also static, and Listing 5-28 defines a single extension 
+method named TotalPrices. The this keyword in front of the first parameter marks 
+TotalPrices as an extension method. The first parameter tells .NET which class 
+the extension method can be applied to — ShoppingCart in this case. I can refer 
+to the instance of the ShoppingCart that the extension method has been applied 
+to by using the cartParam parameter. This extension method enumerates the Product 
+objects in the ShoppingCart and returns the sum of the Product.Price property 
+values. Listing 5-29 shows how I apply the extension method in the Home 
+controller’s action method.

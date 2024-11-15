@@ -1,0 +1,47 @@
+Using Target-Typed New Expressions
+
+The example in Listing 5-23 is still verbose and declares the collection type 
+when defining the variable and creating an instance with the new keyword:
+
+...
+Dictionary<string, Product> products = new Dictionary<string, Product> {
+	["Kayak"] = new Product { Name = "Kayak", Price = 275M },
+	["Lifejacket"] = new Product { Name = "Lifejacket", Price = 48.95M }
+};
+...
+
+This can be simplified using a target-typed new expression, as shown in Listing 5-24.
+
+Listing 5-24. Using a Target-Typed new Expression in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+		Dictionary<string, Product> products = new() {
+				["Kayak"] = new Product { Name = "Kayak", Price = 275M },
+				["Lifejacket"] = new Product { Name = "Lifejacket", Price = 48.95M }
+			};
+			return View("Index", products.Keys);
+		}
+	}
+}
+
+The type can be replaced with new() when the compiler can determine which 
+type is required and constructor arguments are provided as arguments to the 
+new method. Creating instances with the new() expression works only when 
+the compiler can determine which type is required. Restart ASP.NET Core and
+request http://localhost:5000, and you will see the following results 
+in the browser:
+
+Kayak
+Lifejacket
+
+Pattern Matching
+
+One of the most useful recent additions to C# is support for pattern matching, 
+which can be used to test that an object is of a specific type or has specific 
+characteristics. This is another form of syntactic sugar, and it can
+dramatically simplify complex blocks of conditional statements. The is keyword 
+is used to perform a type test, as demonstrated in Listing 5-25.

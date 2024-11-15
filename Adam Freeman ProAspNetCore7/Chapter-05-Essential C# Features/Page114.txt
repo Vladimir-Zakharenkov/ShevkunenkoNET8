@@ -1,0 +1,51 @@
+Do not worry if this does not make sense — you are not alone in your confusion. 
+It is for this reason that Microsoft added keywords to C# to simplify asynchronous 
+methods.
+
+Applying the async and await Keywords
+
+Microsoft introduced two keywords to C# that simplify using asynchronous methods 
+like HttpClient.GetAsync. The keywords are async and await, and you can see how 
+I have used them to simplify my example method in Listing 5-52.
+
+Listing 5-52. Using the async and await Keywords in the MyAsyncMethods.cs File 
+in the Models Folder
+
+namespace LanguageFeatures.Models {
+	public class MyAsyncMethods {
+		public async static Task<long?> GetPageLength() {
+			HttpClient client = new HttpClient();
+			var httpMessage = await client.GetAsync("http://apress.com");
+				return httpMessage.Content.Headers.ContentLength;
+		}
+	}
+}
+
+I used the await keyword when calling the asynchronous method. This tells the 
+C# compiler that I want to wait for the result of the Task that the GetAsync 
+method returns and then carry on executing other statements in the same method.
+
+Applying the await keyword means I can treat the result from the GetAsync 
+method as though it were a regular method and just assign the HttpResponseMessage 
+object that it returns to a variable. Even better, I can then use the return keyword 
+in the normal way to produce a result from another method — in this case,
+the value of the ContentLength property. This is a much more natural technique, 
+and it means I do not have to worry about the ContinueWith method and multiple 
+uses of the return keyword.
+
+When you use the await keyword, you must also add the async keyword to the method 
+signature, as I have done in the example. The method result type does not change 
+— my example GetPageLength method still returns a Task<long?>. This is because 
+await and async are implemented using some clever compiler tricks, meaning that 
+they allow a more natural syntax, but they do not change what is happening in the
+methods to which they are applied. Someone who is calling my GetPageLength method 
+still has to deal with a Task<long?> result because there is still a background 
+operation that produces a nullable long — although, of course, that programmer 
+can also choose to use the await and async keywords.
+
+This pattern follows through into the controller, which makes it easy to write 
+asynchronous action methods, as shown in Listing 5-53.
+
+Note
+You can also use the async and await keywords in lambda expressions, which 
+I demonstrate in later chapters.

@@ -1,0 +1,29 @@
+To match any value of a specific type, use the type and variable name in 
+the case statement, like this:
+
+...
+case decimal decimalValue:
+...
+
+This case statement matches any decimal value and assigns it to a new variable 
+called decimalValue. To be more selective, the when keyword can be included, 
+like this:
+
+...
+case int intValue when intValue > 50:
+...
+
+This case statement matches int values and assigns them to a variable called 
+intValue, but only when the value is greater than 50. Restart ASP.NET Core and 
+request http://localhost:5000, and you will see the following output in 
+the browser window:
+
+Total: $404.95
+
+Using Extension Methods
+
+Extension methods are a convenient way of adding methods to classes that you 
+cannot modify directly, typically because they are provided by Microsoft 
+or a third-party package. Listing 5-27 shows the definition of the 
+ShoppingCart class, which I added to the Models folder in a class file 
+called ShoppingCart.cs and which represents a collection of Product objects.

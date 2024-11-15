@@ -1,0 +1,46 @@
+﻿Using String Interpolation
+
+C# supports string interpolation to create formatted strings, which uses templates 
+with variable names that are resolved and inserted into the output, as shown in 
+Listing 5-19.
+
+Listing 5-19. Using String Interpolation in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+		Product?[] products = Product.GetProducts();
+		return View(new string[] {
+			$"Name: {products[0]?.Name}, Price: { products[0]?.Price }"
+			});
+		}
+	}
+}
+
+Interpolated strings are prefixed with the $ character and contain holes, which are 
+references to values contained within the { and } characters. When the string is 
+evaluated, the holes are filled in with the current values of the variables or 
+constants that are specified.
+
+Tip
+String interpolation supports the string format specifiers, which can be applied 
+within holes, so $"Price: {price:C2}" would format the price value as a currency 
+value with two decimal digits, for example.
+
+Start ASP.NET Core and request http://localhost:5000, and you will see a formatted 
+string:
+
+Name: Kayak, Price: 275
+
+Using Object and Collection Initializers
+
+When I create an object in the static GetProducts method of the Product class, 
+I use an object initializer, which allows me to create an object and specify 
+its property values in a single step, like this:
+
+...
+Product kayak = new Product {
+Name = "Kayak", Price = 275M
+};
+...

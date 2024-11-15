@@ -1,0 +1,49 @@
+OTHER FORMS FOR LAMBDA EXPRESSIONS
+
+I don’t need to express the logic of my delegate in the lambda expression. 
+I can as easily call a method, like this:
+
+...
+prod => EvaluateProduct(prod)
+...
+
+If I need a lambda expression for a delegate that has multiple parameters, 
+I must wrap the parameters in parentheses, like this:
+
+...
+(prod, count) => prod.Price > 20 && count > 0
+...
+
+Finally, if I need logic in the lambda expression that requires more 
+than one statement, I can do so by using braces ({}) and finishing with 
+a return statement, like this:
+
+...
+(prod, count) => {
+	// ...multiple code statements...
+	return result;
+}
+...
+
+You do not need to use lambda expressions in your code, but they are a neat way 
+of expressing complex functions simply and in a manner that is readable and clear. 
+I like them a lot, and you will see them used throughout this book.
+
+Using Lambda Expression Methods and Properties
+
+Lambda expressions can be used to implement constructors, methods, and properties. 
+In ASP.NET Core development, you will often end up with methods that contain a single 
+statement that selects the data to display and the view to render. In Listing 5-40, 
+I have rewritten the Index action method so that it follows this common pattern.
+
+Listing 5-40. Creating a Common Action Pattern in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			return View(Product.GetProducts().Select(p => p?.Name));
+		}
+	}
+}

@@ -1,0 +1,49 @@
+﻿Listing 4-9. Changing the Message in the demo.html File in the wwwroot Folder
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+</head>
+<body>
+	<h3>New Message</h3>
+</body>
+</html>
+
+When you save the changes to the HTML file, the dotnet watch tool will detect 
+the change and automatically update the browser, as shown in Figure 4-5.
+
+Figure 4-5. The hot reload feature
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-4-5.webp)
+
+The dotnet watch command is a clever feat of engineering, and it has good support 
+for ASP.NET Core applications, allowing changes to be easily applied. But not 
+all changes can be handled with a hot reload.
+
+If you are using Visual Studio, right-click the MyProject item in the Solution 
+Explorer, select Add ➤ Class from the pop-up menu, and set the name of the new 
+class file to MyClass.cs. When Visual Studio opens the file for editing, change 
+the namespace as shown in Listing 4-10.
+
+Listing 4-10. Changing a Namespace in the MyClass.cs File in the MyProject Folder
+
+namespace MyProject.MyNamespace {
+	public class MyClass {
+	}
+}
+
+If you are using Visual Studio Code, add a file named MyClass.cs to the MyProject folder 
+with the content shown in Listing 4-10.
+
+Regardless of which editor you use, you will see output similar to the following when
+you save the class file:
+
+watch : File changed: C:\MySolution\MyProject\MyClass.cs.
+watch : Unable to apply hot reload because of a rude edit.
+
+There are some changes that the dotnet watch command can’t handle with a hot
+reload and the application is restarted instead. You may be prompted to accept the
+restart. The restart has little effect on the example application, but it means that the
+application state is lost, which can be frustrating when working on real projects.

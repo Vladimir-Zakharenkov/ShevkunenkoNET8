@@ -1,0 +1,48 @@
+Packages are removed with the dotnet remove package command. To remove 
+the package from the example project, run the command shown in Listing 4-13 
+in the MyProject folder.
+
+Listing 4-13. Removing a Package from the Example Project
+
+dotnet remove package Microsoft.EntityFrameworkCore.SqlServer
+
+4.4.2	Managing Tool Packages
+
+Tool packages install commands that can be used from the command line to perform 
+operations on .NET projects. One common example is the Entity Framework Core tools 
+package that installs commands that are used to manage databases in ASP.NET Core 
+projects. Tool packages are managed using the dotnet tool command. To install 
+the Entity Framework Core tools package, run the commands shown in Listing 4-14.
+
+Listing 4-14. Installing a Tool Package
+
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 8.0.0
+
+The first command removes the dotnet-ef package, which is named dotnet-ef. This
+command will produce an error if the package has not already been installed, but it
+is a good idea to remove existing versions before installing a package. The dotnet
+tool install command installs version 7.0.0 of the dotnet-ef package, which is the
+version I use in this book. The commands installed by tool packages are used through
+the dotnet command. To test the package installed in listing 4.14, run the command
+shown in listing 4.15 in the MyProject folder.
+
+TIP
+The --global arguments in listing 4.14 mean the package is installed for
+global use and not just for a specific project. You can install tool packages into
+just one project, in which case the command is accessed with dotnet tool run
+<command>. The tools I use in this book are all installed globally.
+
+Listing 4.15 Running a tool package command
+
+dotnet ef --help
+
+The commands added by this tool package are accessed using dotnet ef, and you will
+see examples in later chapters that rely on these commands.
+
+4.4.3	Managing client-side packages
+
+Client-side packages contain content that is delivered to the client, such as images, CSS
+stylesheets, JavaScript files, and static HTML. Client-side packages are added to ASP.
+NET Core using the Library Manager (LibMan) tool. To install the LibMan tool package,
+run the commands shown in listing 4.16.

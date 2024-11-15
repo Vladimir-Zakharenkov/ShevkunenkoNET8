@@ -1,0 +1,57 @@
+This is another syntactic sugar feature that makes C# easier to use. 
+Without this feature, I would have to call the Product constructor and 
+then use the newly created object to set each of the properties, like this:
+
+...
+Product kayak = new Product();
+kayak.Name = "Kayak";
+kayak.Price = 275M;
+...
+
+A related feature is the collection initializer, which allows the creation 
+of a collection and its contents to be specified in a single step. Without 
+an initializer, creating a string array, for example, requires the size of
+the array and the array elements to be specified separately, 
+as shown in Listing 5-20.
+
+Listing 5-20. Initializing an Object in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			string[] names = new string[3];
+			names[0] = "Bob";
+			names[1] = "Joe";
+			names[2] = "Alice";
+			return View("Index", names);
+		}
+	}
+}
+
+Using a collection initializer allows the contents of the array to be specified 
+as part of the construction, which implicitly provides the compiler with the size 
+of the array, as shown in Listing 5-21.
+
+Listing 5-21. Using a Collection Initializer in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			return View("Index", new string[] { "Bob", "Joe", "Alice" });
+		}
+	}
+}
+
+The array elements are specified between the { and } characters, which allows 
+for a more concise definition of the collection and makes it possible to define 
+a collection inline within a method call. The code in Listing 5-21 has the same 
+effect as the code in Listing 5-20. Restart ASP.NET Core and request 
+http://localhost:5000, and you will see the following output in the browser window:
+
+Bob
+Joe
+Alice

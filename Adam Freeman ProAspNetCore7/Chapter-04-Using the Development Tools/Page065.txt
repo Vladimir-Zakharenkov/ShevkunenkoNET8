@@ -1,0 +1,55 @@
+Listing 4-4. Adding a Statement in the Program.cs File in the MyProject Folder
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/", () => "Hello World!");
+
+app.UseStaticFiles();
+
+app.Run();
+
+}
+
+This statement adds support for responding to HTTP requests with static content 
+in the wwwroot folder, such as the HTML file created in the previous section. 
+(I explain this feature in more detail in Chapter 15.) Next, set the HTTP port 
+that ASP.NET Core will use to receive HTTP requests, as shown in Listing 4-5.
+
+Listing 4-5. Setting the HTTP Port in the launchSettings.json File in the Properties Folder
+
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:5000",
+			"sslPort": 0
+		}
+	},
+	"profiles": {
+		"MyProject": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5000",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+				}
+		},
+		"IIS Express": {
+			"commandName": "IISExpress",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		}
+	}
+}
+
+To build the example project, run the command shown in Listing 4-6 
+in the MyProject or MySolution folder.
+
+Listing 4.6 Building the project
+
+dotnet build

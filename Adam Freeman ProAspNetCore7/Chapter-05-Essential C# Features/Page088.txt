@@ -1,0 +1,57 @@
+This is an especially verbose way of avoiding a null, which I will refine shortly. 
+But it demonstrates an important point, which is that the compiler can understand 
+the effect of C# expressions when checking for a null reference. In Listing 5-14, 
+I use an if statement to see if a Product? variable is not null, and the compiler 
+understands that the variable cannot be null within the scope of the if clause and 
+doesn’t generate a warning when I read the name field:
+
+...
+if (p != null) {
+	val = p.Name;
+} else {
+	val = "No value";
+}
+...
+
+The compiler has a sophisticated understanding of C# but doesn’t always get it right, 
+and I explain what to do when the compiler isn’t able to accurately determine whether 
+a variable is null in the “Overriding Null State Analysis” section.
+
+Using the Null Conditional Operator
+
+The null conditional operator is a more concise way of avoiding member access 
+for null values, as shown in Listing 5-15.
+
+Listing 5-15. Using the Null Conditional Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+
+			string? val = products[0]?.Name;
+
+			if (val != null) {
+				return View(new string[] { val });
+			}
+			return View(new string[] { "No Value" });
+		}
+	}
+}
+
+The null conditional operator is a question mark applied before a member is accessed, 
+like this:
+
+...
+string? val = products[0]?.Name;
+...
+
+The operator returns null if it is applied to a variable that is null. In this case, 
+if the element at index zero of the products array is null, then the operator 
+will return null and prevent an attempt to access the Name property, which would 
+cause an exception. If products[0] isn’t null, then the operator does nothing, and the
+expression returns the value assigned to the Name property. Applying the null 
+conditional operator can return null, and its result must always be assigned 
+to a nullable variable, such as the string? used in this example.

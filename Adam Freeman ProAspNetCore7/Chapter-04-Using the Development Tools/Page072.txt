@@ -1,0 +1,34 @@
+﻿How I debug my code
+
+Debuggers are powerful tools, but I rarely use them. In most situations, I prefer to add
+Console.WriteLine statements to my code to figure out what is going on, which I can
+easily do because I use the dotnet run command to run my projects from the command
+line. This is a rudimentary approach that works for me, not least because most of
+the errors in my code tend to be where statements are not being called because a condition
+in an if statement isn’t effective. If I want to examine an object in detail, I tend to
+serialize it to JSON and pass the result to the WriteLine method.
+
+This may seem like madness if you are a dedicated user of the debugger, but it has the
+advantage of being quick and simple. When I am trying to figure out why code isn’t working,
+I want to explore and iterate quickly, and I find the amount of time taken to start the
+debugger to be a barrier. My approach is also reliable. The Visual Studio and Visual Studio
+Code debuggers are sophisticated, but they are not always entirely predictable, and
+.NET and ASP.NET Core change too quickly for the debugger features to have entirely settled
+down. When I am utterly confused by the behavior of some code, I want the simplest
+possible diagnostic tool, and that, for me, is a message written to the console.
+
+I am not suggesting that this is the approach you should use, but it can be a good place to
+start when you are not getting the results you expect and you don’t want to battle with the
+debugger to figure out why.
+
+Summary
+
+•	ASP.NET Core projects are created with the dotnet new command.
+•	There are templates to jumpstart popular project types and to create common project items.
+•	The dotnet build command compiles a project.
+•	The dotnet run command builds and executes a project.
+•	The dotnet watch command builds and executes a project, and performs hot
+	reloading when changes are detected.
+•	Packages are added to a project with the dotnet add package command.
+•	Tool packages are installing using the dotnet tool install command.
+•	Client-side packages are managed with the libman tool package.

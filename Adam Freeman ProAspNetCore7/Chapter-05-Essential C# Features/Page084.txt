@@ -1,0 +1,48 @@
+Note
+Getting to grips with nullable and non-nullable types can be frustrating. 
+A change in one code file can simply move a warning to another part of 
+the application, and it can feel like you are chasing problems through
+a project. But it is worth sticking with null state analysis because null 
+reference exceptions are the most common runtime error, and few programmers 
+are disciplined enough to guard against null values without the
+compiler analysis feature.
+
+Ensuring Fields and Properties Are Assigned Values
+
+The first warning in the Product.cs file is for the Name field, whose type 
+is string, which is a non-nullable type (because it hasn’t been annotated 
+with a question mark).
+
+...
+public string Name { get; set; }
+...
+
+One consequence of using non-nullable types is that properties like Name 
+must be assigned a value when a new instance of the enclosing class is created. 
+If this were not the case, then the Name property would not be initialized 
+and would be null. And this is a problem because we can’t assign null 
+to a non-nullable property, even indirectly. Listing 5-11 solves this problem 
+by assigning a default value, ensuring that the Name property is always initialized.
+
+Listing 5-11. Providing a Default Value in the Product.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+	public class Product {
+
+	public string Name { get; set; } = string.Empty;
+	public decimal? Price { get; set; }
+
+	public static Product[] GetProducts() {
+
+		Product kayak = new Product {
+			Name = "Kayak", Price = 275M
+		};
+
+		Product lifejacket = new Product {
+			Name = "Lifejacket", Price = 48.95M
+		};
+
+		return new Product[] { kayak, lifejacket, null };
+		}
+	}
+}

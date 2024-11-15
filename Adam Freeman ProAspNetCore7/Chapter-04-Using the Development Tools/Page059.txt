@@ -1,0 +1,35 @@
+As ASP.NET Core has evolved, I have gradually moved to using just the command-line 
+tools, except for when I need to use a debugger (although, as I explain later 
+in the chapter, this is a rare requirement). Your preferences may differ, especially 
+if you are used to working entirely within an IDE, but my suggestion is to
+give the command-line tools a go. They are simple, concise, and predictable, 
+which cannot be said for all the equivalent functionality provided by Visual Studio 
+and Visual Studio Code. Table 4-1 summarizes the chapter.
+
+Table 4-1. Chapter Summary
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-4-1-Chapter-guide.webp)
+
+4.1	Creating ASP.NET Core Projects
+
+The .NET SDK includes a set of command-line tools for creating, managing, building, 
+and running projects. Visual Studio provides integrated support for some of these 
+tasks, but if you are using Visual Studio Code, then the command line 
+is the only option.
+
+I use the command-line tools throughout this book because they are simple 
+and concise. The Visual Studio integrated support is awkward and makes 
+it easy to unintentionally create a project with the wrong configuration, 
+as the volume of emails from confused readers of earlier editions of this 
+book has demonstrated.
+
+Tip
+You can download the example project for this chapter — and for all the other 
+chapters in this book—from https://github.com/manningbooks/pro-asp.net-core-7. 
+See Chapter 1 for how to get help if you have problems running the examples.
+
+4.1.1	Creating a Project Using the Command Line
+
+The dotnet command provides access to the .NET command-line features. The dotnet 
+new command is used to create a new project, configuration file, or solution file. 
+To see the list of templates available for creating new items, open a PowerShell 
+command prompt and run the command shown in Listing 4-1.

@@ -1,0 +1,44 @@
+Name: Kayak, Price: 275
+Name: Lifejacket, Price: 48.95
+Name: Soccer ball, Price: 19.50
+Name: Corner flag, Price: 34.95
+
+This approach is prone to errors, either because the name was mistyped or 
+because the code was refactored and the name in the string isn’t correctly updated. 
+C# supports the nameof expression, in which the compiler takes responsibility 
+for producing a name string, as shown in Listing 5-59.
+
+Listing 5-59. Using nameof Expressions in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			var products = new[] {
+				new { Name = "Kayak", Price = 275M },
+				new { Name = "Lifejacket", Price = 48.95M },
+				new { Name = "Soccer ball", Price = 19.50M },
+				new { Name = "Corner flag", Price = 34.95M }
+			};
+			return View(products.Select(p =>
+				$"{nameof(p.Name)}: {p.Name}, {nameof(p.Price)}: {p.Price}"));
+		}
+	}
+}
+
+The compiler processes a reference such as p.Name so that only the last part 
+is included in the string, producing the same output as in previous examples. 
+There is IntelliSense support for nameof expressions, so you will be prompted 
+to select references, and expressions will be correctly updated when you refactor 
+code. Since the compiler is responsible for dealing with nameof, using an 
+invalid reference causes a compiler error, which prevents incorrect or outdated 
+references from escaping notice.
+
+Summary
+
+In this chapter, I gave you an overview of the key C# language features that an effective 
+ASP.NET Core programmer needs to know. C# is a sufficiently flexible language that 
+there are usually different ways to approach any problem, but these are the features 
+that you will encounter most often during web application development and that you 
+will see throughout the examples in this book. In the next chapter, I explain how
+to set up a unit test project for ASP.NET Core.

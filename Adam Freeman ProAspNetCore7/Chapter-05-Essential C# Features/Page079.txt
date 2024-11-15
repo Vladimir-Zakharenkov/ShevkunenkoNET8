@@ -1,0 +1,16 @@
+Running the Example Application
+
+Start ASP.NET Core by running the command shown in Listing 5-7 in 
+the LanguageFeatures folder.
+
+Listing 5-7. Running the Example Application
+
+dotnet run
+
+The output from the dotnet run command will include two build warnings, 
+which I explain in the “Understanding Null State Analysis” section. 
+Once ASP.NET Core has started, use a web browser to request
+http://localhost:5000, and you will see the output shown in Figure 5-1.
+
+Figure 5-1. Running the example application
+(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-5-1.png)

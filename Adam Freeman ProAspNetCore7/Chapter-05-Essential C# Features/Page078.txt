@@ -1,0 +1,79 @@
+Listing 5-4. The Contents of the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			return View(new string[] { "C#", "Language", "Features" });
+		}
+	}
+}
+
+The Index action method tells ASP.NET Core to render the default view and provides 
+it with an array of strings as its view model, which will be included in the HTML 
+sent to the client. To create the view, I added a Views/Home folder (by creating 
+a Views folder and then adding a Home folder within it) and added a Razor
+View called Index.cshtml, the contents of which are shown in Listing 5-5.
+
+Listing 5-5. The Contents of the Index.cshtml File in the Views/Home Folder
+
+@model IEnumerable<string>
+
+@{ Layout = null; }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Language Features</title>
+</head>
+<body>
+	<ul>
+		@foreach (string s in Model) {
+			<li>@s</li>
+		}
+	</ul>
+</body>
+</html>
+
+The code editor will highlight part of this file to denote a warning, which 
+I explain shortly.
+
+Selecting the HTTP Port
+
+Change the HTTP port that ASP.NET Core uses to receive requests, as shown 
+in Listing 5-6.
+
+Listing 5-6. Setting the HTTP Port in the launchSettings.json File in the Properties Folder
+
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+			"anonymousAuthentication": true,
+			"iisExpress": {
+				"applicationUrl": "http://localhost:5000",
+				"sslPort": 0
+			}
+		},
+	"profiles": {
+		"LanguageFeatures": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5000",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+	"IIS Express": {
+		"commandName": "IISExpress",
+		"launchBrowser": true,
+		"environmentVariables": {
+			"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		}
+	}
+}

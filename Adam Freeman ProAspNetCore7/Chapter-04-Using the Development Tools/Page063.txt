@@ -1,0 +1,43 @@
+﻿Right-click the My Project item in the list of files and select New Folder 
+from the pop-up menu. Set the name to wwwroot, which is where static content 
+is stored in ASP.NET Core projects. Press Enter, and a folder named wwwroot 
+will be added to the project. Right-click the new wwwroot folder, select 
+New File, and set the name to demo.html. Press Enter to create the HTML 
+file and add the content shown in Listing 4-3.
+
+Listing 4-3. The Contents of the demo.html File in the wwwroot Folder
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<h3>HTML File from MyProject</h3>
+	</body>
+</html>
+
+Visual Studio provides a more comprehensive approach that can be helpful 
+but only when used selectively. To create a folder, right-click the MyProject 
+item in the Solution Explorer and select Add ➤ New Folder from the pop-up menu. 
+Set the name of the new item to wwwroot and press Enter; Visual Studio will
+create the folder.
+
+Right-click the new wwwroot item in the Solution Explorer and select Add ➤ New Item 
+from the pop-up menu. Visual Studio will present you with an extensive selection 
+of templates for adding items to the project. These templates can be searched 
+using the text field in the top-right corner of the window or filtered using 
+the categories on the left of the window. The item template for an HTML 
+file is named HTML Page, as shown in Figure 4-2.
+
+Figure 4-2. Adding an item to the example project
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-4-2.webp)
+
+
+Enter demo.html in the Name field, click the Add button to create the new file, 
+and replace the contents with the element shown in Listing 4-3. (If you omit 
+the file extension, Visual Studio will add it for you based on the item 
+template you have selected. If you entered just demo into the Name field 
+when you created the  file, Visual Studio would have created a file with 
+the .html extension because you had selected the HTML Page item template.)

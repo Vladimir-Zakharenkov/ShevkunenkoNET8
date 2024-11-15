@@ -1,0 +1,48 @@
+When using the ! operator, you are telling the compiler that you have better insight 
+into whether a variable can be null, and, naturally, this should be done only when 
+you are entirely confident that you are right.
+
+Disabling Null State Analysis Warnings
+
+An alternative to the null-forgiving operator is to disable null state analysis warnings 
+for a particular section of code or a complete code file, as shown in Listing 5-18.
+
+Listing 5-18. Disabling Warnings in the Index.cshtml File in the Views/Home Folder
+
+@{ #pragma warning disable CS8602 }
+
+@model IEnumerable<string>
+
+@{ Layout = null; }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Language Features</title>
+</head>
+<body>
+	<ul>
+		@foreach (string s in Model) {
+			<li>@s</li>
+		}
+	</ul>
+</body>
+</html>
+
+There is a quirk in the way that ASP.NET Core works, which means that the compiler 
+will generate null state analysis warnings in CSHTML files. As I explain in later 
+chapters, the compiler is correct, and the Index.cshtml file does attempt to access 
+a nullable value without a null check, but the reasons are complex, and for this 
+chapter I have used the #pragma directive to suppress one of the warnings. This 
+directive suppresses CS8602, and you can identify warnings from the compiler 
+messages or the pop-ups provided by the code editor. Later chapters use the #pragma 
+directive more selectively where some ASP.NET Core features clash with null state analysis.
+
+Note
+.NET includes a set of advanced attributes that can be used to provide the compiler 
+with guidance for null state analysis. These are not widely used and are encountered 
+only in Chapter 36 of this book because they are used by one part of the ASP.NET Core 
+API. See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis
+for details.

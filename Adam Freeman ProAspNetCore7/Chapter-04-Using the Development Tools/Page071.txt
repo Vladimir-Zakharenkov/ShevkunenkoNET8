@@ -1,0 +1,38 @@
+Start ASP.NET Core and request http://localhost:5000/demo.html, and you will see the styled
+content shown in Figure 4-6.
+
+Figure 4-6. Using a client-side package
+(https://sergeyshef.ru/images/freeman-asp-net-core-8/Figure-4-6.webp)
+
+4.5 Debugging projects
+
+Visual Studio and Visual Studio Code both provide debuggers that can be used to control
+and inspect the execution of an ASP.NET Core application. Open the Program.cs
+file in the MyProject folder, and click this statement in the code editor:
+
+...
+app.MapGet("/", () => "Hello World!");
+...
+
+Select Debug > Toggle Breakpoint in Visual Studio or select Run > Toggle Breakpoint
+in Visual Studio Code. A breakpoint is shown as a red dot alongside the code statement,
+as shown in figure 4.7, and will interrupt execution and pass control to the user.
+
+Figure 4-7. Setting a breakpoint
+(https://sergeyshef.ru/images/freeman-asp-net-core-8/Figure-4-7.webp)
+
+Start the project by selecting Debug > Start Debugging in Visual Studio or selecting
+Run > Start Debugging in Visual Studio Code. (Choose .NET if Visual Studio Code
+prompts you to select an environment and then select the Start Debugging menu item
+again.)
+
+The application will be started and continue normally until the statement to which
+the breakpoint is reached, at which point execution is halted. Execution can be controlled
+using the Debug or Run menu or the controls that Visual Studio and Visual
+Studio Code display. Both debuggers are packed with features—more so if you have
+a paid-for version of Visual Studio—and I don’t describe them in depth in this book.
+The Visual Studio debugger is described at 
+https://docs.microsoft.com/en-us/visualstudio/debugger, 
+and the Visual Studio Code debugger is described at 
+https://code.visualstudio.com/docs/editor/debugging.
+

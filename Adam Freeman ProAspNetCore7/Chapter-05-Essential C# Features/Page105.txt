@@ -1,0 +1,46 @@
+Listing 5-39. Using a Lambda Expression in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		//bool FilterByPrice(Product? p) {
+		// return (p?.Price ?? 0) >= 20;
+		//}
+
+		public ViewResult Index() {
+			ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts()};
+
+			Product[] productArray = {
+				new Product {Name = "Kayak", Price = 275M},
+				new Product {Name = "Lifejacket", Price = 48.95M},
+				new Product {Name = "Soccer ball", Price = 19.50M},
+				new Product {Name = "Corner flag", Price = 34.95M}
+			};
+
+			//Func<Product?, bool> nameFilter = delegate (Product? prod) {
+			//	return prod?.Name?[0] == 'S';
+			//};
+
+			decimal priceFilterTotal = productArray
+				.Filter(p => (p?.Price ?? 0) >= 20)
+				.TotalPrices();
+			decimal nameFilterTotal = productArray
+				.Filter(p => p?.Name?[0] == 'S')
+				.TotalPrices();
+
+			return View("Index", new string[] {
+				$"Price Total: {priceFilterTotal:C2}",
+				$"Name Total: {nameFilterTotal:C2}" });
+		}
+	}
+}
+
+The lambda expressions are shown in bold. The parameters are expressed without 
+specifying a type, which will be inferred automatically. The => characters are 
+read aloud as “goes to” and link the parameter to the result of the lambda 
+expression. In my examples, a Product? parameter called p goes to a bool result,
+which will be true if the Price property is equal or greater than 20 in the first 
+expression or if the Name property starts with S in the second expression. This 
+code works in the same way as the separate method and the function delegate but 
+is more concise and is — for most people—easier to read.

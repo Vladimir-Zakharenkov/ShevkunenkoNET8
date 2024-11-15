@@ -1,0 +1,43 @@
+CHAPTER 5
+
+Essential C# Features
+
+In this chapter, I describe C# features used in web application development that 
+are not widely understood or that often cause confusion. This is not a book about 
+C#, however, so I provide only a brief example for each feature so that you can 
+follow the examples in the rest of the book and take advantage of these features
+in your projects. Table 5-1 summarizes this chapter.
+
+Table 5-1. Chapter Summary
+
+Problem										Solution									Listing
+
+Reducing duplication in using statements	Use global or implicit using statements.	8–10
+
+Managing null values						Use nullable and non-nullable types, 
+											which are managed with the null management 
+											operators.									11–18
+
+Mixing static and dynamic values in strings	Use string interpolation.					19
+
+Initializing and populate objects			Use the object and collection initializers 
+											and target-typed new expressions.			20–24
+
+Assigning a value for specific types		Use pattern matching.						25, 26
+
+Extending the functionality of a class		Define an extension method.					27–34 
+without modifying it
+
+Expressing functions and methods concisely	Use lambda expressions.						35–42
+
+Defining a variable without explicitly		Use the var keyword.						43–45 
+declaring its type
+
+Modifying an interface without requiring	Define a default implementation.			46–50
+changes in its implementation classes
+
+Performing work asynchronously				Use tasks or the async/await keywords.		51–53
+
+Producing a sequence of values over time	Use an asynchronous enumerable.				54–57
+
+Getting the name of a class or member		Use a nameof expression.					58, 59

@@ -1,0 +1,50 @@
+The difference is that the await keyword is applied before the foreach keyword 
+and not before the call to the async method. Restart ASP.NET Core and request 
+http://localhost:5000; once the HTTP requests are complete, you will see that 
+the order of the response messages has changed, like this:
+
+Started request for apress.com
+Completed request for apress.com
+Page length: 26973
+Started request for microsoft.com
+Completed request for microsoft.com
+Page length: 199528
+Started request for amazon.com
+Completed request for amazon.com
+Page length: 441398
+
+The controller receives the next result in the sequence as it is produced. As I 
+explain in Chapter 19, ASP.NET Core has special support for using IAsyncEnumerable<T> 
+results in web services, allowing data values to be serialized as the values 
+in the sequence are generated.
+
+Getting Names
+
+There are many tasks in web application development in which you need to refer 
+to the name of an argument, variable, method, or class. Common examples include 
+when you throw an exception or create a validation error when processing input 
+from the user. The traditional approach has been to use a string value
+hard-coded with the name, as shown in Listing 5-58.
+
+Listing 5-58. Hard-Coding a Name in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			var products = new[] {
+				new { Name = "Kayak", Price = 275M },
+				new { Name = "Lifejacket", Price = 48.95M },
+				new { Name = "Soccer ball", Price = 19.50M },
+				new { Name = "Corner flag", Price = 34.95M }
+			};
+			return View(products.Select(p => $"Name: {p.Name}, Price: {p.Price}"));
+		}
+	}
+}
+
+The call to the LINQ Select method generates a sequence of strings, each of which 
+contains a hard-coded reference to the Name and Price properties. Restart ASP.NET Core 
+and request http://localhost:5000, and you will see the following output 
+in the browser window:

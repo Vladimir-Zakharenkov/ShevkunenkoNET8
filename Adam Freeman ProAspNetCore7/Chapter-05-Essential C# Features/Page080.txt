@@ -1,0 +1,57 @@
+Since the output from all the examples in this chapter is text, I will show 
+the messages displayed by the browser like this:
+
+C#
+Language
+Features
+
+Understanding Top-Level Statements
+
+Top-level statements are intended to remove unnecessary code structure from class files. 
+A project can contain one file that defines code statements outside of a namespace 
+or a file. For ASP.NET Core applications, this feature is used to configure 
+the application in the Program.cs file. As a reminder, here is the content of 
+the Program.cs file in the example application for this chapter:
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
+
+app.Run();
+
+If you have used earlier versions of ASP.NET Core, you will be familiar with 
+the Startup class, which was used to configure the application. Top-level 
+statements have allowed this process to be simplified, and all of
+the configuration statements are now defined in the Program.cs file.
+
+The compiler will report an error if there is more than one file in a project 
+with top-level statements, so the Program.cs file is the only place you will 
+find them in an ASP.NET Core project.
+
+Understanding Global using Statements
+
+C# version 10 introduces global using statements, which allow a using statement 
+to be defined once but take effect throughout a project. Traditionally, each code 
+file contains a series of using statements that declare dependencies on the namespaces 
+that it requires. Listing 5-8 adds a using statement that provides access to the types 
+defined in the Models namespace. (The code editor will highlight part of this code listing,
+which I explain in the “Understanding Null State Analysis” section.)
+
+Listing 5-8. Adding a using Statement in the HomeController.cs File in the Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using LanguageFeatures.Models;
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			Product[] products = Product.GetProducts();
+			return View(new string[] { products[0].Name });
+		}
+	}
+}

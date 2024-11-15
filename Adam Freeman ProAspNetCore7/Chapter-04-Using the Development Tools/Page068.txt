@@ -1,0 +1,50 @@
+﻿But even though it isn’t perfect, the hot reload feature is useful, especially when it
+comes to iterative adjustments to the HTML an application produces. I don’t use it in
+most of the chapters in this book because the examples require many changes that are
+not handled with hot reloads and that can prevent changes from taking effect, but I do
+use it for my own non-book related development projects.
+
+4.4	Managing Packages
+
+Most projects require additional features beyond those set up by the project templates, 
+such as support for accessing databases or for making HTTP requests, neither of which 
+is included in the standard ASP.NET Core packages added to the project by the template 
+used to create the example project. In the sections that follow, I describe the tools 
+available to manage the different types of packages that are used in ASP.NET Core 
+development.
+
+4.4.1	Managing NuGet Packages
+
+.NET packages are added to a project with the dotnet add package command. Use 
+a PowerShell command prompt to run the command shown in Listing 4-11 in 
+the MyProject folder to add a package to the example project.
+
+Listing 4-11. Adding a Package to the Example Project
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.0
+
+This command installs version 8.0.0 of the Microsoft.EntityFrameworkCore.SqlServer package. 
+The package repository for .NET projects is nuget.org, where
+you can search for the package and see the versions available. The package installed in
+listing 4.11, for example, is described at https://www.nuget.org/packages/Microsoft
+.EntityFrameworkCore.SqlServer/7.0.0. You can see the packages installed in a project
+by running the command shown in listing 4.12.
+
+TIP
+The project file—which is the file with the .csproj extension—is used
+to keep track of the packages added to a project. You can examine this file by
+opening it for editing in Visual Studio Code or by right-clicking the project item
+in the Visual Studio Solution Explorer and selecting Edit Project File from the
+pop-up menu.
+
+Listing 4.12 Listing the packages in a project 
+
+dotnet list package
+
+This command produces the following output when it is run in the MyProject folder,
+showing the package added in listing 4.11:
+
+Project 'MyProject' has the following package references
+[net8.0]:
+Top-level Package Requested Resolved
+> Microsoft.EntityFrameworkCore.SqlServer 8.0.0 8.0.0

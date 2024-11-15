@@ -1,0 +1,50 @@
+I explain how to configure ASP.NET Core applications in Part 2, but the two 
+statements added in Listing 5-2 provide a basic MVC framework setup using 
+a default configuration.
+
+Creating the Application Components
+
+Now that the MVC framework is set up, I can add the application components 
+that I will use to demonstrate important C# language features. As you create 
+these components, you will see that the code editor underlines some expressions 
+to warn you of potential problems. These are safe to ignore until the
+“Understanding Null State Analysis” section, where I explain their significance.
+
+Creating the Data Model
+
+I started by creating a simple model class so that I can have some data 
+to work with. I added a folder called Models and created a class file called 
+Product.cs within it, which I used to define the class shown in Listing 5-3.
+
+Listing 5-3. The Contents of the Product.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+	public class Product {
+		public string Name { get; set; }
+		public decimal? Price { get; set; }
+
+		public static Product[] GetProducts() {
+
+			Product kayak = new Product {
+				Name = "Kayak", Price = 275M
+				};
+
+			Product lifejacket = new Product {
+				Name = "Lifejacket", Price = 48.95M
+				};
+
+			return new Product[] { kayak, lifejacket, null };
+		}
+	}
+}
+
+The Product class defines Name and Price properties, and there is a static method 
+called GetProducts that returns a Product array. One of the elements contained 
+in the array returned by the GetProducts method is set to null, which I will use 
+to demonstrate some useful language features later in the chapter.
+
+Creating the Controller and View
+
+For the examples in this chapter, I use a simple controller class to demonstrate 
+different language features. I created a Controllers folder and added to it a class 
+file called HomeController.cs, the contents of which are shown in Listing 5-4.

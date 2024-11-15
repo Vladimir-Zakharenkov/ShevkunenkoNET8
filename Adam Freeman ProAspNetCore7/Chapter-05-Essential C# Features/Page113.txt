@@ -1,0 +1,57 @@
+﻿Listing 5-51. The Contents of the MyAsyncMethods.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public class MyAsyncMethods {
+
+		public static Task<long?> GetPageLength() {
+			HttpClient client = new HttpClient();
+			var httpTask = client.GetAsync("http://apress.com");
+			return httpTask.ContinueWith((Task<HttpResponseMessage> antecedent) => {
+				return antecedent.Result.Content.Headers.ContentLength;
+			});
+		}
+	}
+}
+
+This method uses a System.Net.Http.HttpClient object to request the contents 
+of the Apress home page and returns its length. .NET represents work that will 
+be done asynchronously as a Task. Task objects are strongly typed based on 
+the result that the background work produces. So, when I call the 
+HttpClient.GetAsync method, what I get back is a Task<HttpResponseMessage>. 
+This tells me that the request will be performed in the background and 
+that the result of the request will be an HttpResponseMessage object.
+
+Tip
+When I use words like background, I am skipping over a lot of detail to make 
+just the key points that are important to the world of ASP.NET Core. The .NET 
+support for asynchronous methods and parallel programming is excellent, and I 
+encourage you to learn more about it if you want to create truly high-performing
+applications that can take advantage of multicore and multiprocessor hardware. 
+You will see how ASP.NET Core makes it easy to create asynchronous web applications 
+throughout this book as I introduce different features.
+
+The part that most programmers get bogged down with is the continuation, which 
+is the mechanism by which you specify what you want to happen when the task 
+is complete. In the example, I have used the ContinueWith method to process 
+the HttpResponseMessage object I get from the HttpClient.GetAsync method, 
+which I do with a lambda expression that returns the value of a property 
+that contains the length of the content I get from the Apress web server. 
+Here is the continuation code:
+
+...
+return httpTask.ContinueWith((Task<HttpResponseMessage> antecedent) => {
+return antecedent.Result.Content.Headers.ContentLength;
+});
+...
+
+Notice that I use the return keyword twice. This is the part that causes 
+confusion. The first use of the return keyword specifies that I am returning 
+a Task<HttpResponseMessage> object, which, when the task is complete, 
+will return the length of the ContentLength header. The ContentLength header 
+returns a long? result (a nullable long value), and this means the result 
+of my GetPageLength method is Task<long?>, like this:
+
+...
+public static Task<long?> GetPageLength() {
+...

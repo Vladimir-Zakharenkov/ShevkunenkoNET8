@@ -1,0 +1,27 @@
+﻿44.2.1	Understanding Item Scaffolding
+
+The item templates presented by Visual Studio can be useful, especially for 
+C# classes where it sets the namespace and class name automatically. 
+But Visual Studio also provides scaffolded items, which I recommend against 
+using. The Add ➤ New Scaffolded Item leads to a selection of items that guide 
+you through a process to add more complex items. Visual Studio will also offer 
+individual scaffolded items based on the name of the folder that you are adding 
+an item to. For example, if you right-click a folder named Views, Visual Studio 
+will helpfully add scaffolded items to the top of the menu, as shown in Figure 4-3.
+
+Figure 4-3. Scaffolded items in the Add menu
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-4-3.webp)
+
+The View and Controller items are scaffolded, and selecting them will present 
+you with choices that determine the content of the items you create.
+
+Just like the project templates, I recommend against using scaffolded items, 
+at least until you understand the content they create. In this book, I use 
+only the Add ➤ New Item menu for the examples and change the placeholder 
+content immediately.
+
+4.3	Building and Running Projects
+
+The simplest way to build and run a project is to use the command-line tools. 
+To prepare, add the statement shown in Listing 4-4 to the Program.cs class file 
+in the MyProject folder.

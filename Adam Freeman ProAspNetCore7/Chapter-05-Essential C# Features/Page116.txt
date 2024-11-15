@@ -1,0 +1,45 @@
+The GetPageLengths method makes HTTP requests to a series of websites and gets 
+their length. The requests are performed asynchronously, but there is no way 
+to feed the results back to the method’s caller as they arrive. Instead, the method 
+waits until all the requests are complete and then returns all the results in
+one go. In addition to the URLs that will be requested, this method accepts a 
+List<string> to which I add messages in order to highlight how the code works. 
+Listing 5-55 updates the Index action method of the Home
+controller to use the new method.
+
+Listing 5-55. Using the New Method in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public async Task<ViewResult> Index() {
+			List<string> output = new List<string>();
+			foreach (long? len in await MyAsyncMethods.GetPageLengths(output,
+				"apress.com", "microsoft.com", "amazon.com")) {
+				output.Add($"Page length: { len}");
+			}
+			return View(output);
+		}
+	}
+}
+
+The action method enumerates the sequence produced by the GetPageLengths method 
+and adds each result to the List<string> object, which produces an ordered sequence 
+of messages showing the interaction between the foreach loop in the Index method 
+that processes the results and the foreach loop in the GetPageLengths method 
+that generates them. Restart ASP.NET Core and request http://localhost:5000, 
+and you will see the following output in the browser (which may take several 
+seconds to appear and may have different page lengths):
+
+Started request for apress.com
+Completed request for apress.com
+Started request for microsoft.com
+Completed request for microsoft.com
+Started request for amazon.com
+Completed request for amazon.com
+Page length: 26973
+Page length: 199526
+Page length: 357777
+
+You can see that the Index action method doesn’t receive the results until all 
+the HTTP requests have been completed. This is the problem that the asynchronous 
+enumerable feature solves, as shown in Listing 5-56.

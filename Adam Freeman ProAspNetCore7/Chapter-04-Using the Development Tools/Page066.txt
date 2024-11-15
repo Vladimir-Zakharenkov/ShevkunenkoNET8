@@ -1,0 +1,42 @@
+You can build and run the project in a single step by running the command 
+shown in Listing 4-7 in the MyProject folder.
+
+Listing 4-7. Building and Running the Project
+
+dotnet run
+
+The compiler will build the project and then start the integrated ASP.NET Core 
+HTTP server to listen for HTTP requests on port 5000. You can see the contents 
+of the static HTML file added to the project earlier in the chapter by opening 
+a new browser window and requesting http://localhost:5000/demo.html, which
+produces the response shown in Figure 4-4.
+
+Figure 4-4. Running the example application
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-4-4.webp)
+
+Using the Hot Reload Feature
+
+.NET has an integrated hot reload feature, which compiles and applies updates 
+to applications on the fly. For ASP.NET Core applications, this means that 
+changes to the project are automatically reflected in the browser without 
+having to manually stop the ASP.NET Core application and use the dotnet run 
+command. Use Control+C to stop ASP.NET Core if the application is still 
+running from the previous section and run the command shown in Listing 4-8 
+in the MyProject folder.
+
+Listing 4-8. Starting the Application with Hot Reload
+
+dotnet watch
+
+The dotnet watch command opens a new browser window, which it does to ensure 
+that the browser loads a small piece of JavaScript that opens an HTTP connection 
+to the server that is used to handle reloading. (The new browser window can be 
+displayed by setting the launchBrowser property shown in Listing 4-5 to false, 
+but you will have to perform a manual reload the first time you start or restart 
+ASP.NET Core.) Use the browser to request http://localhost:5000/demo.html, and 
+you will see the output shown on the left of figure 4.5.
+
+The dotnet watch command monitors the project for changes. When a change is
+detected, the project is automatically recompiled, and the browser is reloaded. To see
+this process in action, make the change shown in listing 4.9 to the demo.html file in the
+wwwroot folder.

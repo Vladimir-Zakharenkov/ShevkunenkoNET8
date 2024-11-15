@@ -1,0 +1,47 @@
+All the objects in the array have been assigned the same type, which you can see 
+if you run the example. The type name isn’t user - friendly but isn’t intended 
+to be used directly, and you may see a different name than the one shown in the 
+following output:
+
+<>f__AnonymousType0`2
+<>f__AnonymousType0`2
+<>f__AnonymousType0`2
+<>f__AnonymousType0`2
+
+Using Default Implementations in Interfaces
+
+C# provides the ability to define default implementations for properties and methods 
+defined by interfaces. This may seem like an odd feature because an interfaces is 
+intended to be a description of features without specifying an implementation, 
+but this addition to C# makes it possible to update interfaces without
+breaking the existing implementations of them.
+
+Add a class file named IProductSelection.cs to the Models folder and use it to define 
+the interface shown in Listing 5-46.
+
+Listing 5-46. The Contents of the IProductSelection.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public interface IProductSelection {
+
+		IEnumerable<Product>? Products { get; }
+	}
+}
+
+Update the ShoppingCart class to implement the new interface, as shown in Listing 5-47.
+
+Listing 5-47. Implementing an Interface in the ShoppingCart.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public class ShoppingCart : IProductSelection {
+		private List<Product> products = new();
+
+		public ShoppingCart(params Product[] prods) {
+			products.AddRange(prods);
+		}
+
+		public IEnumerable<Product>? Products { get => products; }
+	}
+}

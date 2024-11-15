@@ -1,0 +1,53 @@
+I can now update the extension method so that it deals with IEnumerable<Product?>, 
+as shown in Listing 5-31.
+
+Listing 5-31. Updating an Extension Method in the MyExtensionMethods.cs File 
+in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public static class MyExtensionMethods {
+
+		public static decimal TotalPrices(this IEnumerable<Product?> products) {
+			decimal total = 0;
+			foreach (Product? prod in products) {
+				total += prod?.Price ?? 0;
+			}
+			return total;
+		}
+	}
+}
+
+The first parameter type has changed to IEnumerable<Product?>, which means 
+the foreach loop in the method body works directly on Product? objects. 
+The change to using the interface means that I can calculate the total value 
+of the Product objects enumerated by any IEnumerable<Product?>, which includes
+instances of ShoppingCart but also arrays of Product objects, as shown 
+in Listing 5-32.
+
+Listing 5-32. Applying an Extension Method in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+
+			ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts()};
+
+			Product[] productArray = {
+				new Product {Name = "Kayak", Price = 275M},
+				new Product {Name = "Lifejacket", Price = 48.95M}
+			};
+
+			decimal cartTotal = cart.TotalPrices();
+
+			decimal arrayTotal = productArray.TotalPrices();
+
+		return View("Index", new string[] {
+			$"Cart Total: {cartTotal:C2}",
+			$"Array Total: {arrayTotal:C2}" });
+		}
+	}
+}
