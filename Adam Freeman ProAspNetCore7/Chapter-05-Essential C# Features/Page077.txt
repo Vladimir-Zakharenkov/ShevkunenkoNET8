@@ -1,50 +1,60 @@
-I explain how to configure ASP.NET Core applications in Part 2, but the two 
-statements added in Listing 5-2 provide a basic MVC framework setup using 
-a default configuration.
+Listing 5-5. The Contents of the Index.cshtml File in the Views/Home Folder
 
-Creating the Application Components
+@model IEnumerable<string>
 
-Now that the MVC framework is set up, I can add the application components 
-that I will use to demonstrate important C# language features. As you create 
-these components, you will see that the code editor underlines some expressions 
-to warn you of potential problems. These are safe to ignore until the
-“Understanding Null State Analysis” section, where I explain their significance.
+@{ Layout = null; }
 
-Creating the Data Model
+<!DOCTYPE html>
 
-I started by creating a simple model class so that I can have some data 
-to work with. I added a folder called Models and created a class file called 
-Product.cs within it, which I used to define the class shown in Listing 5-3.
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Language Features</title>
+</head>
+<body>
+	<ul>
+		@foreach (string s in Model) {
+			<li>@s</li>
+		}
+	</ul>
+</body>
+</html>
 
-Listing 5-3. The Contents of the Product.cs File in the Models Folder
+The code editor will highlight part of this file to denote a warning, which 
+I explain shortly.
 
-namespace LanguageFeatures.Models {
-	public class Product {
-		public string Name { get; set; }
-		public decimal? Price { get; set; }
+5.4.1	Selecting the HTTP Port
 
-		public static Product[] GetProducts() {
+Change the HTTP port that ASP.NET Core uses to receive requests, as shown 
+in Listing 5-6.
 
-			Product kayak = new Product {
-				Name = "Kayak", Price = 275M
-				};
+Listing 5-6. Setting the HTTP Port in the launchSettings.json File in the Properties Folder
 
-			Product lifejacket = new Product {
-				Name = "Lifejacket", Price = 48.95M
-				};
-
-			return new Product[] { kayak, lifejacket, null };
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+			"anonymousAuthentication": true,
+			"iisExpress": {
+				"applicationUrl": "http://localhost:5000",
+				"sslPort": 0
+			}
+		},
+	"profiles": {
+		"LanguageFeatures": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5000",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+	"IIS Express": {
+		"commandName": "IISExpress",
+		"launchBrowser": true,
+		"environmentVariables": {
+			"ASPNETCORE_ENVIRONMENT": "Development"
+			}
 		}
 	}
 }
-
-The Product class defines Name and Price properties, and there is a static method 
-called GetProducts that returns a Product array. One of the elements contained 
-in the array returned by the GetProducts method is set to null, which I will use 
-to demonstrate some useful language features later in the chapter.
-
-Creating the Controller and View
-
-For the examples in this chapter, I use a simple controller class to demonstrate 
-different language features. I created a Controllers folder and added to it a class 
-file called HomeController.cs, the contents of which are shown in Listing 5-4.

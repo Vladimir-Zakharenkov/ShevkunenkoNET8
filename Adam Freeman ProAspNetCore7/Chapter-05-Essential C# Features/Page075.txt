@@ -1,43 +1,48 @@
-CHAPTER 5
+Ôªø5.1.1	Opening the Project
 
-Essential C# Features
+If you are using Visual Studio, select File ‚û§ Open ‚û§ Project/Solution, 
+select the LanguageFeatures.sln file in the LanguageFeatures folder, and 
+click the Open button to open the solution file and the project it
+references. If you are using Visual Studio Code, select File ‚û§ Open Folder, 
+navigate to the LanguageFeatures folder, and click the Select Folder button.
 
-In this chapter, I describe C# features used in web application development that 
-are not widely understood or that often cause confusion. This is not a book about 
-C#, however, so I provide only a brief example for each feature so that you can 
-follow the examples in the rest of the book and take advantage of these features
-in your projects. Table 5-1 summarizes this chapter.
+5.1.2	Enabling the MVC Framework
 
-Table 5-1. Chapter Summary
+The web project template creates a project that contains a minimal ASP.NET Core 
+configuration. This means the placeholder content that is added by the mvc 
+template used in Chapter 3 is not available and that extra steps are required 
+to reach the point where the application can produce useful output. In this 
+section, I make the changes required to set up the MVC Framework, which is 
+one of the application frameworks supported by ASP.NET Core, as I explained 
+in Chapter 1. First, to enable the MVC framework, make the changes shown
+in Listing 5-2 to the Program.cs file.
 
-Problem										Solution									Listing
+Listing 5-2. Enabling MVC in the Program.cs File in the LanguageFeatures Folder
 
-Reducing duplication in using statements	Use global or implicit using statements.	8ñ10
+var builder = WebApplication.CreateBuilder(args);
 
-Managing null values						Use nullable and non-nullable types, 
-											which are managed with the null management 
-											operators.									11ñ18
+builder.Services.AddControllersWithViews();
 
-Mixing static and dynamic values in strings	Use string interpolation.					19
+var app = builder.Build();
+//app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
 
-Initializing and populate objects			Use the object and collection initializers 
-											and target-typed new expressions.			20ñ24
+app.Run();
 
-Assigning a value for specific types		Use pattern matching.						25, 26
+I explain how to configure ASP.NET Core applications in Part 2, but the two 
+statements added in Listing 5-2 provide a basic MVC framework setup using 
+a default configuration.
 
-Extending the functionality of a class		Define an extension method.					27ñ34 
-without modifying it
+5.1.3	Creating the Application Components
 
-Expressing functions and methods concisely	Use lambda expressions.						35ñ42
+Now that the MVC framework is set up, I can add the application components 
+that I will use to demonstrate important C# language features. As you create 
+these components, you will see that the code editor underlines some expressions 
+to warn you of potential problems. These are safe to ignore until the
+‚ÄúUnderstanding Null State Analysis‚Äù section, where I explain their significance.
 
-Defining a variable without explicitly		Use the var keyword.						43ñ45 
-declaring its type
+Creating the Data Model
 
-Modifying an interface without requiring	Define a default implementation.			46ñ50
-changes in its implementation classes
-
-Performing work asynchronously				Use tasks or the async/await keywords.		51ñ53
-
-Producing a sequence of values over time	Use an asynchronous enumerable.				54ñ57
-
-Getting the name of a class or member		Use a nameof expression.					58, 59
+I started by creating a simple model class so that I can have some data 
+to work with. I added a folder called Models and created a class file called 
+Product.cs within it, which I used to define the class shown in Listing 5-3.

@@ -1,37 +1,44 @@
-Understanding Implicit using Statements
+By contrast, non-nullable variables can never be null. When you receive a non-nullable 
+variable, you don’t have to guard against a null value because that is not 
+a value that can ever be assigned.
 
-The ASP.NET Core project templates enable a feature named implicit usings, 
-which define global using statements for these commonly required namespaces:
+A question mark (the ? character) is appended to a type to denote a nullable type. 
+So, if a variable’s type is string?, for example, then it can be assigned any value 
+string value or null. When attempting to access this variable, you should check 
+to ensure that it isn’t null before attempting to access any of the fields,
+properties, or methods defined by the string type. But if a variable’s type is string, 
+then it can be assigned null values, which means you can confidently access 
+the features it provides without needing to guard against null references.
 
-System
-System.Collections.Generic
-System.IO
-System.Linq
-System.Net.Http
-System.Net.Http.Json
-System.Threading
-System.Threading.Tasks
-Microsoft.AspNetCore.Builder
-Microsoft.AspNetCore.Hosting
-Microsoft.AspNetCore.Http
-Microsoft.AspNetCore.Routing
-Microsoft.Extensions.Configuration
-Microsoft.Extensions.DependencyInjection
-Microsoft.Extensions.Hosting
-Microsoft.Extensions.Logging
+The compiler examines the code in the project and warns you when it finds 
+statements that might break these rules. The most common issues are attempting 
+to assign null to non-nullable variables and attempting to access members defined 
+by nullable variables without checking to see if they are null. In the
+sections that follow, I explain the different ways that the warnings raised 
+by the compiler in the example application can be addressed.
 
-using statements are not required for these namespaces, which are available throughout the
-application. These namespaces don’t cover all of the ASP.NET Core features, but they 
-do cover the basics, which is why no explicit using statements are required 
-in the Program.cs file, for example.
+Note
+Getting to grips with nullable and non-nullable types can be frustrating. 
+A change in one code file can simply move a warning to another part of 
+the application, and it can feel like you are chasing problems through
+a project. But it is worth sticking with null state analysis because null 
+reference exceptions are the most common runtime error, and few programmers 
+are disciplined enough to guard against null values without the
+compiler analysis feature.
 
-Understanding Null State Analysis
+5.4.1	Ensuring Fields and Properties Are Assigned Values
 
-The editor and compiler warnings shown in earlier sections are produced because 
-ASP.NET Core project templates enable null state analysis, in which the compiler 
-identifies attempts to access references that may be unintentionally null, 
-preventing null reference exceptions at runtime.
+The first warning in the Product.cs file is for the Name field, whose type 
+is string, which is a non-nullable type (because it hasn’t been annotated 
+with a question mark).
 
-Open the Product.cs file, and the editor will display two warnings, 
-as shown in Figure 5-2. The figure shows how Visual Studio displays a warning, 
-but Visual Studio Code is similar.
+...
+public string Name { get; set; }
+...
+
+One consequence of using non-nullable types is that properties like Name 
+must be assigned a value when a new instance of the enclosing class is created. 
+If this were not the case, then the Name property would not be initialized 
+and would be null. And this is a problem because we can’t assign null 
+to a non-nullable property, even indirectly. Listing 5-11 solves this problem 
+by assigning a default value, ensuring that the Name property is always initialized.

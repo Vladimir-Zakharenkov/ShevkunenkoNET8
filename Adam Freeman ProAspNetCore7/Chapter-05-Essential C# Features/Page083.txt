@@ -1,27 +1,63 @@
-Figure 5-2. A null state analysis warning
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-5-2.png)
+Listing 5-11. Providing a Default Value in the Product.cs File in the Models Folder
 
-When null state analysis is enabled, C# variables are divided into two groups: 
-nullable and nonnullable. As their name suggests, nullable variables can be null. 
-This is the behavior that most programmers are familiar with, and it is entirely up 
-to the developer to guard against trying to use null references, which will trigger 
-a NullReferenceException.
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public required string Name { get; set; }
+        public decimal? Price { get; set; }
+        public static Product[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+            Product lifejacket = new Product
+            {
+                Name = "Lifejacket",
+                Price = 48.95M
+            };
 
-By contrast, non-nullable variables can never be null. When you receive a non-nullable 
-variable, you don’t have to guard against a null value because that is not 
-a value that can ever be assigned.
+            return new Product[] { kayak, lifejacket, null };
+        }
+    }
+}
 
-A question mark (the ? character) is appended to a type to denote a nullable type. 
-So, if a variable’s type is string?, for example, then it can be assigned any value 
-string value or null. When attempting to access this variable, you should check 
-to ensure that it isn’t null before attempting to access any of the fields,
-properties, or methods defined by the string type. But if a variable’s type is string, 
-then it can be assigned null values, which means you can confidently access 
-the features it provides without needing to guard against null references.
+The compiler will check to make sure that a value is assigned to the property when a
+new instance of the containing type is created. The two Product objects used in the
+listing are created with a value for the Name field, which satisfies the demands of the
+required keyword. Listing 5.12 omits the Name value from one of Product objects.
 
-The compiler examines the code in the project and warns you when it finds 
-statements that might break these rules. The most common issues are attempting 
-to assign null to non-nullable variables and attempting to access members defined 
-by nullable variables without checking to see if they are null. In the
-sections that follow, I explain the different ways that the warnings raised 
-by the compiler in the example application can be addressed.
+Listing 5.12 Omitting a value in the Product.cs file in the Models folder
+
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public required string Name { get; set; }
+        public decimal? Price { get; set; }
+        public static Product[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+            Product lifejacket = new Product
+            {
+                //Name = "Lifejacket",
+                Price = 48.95M
+            };
+            return new Product[] { kayak, lifejacket, null };
+        }
+    }
+}
+
+If you run the example, the build process will fail with this error:
+
+Required member 'Product.Name' must be set in the object initializer or
+attribute constructor.
+
+This error—and the corresponding red line in the code editor—tell you that a value
+for the Name property is required but has not been provided.

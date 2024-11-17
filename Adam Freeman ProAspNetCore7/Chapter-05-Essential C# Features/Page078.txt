@@ -1,79 +1,43 @@
-Listing 5-4. The Contents of the HomeController.cs File in the Controllers Folder
+5.1.5	Running the Example Application
 
-using Microsoft.AspNetCore.Mvc;
+Start ASP.NET Core by running the command shown in Listing 5-7 in 
+the LanguageFeatures folder.
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+Listing 5-7. Running the Example Application
 
-		public ViewResult Index() {
-			return View(new string[] { "C#", "Language", "Features" });
-		}
-	}
-}
+dotnet run
 
-The Index action method tells ASP.NET Core to render the default view and provides 
-it with an array of strings as its view model, which will be included in the HTML 
-sent to the client. To create the view, I added a Views/Home folder (by creating 
-a Views folder and then adding a Home folder within it) and added a Razor
-View called Index.cshtml, the contents of which are shown in Listing 5-5.
+The output from the dotnet run command will include two build warnings, 
+which I explain in the “Understanding Null State Analysis” section. 
+Once ASP.NET Core has started, use a web browser to request
+http://localhost:5000, and you will see the output shown in Figure 5-1.
 
-Listing 5-5. The Contents of the Index.cshtml File in the Views/Home Folder
+Figure 5-1. Running the example application
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-5-1.webp)
 
-@model IEnumerable<string>
+Since the output from all the examples in this chapter is text, I will show 
+the messages displayed by the browser like this:
 
-@{ Layout = null; }
+C#
+Language
+Features
 
-<!DOCTYPE html>
+5.2	Understanding Top-Level Statements
 
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>Language Features</title>
-</head>
-<body>
-	<ul>
-		@foreach (string s in Model) {
-			<li>@s</li>
-		}
-	</ul>
-</body>
-</html>
+Top-level statements are intended to remove unnecessary code structure from class files. 
+A project can contain one file that defines code statements outside of a namespace 
+or a file. For ASP.NET Core applications, this feature is used to configure 
+the application in the Program.cs file. As a reminder, here is the content of 
+the Program.cs file in the example application for this chapter:
 
-The code editor will highlight part of this file to denote a warning, which 
-I explain shortly.
+var builder = WebApplication.CreateBuilder(args);
 
-Selecting the HTTP Port
+builder.Services.AddControllersWithViews();
 
-Change the HTTP port that ASP.NET Core uses to receive requests, as shown 
-in Listing 5-6.
+var app = builder.Build();
 
-Listing 5-6. Setting the HTTP Port in the launchSettings.json File in the Properties Folder
+//app.MapGet("/", () => "Hello World!");
 
-{
-	"iisSettings": {
-		"windowsAuthentication": false,
-			"anonymousAuthentication": true,
-			"iisExpress": {
-				"applicationUrl": "http://localhost:5000",
-				"sslPort": 0
-			}
-		},
-	"profiles": {
-		"LanguageFeatures": {
-			"commandName": "Project",
-			"dotnetRunMessages": true,
-			"launchBrowser": true,
-			"applicationUrl": "http://localhost:5000",
-			"environmentVariables": {
-				"ASPNETCORE_ENVIRONMENT": "Development"
-			}
-		},
-	"IIS Express": {
-		"commandName": "IISExpress",
-		"launchBrowser": true,
-		"environmentVariables": {
-			"ASPNETCORE_ENVIRONMENT": "Development"
-			}
-		}
-	}
-}
+app.MapDefaultControllerRoute();
+
+app.Run();

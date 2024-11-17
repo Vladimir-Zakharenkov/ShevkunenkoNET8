@@ -1,0 +1,23 @@
+﻿Table 5-1. Chapter Summary
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-5-1-Chapter-guide.webp)
+
+5.1	Preparing for This Chapter
+
+To create the example project for this chapter, open a new PowerShell 
+command prompt and run the commands shown in Listing 5-1. If you are 
+using Visual Studio and prefer not to use the command line, you
+can create the project using the process described in Chapter 4.
+
+Tip
+You can download the example project for this chapter—and for all 
+the other chapters in this book — from 
+https://github.com/manningbooks/pro-asp.net-core-7.
+See Chapter 1 for how to get help if you have problems running 
+the examples.
+
+Listing 5-1. Creating the Example Project
+
+dotnet new globaljson --sdk-version 8.0.402 --output LanguageFeatures
+dotnet new web --no-https --output LanguageFeatures --framework net8.0
+dotnet new sln -o LanguageFeatures
+dotnet sln LanguageFeatures add LanguageFeatures

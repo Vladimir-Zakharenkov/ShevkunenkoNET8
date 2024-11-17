@@ -1,57 +1,65 @@
-Since the output from all the examples in this chapter is text, I will show 
-the messages displayed by the browser like this:
+Listing 5-9. The Contents of the GlobalUsings.cs File in the LanguageFeatures Folder
 
-C#
-Language
-Features
+global using LanguageFeatures.Models;
+global using Microsoft.AspNetCore.Mvc;
 
-Understanding Top-Level Statements
+The global keyword is used to denote a global using. The statements in Listing 5-9 
+make the LanguageFeatures.Models and Microsoft.AspNetCore.Mvc namespaces available 
+throughout the application, which means they can be removed from the HomeController.cs 
+file, as shown in Listing 5-10.
 
-Top-level statements are intended to remove unnecessary code structure from class files. 
-A project can contain one file that defines code statements outside of a namespace 
-or a file. For ASP.NET Core applications, this feature is used to configure 
-the application in the Program.cs file. As a reminder, here is the content of 
-the Program.cs file in the example application for this chapter:
+Listing 5-10. Removing using Statements in the HomeController.cs File in the Controllers Folder
 
-var builder = WebApplication.CreateBuilder(args);
+//using Microsoft.AspNetCore.Mvc;
+//using LanguageFeatures.Models;
 
-builder.Services.AddControllersWithViews();
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Product[] products = Product.GetProducts();
 
-var app = builder.Build();
-
-//app.MapGet("/", () => "Hello World!");
-app.MapDefaultControllerRoute();
-
-app.Run();
-
-If you have used earlier versions of ASP.NET Core, you will be familiar with 
-the Startup class, which was used to configure the application. Top-level 
-statements have allowed this process to be simplified, and all of
-the configuration statements are now defined in the Program.cs file.
-
-The compiler will report an error if there is more than one file in a project 
-with top-level statements, so the Program.cs file is the only place you will 
-find them in an ASP.NET Core project.
-
-Understanding Global using Statements
-
-C# version 10 introduces global using statements, which allow a using statement 
-to be defined once but take effect throughout a project. Traditionally, each code 
-file contains a series of using statements that declare dependencies on the namespaces 
-that it requires. Listing 5-8 adds a using statement that provides access to the types 
-defined in the Models namespace. (The code editor will highlight part of this code listing,
-which I explain in the “Understanding Null State Analysis” section.)
-
-Listing 5-8. Adding a using Statement in the HomeController.cs File in the Controllers Folder
-
-using Microsoft.AspNetCore.Mvc;
-using LanguageFeatures.Models;
-
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
-		public ViewResult Index() {
-			Product[] products = Product.GetProducts();
-			return View(new string[] { products[0].Name });
-		}
-	}
+            return View(new string[] { products[0].Name });
+        }
+    }
 }
+
+If you run the example, you will see the following results displayed in the browser window:
+
+Kayak
+
+You will receive warnings when compiling the project, which I explain in 
+the “Understanding Null State Analysis” section.
+
+Note
+Global using statements are a good idea, but I have not used them in this book 
+because I want to make it obvious when I add a dependency to a new namespace.
+
+5.3.1   Understanding Implicit using Statements
+
+The ASP.NET Core project templates enable a feature named implicit usings, 
+which define global using statements for these commonly required namespaces:
+
+•   System
+•   System.Collections.Generic
+•   System.IO
+•   System.Linq
+•   System.Net.Http
+•   System.Net.Http.Json
+•   System.Threading
+•   System.Threading.Tasks
+•   Microsoft.AspNetCore.Builder
+•   Microsoft.AspNetCore.Hosting
+•   Microsoft.AspNetCore.Http
+•   Microsoft.AspNetCore.Routing
+•   Microsoft.Extensions.Configuration
+•   Microsoft.Extensions.DependencyInjection
+•   Microsoft.Extensions.Hosting
+•   Microsoft.Extensions.Logging
+
+using statements are not required for these namespaces, which are available throughout the
+application. These namespaces don’t cover all of the ASP.NET Core features, but they 
+do cover the basics, which is why no explicit using statements are required 
+in the Program.cs file, for example.

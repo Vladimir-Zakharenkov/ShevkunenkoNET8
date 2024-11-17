@@ -1,16 +1,46 @@
-Running the Example Application
+If you have used earlier versions of ASP.NET Core, you will be familiar with 
+the Startup class, which was used to configure the application. Top-level 
+statements have allowed this process to be simplified, and all of
+the configuration statements are now defined in the Program.cs file.
 
-Start ASP.NET Core by running the command shown in Listing 5-7 in 
-the LanguageFeatures folder.
+The compiler will report an error if there is more than one file in a project 
+with top-level statements, so the Program.cs file is the only place you will 
+find them in an ASP.NET Core project.
 
-Listing 5-7. Running the Example Application
+5.3	Understanding Global using Statements
 
-dotnet run
+C# supports global using statements, which allow a using statement to be defined
+once but take effect throughout a project. Traditionally, each code file contains a series
+of using statements that declare dependencies on the namespaces that it requires.
+Listing 5.8 adds a using statement that provides access to the types defined in the
+Models namespace. (The code editor will highlight part of this code listing, which I
+explain in the “Understanding Null State Analysis” section.)
 
-The output from the dotnet run command will include two build warnings, 
-which I explain in the “Understanding Null State Analysis” section. 
-Once ASP.NET Core has started, use a web browser to request
-http://localhost:5000, and you will see the output shown in Figure 5-1.
+Listing 5-8. Adding a using Statement in the HomeController.cs File in the Controllers Folder
 
-Figure 5-1. Running the example application
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-5-1.png)
+using Microsoft.AspNetCore.Mvc;
+using LanguageFeatures.Models;
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Product[] products = Product.GetProducts();
+            return View(new string[] { products[0].Name });
+        }
+    }
+}
+
+To access the Product class, I added a using statement for the namespace that 
+contains it, which is LanguageFeatures.Models. The code file already contains 
+a using statement for the Microsoft.AspNetCore.Mvc namespace, which provides 
+access to the Controller class, from which the HomeController class is derived.
+
+In most projects, some namespaces are required throughout the application, 
+such as those containing data model classes. This can result in a long list 
+of using statements, duplicated in every code file. Global using statements 
+address this problem by allowing using statements for commonly required 
+namespaces to be defined in a single location. Add a code file named GlobalUsings.cs 
+to the LanguageFeatures project with the content shown in Listing 5-9.

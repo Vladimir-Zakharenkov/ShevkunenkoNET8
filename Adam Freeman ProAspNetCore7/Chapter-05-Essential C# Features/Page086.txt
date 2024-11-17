@@ -1,23 +1,4 @@
-A variable of type Product[]? is an array that can hold only Product values and 
-not null values, but the array itself may be null:
-
-...
-Product[]? arr1 = new Product?[] { kayak, lifejacket, null }; // Not OK
-Product[]? arr2 = null; // OK
-...
-
-A variable of type Product?[]? is an array that can contain Product or null 
-values and that can itself be null:
-
-...
-Product?[]? arr1 = new Product?[] { kayak, lifejacket, null }; // OK
-Product?[]? arr2 = null; // Also OK
-...
-
-Null state analysis is a useful feature, but that doesn’t mean it is always 
-easy to understand.
-
-Checking for Null Values
+5.4.4	Checking for Null Values
 
 I explained that dealing with null state analysis warnings can feel like chasing 
 a problem through code, and you can see a simple example of this in the HomeController.cs 
@@ -33,14 +14,22 @@ Product[] products = Product.GetProducts();
 This is easily resolved by changing the type of the products variable to match 
 the type returned by the GetProducts method, as shown in Listing 5-13.
 
-Listing 5-13. Changing Type in the HomeController.cs File in the Controllers Folder
+Listing 5-15. Changing Type in the HomeController.cs File in the Controllers Folder
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Product?[] products = Product.GetProducts();
 
-		public ViewResult Index() {
-			Product?[] products = Product.GetProducts();
-			return View(new string[] { products[0].Name });
-		}
-	}
+            return View(new string[] { products[0].Name });
+        }
+    }
 }
+
+This resolves one warning and introduces another, as shown in Figure 5-3.
+
+Figure 5-3. An additional null state analysis warning
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-5-3.webp)

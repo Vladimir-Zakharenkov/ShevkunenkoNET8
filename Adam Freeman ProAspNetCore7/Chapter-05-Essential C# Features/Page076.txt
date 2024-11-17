@@ -1,51 +1,51 @@
-﻿Preparing for This Chapter
+Listing 5-3. The Contents of the Product.cs File in the Models Folder
 
-To create the example project for this chapter, open a new PowerShell 
-command prompt and run the commands shown in Listing 5-1. If you are 
-using Visual Studio and prefer not to use the command line, you
-can create the project using the process described in Chapter 4.
+namespace LanguageFeatures.Models {
+	public class Product {
+		public string Name { get; set; }
+		public decimal? Price { get; set; }
 
-Tip
-You can download the example project for this chapter—and for all 
-the other chapters in this book — from 
-https://github.com/apress/pro-asp.net-core-6.
-See Chapter 1 for how to get help if you have problems running 
-the examples.
+		public static Product[] GetProducts() {
 
-Listing 5-1. Creating the Example Project
+			Product kayak = new Product {
+				Name = "Kayak", Price = 275M
+				};
 
-dotnet new globaljson --sdk-version 6.0.403 --output LanguageFeatures
-dotnet new web --no-https --output LanguageFeatures --framework net6.0
-dotnet new sln -o LanguageFeatures
-dotnet sln LanguageFeatures add LanguageFeatures
+			Product lifejacket = new Product {
+				Name = "Lifejacket", Price = 48.95M
+				};
 
-Opening the Project
+			return new Product[] { kayak, lifejacket, null };
+		}
+	}
+}
 
-If you are using Visual Studio, select File ➤ Open ➤ Project/Solution, 
-select the LanguageFeatures.sln file in the LanguageFeatures folder, and 
-click the Open button to open the solution file and the project it
-references. If you are using Visual Studio Code, select File ➤ Open Folder, 
-navigate to the LanguageFeatures folder, and click the Select Folder button.
+The Product class defines Name and Price properties, and there is a static method 
+called GetProducts that returns a Product array. One of the elements contained 
+in the array returned by the GetProducts method is set to null, which I will use 
+to demonstrate some useful language features later in the chapter.
 
-Enabling the MVC Framework
+Creating the Controller and View
 
-The web project template creates a project that contains a minimal ASP.NET Core 
-configuration. This means the placeholder content that is added by the mvc 
-template used in Chapter 3 is not available and that extra steps are required 
-to reach the point where the application can produce useful output. In this 
-section, I make the changes required to set up the MVC Framework, which is 
-one of the application frameworks supported by ASP.NET Core, as I explained 
-in Chapter 1. First, to enable the MVC framework, make the changes shown
-in Listing 5-2 to the Program.cs file.
+For the examples in this chapter, I use a simple controller class to demonstrate 
+different language features. I created a Controllers folder and added to it a class 
+file called HomeController.cs, the contents of which are shown in Listing 5-4.
 
-Listing 5-2. Enabling MVC in the Program.cs File in the LanguageFeatures Folder
+Listing 5-4. The Contents of the HomeController.cs File in the Controllers Folder
 
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Mvc;
 
-builder.Services.AddControllersWithViews();
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
 
-var app = builder.Build();
-//app.MapGet("/", () => "Hello World!");
-app.MapDefaultControllerRoute();
+		public ViewResult Index() {
+			return View(new string[] { "C#", "Language", "Features" });
+		}
+	}
+}
 
-app.Run();
+The Index action method tells ASP.NET Core to render the default view and provides 
+it with an array of strings as its view model, which will be included in the HTML 
+sent to the client. To create the view, I added a Views/Home folder (by creating 
+a Views folder and then adding a Home folder within it) and added a Razor
+View called Index.cshtml, the contents of which are shown in Listing 5-5.

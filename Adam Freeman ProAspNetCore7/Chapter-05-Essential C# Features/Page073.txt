@@ -1,0 +1,19 @@
+CHAPTER 5
+
+Essential C# Features
+
+This chapter covers
+
+•	Using C# language features for ASP.NET Core development
+•	 Dealing with null values and the null state analysis feature
+•	Creating objects concisely
+•	Adding features to classes without directly modifying them
+•	Expressing functions concisely
+•	Modifying interfaces without breaking implementation classes
+•	Defining asynchronous methods
+
+In this chapter, I describe C# features used in web application development that 
+are not widely understood or that often cause confusion. This is not a book about 
+C#, however, so I provide only a brief example for each feature so that you can 
+follow the examples in the rest of the book and take advantage of these features
+in your projects. Table 5-1 summarizes this chapter.

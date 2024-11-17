@@ -1,39 +1,27 @@
-Using Nullable Types
+Listing 5-14. Using a Nullable Type in the Product.cs File in the Models Folder
 
-The remaining warning in the Product.cs file occurs because there is a mismatch 
-between the type used for the result of the GetProducts method and the values 
-that are used to initialize it:
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public string Name { get; set; } = string.Empty;
+        public decimal? Price { get; set; }
+        public static Product?[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+            Product lifejacket = new Product
+            {
+                //Name = "Lifejacket",
+                Price = 48.95M
+            };
 
-...
-return new Product[] { kayak, lifejacket, null };
-...
-
-The type of the array that is created is Product[], which contains non-nullable 
-Product references. But one of the values used to populate the array is null, 
-which isn’t allowed. Listing 5-12 changes the array type so that nullable values 
-are allowed.
-
-Listing 5-12. Using a Nullable Type in the Product.cs File in the Models Folder
-
-namespace LanguageFeatures.Models {
-	public class Product {
-
-		public string Name { get; set; } = string.Empty;
-		public decimal? Price { get; set; }
-
-		public static Product?[] GetProducts() {
-
-			Product kayak = new Product {
-				Name = "Kayak", Price = 275M
-			};
-
-			Product lifejacket = new Product {
-				Name = "Lifejacket", Price = 48.95M
-			};
-
-			return new Product?[] { kayak, lifejacket, null };
-		}
-	}
+            return new Product?[] { kayak, lifejacket, null };
+        }
+    }
 }
 
 The type Product?[] denotes an array of Product? references, which means 
@@ -51,3 +39,22 @@ an array that can contain Product or null values but that won’t be null itself:
 Product?[] arr1 = new Product?[] { kayak, lifejacket, null }; // OK
 Product?[] arr2 = null; // Not OK
 ...
+
+A variable of type Product[]? is an array that can hold only Product values and 
+not null values, but the array itself may be null:
+
+...
+Product[]? arr1 = new Product?[] { kayak, lifejacket, null }; // Not OK
+Product[]? arr2 = null; // OK
+...
+
+A variable of type Product?[]? is an array that can contain Product or null 
+values and that can itself be null:
+
+...
+Product?[]? arr1 = new Product?[] { kayak, lifejacket, null }; // OK
+Product?[]? arr2 = null; // Also OK
+...
+
+Null state analysis is a useful feature, but that doesn’t mean it is always 
+easy to understand.

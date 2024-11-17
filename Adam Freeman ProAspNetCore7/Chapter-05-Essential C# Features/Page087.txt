@@ -1,9 +1,4 @@
-This resolves one warning and introduces another, as shown in Figure 5-3.
-
-Figure 5-3. An additional null state analysis warning
-(https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-5-3.png)
-
-The statement flagged by the compiler attempts to access the Name field 
+﻿The statement flagged by the compiler attempts to access the Name field 
 of the element at index zero in the array, which might be null since 
 the array type is Product?[]. Addressing this issue requires a check for
 null values, as shown in Listing 5-14.
@@ -26,3 +21,118 @@ namespace LanguageFeatures.Controllers {
 		}
 	}
 }
+
+This is an especially verbose way of avoiding a null, which I will refine shortly. 
+But it demonstrates an important point, which is that the compiler can understand 
+the effect of C# expressions when checking for a null reference. In Listing 5-14, 
+I use an if statement to see if a Product? variable is not null, and the compiler 
+understands that the variable cannot be null within the scope of the if clause and 
+doesn’t generate a warning when I read the name field:
+
+...
+if (p != null) {
+	val = p.Name;
+} else {
+	val = "No value";
+}
+...
+
+The compiler has a sophisticated understanding of C# but doesn’t always get it right, 
+and I explain what to do when the compiler isn’t able to accurately determine whether 
+a variable is null in the “Overriding Null State Analysis” section.
+
+Using the Null Conditional Operator
+
+The null conditional operator is a more concise way of avoiding member access 
+for null values, as shown in Listing 5-15.
+
+Listing 5-15. Using the Null Conditional Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+
+			string? val = products[0]?.Name;
+
+			if (val != null) {
+				return View(new string[] { val });
+			}
+			return View(new string[] { "No Value" });
+		}
+	}
+}
+
+The null conditional operator is a question mark applied before a member is accessed, 
+like this:
+
+...
+string? val = products[0]?.Name;
+...
+
+The operator returns null if it is applied to a variable that is null. In this case, 
+if the element at index zero of the products array is null, then the operator 
+will return null and prevent an attempt to access the Name property, which would 
+cause an exception. If products[0] isn’t null, then the operator does nothing, and the
+expression returns the value assigned to the Name property. Applying the null 
+conditional operator can return null, and its result must always be assigned 
+to a nullable variable, such as the string? used in this example.
+
+Using the Null-Coalescing Operator
+
+The null-coalescing operator is two question mark characters (??) and is used 
+to provide a fallback value, often used in conjunction with the null conditional 
+operator, as shown in Listing 5-16.
+
+Listing 5-16. Using the Null-Coalescing Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			return View(new string[] { products[0]?.Name ?? "No Value" });
+		}
+	}
+}
+
+The ?? operator returns the value of its left-hand operand if it isn’t null. 
+If the left-hand operand is null, then the ?? operator returns the value of 
+its right-hand operand. This behavior works well with the null conditional 
+operator. If products[0] is null, then the ? operator will return null, and 
+the ?? operator will return "No Value". If products[0] isn’t null, then 
+the result will be the value of its Name property. This is a more concise 
+way of performing the same null checks shown in earlier examples.
+
+Note
+The ? and ?? operators cannot always be used, and you will see examples in later 
+chapters where I use an if statement to check for null values. One common example 
+is when using the await/async keywords, which are described later in this chapter, 
+and which do not integrate well with the null conditional operator.
+
+Overriding Null State Analysis
+
+The C# compiler has a sophisticated understanding of when a variable can be null, 
+but it doesn’t always get it right, and there are times when you have a better 
+understanding of whether a null value can arise than the compiler. In these situations, 
+the null - forgiving operator can be used to tell the compiler that a variable isn’t
+null, regardless of what the null state analysis suggests, as shown in Listing 5-17.
+
+Listing 5-17. Using the Null-Forgiving Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			Product?[] products = Product.GetProducts();
+			return View(new string[] { products[0]!.Name });
+		}
+	}
+}
+
+The null-forgiving operator is an exclamation mark and is used in this example 
+to tell the compiler that products[0] isn’t null, even though null state analysis 
+has identified that it might be.

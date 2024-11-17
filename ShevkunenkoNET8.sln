@@ -197,6 +197,25 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject", "Adam Freeman ProAspNetCore7\Chapter-04-Using the Development Tools\MyProject\MyProject.csproj", "{49D31A84-916F-435D-ABFF-DE0E3E2CB155}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-05-Essential C# Features", "Chapter-05-Essential C# Features", "{EE734E7C-4567-46C3-8831-0D8A4D433A40}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page073.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page073.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page074.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page074.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page075.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page075.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page076.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page076.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page077.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page077.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page078.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page078.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page079.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page079.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page080.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page080.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page081.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page081.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page082.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page082.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page083.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page083.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page084.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page084.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page085.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page085.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page086.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page086.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page087.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page087.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageFeatures", "Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\LanguageFeatures\LanguageFeatures.csproj", "{3332E26C-BE19-44D1-885D-5DC17493ED3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -288,6 +307,10 @@ Global
 		{49D31A84-916F-435D-ABFF-DE0E3E2CB155}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49D31A84-916F-435D-ABFF-DE0E3E2CB155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49D31A84-916F-435D-ABFF-DE0E3E2CB155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -320,6 +343,7 @@ Global
 		{0317D279-EAA1-4C69-B4E8-5E3D096AD887} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 		{49D31A84-916F-435D-ABFF-DE0E3E2CB155} = {0317D279-EAA1-4C69-B4E8-5E3D096AD887}
 		{EE734E7C-4567-46C3-8831-0D8A4D433A40} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{3332E26C-BE19-44D1-885D-5DC17493ED3F} = {EE734E7C-4567-46C3-8831-0D8A4D433A40}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

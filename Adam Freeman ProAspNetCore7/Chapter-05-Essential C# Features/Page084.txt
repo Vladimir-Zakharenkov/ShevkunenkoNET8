@@ -1,48 +1,55 @@
-Note
-Getting to grips with nullable and non-nullable types can be frustrating. 
-A change in one code file can simply move a warning to another part of 
-the application, and it can feel like you are chasing problems through
-a project. But it is worth sticking with null state analysis because null 
-reference exceptions are the most common runtime error, and few programmers 
-are disciplined enough to guard against null values without the
-compiler analysis feature.
+5.4.2	Providing a default value for non-nullable types
 
-Ensuring Fields and Properties Are Assigned Values
+The required keyword is a good way to denote a property that cannot be null, and
+which requires a value when an object is created. This approach can become cumbersome
+in situations where there may not always be a suitable data value available,
+because it requires the code wants to create the object to provide a fallback value and
+there is no good way to enforce consistency.
 
-The first warning in the Product.cs file is for the Name field, whose type 
-is string, which is a non-nullable type (because it hasn’t been annotated 
-with a question mark).
+For these situations a default value can be used instead of the required keyword, as
+shown in listing 5.13.
 
-...
-public string Name { get; set; }
-...
+Listing 5.13 Providing a default value in the Product.cs file in the Models folder
 
-One consequence of using non-nullable types is that properties like Name 
-must be assigned a value when a new instance of the enclosing class is created. 
-If this were not the case, then the Name property would not be initialized 
-and would be null. And this is a problem because we can’t assign null 
-to a non-nullable property, even indirectly. Listing 5-11 solves this problem 
-by assigning a default value, ensuring that the Name property is always initialized.
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public string Name { get; set; } = string.Empty;
+        public decimal? Price { get; set; }
+        public static Product[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+            Product lifejacket = new Product
+            {
+                //Name = "Lifejacket",
+                Price = 48.95M
+            };
 
-Listing 5-11. Providing a Default Value in the Product.cs File in the Models Folder
-
-namespace LanguageFeatures.Models {
-	public class Product {
-
-	public string Name { get; set; } = string.Empty;
-	public decimal? Price { get; set; }
-
-	public static Product[] GetProducts() {
-
-		Product kayak = new Product {
-			Name = "Kayak", Price = 275M
-		};
-
-		Product lifejacket = new Product {
-			Name = "Lifejacket", Price = 48.95M
-		};
-
-		return new Product[] { kayak, lifejacket, null };
-		}
-	}
+            return new Product[] { kayak, lifejacket, null };
+        }
+    }
 }
+
+The default value in this example is the empty string. This value will be replaced for
+Product objects that are created with a Name value and ensures consistency for objects
+that are created without one.
+
+5.4.3	Using Nullable Types
+
+The remaining warning in the Product.cs file occurs because there is a mismatch 
+between the type used for the result of the GetProducts method and the values 
+that are used to initialize it:
+
+...
+return new Product[] { kayak, lifejacket, null };
+...
+
+The type of the array that is created is Product[], which contains non-nullable 
+Product references. But one of the values used to populate the array is null, 
+which isn’t allowed. Listing 5-12 changes the array type so that nullable values 
+are allowed.
