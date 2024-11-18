@@ -1,29 +1,56 @@
-To match any value of a specific type, use the type and variable name in 
-the case statement, like this:
+Listing 5.29 The contents of the ShoppingCart.cs file in the Models folder
 
-...
-case decimal decimalValue:
-...
+namespace LanguageFeatures.Models
+{
+    public class ShoppingCart
+    {
+        public IEnumerable<Product?>? Products { get; set; }
+    }
+}
 
-This case statement matches any decimal value and assigns it to a new variable 
-called decimalValue. To be more selective, the when keyword can be included, 
-like this:
+This is a simple class that acts as a wrapper around a sequence of Product objects
+(I only need a basic class for this example). Note the type of the Products property,
+which denotes a nullable enumerable of nullable Products, meaning that the
+Products property may be null and that any sequence of elements assigned to the
+property may contain null values.
 
-...
-case int intValue when intValue > 50:
-...
+Suppose I need to be able to determine the total value of the Product objects in the
+ShoppingCart class, but I cannot modify the class because it comes from a third party,
+and I do not have the source code. I can use an extension method to add the functionality
+I need.
 
-This case statement matches int values and assigns them to a variable called 
-intValue, but only when the value is greater than 50. Restart ASP.NET Core and 
-request http://localhost:5000, and you will see the following output in 
-the browser window:
+Add a class file named MyExtensionMethods.cs in the Models folder and use it to
+define the class shown in listing 5.30.
 
-Total: $404.95
+Listing 5.30 The contents of the MyExtensionMethods.cs file in the Models folder
 
-Using Extension Methods
+namespace LanguageFeatures.Models
+{
+    public static class MyExtensionMethods
+    {
+        public static decimal TotalPrices(this ShoppingCart cartParam)
+        {
+            decimal total = 0;
 
-Extension methods are a convenient way of adding methods to classes that you 
-cannot modify directly, typically because they are provided by Microsoft 
-or a third-party package. Listing 5-27 shows the definition of the 
-ShoppingCart class, which I added to the Models folder in a class file 
-called ShoppingCart.cs and which represents a collection of Product objects.
+            if (cartParam.Products != null)
+            {
+                foreach (Product? prod in cartParam.Products)
+                {
+                    total += prod?.Price ?? 0;
+                }
+            }
+
+            return total;
+        }
+    }
+}
+
+Extension methods are static and are defined in static classes. Listing 5.30 defines
+a single extension method named TotalPrices. The this keyword in front of the
+first parameter marks TotalPrices as an extension method. The first parameter tells
+.NET which class the extension method can be applied to—ShoppingCart in this case.
+I can refer to the instance of the ShoppingCart that the extension method has been
+applied to by using the cartParam parameter. This extension method enumerates the
+Product objects in the ShoppingCart and returns the sum of the Product.Price
+property values. Listing 5.31 shows how I apply the extension method in 
+the Home controller’s action method.

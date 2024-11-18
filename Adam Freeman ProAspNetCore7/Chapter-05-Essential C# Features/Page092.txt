@@ -1,57 +1,56 @@
-This is another syntactic sugar feature that makes C# easier to use. 
-Without this feature, I would have to call the Product constructor and 
-then use the newly created object to set each of the properties, like this:
+5.6.1	Using an Index Initializer
 
-...
-Product kayak = new Product();
-kayak.Name = "Kayak";
-kayak.Price = 275M;
-...
+Recent versions of C# tidy up the way collections that use indexes, 
+such as dictionaries, are initialized. Listing 5-24 shows the Index action 
+rewritten to define a collection using the traditional C# approach to
+initializing a dictionary.
 
-A related feature is the collection initializer, which allows the creation 
-of a collection and its contents to be specified in a single step. Without 
-an initializer, creating a string array, for example, requires the size of
-the array and the array elements to be specified separately, 
-as shown in Listing 5-20.
+Listing 5-24. Initializing a Dictionary in the HomeController.cs File in the Controllers Folder
 
-Listing 5-20. Initializing an Object in the HomeController.cs File 
-in the Controllers Folder
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Dictionary<string, Product> products = new Dictionary<string, Product>
+            {
+                {
+                "Kayak",
+                new Product { Name = "Kayak", Price = 275M }
+                },
+                {
+                "Lifejacket",
+                new Product{ Name = "Lifejacket", Price = 48.95M }
+                }
+            };
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
-
-		public ViewResult Index() {
-			string[] names = new string[3];
-			names[0] = "Bob";
-			names[1] = "Joe";
-			names[2] = "Alice";
-			return View("Index", names);
-		}
-	}
+            return View("Index", products.Keys);
+        }
+    }
 }
 
-Using a collection initializer allows the contents of the array to be specified 
-as part of the construction, which implicitly provides the compiler with the size 
-of the array, as shown in Listing 5-21.
+The syntax for initializing this type of collection relies too much on the { and } characters, 
+especially when the collection values are created using object initializers. The latest 
+versions of C# support a more natural approach to initializing indexed collections 
+that is consistent with the way that values are retrieved or modified once the collection 
+has been initialized, as shown in Listing 5-25.
 
-Listing 5-21. Using a Collection Initializer in the HomeController.cs File 
-in the Controllers Folder
+Listing 5-25. Using Collection Initializer Syntax in the HomeController.cs File in the Controllers Folder
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Dictionary<string, Product> products = new Dictionary<string, Product>
+            {
+                ["Kayak"] = new Product { Name = "Kayak", Price = 275M },
+                ["Lifejacket"] = new Product { Name = "Lifejacket", Price = 48.95M }
+            };
 
-		public ViewResult Index() {
-			return View("Index", new string[] { "Bob", "Joe", "Alice" });
-		}
-	}
+            return View("Index", products.Keys);
+        }
+    }
 }
-
-The array elements are specified between the { and } characters, which allows 
-for a more concise definition of the collection and makes it possible to define 
-a collection inline within a method call. The code in Listing 5-21 has the same 
-effect as the code in Listing 5-20. Restart ASP.NET Core and request 
-http://localhost:5000, and you will see the following output in the browser window:
-
-Bob
-Joe
-Alice

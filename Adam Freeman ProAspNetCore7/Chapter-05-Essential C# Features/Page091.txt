@@ -1,46 +1,61 @@
-﻿Using String Interpolation
+This is another syntactic sugar feature that makes C# easier to use. 
+Without this feature, I would have to call the Product constructor and 
+then use the newly created object to set each of the properties, like this:
 
-C# supports string interpolation to create formatted strings, which uses templates 
-with variable names that are resolved and inserted into the output, as shown in 
-Listing 5-19.
+...
+Product kayak = new Product();
+kayak.Name = "Kayak";
+kayak.Price = 275M;
+...
 
-Listing 5-19. Using String Interpolation in the HomeController.cs File 
-in the Controllers Folder
+A related feature is the collection initializer, which allows the creation 
+of a collection and its contents to be specified in a single step. Without 
+an initializer, creating a string array, for example, requires the size of
+the array and the array elements to be specified separately, 
+as shown in Listing 5-22.
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
-		public ViewResult Index() {
-		Product?[] products = Product.GetProducts();
-		return View(new string[] {
-			$"Name: {products[0]?.Name}, Price: { products[0]?.Price }"
-			});
-		}
-	}
+Listing 5-22. Initializing an Object in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            string[] names = new string[3];
+            names[0] = "Bob";
+            names[1] = "Joe";
+            names[2] = "Alice";
+
+            return View("Index", names);
+        }
+    }
 }
 
-Interpolated strings are prefixed with the $ character and contain holes, which are 
-references to values contained within the { and } characters. When the string is 
-evaluated, the holes are filled in with the current values of the variables or 
-constants that are specified.
+Using a collection initializer allows the contents of the array to be specified 
+as part of the construction, which implicitly provides the compiler with the size 
+of the array, as shown in Listing 5-23.
 
-Tip
-String interpolation supports the string format specifiers, which can be applied 
-within holes, so $"Price: {price:C2}" would format the price value as a currency 
-value with two decimal digits, for example.
+Listing 5-23. Using a Collection Initializer in the HomeController.cs File 
+in the Controllers Folder
 
-Start ASP.NET Core and request http://localhost:5000, and you will see a formatted 
-string:
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            return View("Index", new string[] { "Bob", "Joe", "Alice" });
+        }
+    }
+}
 
-Name: Kayak, Price: 275
+The array elements are specified between the { and } characters, which allows 
+for a more concise definition of the collection and makes it possible to define 
+a collection inline within a method call. The code in Listing 5-21 has the same 
+effect as the code in Listing 5-20. Restart ASP.NET Core and request 
+http://localhost:5000, and you will see the following output in the browser window:
 
-Using Object and Collection Initializers
-
-When I create an object in the static GetProducts method of the Product class, 
-I use an object initializer, which allows me to create an object and specify 
-its property values in a single step, like this:
-
-...
-Product kayak = new Product {
-Name = "Kayak", Price = 275M
-};
-...
+Bob
+Joe
+Alice

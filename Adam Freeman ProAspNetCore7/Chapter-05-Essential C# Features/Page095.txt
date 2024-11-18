@@ -1,71 +1,57 @@
-Listing 5-25. Performing a Type Test in the HomeController.cs File 
-in the Controllers Folder
+Listing 5-28. Pattern Matching in the HomeController.cs File in the Controllers Folder
 
-namespace LanguageFeatures.Controllers {
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            object[] data = new object[] { 275M, 29.95M, "apple", "orange", 100, 10 };
+            decimal total = 0;
 
-		public class HomeController : Controller {
-
-			public ViewResult Index() {
-
-				object[] data = new object[] { 275M, 29.95M,
-					"apple", "orange", 100, 10 };
-				decimal total = 0;
-				for (int i = 0; i < data.Length; i++) {
-					if (data[i] is decimal d) {
-					total += d;
-					}
-				}
-
-			return View("Index", new string[] { $"Total: {total:C2}" });
-		}
-	}
+            for (int i = 0; i < data.Length; i++)
+            {
+                switch (data[i])
+                {
+                    case decimal decimalValue:
+                        total += decimalValue;
+                        break;
+                    case int intValue when intValue > 50:
+                        total += intValue;
+                        break;
+                }
+            }
+            return View("Index", new string[] { $"Total: {total:C2}" });
+        }
+    }
 }
 
-The is keyword performs a type check and, if a value is of the specified type, 
-will assign the value to a new variable, like this:
+To match any value of a specific type, use the type and variable name in 
+the case statement, like this:
 
 ...
-if (data[i] is decimal d) {
+case decimal decimalValue:
 ...
 
-This expression evaluates as true if the value stored in data[i] is a decimal. 
-The value of data[i] will be assigned to the variable d, which allows it to be 
-used in subsequent statements without needing to perform any type conversions. 
-The is keyword will match only the specified type, which means that only
-two of the values in the data array will be processed (the other items in the 
-array are string and int values). If you run the application, you will see 
-the following output in the browser window:
+This case statement matches any decimal value and assigns it to a new variable 
+called decimalValue. To be more selective, the when keyword can be included, 
+like this:
 
-Total: $304.95
+...
+case int intValue when intValue > 50:
+...
 
-Pattern Matching in switch Statements
+This case statement matches int values and assigns them to a variable called 
+intValue, but only when the value is greater than 50. Restart ASP.NET Core and 
+request http://localhost:5000, and you will see the following output in 
+the browser window:
 
-Pattern matching can also be used in switch statements, which support the when 
-keyword for restricting when a value is matched by a case statement, as shown 
-in Listing 5-26.
+Total: $404.95
 
-Listing 5-26. Pattern Matching in the HomeController.cs File in the Controllers Folder
+5.9 Using Extension Methods
 
-namespace LanguageFeatures.Controllers {
-
-	public class HomeController : Controller {
-
-		public ViewResult Index() {
-
-			object[] data = new object[] { 275M, 29.95M,
-				"apple", "orange", 100, 10 };
-			decimal total = 0;
-			for (int i = 0; i < data.Length; i++) {
-				switch (data[i]) {
-					case decimal decimalValue:
-						total += decimalValue;
-						break;
-					case int intValue when intValue > 50:
-						total += intValue;
-						break;
-				}
-			}
-			return View("Index", new string[] { $"Total: {total:C2}" });
-		}
-	}
-}
+Extension methods are a convenient way of adding methods to classes that you 
+cannot modify directly, typically because they are provided by Microsoft 
+or a third-party package. Listing 5-29 shows the definition of the 
+ShoppingCart class, which I added to the Models folder in a class file 
+called ShoppingCart.cs and which represents a collection of Product objects.

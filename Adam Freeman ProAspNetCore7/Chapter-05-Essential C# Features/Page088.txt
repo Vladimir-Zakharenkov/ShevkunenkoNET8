@@ -1,0 +1,64 @@
+Listing 5-17. Null Conditional Operator in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Product?[] products = Product.GetProducts();
+            string? val = products[0]?.Name;
+
+            if (val != null)
+            {
+                return View(new string[] { val });
+            }
+            return View(new string[] { "No Value" });
+        }
+    }
+}
+
+The null conditional operator is a question mark applied before a member is accessed, 
+like this:
+
+...
+string? val = products[0]?.Name;
+...
+
+The operator returns null if it is applied to a variable that is null. In this case, 
+if the element at index zero of the products array is null, then the operator 
+will return null and prevent an attempt to access the Name property, which would 
+cause an exception. If products[0] isn’t null, then the operator does nothing, and the
+expression returns the value assigned to the Name property. Applying the null 
+conditional operator can return null, and its result must always be assigned 
+to a nullable variable, such as the string? used in this example.
+
+Using the Null-Coalescing Operator
+
+The null-coalescing operator is two question mark characters (??) and is used 
+to provide a fallback value, often used in conjunction with the null conditional 
+operator, as shown in Listing 5-16.
+
+Listing 5-18. Using the Null-Coalescing Operator in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            Product?[] products = Product.GetProducts();
+
+            return View(new string[] { products[0]?.Name ?? "No Value" });
+        }
+    }
+}
+
+The ?? operator returns the value of its left-hand operand if it isn’t null. 
+If the left-hand operand is null, then the ?? operator returns the value of 
+its right-hand operand. This behavior works well with the null conditional 
+operator. If products[0] is null, then the ? operator will return null, and 
+the ?? operator will return "No Value". If products[0] isn’t null, then 
+the result will be the value of its Name property. This is a more concise 
+way of performing the same null checks shown in earlier examples.
