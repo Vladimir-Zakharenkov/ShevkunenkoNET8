@@ -14,12 +14,11 @@ a:active, .dropdown:active {
 .atext {
     width: auto !important;
     height: auto !important;
-    font-weight: 600;
     text-indent: 0;
     border-radius: .3rem;
     padding: 0 .3rem .1rem;
     color: hsla(0,61%,35%,1);
-    background-color: hsla(210,51%,60%,0.2);
+    background-color: hsla(210%,51%,60%,0.2);
     transition: all .7s ease
 }
 

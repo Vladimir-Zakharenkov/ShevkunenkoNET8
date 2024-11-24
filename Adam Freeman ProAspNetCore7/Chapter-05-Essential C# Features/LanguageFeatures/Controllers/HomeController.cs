@@ -356,19 +356,19 @@
 
 #region Listing 5.31 Applying an extension method in the HomeController.cs file in the Controllers folder
 
-//namespace LanguageFeatures.Controllers
-//{
-//    public class HomeController : Controller
-//    {
-//        public ViewResult Index()
-//        {
-//            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
-//            decimal cartTotal = cart.TotalPrices();
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+            decimal cartTotal = cart.TotalPrices();
 
-//            return View("Index", new string[] { $"Total: {cartTotal:C2}" });
-//        }
-//    }
-//}
+            return View("Index", new string[] { $"Total: {cartTotal:C2}" });
+        }
+    }
+}
 
 #endregion
 
@@ -425,27 +425,27 @@
 
 #region Listing 5.38 Using two filter methods in the HomeController.cs file in the Controllers folder
 
-namespace LanguageFeatures.Controllers
-{
-    public class HomeController : Controller
-    {
-        public ViewResult Index()
-        {
-            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
 
-            Product[] productArray = {
-                new Product {Name = "Kayak", Price = 275M},
-                new Product {Name = "Lifejacket", Price = 48.95M},
-                new Product {Name = "Soccer ball", Price = 19.50M},
-                new Product {Name = "Corner flag", Price = 34.95M}
-                };
+//            Product[] productArray = {
+//                new Product {Name = "Kayak", Price = 275M},
+//                new Product {Name = "Lifejacket", Price = 48.95M},
+//                new Product {Name = "Soccer ball", Price = 19.50M},
+//                new Product {Name = "Corner flag", Price = 34.95M}
+//                };
 
-            decimal priceFilterTotal = productArray.FilterByPrice(20).TotalPrices();
-            decimal nameFilterTotal = productArray.FilterByName('S').TotalPrices();
+//            decimal priceFilterTotal = productArray.FilterByPrice(20).TotalPrices();
+//            decimal nameFilterTotal = productArray.FilterByName('S').TotalPrices();
 
-            return View("Index", new string[] { $"Price Total: {priceFilterTotal:C2}", $"Name Total: {nameFilterTotal:C2}" });
-        }
-    }
-}
+//            return View("Index", new string[] { $"Price Total: {priceFilterTotal:C2}", $"Name Total: {nameFilterTotal:C2}" });
+//        }
+//    }
+//}
 
 #endregion

@@ -93,6 +93,7 @@
                     <input asp-for="EditImage.WebIcon100MimeType" type="hidden" value="image/webp" />
                     <input asp-for="EditImage.WebIcon100FileNameExtension" type="hidden" value="webp" />
 
+                    @* Заголовок картинки *@
                     <label asp-for="EditImage.ImageCaption" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ImageCaptionInput" asp-for="EditImage.ImageCaption" class="form-control text-center" aria-describedby="ImageCaptionInputHelpBlock" />
                     <div id="ImageCaptionInputHelpBlock" class="form-text">
@@ -102,8 +103,9 @@
 
                     <hr class="liniya" />
 
+                    @* Описание картинки *@
                     <label asp-for="EditImage.ImageDescription" class="form-label text-primary fs-5 fw-bold"></label>
-                    <textarea id="ImageDescriptionInput" asp-for="EditImage.ImageDescription" class="form-control text-center" rows="1" aria-describedby="ImageDescriptionInputHelpBlock"></textarea>
+                    <textarea id="ImageDescriptionInput" asp-for="EditImage.ImageDescription" class="form-control text-center" rows="3" aria-describedby="ImageDescriptionInputHelpBlock"></textarea>
                     <div id="ImageDescriptionInputHelpBlock" class="form-text">
                         «description» для Microdata - <span class="text-danger">обязательное поле</span>
                     </div>
@@ -111,6 +113,7 @@
 
                     <hr class="liniya" />
 
+                    @* «alt» и «title» для картинки *@
                     <label asp-for="EditImage.ImageAltTitle" class="form-label text-primary fs-5 fw-bold"></label>
                     <input id="ImageAltTitleInput" asp-for="EditImage.ImageAltTitle" class="form-control text-center" aria-describedby="ImageAltTitleInputHelpBlock" />
                     <div id="ImageAltTitleInputHelpBlock" class="form-text col-12">
@@ -120,6 +123,7 @@
 
                     <hr class="liniya" />
 
+                    @* Фильтр поиска картинки в базе данных *@
                     <label asp-for="EditImage.SearchFilter" class="form-label text-primary fs-5"></label>
                     <textarea id="SearchFilterInput" rows="1" asp-for="EditImage.SearchFilter" class="form-control" aria-describedby="SearchFilterInputHelpBlock"></textarea>
                     <div id="SearchFilterInputHelpBlock" class="form-text">
@@ -129,6 +133,7 @@
 
                     <hr class="liniya" />
 
+                    @* Каталог картинки *@
                     <p class="mb-3"><span class="fs-5 text-primary fw-bold">Текущий каталог: </span><span class="fs-5 text_shadow">@Model.EditImage.ImagePath.Substring(8)</span></p>
 
                     <label asp-for="EditImage.ImagePath" class="form-label text-primary fs-5 fw-bold"></label>
@@ -141,6 +146,7 @@
 
                     <hr class="liniya" />
 
+                    @* Новый каталог для картинки *@
                     <div class="row g-2 justify-content-center">
                         <div class="col-auto">
                             <label asp-for="NewImagePath" class="form-label text-primary fs-5 fw-bold"></label>
@@ -154,8 +160,10 @@
                         <span asp-validation-for="NewImagePath" class="text-danger"></span>
                     </div>
 
+                    @* Выбор картинок *@
                     <div class="accordion p-3" id="accordionEditImage">
 
+                        @* Выбор картинок WEBM*@
                         <div class="accordion-item mb-2">
 
                             <h2 class="accordion-header" id="headingDescription">
@@ -328,6 +336,7 @@
 
                         </div>
 
+                        @* Выбор картинок PNG*@
                         <div class="accordion-item">
 
                             <h2 class="accordion-header" id="headingDescription">
@@ -528,11 +537,17 @@
 
                     </div>
 
+                    @* Сохранить картинку *@
                     <div class="card-footer p-0 mt-2">
 
                         <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="сохранить изменения">Сохранить</button>
 
-                        <a asp-area="Admin" asp-controller="ImageInfo" asp-action="Index" asp-route-iconlist="false" class="btn btn-outline-danger m-2 shadw" title="отменить изменения">Отмена</a>
+                        <a class="btn btn-outline-danger m-2 shadw" 
+                            asp-area="Admin" 
+                            asp-controller="ImageInfo" 
+                            asp-action="Index" 
+                            asp-route-iconlist="false" 
+                            title="отменить изменения">Отмена</a>
 
                     </div>
 

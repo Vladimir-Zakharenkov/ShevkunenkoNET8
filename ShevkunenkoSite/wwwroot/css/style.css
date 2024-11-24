@@ -12220,7 +12220,6 @@ a:active, .dropdown:active {
 .atext {
   width: auto !important;
   height: auto !important;
-  font-weight: 600;
   text-indent: 0;
   border-radius: 0.3rem;
   padding: 0 0.3rem 0.1rem;
@@ -12426,6 +12425,12 @@ a:active, .dropdown:active {
 .accordion-button {
   font-size: 1.2rem;
   text-shadow: rgba(194, 10, 41, 0.6) 1px 2px 2px;
+}
+
+#descr {
+  font-size: 1rem;
+  color: darkblue;
+  text-shadow: rgba(194, 10, 41, 0.6) 0px 0px 0px;
 }
 
 .accordion-body {

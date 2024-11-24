@@ -3,6 +3,7 @@ global using ShevkunenkoSite.Models;
 global using ShevkunenkoSite.Models.DataModels;
 global using ShevkunenkoSite.Models.ViewModels;
 global using ShevkunenkoSite.Services;
+global using ShevkunenkoSite.Services.Extensions;
 global using ShevkunenkoSite.Services.Interfaces;
 global using Microsoft.AspNetCore.Mvc.Razor;
 global using Microsoft.EntityFrameworkCore;

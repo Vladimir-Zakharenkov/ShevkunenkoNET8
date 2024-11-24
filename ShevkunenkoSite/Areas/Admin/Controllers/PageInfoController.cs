@@ -422,7 +422,7 @@ public class PageInfoController(
             }
             else
             {
-                var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
+                var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka-left.webp");
 
                 addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
             }

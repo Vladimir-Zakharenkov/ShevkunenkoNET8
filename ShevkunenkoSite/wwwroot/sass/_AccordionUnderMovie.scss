@@ -37,7 +37,6 @@ $accordion-button-focus-box-shadow: rgba(237, 63, 9, 0.9) 0px 0px 3px;
 $accordion-icon-color: darkred;
 $accordion-icon-active-color: darkred;
 
-
 @import "../lib/bootstrap/scss/_variables.scss";
 @import "../lib/bootstrap/scss/_mixins.scss";
 @import "../lib/bootstrap/scss/_accordion.scss";
@@ -46,6 +45,12 @@ $accordion-icon-active-color: darkred;
 .accordion-button {
     font-size: 1.2rem;
     text-shadow: rgba(194, 10, 41, 0.6) 1px 2px 2px;
+}
+
+#descr {
+    font-size: 1rem;
+    color:darkblue;
+    text-shadow: rgba(194, 10, 41, 0.6) 0px 0px 0px;
 }
 
 .accordion-body {

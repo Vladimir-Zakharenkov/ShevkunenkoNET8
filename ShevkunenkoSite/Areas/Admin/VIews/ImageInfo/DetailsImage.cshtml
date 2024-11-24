@@ -73,7 +73,7 @@
                         @if (!string.IsNullOrEmpty(Model.ImageItem.SearchFilter))
                         {
                             <div class="border border-1 border-secondary p-2 fs-5 text_shadow">
-                                @Html.Raw(Model.ImageItem.SearchFilter)
+                                @Model.ImageItem.SearchFilter<br />
                             </div>
                             <span class="fs-6 form-text lh-lg text-success">
                                 фильтр поиска

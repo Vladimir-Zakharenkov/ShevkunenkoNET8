@@ -8,10 +8,6 @@ public class Counters : ViewComponent
         {
             return View("ShevkunenkoSite");
         }
-        else if (HttpContext.Request.Host.ToString().Contains("sergeyshef.site"))
-        {
-            return View("SergeyshefSite");
-        }
         else if (HttpContext.Request.Host.ToString().Contains("sergeyshef.ru"))
         {
             return View("SergeyshefRu");
