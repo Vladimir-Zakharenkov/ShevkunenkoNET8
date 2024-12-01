@@ -27,7 +27,7 @@ public class MovieOnline(IPageInfoRepository pageInfoContext) : ViewComponent
 
         string? sergeyshefImageBorder;
 
-        if (queryString.Contains("vk.com"))
+        if (queryString.Contains("vk.com") || queryString.Contains("vkvideo.ru"))
         {
             videoRef = pageInfoModel.MovieFile.MovieVkVideo;
 

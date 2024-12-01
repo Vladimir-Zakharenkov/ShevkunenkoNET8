@@ -243,7 +243,7 @@ public class AllVideoController(
 
                 if (!string.IsNullOrEmpty(videoHosting))
                 {
-                    if (videoHosting.Contains("vk.com"))
+                    if (videoHosting.Contains("vk.com") || videoHosting.Contains("vkvideo.ru"))
                     {
                         videoRef = movieItem.MovieVkVideo;
 
@@ -357,6 +357,7 @@ public class AllVideoController(
         }
     }
 
+    // страница для многосерийных фильмов
     public ViewResult MoviePage()
     {
         return View();

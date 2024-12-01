@@ -356,24 +356,6 @@
 
 #region Listing 5.31 Applying an extension method in the HomeController.cs file in the Controllers folder
 
-namespace LanguageFeatures.Controllers
-{
-    public class HomeController : Controller
-    {
-        public ViewResult Index()
-        {
-            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
-            decimal cartTotal = cart.TotalPrices();
-
-            return View("Index", new string[] { $"Total: {cartTotal:C2}" });
-        }
-    }
-}
-
-#endregion
-
-#region Listing 5.34 Applying an extension method in the HomeController.cs file in the Controllers folder
-
 //namespace LanguageFeatures.Controllers
 //{
 //    public class HomeController : Controller
@@ -381,19 +363,37 @@ namespace LanguageFeatures.Controllers
 //        public ViewResult Index()
 //        {
 //            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
-
-//            Product[] productArray = {
-//                new Product {Name = "Kayak", Price = 275M},
-//                new Product {Name = "Lifejacket", Price = 48.95M}
-//                };
-
 //            decimal cartTotal = cart.TotalPrices();
-//            decimal arrayTotal = productArray.TotalPrices();
 
-//            return View("Index", new string[] { $"Cart Total: {cartTotal:C2}", $"Array Total: {arrayTotal:C2}" });
+//            return View("Index", new string[] { $"Total: {cartTotal:C2}" });
 //        }
 //    }
 //}
+
+#endregion
+
+#region Listing 5.34 Applying an extension method in the HomeController.cs file in the Controllers folder
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+
+            Product[] productArray = {
+                new Product {Name = "Kayak", Price = 275M},
+                new Product {Name = "Lifejacket", Price = 48.95M}
+                };
+
+            decimal cartTotal = cart.TotalPrices();
+            decimal arrayTotal = productArray.TotalPrices();
+
+            return View("Index", new string[] { $"Cart Total: {cartTotal:C2}", $"Array Total: {arrayTotal:C2}" });
+        }
+    }
+}
 
 #endregion
 

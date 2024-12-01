@@ -1,47 +1,47 @@
 ﻿#region Listing 5.30 The contents of the MyExtensionMethods.cs file in the Models folder
 
-namespace LanguageFeatures.Models
-{
-    public static class MyExtensionMethods
-    {
-        public static decimal TotalPrices(this ShoppingCart cartParam)
-        {
-            decimal total = 0;
-
-            if (cartParam.Products != null)
-            {
-                foreach (Product? prod in cartParam.Products)
-                {
-                    total += prod?.Price ?? 0;
-                }
-            }
-
-            return total;
-        }
-    }
-}
-
-#endregion
-
-#region Listing 5.33 Updating an extension method in the MyExtensionMethods.cs file in the Models folder
-
 //namespace LanguageFeatures.Models
 //{
 //    public static class MyExtensionMethods
 //    {
-//        public static decimal TotalPrices(this IEnumerable<Product?> products)
+//        public static decimal TotalPrices(this ShoppingCart cartParam)
 //        {
 //            decimal total = 0;
 
-//            foreach (Product? prod in products)
+//            if (cartParam.Products != null)
 //            {
-//                total += prod?.Price ?? 0;
+//                foreach (Product? prod in cartParam.Products)
+//                {
+//                    total += prod?.Price ?? 0;
+//                }
 //            }
 
 //            return total;
 //        }
 //    }
 //}
+
+#endregion
+
+#region Listing 5.33 Updating an extension method in the MyExtensionMethods.cs file in the Models folder
+
+namespace LanguageFeatures.Models
+{
+    public static class MyExtensionMethods
+    {
+        public static decimal TotalPrices(this IEnumerable<Product?> products)
+        {
+            decimal total = 0;
+
+            foreach (Product? prod in products)
+            {
+                total += prod?.Price ?? 0;
+            }
+
+            return total;
+        }
+    }
+}
 
 #endregion
 

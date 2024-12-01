@@ -59,6 +59,10 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
                         {
                             routData = routData[..routData.LastIndexOf("&videohosting=https://vk.com")];
                         }
+                        else if (routData.Contains("&videohosting=https://vkvideo.ru"))
+                        {
+                            routData = routData[..routData.LastIndexOf("&videohosting=https://vkvideo.ru")];
+                        }
                         else
                         {
                             routData = routData[..routData.LastIndexOf('&')];
