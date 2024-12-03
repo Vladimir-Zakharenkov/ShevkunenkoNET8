@@ -1,154 +1,135 @@
 ﻿#region Example 01
 
-//using System.Collections;
+//Numbers numbers = new Numbers();
 
-//string[] people = { "Tom", "Sam", "Bob" };
-
-//foreach (string person in people)
+//foreach (int n in numbers)
 //{
-//    Console.WriteLine(person);
+//    Console.WriteLine(n);
 //}
 
-//// -------------------------------------------------------- //
-
-//IEnumerator peopleEnumerator = people.GetEnumerator(); // получаем IEnumerator
-
-//while (peopleEnumerator.MoveNext())   // пока не будет возвращено false
+//class Numbers
 //{
-//    string item = (string)peopleEnumerator.Current; // получаем элемент на текущей позиции
-
-//    Console.WriteLine(item);
+//    public IEnumerator<int> GetEnumerator()
+//    {
+//        for (int i = 0; i < 6; i++)
+//        {
+//            yield return i * i;
+//        }
+//    }
 //}
-
-//peopleEnumerator.Reset(); // сбрасываем указатель в начало массива
 
 #endregion
 
 #region Example 02
 
-//using System.Collections;
+//foreach (var n in 5) Console.WriteLine(n);
 
-//Week week = new Week();
+//foreach (var n in -5) Console.WriteLine(n);
 
-//foreach (var day in week)
+//static class Int32Extension
 //{
-//    Console.WriteLine(day);
-//}
+//    public static IEnumerator<int> GetEnumerator(this int number)
+//    {
+//        int k = (number > 0) ? number : 0;
 
-//class Week : IEnumerable
-//{
-//    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-
-//    public IEnumerator GetEnumerator() => days.GetEnumerator();
+//        for (int i = number - k; i <= k; i++) yield return i;
+//    }
 //}
 
 #endregion
 
 #region Example 03
 
-//using System.Collections;
-
-//Week week = new Week();
-
-//foreach (var day in week)
+//var people = new Person[]
 //{
-//    Console.WriteLine(day);
+//    new Person("Tom"),
+//    new Person("Bob"),
+//    new Person("Sam")
+//};
+
+//var microsoft = new Company(people);
+
+//foreach (Person employee in microsoft)
+//{
+//    Console.WriteLine(employee.Name);
 //}
 
-//class WeekEnumerator : IEnumerator
+//class Person
 //{
-//    string[] days;
+//    public string Name { get; }
 
-//    int position = -1;
-
-//    public WeekEnumerator(string[] days) => this.days = days;
-
-//    public object Current
-//    {
-//        get
-//        {
-//            if (position == -1 || position >= days.Length)
-//                throw new ArgumentException();
-//            return days[position];
-//        }
-//    }
-
-//    public bool MoveNext()
-//    {
-//        if (position < days.Length - 1)
-//        {
-//            position++;
-
-//            return true;
-//        }
-//        else
-//            return false;
-//    }
-
-//    public void Reset() => position = -1;
+//    public Person(string name) => Name = name;
 //}
-
-//class Week
+//class Company
 //{
-//    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+//    Person[] personnel;
 
-//    public IEnumerator GetEnumerator() => new WeekEnumerator(days);
+//    public Company(Person[] personnel) => this.personnel = personnel;
+
+//    public int Length => personnel.Length;
+
+//    //public IEnumerator<Person> GetEnumerator()
+//    //{
+//    //    for (int i = 0; i < personnel.Length; i++)
+//    //    {
+//    //        yield return personnel[i];
+//    //    }
+//    //}
+
+//    public IEnumerator<Person> GetEnumerator()
+//    {
+//        yield return personnel[0];
+//        yield return personnel[1];
+//        yield return personnel[2];
+//    }
 //}
 
 #endregion
 
 #region Example 04
 
-using System.Collections;
-
-Week week = new Week();
-
-foreach (var day in week)
+var people = new Person[]
 {
-    Console.WriteLine(day);
+    new Person("Tom"),
+    new Person("Bob"),
+    new Person("Sam")
+};
+
+var microsoft = new Company(people);
+
+foreach (Person employee in microsoft.GetPersonnel(5))
+{
+    Console.WriteLine(employee.Name);
 }
 
-class WeekEnumerator : IEnumerator<string>
+class Person
 {
-    string[] days;
-
-    int position = -1;
-
-    public WeekEnumerator(string[] days) => this.days = days;
-
-    public string Current
-    {
-        get
-        {
-            if (position == -1 || position >= days.Length)
-                throw new ArgumentException();
-            return days[position];
-        }
-    }
-
-    object IEnumerator.Current => Current;
-
-    public bool MoveNext()
-    {
-        if (position < days.Length - 1)
-        {
-            position++;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    public void Reset() => position = -1;
-
-    public void Dispose() { }
+    public string Name { get; }
+    public Person(string name) => Name = name;
 }
 
-class Week
+class Company
 {
-    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+    Person[] personnel;
 
-    public IEnumerator<string> GetEnumerator() => new WeekEnumerator(days);
+    public Company(Person[] personnel) => this.personnel = personnel;
+
+    public int Length => personnel.Length;
+
+    public IEnumerable<Person> GetPersonnel(int max)
+    {
+        for (int i = 0; i < max; i++)
+        {
+            if (i == personnel.Length)
+            {
+                yield break;
+            }
+            else
+            {
+                yield return personnel[i];
+            }
+        }
+    }
 }
 
 #endregion

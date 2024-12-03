@@ -236,10 +236,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C# 13", "C# 13", "{2232B0C1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 10 - Коллекции", "Глава 10 - Коллекции", "{4B8C2613-A4B0-4E00-8216-2639A43ABEF9}"
 	ProjectSection(SolutionItems) = preProject
-		Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Интерфейсы IEnumerable и IEnumerator.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Интерфейсы IEnumerable и IEnumerator.txt
+		Metanit.com\C# 13\Глава 10 - Коллекции\Page07 - Интерфейсы IEnumerable и IEnumerator.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page07 - Интерфейсы IEnumerable и IEnumerator.txt
+		Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page08", "Metanit.com\C# 13\Глава 10 - Коллекции\Page08\Page08.csproj", "{249E1E73-DCFD-4326-AEAF-26984812C818}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page07", "Metanit.com\C# 13\Глава 10 - Коллекции\Page07\Page07.csproj", "{95265512-084A-4787-9D23-58818F87C926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page08", "Metanit.com\C# 13\Глава 10 - Коллекции\Page08\Page08.csproj", "{E6600BCE-7D33-4770-8F29-C54CD24A37B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -335,10 +338,14 @@ Global
 		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3332E26C-BE19-44D1-885D-5DC17493ED3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{249E1E73-DCFD-4326-AEAF-26984812C818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{249E1E73-DCFD-4326-AEAF-26984812C818}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{249E1E73-DCFD-4326-AEAF-26984812C818}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{249E1E73-DCFD-4326-AEAF-26984812C818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95265512-084A-4787-9D23-58818F87C926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95265512-084A-4787-9D23-58818F87C926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95265512-084A-4787-9D23-58818F87C926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95265512-084A-4787-9D23-58818F87C926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -374,7 +381,8 @@ Global
 		{3332E26C-BE19-44D1-885D-5DC17493ED3F} = {EE734E7C-4567-46C3-8831-0D8A4D433A40}
 		{2232B0C1-252D-4176-ABFE-47FB87FD140B} = {903275A2-A9B0-43E1-A13C-A089F3E48289}
 		{4B8C2613-A4B0-4E00-8216-2639A43ABEF9} = {2232B0C1-252D-4176-ABFE-47FB87FD140B}
-		{249E1E73-DCFD-4326-AEAF-26984812C818} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
+		{95265512-084A-4787-9D23-58818F87C926} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
+		{E6600BCE-7D33-4770-8F29-C54CD24A37B3} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
