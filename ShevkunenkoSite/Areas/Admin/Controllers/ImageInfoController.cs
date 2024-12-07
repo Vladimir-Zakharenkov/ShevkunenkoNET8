@@ -6,76 +6,66 @@ public class ImageInfoController(IImageFileRepository imageContext) : Controller
 {
     public ImageFileModel? ImageItem { get; set; }
 
-    #region SearchOptions
-
-    //public string? ImageSearchString { get; set; }
-
-    #endregion
-
     #region Список картинок
 
     public int imagesPerPage = 12;
 
-    public async Task<IActionResult> Index
-                                                        (
-                                                        string? imageSearchString,
-                                                        bool iconList,
-                                                        int pageNumber = 1
-                                                        )
+    public IActionResult Index
+        (
+        string? imageSearchString,
+        bool? iconList,
+        int pageNumber = 1
+        )
     {
-        var allImages = from m in imageContext.ImageFiles
-            .Where
-            (
-            s => s.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim())
-                    | s.ImageDescription.Contains((imageSearchString ?? string.Empty).Trim())
-                    | s.SearchFilter.Contains((imageSearchString ?? string.Empty).Trim())
-                    | s.WebImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
-                    | s.ImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
-            )
-                        select m;
+        #region Фильтр по картинкам
 
-        if (iconList == false)
+        //var allImages = from m in imageContext.ImageFiles.
+        //    .Where
+        //    (
+        //    s => s.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim())
+        //            | s.ImageDescription.Contains((imageSearchString ?? string.Empty).Trim())
+        //            | s.SearchFilter.Contains((imageSearchString ?? string.Empty).Trim())
+        //            | s.WebImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
+        //            | s.ImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
+        //    )
+        //                select m;
+
+        //var allImages = imageContext.ImageFiles.FuncSearch(ss => ss.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim()));
+
+        var allImages = imageContext.ImageFiles.ImageSearch(imageSearchString);
+
+        #endregion
+
+        #region Выбор представления - список или иконки
+
+        ImageListViewModel imageListViewModel = new()
         {
-            return View(new ImageListViewModel
-            {
-                AllImages = await allImages
+            AllImages = allImages
                     .Skip((pageNumber - 1) * imagesPerPage)
-                    .Take(imagesPerPage)
-                    .ToArrayAsync(),
+                    .Take(imagesPerPage),
 
-                PagingInfo = new PagingInfoViewModel
-                {
-                    CurrentPage = pageNumber,
-                    ItemsPerPage = imagesPerPage,
-                    TotalItems = allImages.Count()
-                },
+            PagingInfo = new PagingInfoViewModel
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = imagesPerPage,
+                TotalItems = allImages.Count()
+            },
 
-                ImageSearchString = imageSearchString ?? string.Empty,
+            ImageSearchString = imageSearchString ?? string.Empty,
 
-                IconList = false
-            });
+            IconList = iconList
+        };
+
+        if (iconList == null || iconList == false)
+        {
+            return View(imageListViewModel);
         }
         else
         {
-            return View("IconList", new ImageListViewModel
-            {
-                AllImages = await allImages
-                    .Skip((pageNumber - 1) * imagesPerPage)
-                    .Take(imagesPerPage)
-                    .ToArrayAsync(),
-
-                PagingInfo = new PagingInfoViewModel
-                {
-                    CurrentPage = pageNumber,
-                    ItemsPerPage = imagesPerPage,
-                    TotalItems = allImages.Count()
-                },
-
-                ImageSearchString = imageSearchString ?? string.Empty,
-
-                IconList = true
-            });
+            return View("IconList", imageListViewModel);
         }
+
+        #endregion
     }
 
     #endregion

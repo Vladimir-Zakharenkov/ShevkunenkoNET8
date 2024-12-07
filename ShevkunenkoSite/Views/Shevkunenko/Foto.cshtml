@@ -12,18 +12,18 @@
 
             <div class="carousel-indicators pb-5">
 
-                @for (int k = 0; k < Model.AllImages!.Count(); k++)
+                @for (int k = 0; k < Model.AllImages.Count(); k++)
                 {
-                    if (Model.CurrentImageId == Model.AllImages[k].ImageFileModelId)
+                    if (Model.CurrentImageId == Model.AllImages.ToArray()[k].ImageFileModelId)
                     {
                         <button type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide-to="@k" class="active" aria-current="true" aria-label="Фото @k">
-                            <vc:view-image image-id="@Model.AllImages[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
+                            <vc:view-image image-id="@Model.AllImages.ToArray()[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
                         </button>
                     }
                     else
                     {
                         <button type="button" data-bs-target="#fotoAlbumCarousel" data-bs-slide-to="@k" aria-label="Фото @k">
-                            <vc:view-image image-id="@Model.AllImages[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
+                            <vc:view-image image-id="@Model.AllImages.ToArray()[k].ImageFileModelId" css-class="d-block mx-auto mt-2 border border-0" icon-type="" />
                         </button>
                     }
                 }

@@ -1,46 +1,56 @@
-Listing 5-39. Using a Lambda Expression in the HomeController.cs File 
-in the Controllers Folder
+OTHER FORMS FOR LAMBDA EXPRESSIONS
+
+I don’t need to express the logic of my delegate in the lambda expression. 
+I can as easily call a method, like this:
+
+...
+prod => EvaluateProduct(prod)
+...
+
+If I need a lambda expression for a delegate that has multiple parameters, 
+I must wrap the parameters in parentheses, like this:
+
+...
+(prod, count) => prod.Price > 20 && count > 0
+...
+
+Finally, if I need logic in the lambda expression that requires more 
+than one statement, I can do so by using braces ({}) and finishing with 
+a return statement, like this:
+
+...
+(prod, count) => {
+	// ...multiple code statements...
+	return result;
+}
+...
+
+You do not need to use lambda expressions in your code, but they are a neat way 
+of expressing complex functions simply and in a manner that is readable and clear. 
+I like them a lot, and you will see them used throughout this book.
+
+5.10.2	Using Lambda Expression Methods and Properties
+
+Lambda expressions can be used to implement constructors, methods, and properties. 
+In ASP.NET Core development, you will often end up with methods that contain a single 
+statement that selects the data to display and the view to render. In Listing 5-40, 
+I have rewritten the Index action method so that it follows this common pattern.
+
+Listing 5.42	Creating a Common Action Pattern in the HomeController.cs File in the Controllers Folder
 
 namespace LanguageFeatures.Controllers {
 	public class HomeController : Controller {
 
-		//bool FilterByPrice(Product? p) {
-		// return (p?.Price ?? 0) >= 20;
-		//}
-
 		public ViewResult Index() {
-			ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts()};
-
-			Product[] productArray = {
-				new Product {Name = "Kayak", Price = 275M},
-				new Product {Name = "Lifejacket", Price = 48.95M},
-				new Product {Name = "Soccer ball", Price = 19.50M},
-				new Product {Name = "Corner flag", Price = 34.95M}
-			};
-
-			//Func<Product?, bool> nameFilter = delegate (Product? prod) {
-			//	return prod?.Name?[0] == 'S';
-			//};
-
-			decimal priceFilterTotal = productArray
-				.Filter(p => (p?.Price ?? 0) >= 20)
-				.TotalPrices();
-			decimal nameFilterTotal = productArray
-				.Filter(p => p?.Name?[0] == 'S')
-				.TotalPrices();
-
-			return View("Index", new string[] {
-				$"Price Total: {priceFilterTotal:C2}",
-				$"Name Total: {nameFilterTotal:C2}" });
+			return View(Product.GetProducts().Select(p => p?.Name));
 		}
 	}
 }
 
-The lambda expressions are shown in bold. The parameters are expressed without 
-specifying a type, which will be inferred automatically. The => characters are 
-read aloud as “goes to” and link the parameter to the result of the lambda 
-expression. In my examples, a Product? parameter called p goes to a bool result,
-which will be true if the Price property is equal or greater than 20 in the first 
-expression or if the Name property starts with S in the second expression. This 
-code works in the same way as the separate method and the function delegate but 
-is more concise and is — for most people—easier to read.
+The action method gets a collection of Product objects from the static 
+Product.GetProducts method and uses LINQ to project the values of the Name 
+properties, which are then used as the view model for the default view. 
+If you run the application, you will see the following output displayed 
+in the browser window:
+
+Kayak

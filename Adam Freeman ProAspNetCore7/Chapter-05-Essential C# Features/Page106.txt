@@ -1,49 +1,54 @@
-OTHER FORMS FOR LAMBDA EXPRESSIONS
+There will be an empty list item in the browser window as well because 
+the GetProducts method includes a null reference in its results, but 
+that doesn’t matter for this section of the chapter.
 
-I don’t need to express the logic of my delegate in the lambda expression. 
-I can as easily call a method, like this:
+When a constructor or method body consists of a single statement, it can 
+be rewritten as a lambda expression, as shown in Listing 5-41.
 
-...
-prod => EvaluateProduct(prod)
-...
+Listing 5.43	A Lambda Action Method in the HomeController.cs File in the Controllers Folder
 
-If I need a lambda expression for a delegate that has multiple parameters, 
-I must wrap the parameters in parentheses, like this:
-
-...
-(prod, count) => prod.Price > 20 && count > 0
-...
-
-Finally, if I need logic in the lambda expression that requires more 
-than one statement, I can do so by using braces ({}) and finishing with 
-a return statement, like this:
-
-...
-(prod, count) => {
-	// ...multiple code statements...
-	return result;
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+    }
 }
-...
 
-You do not need to use lambda expressions in your code, but they are a neat way 
-of expressing complex functions simply and in a manner that is readable and clear. 
-I like them a lot, and you will see them used throughout this book.
+Lambda expressions for methods omit the return keyword and use => (goes to) 
+to associate the method signature (including its arguments) with its implementation. 
+The Index method shown in Listing 5-41 works in the same way as the one shown 
+in Listing 5-40 but is expressed more concisely. The same basic approach
+can also be used to define properties. Listing 5-42 shows the addition of 
+a property that uses a lambda expression to the Product class.
 
-Using Lambda Expression Methods and Properties
+Listing 5.44    A Lambda Property in the Product.cs File in the Models Folder
 
-Lambda expressions can be used to implement constructors, methods, and properties. 
-In ASP.NET Core development, you will often end up with methods that contain a single 
-statement that selects the data to display and the view to render. In Listing 5-40, 
-I have rewritten the Index action method so that it follows this common pattern.
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public string Name { get; set; } = string.Empty;
 
-Listing 5-40. Creating a Common Action Pattern in the HomeController.cs File 
-in the Controllers Folder
+        public decimal? Price { get; set; }
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+        public bool NameBeginsWithS => Name.Length > 0 && Name[0] == 'S';
 
-		public ViewResult Index() {
-			return View(Product.GetProducts().Select(p => p?.Name));
-		}
-	}
+        public static Product?[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+
+            Product lifejacket = new Product
+            {
+                //Name = "Lifejacket",
+                Price = 48.95M
+            };
+
+            return new Product?[] { kayak, lifejacket, null };
+        }
+    }
 }

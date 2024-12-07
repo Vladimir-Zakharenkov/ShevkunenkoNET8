@@ -1,58 +1,99 @@
-The action method gets a collection of Product objects from the static 
-Product.GetProducts method and uses LINQ to project the values of the Name 
-properties, which are then used as the view model for the default view. 
-If you run the application, you will see the following output displayed 
-in the browser window:
+5.11	Using Type Inference and Anonymous Types
+
+The var keyword allows you to define a local variable without explicitly 
+specifying the variable type, as demonstrated by Listing 5-43. This is called 
+type inference, or implicit typing.
+
+Listing 5-43. Using Type Inference in the HomeController.cs File 
+in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+		public ViewResult Index() {
+			var names = new[] { "Kayak", "Lifejacket", "Soccer ball" };
+			return View(names);
+		}
+	}
+}
+
+It is not that the names variable does not have a type; instead, I am asking 
+the compiler to infer the type from the code. The compiler examines the array 
+declaration and works out that it is a string array. Running the example produces 
+the following output:
 
 Kayak
 Lifejacket
+Soccer ball
 
-There will be an empty list item in the browser window as well because 
-the GetProducts method includes a null reference in its results, but 
-that doesn’t matter for this section of the chapter.
+Using Anonymous Types
 
-When a constructor or method body consists of a single statement, it can 
-be rewritten as a lambda expression, as shown in Listing 5-41.
+By combining object initializers and type inference, I can create simple view model 
+objects that are useful for transferring data between a controller and a view without 
+having to define a class or struct, as shown in Listing 5-44.
 
-Listing 5-41. A Lambda Action Method in the HomeController.cs File 
+Listing 5-44. Creating an Anonymous Type in the HomeController.cs File 
 in the Controllers Folder
 
 namespace LanguageFeatures.Controllers {
 	public class HomeController : Controller {
 
-		public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+		public ViewResult Index() {
+			var products = new[] {
+				new { Name = "Kayak", Price = 275M },
+				new { Name = "Lifejacket", Price = 48.95M },
+				new { Name = "Soccer ball", Price = 19.50M },
+				new { Name = "Corner flag", Price = 34.95M }
+			};
+
+			return View(products.Select(p => p.Name));
+		}
 	}
 }
 
-Lambda expressions for methods omit the return keyword and use => (goes to) 
-to associate the method signature (including its arguments) with its implementation. 
-The Index method shown in Listing 5-41 works in the same way as the one shown 
-in Listing 5-40 but is expressed more concisely. The same basic approach
-can also be used to define properties. Listing 5-42 shows the addition of 
-a property that uses a lambda expression to the Product class.
+Each of the objects in the products array is an anonymously typed object. 
+This does not mean that it is dynamic in the sense that JavaScript variables 
+are dynamic. It just means that the type definition will be created automatically 
+by the compiler. Strong typing is still enforced. You can get and set only the
+properties that have been defined in the initializer, for example. Restart 
+ASP.NET Core and request http://localhost:5000, and you will see the following 
+output in the browser window:
 
-Listing 5-42. A Lambda Property in the Product.cs File in the Models Folder
+Kayak
+Lifejacket
+Soccer ball
+Corner flag
 
-namespace LanguageFeatures.Models {
+The C# compiler generates the class based on the name and type of the parameters 
+in the initializer. Two anonymously typed objects that have the same property names 
+and types defined in the same order will be assigned to the same automatically 
+generated class. This means that all the objects in the products array will have 
+the same type because they define the same properties.
 
-	public class Product {
-		public string Name { get; set; } = string.Empty;
+Tip
+I have to use the var keyword to define the array of anonymously typed objects 
+because the type isn’t created until the code is compiled, so I don’t know the name 
+of the type to use. The elements in an array of anonymously typed objects must 
+all define the same properties; otherwise, the compiler can’t work out what
+the array type should be.
 
-		public decimal? Price { get; set; }
+To demonstrate this, I have changed the output from the example in Listing 5-45 
+so that it shows the type name rather than the value of the Name property.
 
-		public bool NameBeginsWithS => Name?[0] == 'S';
+Listing 5-45. Displaying the Type Name in the HomeController.cs File 
+in the Controllers Folder
 
-		public static Product?[] GetProducts() {
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
 
-			Product kayak = new Product {
-				Name = "Kayak", Price = 275M
+		public ViewResult Index() {
+			var products = new[] {
+				new { Name = "Kayak", Price = 275M },
+				new { Name = "Lifejacket", Price = 48.95M },
+				new { Name = "Soccer ball", Price = 19.50M },
+				new { Name = "Corner flag", Price = 34.95M }
 			};
 
-			Product lifejacket = new Product {
-				Name = "Lifejacket", Price = 48.95M
-			};
-
-			return new Product?[] { kayak, lifejacket, null };
+			return View(products.Select(p => p.GetType().Name));
 		}
 	}
 }

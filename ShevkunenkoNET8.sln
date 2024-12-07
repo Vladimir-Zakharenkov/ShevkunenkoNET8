@@ -228,6 +228,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-05-Essential C# Fea
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page100.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page100.txt
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page101.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page101.txt
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page102.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page102.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page103.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page103.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page104.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page104.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page105.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page105.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page106.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page106.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page107.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page107.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageFeatures", "Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\LanguageFeatures\LanguageFeatures.csproj", "{3332E26C-BE19-44D1-885D-5DC17493ED3F}"

@@ -47,38 +47,40 @@
 
 #region Listing 5.35 A filtering extension method in the MyExtensionMethods.cs file in the Models folder
 
-namespace LanguageFeatures.Models
-{
-    public static class MyExtensionMethods
-    {
-        public static decimal TotalPrices(this IEnumerable<Product?> products)
-        {
-            decimal total = 0;
+//namespace LanguageFeatures.Models
+//{
+//    public static class MyExtensionMethods
+//    {
+//        public static decimal TotalPrices(this IEnumerable<Product?> products)
+//        {
+//            decimal total = 0;
 
-            foreach (Product? prod in products)
-            {
-                total += prod?.Price ?? 0;
-            }
+//            foreach (Product? prod in products)
+//            {
+//                total += prod?.Price ?? 0;
+//            }
 
-            return total;
-        }
+//            return total;
+//        }
 
-        public static IEnumerable<Product?> FilterByPrice(this IEnumerable<Product?> productEnum, decimal minimumPrice)
-        {
-            foreach (Product? prod in productEnum)
-            {
-                if ((prod?.Price ?? 0) >= minimumPrice)
-                {
-                    yield return prod;
-                }
-            }
-        }
-    }
-}
+//        public static IEnumerable<Product?> FilterByPrice(this IEnumerable<Product?> productEnum, decimal minimumPrice)
+//        {
+//            foreach (Product? prod in productEnum)
+//            {
+//                if ((prod?.Price ?? 0) >= minimumPrice)
+//                {
+//                    yield return prod;
+//                }
+//            }
+//        }
+//    }
+//}
 
 #endregion
 
 #region Listing 5.37 Adding a filter method in the MyExtensionMethods.cs file in the Models folder
+
+//using System.Reflection;
 
 //namespace LanguageFeatures.Models
 //{
@@ -118,5 +120,48 @@ namespace LanguageFeatures.Models
 //        }
 //    }
 //}
+
+#endregion
+
+#region Listing 5.39 Creating a general filter method in the MyExtensionMethods.cs file in the Models folder
+
+namespace LanguageFeatures.Models
+{
+    public static class MyExtensionMethods
+    {
+        public static decimal TotalPrices(this IEnumerable<Product?> products)
+        {
+            decimal total = 0;
+
+            foreach (Product? prod in products)
+            {
+                total += prod?.Price ?? 0;
+            }
+            return total;
+        }
+
+        public static IEnumerable<Product?> FilterByPrice(this IEnumerable<Product?> productEnum, decimal minimumPrice)
+        {
+            foreach (Product? prod in productEnum)
+            {
+                if ((prod?.Price ?? 0) >= minimumPrice)
+                {
+                    yield return prod;
+                }
+            }
+        }
+
+        public static IEnumerable<Product?> Filter(this IEnumerable<Product?> productEnum, Func<Product?, bool> selector)
+        {
+            foreach (Product? prod in productEnum)
+            {
+                if (selector(prod))
+                {
+                    yield return prod;
+                }
+            }
+        }
+    }
+}
 
 #endregion

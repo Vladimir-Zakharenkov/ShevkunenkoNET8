@@ -1,7 +1,7 @@
 Listing 5-38 shows the use of both filter methods applied in the controller 
 to create two different totals.
 
-Listing 5-38. Using Two Filter Methods in the HomeController.cs File 
+Listing 5.38 Using Two Filter Methods in the HomeController.cs File 
 in the Controllers Folder
 
 namespace LanguageFeatures.Controllers

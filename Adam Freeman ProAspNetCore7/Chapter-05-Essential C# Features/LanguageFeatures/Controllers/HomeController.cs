@@ -400,27 +400,27 @@
 
 #region Listing 5.36 Using the filtering extension method in the HomeController.cs file in the Controllers folder
 
-namespace LanguageFeatures.Controllers
-{
-    public class HomeController : Controller
-    {
-        public ViewResult Index()
-        {
-            //ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
 
-            Product[] productArray = {
-                new Product {Name = "Kayak", Price = 275M},
-                new Product {Name = "Lifejacket", Price = 48.95M},
-                new Product {Name = "Soccer ball", Price = 19.50M},
-                new Product {Name = "Corner flag", Price = 34.95M}
-             };
+//            Product[] productArray = {
+//                new Product {Name = "Kayak", Price = 275M},
+//                new Product {Name = "Lifejacket", Price = 48.95M},
+//                new Product {Name = "Soccer ball", Price = 19.50M},
+//                new Product {Name = "Corner flag", Price = 34.95M}
+//             };
 
-            decimal arrayTotal = productArray.FilterByPrice(20).TotalPrices();
+//            decimal arrayTotal = productArray.FilterByPrice(20).TotalPrices();
 
-            return View("Index", new string[] { $"Array Total: {arrayTotal:C2}" });
-        }
-    }
-}
+//            return View("Index", new string[] { $"Array Total: {arrayTotal:C2}" });
+//        }
+//    }
+//}
 
 #endregion
 
@@ -448,5 +448,118 @@ namespace LanguageFeatures.Controllers
 //        }
 //    }
 //}
+
+#endregion
+
+#region Listing 5.40 Using a function to filter objects in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        bool FilterByPrice(Product? p)
+//        {
+//            return (p?.Price ?? 0) >= 20;
+//        }
+
+//        public ViewResult Index()
+//        {
+//            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+
+//            Product[] productArray = {
+//                new Product {Name = "Kayak", Price = 275M},
+//                new Product {Name = "Lifejacket", Price = 48.95M},
+//                new Product {Name = "Soccer ball", Price = 19.50M},
+//                new Product {Name = "Corner flag", Price = 34.95M}
+//                };
+
+//            Func<Product?, bool> nameFilter = delegate (Product? prod)
+//            {
+//                return prod?.Name?[0] == 'S';
+//            };
+
+//            decimal priceFilterTotal = productArray
+//                .Filter(FilterByPrice)
+//                .TotalPrices();
+
+//            decimal nameFilterTotal = productArray
+//                .Filter(nameFilter)
+//                .TotalPrices();
+
+//            return View("Index", new string[] {
+//                $"Price Total: {priceFilterTotal:C2}",
+//                $"Name Total: {nameFilterTotal:C2}" });
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.41 Using a lambda expression in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        //bool FilterByPrice(Product? p) {
+//        // return (p?.Price ?? 0) >= 20;
+//        //}
+
+//        public ViewResult Index()
+//        {
+//            ShoppingCart cart = new ShoppingCart { Products = Product.GetProducts() };
+
+//            Product[] productArray = {
+//                new Product {Name = "Kayak", Price = 275M},
+//                new Product {Name = "Lifejacket", Price = 48.95M},
+//                new Product {Name = "Soccer ball", Price = 19.50M},
+//                new Product {Name = "Corner flag", Price = 34.95M}
+//                };
+
+//            //Func<Product?, bool> nameFilter = delegate (Product? prod) {
+//            // return prod?.Name?[0] == 'S';
+//            //};
+
+//            decimal priceFilterTotal = productArray
+//                .Filter(p => (p?.Price ?? 0) >= 20)
+//                .TotalPrices();
+
+//            decimal nameFilterTotal = productArray
+//                .Filter(p => p?.Name?[0] == 'S')
+//                .TotalPrices();
+
+//            return View("Index", new string[] {
+//                $"Price Total: {priceFilterTotal:C2}",
+//                $"Name Total: {nameFilterTotal:C2}" });
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.42 Creating a common action pattern in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            return View(Product.GetProducts().Select(p => p?.Name));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.43 A lambda action method in the HomeController.cs file in the Controllers folder
+
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+    }
+}
 
 #endregion
