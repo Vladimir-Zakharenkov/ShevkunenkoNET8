@@ -554,11 +554,116 @@
 
 #region Listing 5.43 A lambda action method in the HomeController.cs file in the Controllers folder
 
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+//    }
+//}
+
+#endregion
+
+#region Listing 5.45 Using type inference in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            var names = new[] { "Kayak", "Lifejacket", "Soccer ball" };
+
+//            return View(names);
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.46 An anonymous type in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            var products = new[] {
+//                new { Name = "Kayak", Price = 275M },
+//                new { Name = "Lifejacket", Price = 48.95M },
+//                new { Name = "Soccer ball", Price = 19.50M },
+//                new { Name = "Corner flag", Price = 34.95M }
+//                };
+
+//            return View(products.Select(p => p.Name));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.47 Displaying the type name in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            var products = new[] {
+//                new { Name = "Kayak", Price = 275M },
+//                new { Name = "Lifejacket", Price = 48.95M },
+//                new { Name = "Soccer ball", Price = 19.50M },
+//                new { Name = "Corner flag", Price = 34.95M }
+//                };
+
+//            return View(products.Select(p => p.GetType().Name));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.50 Using an interface in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            IProductSelection cart = new ShoppingCart(
+//                    new Product { Name = "Kayak", Price = 275M },
+//                    new Product { Name = "Lifejacket", Price = 48.95M },
+//                    new Product { Name = "Soccer ball", Price = 19.50M },
+//                    new Product { Name = "Corner flag", Price = 34.95M }
+//                    );
+
+//            return View(cart.Products?.Select(p => p.Name));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.52 Using a default implementation in the HomeController.cs file in the Controllers folder
+
 namespace LanguageFeatures.Controllers
 {
     public class HomeController : Controller
     {
-        public ViewResult Index() => View(Product.GetProducts().Select(p => p?.Name));
+        public ViewResult Index()
+        {
+            IProductSelection cart = new ShoppingCart(
+                new Product { Name = "Kayak", Price = 275M },
+                new Product { Name = "Lifejacket", Price = 48.95M },
+                new Product { Name = "Soccer ball", Price = 19.50M },
+                new Product { Name = "Corner flag", Price = 34.95M }
+                );
+
+            return View(cart.Names);
+        }
     }
 }
 

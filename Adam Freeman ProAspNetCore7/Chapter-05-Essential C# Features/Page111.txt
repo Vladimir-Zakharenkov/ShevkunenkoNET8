@@ -1,50 +1,77 @@
-Listing 5-48 updates the Home controller so that it uses the ShoppingCart class.
+﻿5.13	Using Asynchronous Methods
 
-Listing 5-48. Using an Interface in the HomeController.cs File in the Controllers Folder
+Asynchronous methods perform work in the background and notify you when they are 
+complete, allowing your code to take care of other business while the background 
+work is performed. Asynchronous methods are an important tool in removing bottlenecks 
+from code and allow applications to take advantage of multiple processors and 
+processor cores to perform work in parallel.
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+In ASP.NET Core, asynchronous methods can be used to improve the overall performance 
+of an application by allowing the server more flexibility in the way that requests 
+are scheduled and executed. Two C# keywords — async and await — are used to perform 
+work asynchronously.
 
-		public ViewResult Index() {
-			IProductSelection cart = new ShoppingCart(
-				new Product { Name = "Kayak", Price = 275M },
-				new Product { Name = "Lifejacket", Price = 48.95M },
-				new Product { Name = "Soccer ball", Price = 19.50M },
-				new Product { Name = "Corner flag", Price = 34.95M }
-			);
+Working with Tasks Directly
 
-			return View(cart.Products?.Select(p => p.Name));
+C# and .NET have excellent support for asynchronous methods, but the code has tended 
+to be verbose, and developers who are not used to parallel programming often get 
+bogged down by the unusual syntax. To create an example, add a class file called 
+MyAsyncMethods.cs to the Models folder and add the code shown in Listing 5-51.
+
+Listing 5-51. The Contents of the MyAsyncMethods.cs File in the Models Folder
+
+namespace LanguageFeatures.Models {
+
+	public class MyAsyncMethods {
+
+		public static Task<long?> GetPageLength() {
+			HttpClient client = new HttpClient();
+			var httpTask = client.GetAsync("http://apress.com");
+			return httpTask.ContinueWith((Task<HttpResponseMessage> antecedent) => {
+				return antecedent.Result.Content.Headers.ContentLength;
+			});
 		}
 	}
 }
 
-This is the familiar use of an interface, and if you restart ASP.NET Core 
-and request http://localhost:5000, you will see the following output in the browser:
+This method uses a System.Net.Http.HttpClient object to request the contents 
+of the Apress home page and returns its length. .NET represents work that will 
+be done asynchronously as a Task. Task objects are strongly typed based on 
+the result that the background work produces. So, when I call the 
+HttpClient.GetAsync method, what I get back is a Task<HttpResponseMessage>. 
+This tells me that the request will be performed in the background and 
+that the result of the request will be an HttpResponseMessage object.
 
-Kayak
-Lifejacket
-Soccer ball
-Corner flag
+Tip
+When I use words like background, I am skipping over a lot of detail to make 
+just the key points that are important to the world of ASP.NET Core. The .NET 
+support for asynchronous methods and parallel programming is excellent, and I 
+encourage you to learn more about it if you want to create truly high-performing
+applications that can take advantage of multicore and multiprocessor hardware. 
+You will see how ASP.NET Core makes it easy to create asynchronous web applications 
+throughout this book as I introduce different features.
 
-If I want to add a new feature to the interface, I must locate and update all 
-the classes that implement it, which can be difficult, especially if an interface 
-is used by other development teams in their projects. This is where the default 
-implementation feature can be used, allowing new features to be added to an interface, 
-as shown in Listing 5-49.
+The part that most programmers get bogged down with is the continuation, which 
+is the mechanism by which you specify what you want to happen when the task 
+is complete. In the example, I have used the ContinueWith method to process 
+the HttpResponseMessage object I get from the HttpClient.GetAsync method, 
+which I do with a lambda expression that returns the value of a property 
+that contains the length of the content I get from the Apress web server. 
+Here is the continuation code:
 
-Listing 5-49. Adding a Feature in the IProductSelection.cs File 
-in the Models Folder
+...
+return httpTask.ContinueWith((Task<HttpResponseMessage> antecedent) => {
+return antecedent.Result.Content.Headers.ContentLength;
+});
+...
 
-namespace LanguageFeatures.Models {
+Notice that I use the return keyword twice. This is the part that causes 
+confusion. The first use of the return keyword specifies that I am returning 
+a Task<HttpResponseMessage> object, which, when the task is complete, 
+will return the length of the ContentLength header. The ContentLength header 
+returns a long? result (a nullable long value), and this means the result 
+of my GetPageLength method is Task<long?>, like this:
 
-	public interface IProductSelection {
-
-		IEnumerable<Product>? Products { get; }
-
-		IEnumerable<string>? Names => Products?.Select(p => p.Name);
-	}
-}
-
-The listing defines a Names property and provides a default implementation, which 
-means that consumers of the IProductSelection interface can use the Names property 
-even if it isn�t defined by implementation classes, as shown in Listing 5-50.
+...
+public static Task<long?> GetPageLength() {
+...

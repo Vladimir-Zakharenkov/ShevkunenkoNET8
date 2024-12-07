@@ -1,0 +1,59 @@
+5.12	Using Default Implementations in Interfaces
+
+C# provides the ability to define default implementations for properties and methods 
+defined by interfaces. This may seem like an odd feature because an interfaces is 
+intended to be a description of features without specifying an implementation, 
+but this addition to C# makes it possible to update interfaces without
+breaking the existing implementations of them.
+
+Add a class file named IProductSelection.cs to the Models folder and use it to define 
+the interface shown in Listing 5.48
+
+Listing 5.48	The Contents of the IProductSelection.cs File in the Models Folder
+
+namespace LanguageFeatures.Models
+{
+    public interface IProductSelection
+    {
+        IEnumerable<Product>? Products { get; }
+    }
+}
+
+Update the ShoppingCart class to implement the new interface, as shown in Listing 5.49
+
+Listing 5.49	Implementing an Interface in the ShoppingCart.cs File in the Models Folder
+
+namespace LanguageFeatures.Models
+{
+    public class ShoppingCart : IProductSelection
+    {
+        private List<Product> products = new();
+
+        public ShoppingCart(params Product[] prods)
+        {
+            products.AddRange(prods);
+        }
+
+        public IEnumerable<Product>? Products { get => products; }
+    }
+}
+
+Listing 5.50 updates the Home controller so that it uses the ShoppingCart class.
+
+Listing 5.50	Using an Interface in the HomeController.cs File in the Controllers Folder
+
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			IProductSelection cart = new ShoppingCart(
+				new Product { Name = "Kayak", Price = 275M },
+				new Product { Name = "Lifejacket", Price = 48.95M },
+				new Product { Name = "Soccer ball", Price = 19.50M },
+				new Product { Name = "Corner flag", Price = 34.95M }
+			);
+
+			return View(cart.Products?.Select(p => p.Name));
+		}
+	}
+}

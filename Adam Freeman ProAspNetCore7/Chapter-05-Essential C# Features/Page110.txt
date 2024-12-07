@@ -1,47 +1,56 @@
-All the objects in the array have been assigned the same type, which you can see 
-if you run the example. The type name isn’t user - friendly but isn’t intended 
-to be used directly, and you may see a different name than the one shown in the 
-following output:
+This is the familiar use of an interface, and if you restart ASP.NET Core 
+and request http://localhost:5000, you will see the following output in the browser:
 
-<>f__AnonymousType0`2
-<>f__AnonymousType0`2
-<>f__AnonymousType0`2
-<>f__AnonymousType0`2
+Kayak
+Lifejacket
+Soccer ball
+Corner flag
 
-Using Default Implementations in Interfaces
+If I want to add a new feature to the interface, I must locate and update all 
+the classes that implement it, which can be difficult, especially if an interface 
+is used by other development teams in their projects. This is where the default 
+implementation feature can be used, allowing new features to be added to an interface, 
+as shown in Listing 5.51.
 
-C# provides the ability to define default implementations for properties and methods 
-defined by interfaces. This may seem like an odd feature because an interfaces is 
-intended to be a description of features without specifying an implementation, 
-but this addition to C# makes it possible to update interfaces without
-breaking the existing implementations of them.
+Listing 5.51 Adding a Feature in the IProductSelection.cs File in the Models Folder
 
-Add a class file named IProductSelection.cs to the Models folder and use it to define 
-the interface shown in Listing 5-46.
+namespace LanguageFeatures.Models
+{
+    public interface IProductSelection
+    {
+        IEnumerable<Product>? Products { get; }
 
-Listing 5-46. The Contents of the IProductSelection.cs File in the Models Folder
-
-namespace LanguageFeatures.Models {
-
-	public interface IProductSelection {
-
-		IEnumerable<Product>? Products { get; }
-	}
+        IEnumerable<string>? Names => Products?.Select(p => p.Name);
+    }
 }
 
-Update the ShoppingCart class to implement the new interface, as shown in Listing 5-47.
+The listing defines a Names property and provides a default implementation, which 
+means that consumers of the IProductSelection interface can use the Names property 
+even if it isn’t defined by implementation classes, as shown in Listing 5.52
 
-Listing 5-47. Implementing an Interface in the ShoppingCart.cs File in the Models Folder
+Listing 5.52	Using a Default Implementation in the HomeController.cs File in the Controllers Folder
 
-namespace LanguageFeatures.Models {
+namespace LanguageFeatures.Controllers {
+	public class HomeController : Controller {
 
-	public class ShoppingCart : IProductSelection {
-		private List<Product> products = new();
-
-		public ShoppingCart(params Product[] prods) {
-			products.AddRange(prods);
+		public ViewResult Index() {
+			IProductSelection cart = new ShoppingCart(
+				new Product { Name = "Kayak", Price = 275M },
+				new Product { Name = "Lifejacket", Price = 48.95M },
+				new Product { Name = "Soccer ball", Price = 19.50M },
+				new Product { Name = "Corner flag", Price = 34.95M }
+			);
+			return View(cart.Names);
 		}
-
-		public IEnumerable<Product>? Products { get => products; }
 	}
 }
+
+The ShoppingCart class has not been modified, but the Index method can use 
+the default implementation of the Names property. Restart ASP.NET Core and 
+request http://localhost:5000, and you will see the following output 
+in the browser:
+
+Kayak
+Lifejacket
+Soccer ball
+Corner flag
