@@ -1,50 +1,37 @@
-The difference is that the await keyword is applied before the foreach keyword 
-and not before the call to the async method. Restart ASP.NET Core and request 
-http://localhost:5000; once the HTTP requests are complete, you will see that 
-the order of the response messages has changed, like this:
+The compiler processes a reference such as p.Name so that only the last part 
+is included in the string, producing the same output as in previous examples. 
+There is IntelliSense support for nameof expressions, so you will be prompted 
+to select references, and expressions will be correctly updated when you refactor 
+code. Since the compiler is responsible for dealing with nameof, using an 
+invalid reference causes a compiler error, which prevents incorrect or outdated 
+references from escaping notice.
 
-Started request for apress.com
-Completed request for apress.com
-Page length: 26973
-Started request for microsoft.com
-Completed request for microsoft.com
-Page length: 199528
-Started request for amazon.com
-Completed request for amazon.com
-Page length: 441398
+Summary
 
-The controller receives the next result in the sequence as it is produced. As I 
-explain in Chapter 19, ASP.NET Core has special support for using IAsyncEnumerable<T> 
-results in web services, allowing data values to be serialized as the values 
-in the sequence are generated.
+•	Top-level statements allow code to be defined outside of a class, which can make
+	ASP.NET Core configuration more concise.
 
-Getting Names
+•	Global using statements take effect throughout a project so that namespaces
+	don’t have to be imported in individual C# files.
 
-There are many tasks in web application development in which you need to refer 
-to the name of an argument, variable, method, or class. Common examples include 
-when you throw an exception or create a validation error when processing input 
-from the user. The traditional approach has been to use a string value
-hard-coded with the name, as shown in Listing 5-58.
+•	Null state analysis ensures that null values are only assigned to nullable types and
+	that values are read safely.
 
-Listing 5-58. Hard-Coding a Name in the HomeController.cs File 
-in the Controllers Folder
+•	String interpolation allows data values to be composed into strings.
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
+•	Object initialization patterns simplify the code required to create objects.
 
-		public ViewResult Index() {
-			var products = new[] {
-				new { Name = "Kayak", Price = 275M },
-				new { Name = "Lifejacket", Price = 48.95M },
-				new { Name = "Soccer ball", Price = 19.50M },
-				new { Name = "Corner flag", Price = 34.95M }
-			};
-			return View(products.Select(p => $"Name: {p.Name}, Price: {p.Price}"));
-		}
-	}
-}
+•	Target-typed expressions omit the type name from the new statement.
 
-The call to the LINQ Select method generates a sequence of strings, each of which 
-contains a hard-coded reference to the Name and Price properties. Restart ASP.NET Core 
-and request http://localhost:5000, and you will see the following output 
-in the browser window:
+•	Pattern matching is used to execute code when a value has specific characteristics.
+
+•	Extension methods allow new functionality to be added to a type without needing
+	to modify the class file.
+
+•	Lambda expressions are a concise way to express functions.
+
+•	Interfaces can be defined with default implementations, which means it is possible
+	to modify the interface without breaking implementation classes.
+
+•	The async and await keywords are used to create asynchronous methods without
+	needing to work directly with tasks and continuations.

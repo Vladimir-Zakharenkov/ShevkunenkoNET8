@@ -1,45 +1,45 @@
-The GetPageLengths method makes HTTP requests to a series of websites and gets 
-their length. The requests are performed asynchronously, but there is no way 
-to feed the results back to the method’s caller as they arrive. Instead, the method 
-waits until all the requests are complete and then returns all the results in
-one go. In addition to the URLs that will be requested, this method accepts a 
-List<string> to which I add messages in order to highlight how the code works. 
-Listing 5-55 updates the Index action method of the Home
-controller to use the new method.
+The methods result is IAsyncEnumerable<long?>, which denotes an asynchronous 
+sequence of nullable long values. This result type has special support in .NET Core 
+and works with standard yield return statements, which isn’t otherwise possible 
+because the result constraints for asynchronous methods conflict with the yield 
+keyword. Listing 5.59 updates the controller to use the revised method.
 
-Listing 5-55. Using the New Method in the HomeController.cs File in the Controllers Folder
+Listing 5.59	Using an Asynchronous Enumerable in the HomeController.cs File in the Controllers Folder
 
-namespace LanguageFeatures.Controllers {
-	public class HomeController : Controller {
-		public async Task<ViewResult> Index() {
-			List<string> output = new List<string>();
-			foreach (long? len in await MyAsyncMethods.GetPageLengths(output,
-				"apress.com", "microsoft.com", "amazon.com")) {
-				output.Add($"Page length: { len}");
-			}
-			return View(output);
-		}
-	}
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        public async Task<ViewResult> Index()
+        {
+            List<string> output = new List<string>();
+
+            await foreach (long? len in MyAsyncMethods.GetPageLengths(output, "shevkunenko.site", "sergeyshef.ru", "shevkunenko.ru"))
+            {
+                output.Add($"Page length: {len}");
+            }
+
+            return View(output);
+        }
+    }
 }
 
-The action method enumerates the sequence produced by the GetPageLengths method 
-and adds each result to the List<string> object, which produces an ordered sequence 
-of messages showing the interaction between the foreach loop in the Index method 
-that processes the results and the foreach loop in the GetPageLengths method 
-that generates them. Restart ASP.NET Core and request http://localhost:5000, 
-and you will see the following output in the browser (which may take several 
-seconds to appear and may have different page lengths):
+The difference is that the await keyword is applied before the foreach keyword 
+and not before the call to the async method. Restart ASP.NET Core and request 
+http://localhost:5000; once the HTTP requests are complete, you will see that 
+the order of the response messages has changed, like this:
 
-Started request for apress.com
-Completed request for apress.com
+Started request for manning.com
+Completed request for manning.com
+Page length: 26973
 Started request for microsoft.com
 Completed request for microsoft.com
+Page length: 199528
 Started request for amazon.com
 Completed request for amazon.com
-Page length: 26973
-Page length: 199526
-Page length: 357777
+Page length: 441398
 
-You can see that the Index action method doesn’t receive the results until all 
-the HTTP requests have been completed. This is the problem that the asynchronous 
-enumerable feature solves, as shown in Listing 5-56.
+The controller receives the next result in the sequence as it is produced. As I 
+explain in Chapter 19, ASP.NET Core has special support for using IAsyncEnumerable<T> 
+results in web services, allowing data values to be serialized as the values 
+in the sequence are generated.

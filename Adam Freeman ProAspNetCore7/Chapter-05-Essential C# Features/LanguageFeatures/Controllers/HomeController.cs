@@ -649,20 +649,125 @@
 
 #region Listing 5.52 Using a default implementation in the HomeController.cs file in the Controllers folder
 
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            IProductSelection cart = new ShoppingCart(
+//                new Product { Name = "Kayak", Price = 275M },
+//                new Product { Name = "Lifejacket", Price = 48.95M },
+//                new Product { Name = "Soccer ball", Price = 19.50M },
+//                new Product { Name = "Corner flag", Price = 34.95M }
+//                );
+
+//            return View(cart.Names);
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.55 An asynchronous action method in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public async Task<ViewResult> Index()
+//        {
+//            long? length = await MyAsyncMethods.GetPageLength();
+
+//            return View(new string[] { $"Length: {length}" });
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.57 Using the new method in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public async Task<ViewResult> Index()
+//        {
+//            List<string> output = new List<string>();
+
+//            foreach (long? len in await MyAsyncMethods.GetPageLengths(output, "shevkunenko.site", "sergeyshef.ru", "shevkunenko.ru"))
+//            {
+//                output.Add($"Page length: {len}");
+//            }
+
+//            return View(output);
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.59 Using an asynchronous enumerable in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public async Task<ViewResult> Index()
+//        {
+//            List<string> output = new List<string>();
+
+//            await foreach (long? len in MyAsyncMethods.GetPageLengths(output, "shevkunenko.site", "sergeyshef.ru", "shevkunenko.ru"))
+//            {
+//                output.Add($"Page length: {len}");
+//            }
+
+//            return View(output);
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.60 Hard-coding a name in the HomeController.cs file in the Controllers folder
+
+//namespace LanguageFeatures.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        public ViewResult Index()
+//        {
+//            var products = new[] {
+//                new { Name = "Kayak", Price = 275M },
+//                new { Name = "Lifejacket", Price = 48.95M },
+//                new { Name = "Soccer ball", Price = 19.50M },
+//                new { Name = "Corner flag", Price = 34.95M }
+//                };
+
+//            return View(products.Select(p => $"Name: {p.Name}, Price: {p.Price}"));
+//        }
+//    }
+//}
+
+#endregion
+
+#region Listing 5.61 Using nameof expressions in the HomeController.cs file in the Controllers folder
+
 namespace LanguageFeatures.Controllers
 {
     public class HomeController : Controller
     {
         public ViewResult Index()
         {
-            IProductSelection cart = new ShoppingCart(
-                new Product { Name = "Kayak", Price = 275M },
-                new Product { Name = "Lifejacket", Price = 48.95M },
-                new Product { Name = "Soccer ball", Price = 19.50M },
-                new Product { Name = "Corner flag", Price = 34.95M }
-                );
+            var products = new[] {
+                new { Name = "Kayak", Price = 275M },
+                new { Name = "Lifejacket", Price = 48.95M },
+                new { Name = "Soccer ball", Price = 19.50M },
+                new { Name = "Corner flag", Price = 34.95M }
+                };
 
-            return View(cart.Names);
+            return View(products.Select(p => $"{nameof(p.Name)}: {p.Name}, {nameof(p.Price)}: {p.Price}"));
         }
     }
 }

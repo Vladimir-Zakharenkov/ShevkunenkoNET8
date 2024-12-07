@@ -237,6 +237,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-05-Essential C# Fea
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page109.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page109.txt
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page110.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page110.txt
 		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page111.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page111.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page112.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page112.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page113.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page113.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page114.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page114.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page115.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page115.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page116.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page116.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page117.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page117.txt
+		Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page118.txt = Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\Page118.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageFeatures", "Adam Freeman ProAspNetCore7\Chapter-05-Essential C# Features\LanguageFeatures\LanguageFeatures.csproj", "{3332E26C-BE19-44D1-885D-5DC17493ED3F}"
@@ -249,9 +256,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 10 - Колле�
 		Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page07", "Metanit.com\C# 13\Глава 10 - Коллекции\Page07\Page07.csproj", "{95265512-084A-4787-9D23-58818F87C926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Page07", "Metanit.com\C# 13\Глава 10 - Коллекции\Page07\Page07.csproj", "{95265512-084A-4787-9D23-58818F87C926}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page08", "Metanit.com\C# 13\Глава 10 - Коллекции\Page08\Page08.csproj", "{E6600BCE-7D33-4770-8F29-C54CD24A37B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Page08", "Metanit.com\C# 13\Глава 10 - Коллекции\Page08\Page08.csproj", "{E6600BCE-7D33-4770-8F29-C54CD24A37B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
