@@ -1,0 +1,53 @@
+Creating the Controller and View
+
+For the examples in this chapter, I use a simple controller class 
+to demonstrate different language features. I created a Controllers 
+folder and added to it a class file called HomeController.cs, 
+the contents of which are shown in Listing 6-5.
+
+Listing 6-5. The Contents of the HomeController.cs File 
+in the SimpleApp/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SimpleApp.Models;
+
+namespace SimpleApp.Controllers {
+	public class HomeController : Controller {
+
+		public ViewResult Index() {
+			return View(Product.GetProducts());
+		}
+	}
+}
+
+The Index action method tells ASP.NET Core to render the default view 
+and provides it with the Product objects obtained from the static 
+Product.GetProducts method. To create the view for the action method, 
+I added a Views/Home folder (by creating a Views folder and then adding 
+a Home folder within it) and added a Razor View called Index.cshtml, 
+with the contents shown in Listing 6-6.
+
+Listing 6-6. The Contents of the Index.cshtml File 
+in the SimpleApp/Views/Home Folder
+
+@using SimpleApp.Models
+
+@model IEnumerable<Product>
+
+@{ Layout = null; }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Simple App</title>
+</head>
+<body>
+	<ul>
+		@foreach (Product p in Model ?? Enumerable.Empty<Product>()) {
+			<li>Name: @p.Name, Price: @p.Price</li>
+		}
+	</ul>
+</body>
+</html>

@@ -1,0 +1,47 @@
+Selecting the HTTP Port
+
+Set the port on which ASP.NET Core will receive HTTP requests by editing 
+the launchSettings.json file in the Properties folder, as shown 
+in Listing 6-2.
+
+Listing 6-2. Setting the HTTP Port in the launchSettings.json File 
+in the Properties Folder
+
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:5000",
+			"sslPort": 0
+			}
+		},
+		"profiles": {
+			"SimpleApp": {
+				"commandName": "Project",
+				"dotnetRunMessages": true,
+				"launchBrowser": true,
+				"applicationUrl": "http://localhost:5000",
+				"environmentVariables": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+		"IIS Express": {
+			"commandName": "IISExpress",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		}
+	}
+}
+
+Enabling the MVC Framework
+
+As I explained in Chapter 1, ASP.NET Core supports different application 
+frameworks, but I am going to continue using the MVC Framework in this chapter. 
+I introduce the other frameworks in the SportsStore application that I start 
+to build in Chapter 7, but for the moment, the MVC Framework gives me 
+a foundation for demonstrating how to perform unit testing that is familiar 
+from earlier examples. Add the statements shown in Listing 6-3 to 
+the Program.cs file in the SimpleApp folder.

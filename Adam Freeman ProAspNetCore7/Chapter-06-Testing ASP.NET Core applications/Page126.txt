@@ -1,0 +1,44 @@
+Running the Example Application
+
+Start ASP.NET Core by running the command shown in Listing 6-7 in the SimpleApp folder.
+
+Listing 6-7. Running the Example Application
+
+dotnet run
+
+Request http://localhost:5000, and you will see the output shown in Figure 6-1.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-1.png
+
+Figure 6-1. Running the example application
+
+Creating a Unit Test Project
+
+For ASP.NET Core applications, you generally create a separate Visual Studio project 
+to hold the unit tests, each of which is defined as a method in a C# class. 
+Using a separate project means you can deploy your application without also 
+deploying the tests. The .NET Core SDK includes templates for unit test projects
+using three popular test tools, as described in Table 6-2.
+
+Table 6-2. The Unit Test Project Tools
+
+Name		Description
+
+mstest		This template creates a project configured for the MS Test framework, 
+			which is produced by Microsoft.
+
+nunit		This template creates a project configured for the NUnit framework.
+
+xunit		This template creates a project configured for the XUnit framework.
+
+These testing frameworks have largely the same feature set and differ only 
+in how they are implemented and how they integrate into third-party testing 
+environments. I recommend starting with XUnit if you do not have 
+an established preference, largely because it is the test framework 
+that I find easiest to work with.
+
+The convention is to name the unit test project <ApplicationName>.Tests. 
+Run the commands shown in Listing 6-8 in the Testing folder to create 
+the XUnit test project named SimpleApp.Tests, add it to the
+solution file, and create a reference between projects so the unit tests 
+can be applied to the classes defined in the SimpleApp project.

@@ -1,0 +1,51 @@
+Listing 6-3. Enabling the MVC Framework in the Program.cs File in the SimpleApp Folder
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
+
+app.Run();
+
+Creating the Application Components
+
+Now that the MVC Framework is set up, I can add the application components 
+that I will use to run tests.
+
+Creating the Data Model
+
+I started by creating a simple model class so that I can have some data 
+to work with. I added a folder called Models and created a class file called 
+Product.cs within it, which I used to define the class shown in
+Listing 6-4.
+
+Listing 6-4. The Contents of the Product.cs File in the SimpleApp/Models Folder
+
+namespace SimpleApp.Models {
+	public class Product {
+
+		public string Name { get; set; } = string.Empty;
+		public decimal? Price { get; set; }
+
+		public static Product[] GetProducts() {
+
+			Product kayak = new Product {
+				Name = "Kayak", Price = 275M
+			};
+
+			Product lifejacket = new Product {
+				Name = "Lifejacket", Price = 48.95M
+		};
+
+		return new Product[] { kayak, lifejacket };
+
+		}
+	}
+}
+
+The Product class defines Name and Price properties, and there is a static 
+method called GetProducts that returns a Products array.

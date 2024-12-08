@@ -1,0 +1,44 @@
+Visual Studio Code runs the tests using the command-line tools that I describe 
+in the following section, and the results are displayed as text in a terminal window.
+
+Running Tests from the Command Line
+
+To run the tests in the project, run the command shown in Listing 6-11 in the Testing folder.
+
+Listing 6-11. Running Unit Tests
+
+dotnet test
+
+The tests are discovered and executed, producing the following results, which show the deliberate error
+that I introduced earlier:
+
+Test run for C:\Testing\SimpleApp.Tests\bin\Debug\net6.0\SimpleApp.Tests.dll
+(.NETCoreApp,Version=v6.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.0.0
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.85] SimpleApp.Tests.ProductTests.CanChangeProductPrice [FAIL]
+	Failed SimpleApp.Tests.ProductTests.CanChangeProductPrice [5 ms]
+	Error Message:
+		Assert.Equal() Failure
+Expected: 100
+Actual: 200
+	Stack Trace:
+		at SimpleApp.Tests.ProductTests.CanChangeProductPrice() in
+		C:\Testing\SimpleApp.Tests\ProductTests.cs:line 31
+
+Failed! - Failed: 1, Passed: 1, Skipped: 0, Total: 2, Duration: 50 ms -
+SimpleApp.Tests.dll (net6.0)
+
+Correcting the Unit Test
+
+The problem with the unit test is with the arguments to the Assert.Equal method, 
+which compares the test result to the original Price property value rather than 
+the value it has been changed to. Listing 6-12 corrects the problem.
+
+Tip
+When a test fails, it is always a good idea to check the accuracy of the test 
+before looking at the component it targets, especially if the test is new or 
+has been recently modified.

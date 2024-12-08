@@ -1,0 +1,52 @@
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-4.png
+
+Figure 6-4. Running only failed tests
+
+Isolating Components for Unit Testing
+
+Writing unit tests for model classes like Product is easy. Not only is the Product 
+class simple, but it is selfcontained, which means that when I perform an action 
+on a Product object, I can be confident that I am testing the functionality provided 
+by the Product class.
+
+The situation is more complicated with other components in an ASP.NET Core application 
+because there are dependencies between them. The next set of tests that I define 
+will operate on the controller, examining the sequence of Product objects that are 
+passed between the controller and the view.
+
+When comparing objects instantiated from custom classes, you will need to use 
+the xUnit.net Assert.Equal method that accepts an argument that implements 
+the IEqualityComparer<T> interface so that the objects can be compared. My first 
+step is to add a class file called Comparer.cs to the unit test project
+and use it to define the helper classes shown in Listing 6-13.
+
+Listing 6-13. The Contents of the Comparer.cs File in the SimpleApp.Tests Folder
+
+using System;
+using System.Collections.Generic;
+
+namespace SimpleApp.Tests {
+
+	public class Comparer {
+
+		public static Comparer<U?> Get<U>(Func<U?, U?, bool> func) {
+				return new Comparer<U?>(func);
+			}
+		}
+
+		public class Comparer<T> : Comparer, IEqualityComparer<T> {
+			private Func<T?, T?, bool> comparisonFunction;
+
+			public Comparer(Func<T?, T?, bool> func) {
+			comparisonFunction = func;
+		}
+
+		public bool Equals(T? x, T? y) {
+			return comparisonFunction(x, y);
+		}
+
+		public int GetHashCode(T obj) {
+			return obj?.GetHashCode() ?? 0;
+		}
+	}
+}

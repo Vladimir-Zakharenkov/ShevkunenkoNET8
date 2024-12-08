@@ -1,0 +1,68 @@
+Using a Mocking Package
+
+It was easy to create a fake implementation for the IDataSource interface, 
+but most classes for which fake implementations are required are more 
+complex and cannot be handled as easily.
+
+A better approach is to use a mocking package, which makes it easy to create 
+fake—or mock—objects for tests. There are many mocking packages available, 
+but the one I use (and have for years) is called Moq. To add Moq to the unit 
+test project, run the command shown in Listing 6-19 in the Testing folder.
+
+Note
+The Moq package is added to the unit testing project and not the project that 
+contains the application to be tested.
+
+Listing 6-19. Installing the Mocking Package
+
+dotnet add SimpleApp.Tests package Moq --version 4.16.1
+
+Creating a Mock Object
+
+I can use the Moq framework to create a fake IDataSource object without having 
+to define a custom test class, as shown in Listing 6-20.
+
+Listing 6-20. Creating a Mock Object in the HomeControllerTests.cs File 
+in the SimpleApp.Tests Folder
+
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using SimpleApp.Controllers;
+using SimpleApp.Models;
+using Xunit;
+using Moq;
+
+namespace SimpleApp.Tests {
+	public class HomeControllerTests {
+
+		//class FakeDataSource : IDataSource {
+		// public FakeDataSource(Product[] data) => Products = data;
+		// public IEnumerable<Product> Products { get; set; }
+		//}
+
+		[Fact]
+		public void IndexActionModelIsComplete() {
+			// Arrange
+			Product[] testData = new Product[] {
+				new Product { Name = "P1", Price = 75.10M },
+				new Product { Name = "P2", Price = 120M },
+				new Product { Name = "P3", Price = 110M }
+			};
+
+			var mock = new Mock<IDataSource>();
+			mock.SetupGet(m => m.Products).Returns(testData);
+			var controller = new HomeController();
+			controller.dataSource = mock.Object;
+
+			// Act
+			var model = (controller.Index() as ViewResult)?.ViewData.Model
+				as IEnumerable<Product>;
+
+			// Assert
+			Assert.Equal(testData, model,
+				Comparer.Get<Product>((p1, p2) => p1?.Name == p2?.Name
+					&& p1?.Price == p2?.Price));
+			mock.VerifyGet(m => m.Products, Times.Once);
+		}
+	}
+}

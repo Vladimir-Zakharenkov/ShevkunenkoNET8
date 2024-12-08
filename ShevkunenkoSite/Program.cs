@@ -1,3 +1,5 @@
+using WebMarkupMin.AspNetCoreLatest;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration

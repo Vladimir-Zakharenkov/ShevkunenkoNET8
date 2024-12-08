@@ -1,0 +1,78 @@
+﻿DECIDING WHETHER TO UNIT TEST
+
+Being able to easily perform unit testing is one of the benefits of using 
+ASP.NET Core, but it isn’t for everyone, and I have no intention 
+of pretending otherwise.
+
+I like unit testing, and I use it in my own projects, but not all of them and 
+not as consistently as you might expect. I tend to focus on writing unit tests 
+for features and functions that I know will be hard to write and likely will 
+be the source of bugs in deployment. In these situations, unit testing helps 
+structure my thoughts about how to best implement what I need. I find that 
+just thinking about what I need to test helps produce ideas about potential 
+problems, and that’s before I start dealing with actual bugs and defects.
+
+That said, unit testing is a tool and not a religion, and only you know how 
+much testing you require. If you don’t find unit testing useful or if you have 
+a different methodology that suits you better, then don’t feel you need to unit 
+test just because it is fashionable. (However, if you don’t have a better
+methodology and you are not testing at all, then you are probably letting 
+users find your bugs, which is rarely ideal. You don’t have to unit test, 
+but you really should consider doing some testing of some kind.)
+
+If you have not encountered unit testing before, then I encourage you to give 
+it a try to see how it works. If you are not a fan of unit testing, then you 
+can skip this chapter and move on to Chapter 7, where I start to build 
+a more realistic ASP.NET Core application.
+
+Table 6-1. Chapter Summary
+
+Problem							Solution								Listing
+
+Creating a unit test project	Use the dotnet new command with 
+								the project template for your
+								preferred test framework.				8
+
+Creating an XUnit test			Create a class with methods decorated 
+								with the Fact attribute
+								and use the Assert class to inspect 
+								the test results.						10
+
+Running unit tests				Use the Visual Studio or Visual Studio 
+								Code test runners or use the dotnet 
+								test command.							12
+
+Isolating a component for		Create mock implementations of the 
+testing							objects that the component under 
+								test requires.							13–20
+
+Preparing for This Chapter
+
+To prepare for this chapter, I need to create a simple ASP.NET Core project. 
+Open a new PowerShell command prompt using the Windows Start menu, navigate 
+to a convenient location, and run the commands shown in Listing 6-1.
+
+Tip
+You can download the example project for this chapter—and for all the other 
+chapters in this book—from https://github.com/apress/pro-asp.net-core-6.
+See Chapter 1 for how to get help if you have problems running the examples.
+ 
+Listing 6-1. Creating the Example Project
+
+dotnet new globaljson --sdk-version 6.0.100 --output Testing/SimpleApp
+dotnet new web --no-https --output Testing/SimpleApp --framework net6.0
+dotnet new sln -o Testing
+
+dotnet sln Testing add Testing/SimpleApp
+
+These commands create a new project named SimpleApp using the web template, 
+which contains the minimal configuration for ASP.NET Core applications. 
+The project folder is contained within a solution folder also called Testing.
+
+Opening the Project
+
+If you are using Visual Studio, select File ➤ Open ➤ Project/Solution, 
+select the Testing.sln file in the Testing folder, and click the Open button 
+to open the solution file and the project it references. If you are using 
+Visual Studio Code, select File ➤ Open Folder, navigate to the Testing 
+folder, and click the Select Folder button.

@@ -1,0 +1,48 @@
+﻿Table 6-3. Commonly Used xUnit.net Assert Methods
+
+Name						Description
+
+Equal(expected, result)		This method asserts that the result is equal to the expected
+							outcome. There are overloaded versions of this method for
+							comparing different types and for comparing collections. There is
+							also a version of this method that accepts an additional argument
+							of an object that implements the IEqualityComparer<T> interface
+							for comparing objects.
+
+NotEqual(expected, result)	This method asserts that the result is not equal to the expected
+							outcome.
+
+True(result)				This method asserts that the result is true.
+
+False(result)				This method asserts that the result is false.
+
+IsType(expected, result)	This method asserts that the result is of a specific type.
+
+IsNotType(expected, result)	This method asserts that the result is not a specific type.
+
+IsNull(result)				This method asserts that the result is null.
+
+IsNotNull(result)			This method asserts that the result is not null.
+
+InRange(result, low, high)	This method asserts that the result falls between low and high.
+
+NotInRange(result, low, high) This method asserts that the result falls outside low and high.
+
+Throws(exception, expression) This method asserts that the specified expression throws a
+								specific exception type.
+
+Each Assert method allows different types of comparison to be made and throws 
+an exception if the result is not what was expected. The exception is used 
+to indicate that a test has failed. In the tests in Listing 6-10, I used 
+the Equal method to determine whether the value of a property has been changed
+correctly.
+
+...
+Assert.Equal("New Name", p.Name);
+...
+
+Running Tests with the Visual Studio Test Explorer
+
+Visual Studio includes support for finding and running unit tests through 
+the Test Explorer window, which is available through the Test ➤ Test Explorer 
+menu and is shown in Figure 6-2.

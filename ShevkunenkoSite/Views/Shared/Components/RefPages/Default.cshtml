@@ -33,7 +33,6 @@
     }
 }
 <!---->
-
 @* Ссылки на связанные страницы по GUID (2) *@
 @if (Model.LinksToPagesByGuid2.Count > 0)
 {
@@ -67,7 +66,6 @@
     }
 }
 <!---->
-
 @* Ссылки на связанные страницы по фильтру *@
 @if (Model.ListsOfFilterOut.Count > 0)
 {
@@ -88,7 +86,7 @@
 
                 </div>
             }
-            else if (listOfFilterOut.Count%4 == 0)
+            else if (listOfFilterOut.Count % 4 == 0 || listOfFilterOut.Count == 7)
             {
                 <div class="row row-cols-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
@@ -118,13 +116,11 @@
     }
 }
 <!---->
-
 @* Ссылки на связанные видео *@
 @if (Model.ListOfVideoLinksViewModel.Count > 0)
 {
     foreach (var videoLinksViewModel in Model.ListOfVideoLinksViewModel)
     {
-        <vc:video-links 
-            movies-list="@videoLinksViewModel" />
+        <vc:video-links movies-list="@videoLinksViewModel" />
     }
 }

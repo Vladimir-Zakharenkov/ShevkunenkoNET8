@@ -1,0 +1,71 @@
+﻿The next step is to modify the controller so that it uses the ProductDataSource 
+class as the source for its data, as shown in Listing 6-17.
+
+Tip
+ASP.NET Core supports a more elegant approach for solving this problem, known 
+as dependency injection, which I describe in Chapter 14. Dependency injection 
+often causes confusion, so I isolate components in a simpler and more manual 
+way in this chapter.
+
+Listing 6-17. Adding a Property in the HomeController.cs File 
+in the SimpleApp/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SimpleApp.Models;
+
+namespace SimpleApp.Controllers {
+	public class HomeController : Controller {
+		public IDataSource dataSource = new ProductDataSource();
+
+		public ViewResult Index() {
+			return View(dataSource.Products);
+		}
+	}
+}
+
+This may not seem like a significant change, but it allows me to change the data source 
+the controller uses during testing, which is how I can isolate the controller. 
+In Listing 6-18, I have updated the controller unit tests so they use a special version 
+of the repository.
+
+Listing 6-18. Isolating the Controller in the HomeControllerTests.cs File 
+in the SimpleApp.Tests Folder
+
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using SimpleApp.Controllers;
+using SimpleApp.Models;
+using Xunit;
+
+namespace SimpleApp.Tests {
+	public class HomeControllerTests {
+
+		class FakeDataSource : IDataSource {
+			public FakeDataSource(Product[] data) => Products = data;
+			public IEnumerable<Product> Products { get; set; }
+		}
+
+		[Fact]
+		public void IndexActionModelIsComplete() {
+
+			// Arrange
+			Product[] testData = new Product[] {
+				new Product { Name = "P1", Price = 75.10M },
+				new Product { Name = "P2", Price = 120M },
+				new Product { Name = "P3", Price = 110M }
+			};
+			IDataSource data = new FakeDataSource(testData);
+			var controller = new HomeController();
+			controller.dataSource = data;
+
+			// Act
+			var model = (controller.Index() as ViewResult)?.ViewData.Model
+				as IEnumerable<Product>;
+
+			// Assert
+			Assert.Equal(data.Products, model,
+				Comparer.Get<Product>((p1, p2) => p1?.Name == p2?.Name
+					&& p1?.Price == p2?.Price));
+		}
+	}
+}

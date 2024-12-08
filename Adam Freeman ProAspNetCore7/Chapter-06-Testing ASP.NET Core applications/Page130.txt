@@ -1,0 +1,27 @@
+Tip
+Build the solution if you don’t see the unit tests in the Test Explorer window. 
+Compilation triggers the process by which unit tests are discovered.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-2.png
+
+Figure 6-2. The Visual Studio Test Explorer
+
+Run the tests by clicking the Run All Tests button in the Test Explorer window 
+(it is the button that shows two arrows and is the first button in the row at 
+the top of the window). As noted, the CanChangeProductPrice test contains 
+an error that causes the test to fail, which is clearly indicated in the test results shown in
+the figure.
+
+Running Tests with Visual Studio Code
+
+Visual Studio Code detects tests and allows them to be run using the code 
+lens feature, which displays details about code features in the editor. 
+To run all the tests in the ProductTests class, click Run All Tests in
+the code editor when the unit test class is open, as shown in Figure 6-3.
+
+Tip
+Close and reopen the Testing folder in Visual Studio Code if you don’t see the code lens test features.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-3.png
+
+Figure 6-3. Running tests with the Visual Studio Code code lens feature

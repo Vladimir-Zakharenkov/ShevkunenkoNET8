@@ -1,0 +1,21 @@
+CHAPTER 6
+
+Testing ASP.NET Core applications
+
+This chapter covers
+
+•	Creating unit tests projects for ASP.NET Core application
+
+•	Writing and running unit tests
+
+•	Isolating application components for testing
+
+•	Simplifying component isolation with a mocking package
+
+In this chapter, I demonstrate how to unit test ASP.NET Core applications. 
+Unit testing is a form of testing in which individual components are isolated 
+from the rest of the application so their behavior can be thoroughly validated. 
+ASP.NET Core has been designed to make it easy to create unit tests, and there 
+is support for a wide range of unit testing frameworks. I show you how to set 
+up a unit test project and describe the process for writing and running tests. 
+Table 6.1 summarizes the chapter.

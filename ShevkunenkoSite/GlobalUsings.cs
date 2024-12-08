@@ -11,7 +11,7 @@ global using System.Text.Encodings.Web;
 global using Microsoft.AspNetCore.Authentication.Cookies;
 global using Microsoft.Extensions.WebEncoders;
 global using System.Text.Unicode;
-global using WebMarkupMin.AspNetCore8;
+global using WebMarkupMin.AspNetCoreLatest;
 global using MetadataExtractor;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;

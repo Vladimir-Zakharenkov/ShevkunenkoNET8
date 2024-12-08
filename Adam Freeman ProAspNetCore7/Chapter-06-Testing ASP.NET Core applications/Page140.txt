@@ -1,0 +1,29 @@
+The final Moq feature I used was to check that the Products property was called once, 
+like this:
+
+...
+mock.VerifyGet(m => m.Products, Times.Once);
+...
+
+The VerifyGet method is one of the methods defined by the Mock class to inspect 
+the state of the mock object when the test has completed. In this case, the VerifyGet 
+method allows me to check the number of times that the Products property method 
+has been read. The Times.Once value specifies that the VerifyGet method should 
+throw an exception if the property has not been read exactly once, which will 
+cause the test to fail. (The Assert methods usually used in tests work by throwing 
+an exception when a test fails, which is why the VerifyGet method can be used 
+to replace an Assert method when working with mock objects.)
+
+The overall effect is the same as my fake interface implementation, but mocking 
+is more flexible and more concise and can provide more insight into the behavior 
+of the components under test.
+
+Summary
+
+This chapter focused on unit testing, which can be a powerful tool for improving 
+the quality of code. Unit testing doesn’t suit every developer, but it is worth 
+experimenting with and can be useful even if used only for complex features or problem 
+diagnosis. I described the use of the xUnit.net test framework, explained 
+the importance of isolating components for testing, and demonstrated some tools 
+and techniques for simplifying unit test code. In the next chapter, I start 
+the development of a more realistic project, named SportsStore.

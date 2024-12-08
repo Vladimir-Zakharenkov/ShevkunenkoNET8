@@ -1,0 +1,26 @@
+I have defined a fake implementation of the IDataSource interface that lets me use 
+any test data with the controller.
+
+UNDERSTANDING TEST-DRIVEN DEVELOPMENT
+
+I have followed the most commonly used unit testing style in this chapter, in which 
+an application feature is written and then tested to make sure it works as required. 
+This is popular because most developers think about application code first and 
+testing comes second (this is certainly the category that I fall into).
+
+This approach is that it tends to produce unit tests that focus only on the parts 
+of the application code that were difficult to write or that needed some serious 
+debugging, leaving some aspects of a feature only partially tested or untested altogether.
+
+An alternative approach is Test-Driven Development (TDD). There are lots of variations 
+on TDD, but the core idea is that you write the tests for a feature before implementing 
+the feature itself. Writing the tests first makes you think more carefully about 
+the specification you are implementing and how you will know that a feature has been 
+implemented correctly. Rather than diving into the implementation detail,
+TDD makes you consider what the measures of success or failure will be in advance.
+
+The tests that you write will all fail initially because your new feature will not be 
+implemented. But as you add code to the application, your tests will gradually 
+move from red to green, and all your tests will pass by the time that the feature 
+is complete. TDD requires discipline, but it does produce a more
+comprehensive set of tests and can lead to more robust and reliable code.

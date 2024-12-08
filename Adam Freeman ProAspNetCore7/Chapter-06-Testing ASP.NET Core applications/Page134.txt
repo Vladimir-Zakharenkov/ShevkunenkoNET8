@@ -1,0 +1,48 @@
+These classes will allow me to create IEqualityComparer<T> objects using lambda 
+expressions rather than having to define a new class for each type of comparison 
+that I want to make. This isn’t essential, but it will simplify the code in my 
+unit test classes and make them easier to read and maintain.
+
+Now that I can easily make comparisons, I can illustrate the problem of 
+dependencies between components in the application. I added a new class 
+called HomeControllerTests.cs to the SimpleApp.Tests folder and used it 
+to define the unit test shown in Listing 6-14.
+
+Listing 6-14. The HomeControllerTests.cs File in the SimpleApp.Tests Folder
+
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using SimpleApp.Controllers;
+using SimpleApp.Models;
+using Xunit;
+
+namespace SimpleApp.Tests {
+	public class HomeControllerTests {
+
+		[Fact]
+		public void IndexActionModelIsComplete() {
+
+			// Arrange
+			var controller = new HomeController();
+			Product[] products = new Product[] {
+				new Product { Name = "Kayak", Price = 275M },
+				new Product { Name = "Lifejacket", Price = 48.95M}
+			};
+
+			// Act
+			var model = (controller.Index() as ViewResult)?.ViewData.Model
+				as IEnumerable<Product>;
+
+			// Assert
+			Assert.Equal(products, model,
+				Comparer.Get<Product>((p1, p2) => p1?.Name == p2?.Name
+					&& p1?.Price == p2?.Price));
+		}
+	}
+}
+
+The unit test creates an array of Product objects and checks that they correspond 
+to the ones the Index action method provides as the view model. (Ignore the act 
+section of the test for the moment; I explain the ViewResult class in Chapters 21 
+and 22. For the moment, it is enough to know that I am getting the model
+data returned by the Index action method.)

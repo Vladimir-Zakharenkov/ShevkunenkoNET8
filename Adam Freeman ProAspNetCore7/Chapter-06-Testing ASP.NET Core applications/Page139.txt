@@ -1,0 +1,34 @@
+The use of Moq has allowed me to remove the fake implementation of the IDataSource 
+interface and replace it with a few lines of code. I am not going to go into 
+detail about the different features that Moq supports, but I will explain the way 
+that I used Moq in the examples. (See https://github.com/Moq/moq4 for examples and 
+documentation for Moq. There are also examples in later chapters as I explain how 
+to unit test different types of components.)
+
+The first step is to create a new instance of the Mock object, specifying the interface 
+that should be implemented, like this:
+
+...
+var mock = new Mock<IDataSource>();
+...
+
+The Mock object I created will fake the IDataSource interface. To create an 
+implementation of the Product property, I use the SetUpGet method, like this:
+
+...
+mock.SetupGet(m => m.Products).Returns(testData);
+...
+
+The SetupGet method is used to implement the getter for a property. The argument 
+to this method is a lambda expression that specifies the property to be implemented, 
+which is Products in this example. The Returns method is called on the result of 
+the SetupGet method to specify the result that will be returned when the property 
+value is read.
+
+The Mock class defines an Object property, which returns the object that implements 
+the specified interface with the behaviors that have been defined. I used the Object 
+property to set the dataSource field defined by the HomeController, like this:
+
+...
+controller.dataSource = mock.Object;
+...

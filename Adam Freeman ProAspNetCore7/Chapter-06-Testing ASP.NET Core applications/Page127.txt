@@ -1,0 +1,71 @@
+﻿Listing 6-8. Creating the Unit Test Project
+
+dotnet new xunit -o SimpleApp.Tests --framework net6.0
+dotnet sln add SimpleApp.Tests
+dotnet add SimpleApp.Tests reference SimpleApp
+
+If you are using Visual Studio, you will be prompted to reload the solution, 
+which will cause the new unit test project to be displayed in the Solution Explorer, 
+alongside the existing project. You may find that Visual Studio Code doesn’t build 
+the new project. If that happens, select Terminal ➤ Configure Default Build
+Task, select “build” from the list, and, if prompted, select .NET Core from 
+the list of environments.
+
+Removing the Default Test Class
+
+The project template adds a C# class file to the test project, which will confuse 
+the results of later examples. Either delete the UnitTest1.cs file from 
+the SimpleApp.Tests folder using the Solution Explorer or File Explorer pane 
+or run the command shown in Listing 6-9 in the Testing folder.
+
+Listing 6-9. Removing the Default Test Class File
+
+Remove-Item SimpleApp.Tests/UnitTest1.cs
+
+Writing and Running Unit Tests
+
+Now that all the preparation is complete, I can write some tests. To get started, 
+I added a class file called ProductTests.cs to the SimpleApp.Tests project and 
+used it to define the class shown in Listing 6-10. This is a simple class, 
+but it contains everything required to get started with unit testing.
+
+Note
+The CanChangeProductPrice method contains a deliberate error that I resolve later 
+in this section.
+
+Listing 6-10. The Contents of the ProductTests.cs File 
+in the SimpleApp.Tests Folder
+
+using SimpleApp.Models;
+using Xunit;
+
+namespace SimpleApp.Tests {
+	public class ProductTests {
+
+		[Fact]
+		public void CanChangeProductName() {
+
+			// Arrange
+			var p = new Product { Name = "Test", Price = 100M };
+
+			// Act
+			p.Name = "New Name";
+
+			//Assert
+			Assert.Equal("New Name", p.Name);
+		}
+
+		[Fact]
+		public void CanChangeProductPrice() {
+
+			// Arrange
+			var p = new Product { Name = "Test", Price = 100M };
+
+			// Act
+			p.Price = 200M;
+
+			//Assert
+			Assert.Equal(100M, p.Price);
+		}
+	}
+}

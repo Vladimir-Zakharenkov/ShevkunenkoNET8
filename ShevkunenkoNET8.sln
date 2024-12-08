@@ -260,6 +260,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Page07", "Metanit.com\C# 13
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Page08", "Metanit.com\C# 13\Глава 10 - Коллекции\Page08\Page08.csproj", "{E6600BCE-7D33-4770-8F29-C54CD24A37B3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-06-Testing ASP.NET Core applications", "Chapter-06-Testing ASP.NET Core applications", "{C29869FE-A8DE-494C-8D03-4DF57E18A02C}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page119.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page119.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page120.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page120.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -399,6 +405,7 @@ Global
 		{4B8C2613-A4B0-4E00-8216-2639A43ABEF9} = {2232B0C1-252D-4176-ABFE-47FB87FD140B}
 		{95265512-084A-4787-9D23-58818F87C926} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
 		{E6600BCE-7D33-4770-8F29-C54CD24A37B3} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
+		{C29869FE-A8DE-494C-8D03-4DF57E18A02C} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

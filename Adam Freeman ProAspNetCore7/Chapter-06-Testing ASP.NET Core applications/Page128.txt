@@ -1,0 +1,31 @@
+There are two unit tests in the ProductTests class, each of which tests 
+a behavior of the Product model class from the SimpleApp project. 
+A test project can contain many classes, each of which can contain many
+unit tests.
+
+Conventionally, the name of the test methods describes what the test does, 
+and the name of the class describes what is being tested. This makes 
+it easier to structure the tests in a project and to understand what
+the results of all the tests are when they are run by Visual Studio. 
+The name ProductTests indicates that the class contains tests for 
+the Product class, and the method names indicate that they test 
+the ability to change the name and price of a Product object.
+
+The Fact attribute is applied to each method to indicate that it is a test. 
+Within the method body, a unit test follows a pattern called arrange, 
+act, assert (A/A/A). Arrange refers to setting up the conditions for
+the test, act refers to performing the test, and assert refers to verifying 
+that the result was the one that was expected.
+
+The arrange and act sections of these tests are regular C# code, but 
+the assert section is handled by xUnit.net, which provides a class called 
+Assert, whose methods are used to check that the outcome of an
+action is the one that is expected.
+
+Tip
+The Fact attribute and the Asset class are defined in the Xunit namespace, 
+for which there must be a using statement in every test class.
+
+The methods of the Assert class are static and are used to perform different 
+kinds of comparison between the expected and actual results. Table 6-3 
+shows the commonly used Assert methods.
