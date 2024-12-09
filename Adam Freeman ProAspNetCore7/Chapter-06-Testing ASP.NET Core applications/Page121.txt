@@ -1,0 +1,57 @@
+﻿Listing 6.1 Creating the Example Project
+
+dotnet new globaljson --sdk-version 6.0.100 --output Testing/SimpleApp
+dotnet new web --no-https --output Testing/SimpleApp --framework net6.0
+dotnet new sln -o Testing
+
+dotnet sln Testing add Testing/SimpleApp
+
+These commands create a new project named SimpleApp using the web template, 
+which contains the minimal configuration for ASP.NET Core applications. 
+The project folder is contained within a solution folder also called Testing.
+
+6.1.1	Opening the Project
+
+If you are using Visual Studio, select File ➤ Open ➤ Project/Solution, 
+select the Testing.sln file in the Testing folder, and click the Open button 
+to open the solution file and the project it references. If you are using 
+Visual Studio Code, select File ➤ Open Folder, navigate to the Testing 
+folder, and click the Select Folder button.
+
+6.1.2	Selecting the HTTP Port
+
+Set the port on which ASP.NET Core will receive HTTP requests by editing 
+the launchSettings.json file in the Properties folder, as shown 
+in Listing 6-2.
+
+Listing 6-2. Setting the HTTP Port in the launchSettings.json File 
+in the Properties Folder
+
+{
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:5000",
+			"sslPort": 0
+			}
+		},
+		"profiles": {
+			"SimpleApp": {
+				"commandName": "Project",
+				"dotnetRunMessages": true,
+				"launchBrowser": true,
+				"applicationUrl": "http://localhost:5000",
+				"environmentVariables": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+		"IIS Express": {
+			"commandName": "IISExpress",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		}
+	}
+}

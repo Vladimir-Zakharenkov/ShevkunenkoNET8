@@ -1,51 +1,37 @@
-Listing 6-3. Enabling the MVC Framework in the Program.cs File in the SimpleApp Folder
+6.1.5		Running the Example Application
 
-var builder = WebApplication.CreateBuilder(args);
+Start ASP.NET Core by running the command shown in Listing 6.7 in the SimpleApp folder.
 
-builder.Services.AddControllersWithViews();
+Listing 6.7 Running the Example Application
 
-var app = builder.Build();
+dotnet run
 
-//app.MapGet("/", () => "Hello World!");
-app.MapDefaultControllerRoute();
+Request http://localhost:5000, and you will see the output shown in Figure 6.1
 
-app.Run();
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-6-1.webp
 
-Creating the Application Components
+Figure 6.1 Running the example application
 
-Now that the MVC Framework is set up, I can add the application components 
-that I will use to run tests.
+6.2	Creating a Unit Test Project
 
-Creating the Data Model
+For ASP.NET Core applications, you generally create a separate Visual Studio project 
+to hold the unit tests, each of which is defined as a method in a C# class. 
+Using a separate project means you can deploy your application without also 
+deploying the tests. The .NET Core SDK includes templates for unit test projects
+using three popular test tools, as described in Table 6.2
 
-I started by creating a simple model class so that I can have some data 
-to work with. I added a folder called Models and created a class file called 
-Product.cs within it, which I used to define the class shown in
-Listing 6-4.
+Table 6.2 The unit test project tools
 
-Listing 6-4. The Contents of the Product.cs File in the SimpleApp/Models Folder
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-6-2.webp
 
-namespace SimpleApp.Models {
-	public class Product {
+These testing frameworks have largely the same feature set and differ only 
+in how they are implemented and how they integrate into third-party testing 
+environments. I recommend starting with XUnit if you do not have 
+an established preference, largely because it is the test framework 
+that I find easiest to work with.
 
-		public string Name { get; set; } = string.Empty;
-		public decimal? Price { get; set; }
-
-		public static Product[] GetProducts() {
-
-			Product kayak = new Product {
-				Name = "Kayak", Price = 275M
-			};
-
-			Product lifejacket = new Product {
-				Name = "Lifejacket", Price = 48.95M
-		};
-
-		return new Product[] { kayak, lifejacket };
-
-		}
-	}
-}
-
-The Product class defines Name and Price properties, and there is a static 
-method called GetProducts that returns a Products array.
+The convention is to name the unit test project <ApplicationName>.Tests. 
+Run the commands shown in Listing 6.8 in the Testing folder to create 
+the XUnit test project named SimpleApp.Tests, add it to the
+solution file, and create a reference between projects so the unit tests 
+can be applied to the classes defined in the SimpleApp project.

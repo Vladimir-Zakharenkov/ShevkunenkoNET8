@@ -1,0 +1,62 @@
+6.1.3	Enabling the MVC Framework
+
+As I explained in Chapter 1, ASP.NET Core supports different application 
+frameworks, but I am going to continue using the MVC Framework in this chapter. 
+I introduce the other frameworks in the SportsStore application that I start 
+to build in Chapter 7, but for the moment, the MVC Framework gives me 
+a foundation for demonstrating how to perform unit testing that is familiar 
+from earlier examples. Add the statements shown in Listing 6-3 to 
+the Program.cs file in the SimpleApp folder.
+
+Listing 6.3 Enabling the MVC Framework in the Program.cs File in the SimpleApp Folder
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
+
+app.Run();
+
+6.1.4	Creating the Application Components
+
+Now that the MVC Framework is set up, I can add the application components 
+that I will use to run tests.
+
+Creating the Data Model
+
+I started by creating a simple model class so that I can have some data 
+to work with. I added a folder called Models and created a class file called 
+Product.cs within it, which I used to define the class shown in
+Listing 6.4
+
+Listing 6.4 The Contents of the Product.cs File in the SimpleApp/Models Folder
+
+namespace SimpleApp.Models
+{
+    public class Product
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public decimal? Price { get; set; }
+
+        public static Product[] GetProducts()
+        {
+            Product kayak = new Product
+            {
+                Name = "Kayak",
+                Price = 275M
+            };
+            Product lifejacket = new Product
+            {
+                Name = "Lifejacket",
+                Price = 48.95M
+            };
+
+            return new Product[] { kayak, lifejacket };
+        }
+    }
+}

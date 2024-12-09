@@ -1,71 +1,27 @@
-﻿Listing 6-8. Creating the Unit Test Project
+﻿Table 6.3 Commonly used xUnit.net assert methods
 
-dotnet new xunit -o SimpleApp.Tests --framework net6.0
-dotnet sln add SimpleApp.Tests
-dotnet add SimpleApp.Tests reference SimpleApp
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-6-2.webp
 
-If you are using Visual Studio, you will be prompted to reload the solution, 
-which will cause the new unit test project to be displayed in the Solution Explorer, 
-alongside the existing project. You may find that Visual Studio Code doesn’t build 
-the new project. If that happens, select Terminal ➤ Configure Default Build
-Task, select “build” from the list, and, if prompted, select .NET Core from 
-the list of environments.
+Each Assert method allows different types of comparison to be made and throws 
+an exception if the result is not what was expected. The exception is used 
+to indicate that a test has failed. In the tests in Listing 6.10, I used 
+the Equal method to determine whether the value of a property has been changed
+correctly.
 
-Removing the Default Test Class
+...
+Assert.Equal("New Name", p.Name);
+...
 
-The project template adds a C# class file to the test project, which will confuse 
-the results of later examples. Either delete the UnitTest1.cs file from 
-the SimpleApp.Tests folder using the Solution Explorer or File Explorer pane 
-or run the command shown in Listing 6-9 in the Testing folder.
+6.3.1		Running Tests with the Visual Studio Test Explorer
 
-Listing 6-9. Removing the Default Test Class File
+Visual Studio includes support for finding and running unit tests through 
+the Test Explorer window, which is available through the Test ➤ Test Explorer 
+menu and is shown in Figure 6.2
 
-Remove-Item SimpleApp.Tests/UnitTest1.cs
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-6-2.webp
 
-Writing and Running Unit Tests
+Figure 6.2 The Visual Studio Test Explorer
 
-Now that all the preparation is complete, I can write some tests. To get started, 
-I added a class file called ProductTests.cs to the SimpleApp.Tests project and 
-used it to define the class shown in Listing 6-10. This is a simple class, 
-but it contains everything required to get started with unit testing.
-
-Note
-The CanChangeProductPrice method contains a deliberate error that I resolve later 
-in this section.
-
-Listing 6-10. The Contents of the ProductTests.cs File 
-in the SimpleApp.Tests Folder
-
-using SimpleApp.Models;
-using Xunit;
-
-namespace SimpleApp.Tests {
-	public class ProductTests {
-
-		[Fact]
-		public void CanChangeProductName() {
-
-			// Arrange
-			var p = new Product { Name = "Test", Price = 100M };
-
-			// Act
-			p.Name = "New Name";
-
-			//Assert
-			Assert.Equal("New Name", p.Name);
-		}
-
-		[Fact]
-		public void CanChangeProductPrice() {
-
-			// Arrange
-			var p = new Product { Name = "Test", Price = 100M };
-
-			// Act
-			p.Price = 200M;
-
-			//Assert
-			Assert.Equal(100M, p.Price);
-		}
-	}
-}
+Tip
+Build the solution if you don’t see the unit tests in the Test Explorer window. 
+Compilation triggers the process by which unit tests are discovered.

@@ -1,44 +1,42 @@
-Visual Studio Code runs the tests using the command-line tools that I describe 
-in the following section, and the results are displayed as text in a terminal window.
+These classes will allow me to create IEqualityComparer<T> objects using lambda 
+expressions rather than having to define a new class for each type of comparison 
+that I want to make. This isn’t essential, but it will simplify the code in my 
+unit test classes and make them easier to read and maintain.
 
-Running Tests from the Command Line
+Now that I can easily make comparisons, I can illustrate the problem of 
+dependencies between components in the application. I added a new class 
+called HomeControllerTests.cs to the SimpleApp.Tests folder and used it 
+to define the unit test shown in Listing 6.14
 
-To run the tests in the project, run the command shown in Listing 6-11 in the Testing folder.
+Listing 6.14 The HomeControllerTests.cs File in the SimpleApp.Tests Folder
 
-Listing 6-11. Running Unit Tests
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using SimpleApp.Controllers;
+using SimpleApp.Models;
+using Xunit;
 
-dotnet test
+namespace SimpleApp.Tests {
+	public class HomeControllerTests {
 
-The tests are discovered and executed, producing the following results, which show the deliberate error
-that I introduced earlier:
+		[Fact]
+		public void IndexActionModelIsComplete() {
 
-Test run for C:\Testing\SimpleApp.Tests\bin\Debug\net6.0\SimpleApp.Tests.dll
-(.NETCoreApp,Version=v6.0)
-Microsoft (R) Test Execution Command Line Tool Version 17.0.0
-Copyright (c) Microsoft Corporation. All rights reserved.
+			// Arrange
+			var controller = new HomeController();
+			Product[] products = new Product[] {
+				new Product { Name = "Kayak", Price = 275M },
+				new Product { Name = "Lifejacket", Price = 48.95M}
+			};
 
-Starting test execution, please wait...
-A total of 1 test files matched the specified pattern.
-[xUnit.net 00:00:00.85] SimpleApp.Tests.ProductTests.CanChangeProductPrice [FAIL]
-	Failed SimpleApp.Tests.ProductTests.CanChangeProductPrice [5 ms]
-	Error Message:
-		Assert.Equal() Failure
-Expected: 100
-Actual: 200
-	Stack Trace:
-		at SimpleApp.Tests.ProductTests.CanChangeProductPrice() in
-		C:\Testing\SimpleApp.Tests\ProductTests.cs:line 31
+			// Act
+			var model = (controller.Index() as ViewResult)?.ViewData.Model
+				as IEnumerable<Product>;
 
-Failed! - Failed: 1, Passed: 1, Skipped: 0, Total: 2, Duration: 50 ms -
-SimpleApp.Tests.dll (net6.0)
-
-Correcting the Unit Test
-
-The problem with the unit test is with the arguments to the Assert.Equal method, 
-which compares the test result to the original Price property value rather than 
-the value it has been changed to. Listing 6-12 corrects the problem.
-
-Tip
-When a test fails, it is always a good idea to check the accuracy of the test 
-before looking at the component it targets, especially if the test is new or 
-has been recently modified.
+			// Assert
+			Assert.Equal(products, model,
+				Comparer.Get<Product>((p1, p2) => p1?.Name == p2?.Name
+					&& p1?.Price == p2?.Price));
+		}
+	}
+}

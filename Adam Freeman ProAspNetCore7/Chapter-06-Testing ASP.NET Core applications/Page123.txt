@@ -1,47 +1,58 @@
-Selecting the HTTP Port
+The Product class defines Name and Price properties, and there is a static 
+method called GetProducts that returns a Products array.
 
-Set the port on which ASP.NET Core will receive HTTP requests by editing 
-the launchSettings.json file in the Properties folder, as shown 
-in Listing 6-2.
+Creating the Controller and View
 
-Listing 6-2. Setting the HTTP Port in the launchSettings.json File 
-in the Properties Folder
+For the examples in this chapter, I use a simple controller class 
+to demonstrate different language features. I created a Controllers 
+folder and added to it a class file called HomeController.cs, 
+the contents of which are shown in Listing 6-5.
 
+Listing 6.5 The contents of the HomeController.cs file in the Controllers folder
+
+using Microsoft.AspNetCore.Mvc;
+using SimpleApp.Models;
+
+namespace SimpleApp.Controllers
 {
-	"iisSettings": {
-		"windowsAuthentication": false,
-		"anonymousAuthentication": true,
-		"iisExpress": {
-			"applicationUrl": "http://localhost:5000",
-			"sslPort": 0
-			}
-		},
-		"profiles": {
-			"SimpleApp": {
-				"commandName": "Project",
-				"dotnetRunMessages": true,
-				"launchBrowser": true,
-				"applicationUrl": "http://localhost:5000",
-				"environmentVariables": {
-					"ASPNETCORE_ENVIRONMENT": "Development"
-			}
-		},
-		"IIS Express": {
-			"commandName": "IISExpress",
-			"launchBrowser": true,
-			"environmentVariables": {
-				"ASPNETCORE_ENVIRONMENT": "Development"
-			}
-		}
-	}
+    public class HomeController : Controller
+    {
+        public ViewResult Index()
+        {
+            return View(Product.GetProducts());
+        }
+    }
 }
 
-Enabling the MVC Framework
+The Index action method tells ASP.NET Core to render the default view 
+and provides it with the Product objects obtained from the static 
+Product.GetProducts method. To create the view for the action method, 
+I added a Views/Home folder (by creating a Views folder and then adding 
+a Home folder within it) and added a Razor View called Index.cshtml, 
+with the contents shown in Listing 6.6
 
-As I explained in Chapter 1, ASP.NET Core supports different application 
-frameworks, but I am going to continue using the MVC Framework in this chapter. 
-I introduce the other frameworks in the SportsStore application that I start 
-to build in Chapter 7, but for the moment, the MVC Framework gives me 
-a foundation for demonstrating how to perform unit testing that is familiar 
-from earlier examples. Add the statements shown in Listing 6-3 to 
-the Program.cs file in the SimpleApp folder.
+Listing 6.6 The contents of the Index.cshtml file in the Views/Home folder
+
+@using SimpleApp.Models
+
+@model IEnumerable<Product>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Simple App</title>
+</head>
+<body>
+    <ul>
+        @foreach (Product p in Model ?? Enumerable.Empty<Product>())
+        {
+            <li>Name: @p.Name, Price: @p.Price</li>
+        }
+    </ul>
+</body>
+</html>

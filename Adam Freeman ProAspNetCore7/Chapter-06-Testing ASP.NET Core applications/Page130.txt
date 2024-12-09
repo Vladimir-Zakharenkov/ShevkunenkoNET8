@@ -1,27 +1,59 @@
-Tip
-Build the solution if you don’t see the unit tests in the Test Explorer window. 
-Compilation triggers the process by which unit tests are discovered.
+Run the tests again, and you will see they all pass. If you are using 
+Visual Studio, you can click the Run Failed Tests button, which will 
+execute only the tests that failed, as shown in Figure 6.4
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-2.png
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-6-4.webp
 
-Figure 6-2. The Visual Studio Test Explorer
+Figure 6.4 Running only failed tests
 
-Run the tests by clicking the Run All Tests button in the Test Explorer window 
-(it is the button that shows two arrows and is the first button in the row at 
-the top of the window). As noted, the CanChangeProductPrice test contains 
-an error that causes the test to fail, which is clearly indicated in the test results shown in
-the figure.
+6.3.5		Isolating Components for Unit Testing
 
-Running Tests with Visual Studio Code
+Writing unit tests for model classes like Product is easy. Not only is the Product 
+class simple, but it is selfcontained, which means that when I perform an action 
+on a Product object, I can be confident that I am testing the functionality provided 
+by the Product class.
 
-Visual Studio Code detects tests and allows them to be run using the code 
-lens feature, which displays details about code features in the editor. 
-To run all the tests in the ProductTests class, click Run All Tests in
-the code editor when the unit test class is open, as shown in Figure 6-3.
+The situation is more complicated with other components in an ASP.NET Core application 
+because there are dependencies between them. The next set of tests that I define 
+will operate on the controller, examining the sequence of Product objects that are 
+passed between the controller and the view.
 
-Tip
-Close and reopen the Testing folder in Visual Studio Code if you don’t see the code lens test features.
+When comparing objects instantiated from custom classes, you will need to use 
+the xUnit.net Assert.Equal method that accepts an argument that implements 
+the IEqualityComparer<T> interface so that the objects can be compared. My first 
+step is to add a class file called Comparer.cs to the unit test project
+and use it to define the helper classes shown in Listing 6-13.
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-3.png
+using System;
+using System.Collections.Generic;
 
-Figure 6-3. Running tests with the Visual Studio Code code lens feature
+namespace SimpleApp.Tests
+{
+    public class Comparer
+    {
+        public static Comparer<U?> Get<U>(Func<U?, U?, bool> func)
+        {
+            return new Comparer<U?>(func);
+        }
+    }
+
+    public class Comparer<T> : Comparer, IEqualityComparer<T>
+    {
+        private Func<T?, T?, bool> comparisonFunction;
+
+        public Comparer(Func<T?, T?, bool> func)
+        {
+            comparisonFunction = func;
+        }
+
+        public bool Equals(T? x, T? y)
+        {
+            return comparisonFunction(x, y);
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj?.GetHashCode() ?? 0;
+        }
+    }
+}

@@ -264,7 +264,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-06-Testing ASP.NET 
 	ProjectSection(SolutionItems) = preProject
 		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page119.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page119.txt
 		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page120.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page120.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page121.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page121.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page122.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page122.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page123.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page123.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page124.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page124.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page125.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page125.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page126.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page126.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page127.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page127.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page128.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page128.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page129.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page129.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page130.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page130.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page131.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page131.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page132.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page132.txt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{0235D653-CD84-440F-BF04-00DDBE436AEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp\SimpleApp.csproj", "{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp.Tests", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp.Tests\SimpleApp.Tests.csproj", "{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShevkunenkoSite.Tests", "ShevkunenkoSite.Tests\ShevkunenkoSite.Tests.csproj", "{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -368,6 +388,18 @@ Global
 		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6600BCE-7D33-4770-8F29-C54CD24A37B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -406,6 +438,9 @@ Global
 		{95265512-084A-4787-9D23-58818F87C926} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
 		{E6600BCE-7D33-4770-8F29-C54CD24A37B3} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
 		{C29869FE-A8DE-494C-8D03-4DF57E18A02C} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{0235D653-CD84-440F-BF04-00DDBE436AEE} = {C29869FE-A8DE-494C-8D03-4DF57E18A02C}
+		{1CE27474-43B3-4FAC-90C9-BFFFF77B3339} = {0235D653-CD84-440F-BF04-00DDBE436AEE}
+		{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2} = {0235D653-CD84-440F-BF04-00DDBE436AEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

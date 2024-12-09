@@ -1,31 +1,50 @@
-There are two unit tests in the ProductTests class, each of which tests 
-a behavior of the Product model class from the SimpleApp project. 
-A test project can contain many classes, each of which can contain many
-unit tests.
+Run the tests by clicking the Run All Tests button in the Test Explorer window 
+(it is the button that shows two arrows and is the first button in the row at 
+the top of the window). As noted, the CanChangeProductPrice test contains 
+an error that causes the test to fail, which is clearly indicated in the test results shown in
+the figure.
 
-Conventionally, the name of the test methods describes what the test does, 
-and the name of the class describes what is being tested. This makes 
-it easier to structure the tests in a project and to understand what
-the results of all the tests are when they are run by Visual Studio. 
-The name ProductTests indicates that the class contains tests for 
-the Product class, and the method names indicate that they test 
-the ability to change the name and price of a Product object.
+6.3.2		Running Tests with Visual Studio Code
 
-The Fact attribute is applied to each method to indicate that it is a test. 
-Within the method body, a unit test follows a pattern called arrange, 
-act, assert (A/A/A). Arrange refers to setting up the conditions for
-the test, act refers to performing the test, and assert refers to verifying 
-that the result was the one that was expected.
-
-The arrange and act sections of these tests are regular C# code, but 
-the assert section is handled by xUnit.net, which provides a class called 
-Assert, whose methods are used to check that the outcome of an
-action is the one that is expected.
+Visual Studio Code detects tests and allows them to be run using the code 
+lens feature, which displays details about code features in the editor. 
+To run all the tests in the ProductTests class, click Run All Tests in
+the code editor when the unit test class is open, as shown in Figure 6.3
 
 Tip
-The Fact attribute and the Asset class are defined in the Xunit namespace, 
-for which there must be a using statement in every test class.
+Close and reopen the Testing folder in Visual Studio Code if you don’t see the code lens test features.
 
-The methods of the Assert class are static and are used to perform different 
-kinds of comparison between the expected and actual results. Table 6-3 
-shows the commonly used Assert methods.
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-6-3.webp
+
+Figure 6.3 Running tests with the Visual Studio Code code lens feature
+
+Visual Studio Code runs the tests using the command-line tools that I describe in the
+following section, and the results are displayed as text in a terminal window.
+
+6.3.3 Running tests from the command line
+
+To run the tests in the project, run the command shown in listing 6.11 in the Testing folder.
+
+dotnet test
+
+The tests are discovered and executed, producing the following results, which show
+the deliberate error that I introduced earlier:
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.81]
+SimpleApp.Tests.ProductTests.CanChangeProductPrice [FAIL]
+Failed SimpleApp.Tests.ProductTests.CanChangeProductPrice [4 ms]
+Error Message:
+Assert.Equal() Failure
+Expected: 100
+Actual: 200
+Stack Trace:
+at SimpleApp.Tests.ProductTests.CanChangeProductPrice() in
+C:\Testing\SimpleApp.Tests\ProductTests.cs:line 31
+at System.RuntimeMethodHandle.InvokeMethod(Object target, Void**
+arguments, Signature sig, Boolean isConstructor)
+at System.Reflection.MethodInvoker.Invoke(Object obj, IntPtr* args,
+BindingFlags invokeAttr)
+Failed! - Failed: 1, Passed: 1, Skipped: 0,
+Total: 2, Duration: 26 ms - SimpleApp.Tests.dll (net7.0)

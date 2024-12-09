@@ -1,44 +1,31 @@
-Running the Example Application
+There are two unit tests in the ProductTests class, each of which tests 
+a behavior of the Product model class from the SimpleApp project. 
+A test project can contain many classes, each of which can contain many
+unit tests.
 
-Start ASP.NET Core by running the command shown in Listing 6-7 in the SimpleApp folder.
+Conventionally, the name of the test methods describes what the test does, 
+and the name of the class describes what is being tested. This makes 
+it easier to structure the tests in a project and to understand what
+the results of all the tests are when they are run by Visual Studio. 
+The name ProductTests indicates that the class contains tests for 
+the Product class, and the method names indicate that they test 
+the ability to change the name and price of a Product object.
 
-Listing 6-7. Running the Example Application
+The Fact attribute is applied to each method to indicate that it is a test. 
+Within the method body, a unit test follows a pattern called arrange, 
+act, assert (A/A/A). Arrange refers to setting up the conditions for
+the test, act refers to performing the test, and assert refers to verifying 
+that the result was the one that was expected.
 
-dotnet run
+The arrange and act sections of these tests are regular C# code, but 
+the assert section is handled by xUnit.net, which provides a class called 
+Assert, whose methods are used to check that the outcome of an
+action is the one that is expected.
 
-Request http://localhost:5000, and you will see the output shown in Figure 6-1.
+Tip
+The Fact attribute and the Asset class are defined in the Xunit namespace, 
+for which there must be a using statement in every test class.
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-6-1.png
-
-Figure 6-1. Running the example application
-
-Creating a Unit Test Project
-
-For ASP.NET Core applications, you generally create a separate Visual Studio project 
-to hold the unit tests, each of which is defined as a method in a C# class. 
-Using a separate project means you can deploy your application without also 
-deploying the tests. The .NET Core SDK includes templates for unit test projects
-using three popular test tools, as described in Table 6-2.
-
-Table 6-2. The Unit Test Project Tools
-
-Name		Description
-
-mstest		This template creates a project configured for the MS Test framework, 
-			which is produced by Microsoft.
-
-nunit		This template creates a project configured for the NUnit framework.
-
-xunit		This template creates a project configured for the XUnit framework.
-
-These testing frameworks have largely the same feature set and differ only 
-in how they are implemented and how they integrate into third-party testing 
-environments. I recommend starting with XUnit if you do not have 
-an established preference, largely because it is the test framework 
-that I find easiest to work with.
-
-The convention is to name the unit test project <ApplicationName>.Tests. 
-Run the commands shown in Listing 6-8 in the Testing folder to create 
-the XUnit test project named SimpleApp.Tests, add it to the
-solution file, and create a reference between projects so the unit tests 
-can be applied to the classes defined in the SimpleApp project.
+The methods of the Assert class are static and are used to perform different 
+kinds of comparison between the expected and actual results. Table 6.3 
+shows the commonly used Assert methods.
