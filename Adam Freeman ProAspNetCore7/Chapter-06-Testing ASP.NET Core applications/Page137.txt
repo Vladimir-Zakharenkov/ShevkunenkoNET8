@@ -1,26 +1,43 @@
-I have defined a fake implementation of the IDataSource interface that lets me use 
-any test data with the controller.
+The Mock class defines an Object property, which returns the object that implements 
+the specified interface with the behaviors that have been defined. I used the Object 
+property to set the dataSource field defined by the HomeController, like this:
 
-UNDERSTANDING TEST-DRIVEN DEVELOPMENT
+...
+controller.dataSource = mock.Object;
+...
 
-I have followed the most commonly used unit testing style in this chapter, in which 
-an application feature is written and then tested to make sure it works as required. 
-This is popular because most developers think about application code first and 
-testing comes second (this is certainly the category that I fall into).
+The final Moq feature I used was to check that the Products property was called once, 
+like this:
 
-This approach is that it tends to produce unit tests that focus only on the parts 
-of the application code that were difficult to write or that needed some serious 
-debugging, leaving some aspects of a feature only partially tested or untested altogether.
+...
+mock.VerifyGet(m => m.Products, Times.Once);
+...
 
-An alternative approach is Test-Driven Development (TDD). There are lots of variations 
-on TDD, but the core idea is that you write the tests for a feature before implementing 
-the feature itself. Writing the tests first makes you think more carefully about 
-the specification you are implementing and how you will know that a feature has been 
-implemented correctly. Rather than diving into the implementation detail,
-TDD makes you consider what the measures of success or failure will be in advance.
+The VerifyGet method is one of the methods defined by the Mock class to inspect 
+the state of the mock object when the test has completed. In this case, the VerifyGet 
+method allows me to check the number of times that the Products property method 
+has been read. The Times.Once value specifies that the VerifyGet method should 
+throw an exception if the property has not been read exactly once, which will 
+cause the test to fail. (The Assert methods usually used in tests work by throwing 
+an exception when a test fails, which is why the VerifyGet method can be used 
+to replace an Assert method when working with mock objects.)
 
-The tests that you write will all fail initially because your new feature will not be 
-implemented. But as you add code to the application, your tests will gradually 
-move from red to green, and all your tests will pass by the time that the feature 
-is complete. TDD requires discipline, but it does produce a more
-comprehensive set of tests and can lead to more robust and reliable code.
+The overall effect is the same as my fake interface implementation, but mocking 
+is more flexible and more concise and can provide more insight into the behavior 
+of the components under test.
+
+Summary
+
+•	Unit tests are typically defined within a dedicated unit test project.
+
+•	A test framework simplifies writing unit tests by providing common features,
+	such as assertions.
+
+•	Unit tests typically follow the arrange/act/assert pattern.
+
+•	Tests can be run within Visual Studio/Visual Studio Code or using the dotnet
+	test command.
+
+•	Effective unit tests isolate and test individual components.
+
+•	Isolating components is simplified by mocking packages, such as Moq.

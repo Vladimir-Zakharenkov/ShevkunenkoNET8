@@ -276,15 +276,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-06-Testing ASP.NET 
 		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page130.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page130.txt
 		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page131.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page131.txt
 		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page132.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page132.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page133.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page133.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page135.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page135.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page136.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page136.txt
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page137.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page137.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{0235D653-CD84-440F-BF04-00DDBE436AEE}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page134.txt = Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Page134.txt
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp\SimpleApp.csproj", "{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleApp", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp\SimpleApp.csproj", "{1CE27474-43B3-4FAC-90C9-BFFFF77B3339}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp.Tests", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp.Tests\SimpleApp.Tests.csproj", "{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleApp.Tests", "Adam Freeman ProAspNetCore7\Chapter-06-Testing ASP.NET Core applications\Testing\SimpleApp.Tests\SimpleApp.Tests.csproj", "{3AF38AB7-3541-4FEF-AEE6-6944E4263CF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShevkunenkoSite.Tests", "ShevkunenkoSite.Tests\ShevkunenkoSite.Tests.csproj", "{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShevkunenkoSite.Tests", "ShevkunenkoSite.Tests\ShevkunenkoSite.Tests.csproj", "{F37B9D3C-2699-41D8-811D-4B29C53E7CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

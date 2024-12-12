@@ -1,57 +1,42 @@
-The test passes, but it isn’t a useful result because the Product data that 
-I am testing is coming from the hardwired objects’ Product class. I can’t write 
-a test to make sure that the controller behaves correctly when there are more 
-than two Product objects, for example, or if the Price property of the first object 
-has a decimal fraction. The overall effect is that I am testing the combined behavior 
-of the HomeController and Product classes and only for the specific hardwired objects.
+UNDERSTANDING TEST-DRIVEN DEVELOPMENT
 
-Unit tests are effective when they target small parts of an application, such as 
-an individual method or class. What I need is the ability to isolate the Home controller 
-from the rest of the application so that I can limit the scope of the test and rule out 
-any impact caused by the repository.
+I have followed the most commonly used unit testing style in this chapter, in which 
+an application feature is written and then tested to make sure it works as required. 
+This is popular because most developers think about application code first and 
+testing comes second (this is certainly the category that I fall into).
 
-Isolating a Component
+This approach is that it tends to produce unit tests that focus only on the parts 
+of the application code that were difficult to write or that needed some serious 
+debugging, leaving some aspects of a feature only partially tested or untested altogether.
 
-The key to isolating components is to use C# interfaces. To separate the controller 
-from the repository, I added a new class file called IDataSource.cs to the Models 
-folder and used it to define the interface shown in Listing 6-15.
+An alternative approach is Test-Driven Development (TDD). There are lots of variations 
+on TDD, but the core idea is that you write the tests for a feature before implementing 
+the feature itself. Writing the tests first makes you think more carefully about 
+the specification you are implementing and how you will know that a feature has been 
+implemented correctly. Rather than diving into the implementation detail,
+TDD makes you consider what the measures of success or failure will be in advance.
 
-Listing 6-15. The Contents of the IDataSource.cs File in the SimpleApp/Models Folder
+The tests that you write will all fail initially because your new feature will not be 
+implemented. But as you add code to the application, your tests will gradually 
+move from red to green, and all your tests will pass by the time that the feature 
+is complete. TDD requires discipline, but it does produce a more
+comprehensive set of tests and can lead to more robust and reliable code.
 
-namespace SimpleApp.Models {
-	public interface IDataSource {
-		IEnumerable<Product> Products { get; }
-	}
-}
+6.3.6		Using a Mocking Package
 
-In Listing 6-16, I have removed the static method from the Product class and 
-created a new class that implements the IDataSource interface.
+It was easy to create a fake implementation for the IDataSource interface, 
+but most classes for which fake implementations are required are more 
+complex and cannot be handled as easily.
 
-Listing 6-16. Creating a Data Source in the Product.cs File 
-in the SimpleApp/Models Folder
+A better approach is to use a mocking package, which makes it easy to create 
+fake—or mock—objects for tests. There are many mocking packages available, 
+but the one I use (and have for years) is called Moq. To add Moq to the unit 
+test project, run the command shown in Listing 6-19 in the Testing folder.
 
-namespace SimpleApp.Models {
-	public class Product {
+Note
+The Moq package is added to the unit testing project and not the project that 
+contains the application to be tested.
 
-		public string Name { get; set; } = string.Empty;
-		public decimal? Price { get; set; }
+Listing 6.19 Installing the Mocking Package
 
-		//public static Product[] GetProducts() {
-		// Product kayak = new Product {
-		// Name = "Kayak", Price = 275M
-		// };
-		// Product lifejacket = new Product {
-		// Name = "Lifejacket", Price = 48.95M
-		// };
-		// return new Product[] { kayak, lifejacket };
-		//}
-	}
-
-	public class ProductDataSource : IDataSource {
-		public IEnumerable<Product> Products =>
-		new Product[] {
-			new Product { Name = "Kayak", Price = 275M },
-			new Product { Name = "Lifejacket", Price = 48.95M }
-		};
-	}
-}
+dotnet add SimpleApp.Tests package Moq --version 4.20.72

@@ -1,71 +1,78 @@
-﻿The next step is to modify the controller so that it uses the ProductDataSource 
-class as the source for its data, as shown in Listing 6-17.
+6.3.7		Creating a Mock Object
 
-Tip
-ASP.NET Core supports a more elegant approach for solving this problem, known 
-as dependency injection, which I describe in Chapter 14. Dependency injection 
-often causes confusion, so I isolate components in a simpler and more manual 
-way in this chapter.
+I can use the Moq framework to create a fake IDataSource object without having 
+to define a custom test class, as shown in Listing 6.20
 
-Listing 6-17. Adding a Property in the HomeController.cs File 
-in the SimpleApp/Controllers Folder
-
-using Microsoft.AspNetCore.Mvc;
-using SimpleApp.Models;
-
-namespace SimpleApp.Controllers {
-	public class HomeController : Controller {
-		public IDataSource dataSource = new ProductDataSource();
-
-		public ViewResult Index() {
-			return View(dataSource.Products);
-		}
-	}
-}
-
-This may not seem like a significant change, but it allows me to change the data source 
-the controller uses during testing, which is how I can isolate the controller. 
-In Listing 6-18, I have updated the controller unit tests so they use a special version 
-of the repository.
-
-Listing 6-18. Isolating the Controller in the HomeControllerTests.cs File 
-in the SimpleApp.Tests Folder
+Listing 6-20. Creating a Mock Object in the HomeControllerTests.cs File in the SimpleApp.Tests Folder
 
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SimpleApp.Controllers;
 using SimpleApp.Models;
 using Xunit;
+using Moq;
+namespace SimpleApp.Tests
+{
+    public class HomeControllerTests
+    {
+        //class FakeDataSource : IDataSource {
+        // public FakeDataSource(Product[] data) => Products = data;
+        // public IEnumerable<Product> Products { get; set; }
+        //}
 
-namespace SimpleApp.Tests {
-	public class HomeControllerTests {
+        [Fact]
+        public void IndexActionModelIsComplete()
+        {
+            // Arrange
+            Product[] testData = new Product[] {
+                new Product { Name = "P1", Price = 75.10M },
+                new Product { Name = "P2", Price = 120M },
+                new Product { Name = "P3", Price = 110M }
+                };
 
-		class FakeDataSource : IDataSource {
-			public FakeDataSource(Product[] data) => Products = data;
-			public IEnumerable<Product> Products { get; set; }
-		}
+            var mock = new Mock<IDataSource>();
 
-		[Fact]
-		public void IndexActionModelIsComplete() {
+            mock.SetupGet(m => m.Products).Returns(testData);
 
-			// Arrange
-			Product[] testData = new Product[] {
-				new Product { Name = "P1", Price = 75.10M },
-				new Product { Name = "P2", Price = 120M },
-				new Product { Name = "P3", Price = 110M }
-			};
-			IDataSource data = new FakeDataSource(testData);
-			var controller = new HomeController();
-			controller.dataSource = data;
+            var controller = new HomeController();
 
-			// Act
-			var model = (controller.Index() as ViewResult)?.ViewData.Model
-				as IEnumerable<Product>;
+            controller.dataSource = mock.Object;
 
-			// Assert
-			Assert.Equal(data.Products, model,
-				Comparer.Get<Product>((p1, p2) => p1?.Name == p2?.Name
-					&& p1?.Price == p2?.Price));
-		}
-	}
+            // Act
+            var model = (controller.Index() as ViewResult)?.ViewData.Model as IEnumerable<Product>;
+
+            // Assert
+            Assert.Equal(testData, model, Comparer.Get<Product>((p1, p2) => 
+                p1?.Name == p2?.Name && p1?.Price == p2?.Price));
+
+            mock.VerifyGet(m => m.Products, Times.Once);
+        }
+    }
 }
+
+The use of Moq has allowed me to remove the fake implementation of the IDataSource 
+interface and replace it with a few lines of code. I am not going to go into 
+detail about the different features that Moq supports, but I will explain the way 
+that I used Moq in the examples. (See https://github.com/Moq/moq4 for examples and 
+documentation for Moq. There are also examples in later chapters as I explain how 
+to unit test different types of components.)
+
+The first step is to create a new instance of the Mock object, specifying the interface 
+that should be implemented, like this:
+
+...
+var mock = new Mock<IDataSource>();
+...
+
+The Mock object I created will fake the IDataSource interface. To create an 
+implementation of the Product property, I use the SetUpGet method, like this:
+
+...
+mock.SetupGet(m => m.Products).Returns(testData);
+...
+
+The SetupGet method is used to implement the getter for a property. The argument 
+to this method is a lambda expression that specifies the property to be implemented, 
+which is Products in this example. The Returns method is called on the result of 
+the SetupGet method to specify the result that will be returned when the property 
+value is read.

@@ -1,6 +1,36 @@
-
 The unit test creates an array of Product objects and checks that they correspond 
 to the ones the Index action method provides as the view model. (Ignore the act 
 section of the test for the moment; I explain the ViewResult class in Chapters 21 
 and 22. For the moment, it is enough to know that I am getting the model
 data returned by the Index action method.)
+
+The test passes, but it isn’t a useful result because the Product data that 
+I am testing is coming from the hardwired objects’ Product class. I can’t write 
+a test to make sure that the controller behaves correctly when there are more 
+than two Product objects, for example, or if the Price property of the first object 
+has a decimal fraction. The overall effect is that I am testing the combined behavior 
+of the HomeController and Product classes and only for the specific hardwired objects.
+
+Unit tests are effective when they target small parts of an application, such as 
+an individual method or class. What I need is the ability to isolate the Home controller 
+from the rest of the application so that I can limit the scope of the test and rule out 
+any impact caused by the repository.
+
+Isolating a Component
+
+The key to isolating components is to use C# interfaces. To separate the controller 
+from the repository, I added a new class file called IDataSource.cs to the Models 
+folder and used it to define the interface shown in Listing 6.15
+
+Listing 6.15 The contents of the IDataSource.cs file in the SimpleApp/Models folder
+
+namespace SimpleApp.Models
+{
+    public interface IDataSource
+    {
+        IEnumerable<Product> Products { get; }
+    }
+}
+
+In listing 6.16, I have removed the static method from the Product class and created a
+new class that implements the IDataSource interface.
