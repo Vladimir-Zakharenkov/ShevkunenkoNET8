@@ -1,0 +1,51 @@
+﻿Listing 7.4 Setting the HTTP Port in the launchSettings.json File in the SportsStore/Properties Folder
+
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:45415",
+      "sslPort": 44380
+    }
+  },
+  "profiles": {
+    "SportsStore-http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5156",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SportsStore-https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7132;http://localhost:5156",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+7.1.4   Creating the Application Project Folders
+
+The next step is to create folders that will contain the application’s components. 
+Right-click the SportsStore item in the Visual Studio Solution Explorer or 
+Visual Studio Code Explorer pane and select Add ➤ New Folder or New Folder to create 
+the set of folders described in Table 7-1.
+
+Table 7-1. The Application Project Folders
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-7-1.webp

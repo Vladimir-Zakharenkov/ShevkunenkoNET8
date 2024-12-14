@@ -1,0 +1,13 @@
+7.4.1		Displaying page links
+
+Restart ASP.NET Core and request http://localhost:5000, and you will see that there are now 
+four items shown on the page, as shown in Figure 7.4
+(https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-4.webp) 
+If you want to view another page, 
+you can append query string parameters to the end of the URL, like this:
+
+http://localhost:5000/?productPage=2
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-4.webp
+
+Figure 7-4. Paging through data

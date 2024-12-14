@@ -1,0 +1,55 @@
+﻿The view doesn’t know where the Product objects came from, how they were obtained, 
+or whether they represent all the products known to the application. Instead, 
+the view deals only with how details of each Product are displayed using HTML elements.
+
+Tip
+I converted the Price property to a string using the ToString("c") method, 
+which renders numerical values as currency according to the culture settings 
+that are in effect on your server. For example, if the server is set up as en-US, 
+then (1002.3).ToString("c") will return $1,002.30, but if the server is
+set to en-GB, then the same method will return £1,002.30.
+
+7.3.3		Running the Application
+
+Start ASP.NET Core and request http://localhost:5000 to see the list of products, 
+which is shown in Figure 7-3. This is the typical pattern of development for ASP.NET Core. 
+An initial investment of time setting everything up is necessary, and then 
+the basic features of the application snap together quickly.
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-3.webp
+
+Figure 7-3. Displaying a list of products
+
+7.4	Adding Pagination
+
+You can see from Figure 7-3 (https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-3.webp) 
+that the Index.cshtml view displays the products in the database on a single page. In this section, 
+I will add support for pagination so that the view displays a smaller number of products on a page 
+and so the user can move from page to page to view the overall catalog. To do this, I am going to 
+add a parameter to the Index method in the Home controller, as shown in Listing 7.26
+
+Listing 7.26 Adding Pagination in the HomeController.cs File in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+
+namespace SportsStore.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IStoreRepository repository;
+
+        public int PageSize = 4;
+
+        public HomeController(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public ViewResult Index(int productPage = 1)
+            => View(repository.Products
+            .OrderBy(p => p.ProductID)
+            .Skip((productPage - 1) * PageSize)
+            .Take(PageSize));
+    }
+}

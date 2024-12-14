@@ -1,0 +1,60 @@
+7.5.2   Applying Bootstrap Styles
+
+Razor layouts provide common content so that it doesn’t have to be repeated in multiple views. 
+Add the elements shown in Listing 7.37 to the _Layout.cshtml file in the Views/Shared 
+folder to include the Bootstrap CSS stylesheet in the content sent to the browser and 
+define a common header that will be used throughout the SportsStore application.
+
+Listing 7.37    Applying Bootstrap CSS to the _Layout.cshtml File in the SportsStore/Views/Shared Folder
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SportsStore</title>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2">SPORTS STORE</span>
+    </div>
+    <div class="row m-1 p-1">
+        <div id="categories" class="col-3">
+            Put something useful here later
+        </div>
+        <div class="col-9">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>
+
+Adding the Bootstrap CSS stylesheet to the layout means that I can use the styles it defines 
+in any of the views that rely on the layout. Listing 7.38 shows the styling I applied 
+to the Index.cshtml file.
+
+Listing 7.38 Styling Content in the Index.cshtml File in the SportsStore/Views/Home Folder
+
+@model ProductsListViewModel
+
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
+{
+    <div class="card card-outline-primary m-1 p-1">
+        <div class="bg-faded p-1">
+            <h4>
+                @p.Name
+                <span class="badge rounded-pill bg-primary text-white"
+                      style="float:right">
+                    <small>@p.Price.ToString("c")</small>
+                </span>
+            </h4>
+        </div>
+        <div class="card-text p-1">@p.Description</div>
+    </div>
+}
+
+<div page-model="@Model.PagingInfo" page-action="Index"
+     page-classes-enabled="true" page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary" class="btn-group pull-right m-1">
+</div>

@@ -1,0 +1,15 @@
+Listing 7-30. The Contents of the ProductsListViewModel.cs File in the SportsStore/Models/ViewModels Folder
+
+namespace SportsStore.Models.ViewModels
+{
+    public class ProductsListViewModel
+    {
+        public IEnumerable<Product> Products { get; set; } = Enumerable.Empty<Product>();
+
+        public PagingInfo PagingInfo { get; set; } = new();
+    }
+}
+
+I can update the Index action method in the HomeController class to use the ProductsListViewModel
+class to provide the view with details of the products to display on the page and with details 
+of the pagination, as shown in Listing 7.31

@@ -1,0 +1,33 @@
+The Price property has been decorated with the Column attribute to specify 
+the SQL data type that will be used to store values for this property. 
+Not all C# types map neatly onto SQL types, and this attribute
+ensures the database uses an appropriate type for the application data.
+
+7.1.9		Checking and Running the Application
+
+Before going any further, it is a good idea to make sure the application builds 
+and runs as expected. Run the command shown in Listing 7.12 in the SportsStore folder.
+
+Listing 7.12 Running the Example Application
+
+dotnet run
+
+Request http://localhost:5000, and you will see the response shown in Figure 7.2
+
+https://sergeyshef.ru/images/freeman-asp-net-core-6/Figure-7-2.webp
+
+Figure 7.2 Running the example application
+
+7.2	Adding Data to the Application
+
+Now that the SportsStore contains some basic setup and can produce a simple response, 
+it is time to add some data so that the application has something more useful to display. 
+The SportsStore application will store its data in a SQL Server LocalDB database, 
+which is accessed using Entity Framework Core. Entity Framework Core is the Microsoft 
+object-to-relational mapping (ORM) framework, and it is the most widely
+used method of accessing databases in ASP.NET Core projects.
+
+Caution
+If you did not install LocalDB when you prepared your development environment 
+in Chapter 2, you must do so now. The SportsStore application will not work without 
+its database.

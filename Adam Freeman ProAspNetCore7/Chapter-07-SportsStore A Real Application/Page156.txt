@@ -1,0 +1,34 @@
+﻿It is a little awkward to get the data returned from the action method. The result is 
+a ViewResult object, and I have to cast the value of its ViewData.Model property 
+to the expected data type. I explain the different result types that can be returned 
+by action methods and how to work with them in Part 2.
+
+7.3.2		Updating the View
+
+The Index action method in Listing 7.24 passes the collection of Product objects from 
+the repository to the View method, which means these objects will be the view model 
+that Razor uses when it generates HTML content from the view. Make the changes 
+to the view shown in Listing 7.25 to generate content using the Product view model objects.
+
+Listing 7.25 Using the Product Data in the Index.cshtml File in the SportsStore/Views/Home Folder
+
+@model IQueryable<Product>
+
+@foreach (var p in Model ?? Enumerable.Empty<Product>())
+{
+    <div>
+        <h3>@p.Name</h3>
+        @p.Description
+        <h4>@p.Price.ToString("c")</h4>
+    </div>
+}
+
+The @model expression at the top of the file specifies that the view expects 
+to receive a sequence of Product objects from the action method as its model data. 
+I use an @foreach expression to work through the sequence and generate a simple 
+set of HTML elements for each Product object that is received.
+
+There is a quirk in the way that Razor Views work that means the model data 
+is always nullable, even when the type specified by the @model expression is not. 
+For this reason, I use the null-coalescing operator in the @foreach expression 
+with an empty enumeration.

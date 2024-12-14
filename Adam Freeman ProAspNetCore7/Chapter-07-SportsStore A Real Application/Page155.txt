@@ -1,0 +1,60 @@
+﻿This is known as dependency injection, and its approach allows the HomeController
+object to access the application’s repository through the IStoreRepository interface
+without knowing which implementation class has been configured. I could reconfigure
+the service to use a different implementation class — one that doesn’t use Entity Framework
+Core, for example — and dependency injection means that the controller will continue
+to work without changes.
+
+NOTE Some developers don’t like dependency injection and believe it makes
+applications more complicated. That’s not my view, but if you are new to dependency
+injection, then I recommend you wait until you have read chapter 14
+before you make up your mind.
+
+Unit test: repository access
+
+I can unit test that the controller is accessing the repository correctly by creating a mock
+repository, injecting it into the constructor of the HomeController class, and then calling
+the Index method to get the response that contains the list of products. I then compare
+the Product objects I get to what I would expect from the test data in the mock
+implementation. See chapter 6 for details of how to set up unit tests. Here is the unit test
+I created for this purpose, in a class file called HomeControllerTests.cs that I added
+to the SportsStore.Tests project:
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SportsStore.Controllers;
+using SportsStore.Models;
+using Xunit;
+
+namespace SportsStore.Tests
+{
+    public class HomeControllerTests
+    {
+        [Fact]
+        public void Can_Use_Repository()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1"},
+                new Product {ProductID = 2, Name = "P2"}
+                }).AsQueryable<Product>());
+
+            HomeController controller = new HomeController(mock.Object);
+
+            // Act
+            IEnumerable<Product>? result = (controller.Index() as ViewResult)?.ViewData.Model as IEnumerable<Product>;
+
+            // Assert
+            Product[] prodArray = result?.ToArray() ?? Array.Empty<Product>();
+
+            Assert.True(prodArray.Length == 2);
+            Assert.Equal("P1", prodArray[0].Name);
+            Assert.Equal("P2", prodArray[1].Name);
+        }
+    }
+}

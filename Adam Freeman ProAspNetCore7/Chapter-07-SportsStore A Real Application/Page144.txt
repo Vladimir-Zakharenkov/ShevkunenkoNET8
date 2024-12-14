@@ -1,0 +1,66 @@
+This file defines a simple HTML document into which the contents of other views 
+will be inserted by the @RenderBody expression. I explain how Razor expressions 
+work in detail in Chapter 21.
+
+7.1.7		Creating the Controller and View
+
+Add a class file named HomeController.cs in the SportsStore/Controllers folder and 
+use it to define the class shown in Listing 7.9 This is a minimal controller that 
+contains just enough functionality to produce a response.
+
+Listing 7.9 The Contents of the HomeController.cs File in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace SportsStore.Controllers
+{
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
+
+The MapDefaultControllerRoute method used in Listing 7.5 tells ASP.NET Core how 
+to match URLs to controller classes. The configuration applied by that method 
+declares that the Index action method defined by the Home controller will be used 
+to handle requests.
+
+The Index action method doesn’t do anything useful yet and just returns the result 
+of calling the View method, which is inherited from the Controller base class. 
+This result tells ASP.NET Core to render the default view associated with 
+the action method. To create the view, add a Razor View file named Index.cshtml 
+to the Views/Home folder with the content shown in Listing 7.10
+
+Listing 7-10. The Contents of the Index.cshtml File 
+in the SportsStore/Views/Home Folder
+
+<h4>Welcome to SportsStore</h4>
+
+7.1.8		Starting the Data Model
+
+Almost all projects have a data model of some sort. Since this is an e-commerce 
+application, the most obvious model I need is for a product. Add a class file named 
+Product.cs to the Models folder and use it to define the class shown in Listing 7.11
+
+Listing 7.11 The Contents of the Product.cs File in the SportsStore/Models Folder
+
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SportsStore.Models
+{
+    public class Product {
+        public long? ProductID { get; set; }
+
+        public string Name { get; set; } = String.Empty;
+
+        public string Description { get; set; } = String.Empty;
+
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal Price { get; set; }
+
+        public string Category { get; set; } = String.Empty;
+    }
+}

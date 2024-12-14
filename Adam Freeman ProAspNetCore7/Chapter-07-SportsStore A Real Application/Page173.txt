@@ -1,0 +1,46 @@
+Listing 7.40 The Contents of the ProductSummary.cshtml File in the SportsStore/Views/Shared Folder
+
+@model Product
+
+<div class="card card-outline-primary m-1 p-1">
+
+    <div class="bg-faded p-1">
+        <h4>
+            @Model?.Name
+            <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                <small>@Model?.Price.ToString("c")</small>
+            </span>
+        </h4>
+    </div>
+
+    <div class="card-text p-1">@Model?.Description</div>
+
+</div>
+
+Now I need to update the Index.cshtml file in the Views/Home folder so that it uses 
+the partial view, as shown in Listing 7.41
+
+Listing 7.41    Using a Partial View in the Index.cshtml File in the SportsStore/Views/Home Folder
+
+@model ProductsListViewModel
+
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
+{
+    <partial name="ProductSummary" model="p" />
+}
+
+<div page-model="@Model.PagingInfo" page-action="Index"
+     page-classes-enabled="true" page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary" class="btn-group pull-right m-1">
+</div>
+
+I have taken the markup that was previously in the @foreach expression in the Index.cshtml 
+view and moved it to the new partial view. I call the partial view using a partial element, 
+using the name and model attributes to specify the name of the partial view and its view model. 
+Using a partial view allows the same markup to be inserted into any view that needs 
+to display a summary of a product.
+
+Restart ASP.NET Core and request http://localhost:5000, and you will see that introducing the
+partial view doesn’t change the appearance of the application; it just changes where Razor 
+finds the content that is used to generate the response sent to the browser.

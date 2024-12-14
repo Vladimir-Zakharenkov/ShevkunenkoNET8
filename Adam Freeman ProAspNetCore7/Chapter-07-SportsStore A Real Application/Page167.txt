@@ -1,0 +1,33 @@
+Displaying the Page Links
+
+I have everything in place to add the page links to the Index view. I created the view model 
+that contains the paging information, updated the controller so that it passes this information 
+to the view, and changed the @model directive to match the new model view type. All that remains 
+is to add an HTML element that the tag helper will process to create the page links, 
+as shown in Listing 7.33
+
+Listing 7.33 Adding the Pagination Links in the Index.cshtml File in the SportsStore/Views/Home Folder
+
+@model ProductsListViewModel
+
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
+{
+    <div>
+        <h3>@p.Name</h3>
+        @p.Description
+        <h4>@p.Price.ToString("c")</h4>
+    </div>
+}
+
+<div page-model="@Model.PagingInfo" page-action="Index"></div>
+
+Restart ASP.NET Core and request http://localhost:5000, and you will see the new page links,
+as shown in Figure 7-5. The style is still basic, which I will fix later in the chapter. 
+What is important for the moment is that the links take the user from page to page 
+in the catalog and allow for exploration of the products for sale. When Razor finds 
+the page-model attribute on the div element, it asks the PageLinkTagHelper class 
+to transform the element, which produces the set of links shown in the figure.
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-5.webp
+
+Figure 7-5. Displaying page navigation links

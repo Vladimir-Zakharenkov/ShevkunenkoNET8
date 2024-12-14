@@ -1,0 +1,114 @@
+Unit test: page model view data
+
+I need to ensure that the controller sends the correct pagination data to the view. 
+Here is the unit test I added to the HomeControllerTests class in the test project 
+to make sure.
+
+I also need to modify the earlier unit tests to reflect the new result from 
+the Index action method. Here are the revised tests:
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SportsStore.Controllers;
+using SportsStore.Models;
+using SportsStore.Models.ViewModels;
+using Xunit;
+
+namespace SportsStore.Tests
+{
+    public class HomeControllerTests
+    {
+        [Fact]
+        public void Can_Use_Repository()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1"},
+                new Product {ProductID = 2, Name = "P2"}
+                }).AsQueryable<Product>());
+
+            HomeController controller = new HomeController(mock.Object);
+
+            // Act
+            //IEnumerable<Product>? result = (controller.Index() as ViewResult)?.ViewData.Model as IEnumerable<Product>;
+            ProductsListViewModel result = controller.Index()?.ViewData.Model as ProductsListViewModel ?? new();
+
+            // Assert
+            //Product[] prodArray = result?.ToArray() ?? Array.Empty<Product>();
+            Product[] prodArray = result.Products.ToArray();
+
+            Assert.True(prodArray.Length == 2);
+            Assert.Equal("P1", prodArray[0].Name);
+            Assert.Equal("P2", prodArray[1].Name);
+        }
+
+        [Fact]
+        public void Can_Paginate()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1"},
+                new Product {ProductID = 2, Name = "P2"},
+                new Product {ProductID = 3, Name = "P3"},
+                new Product {ProductID = 4, Name = "P4"},
+                new Product {ProductID = 5, Name = "P5"}
+                }).AsQueryable<Product>());
+
+            HomeController controller = new HomeController(mock.Object);
+
+            controller.PageSize = 3;
+
+            // Act
+            //IEnumerable<Product> result = (controller.Index(2) as ViewResult)?.ViewData.Model
+            //    as IEnumerable<Product> ?? Enumerable.Empty<Product>();
+            ProductsListViewModel result = controller.Index(2)?.ViewData.Model as ProductsListViewModel ?? new();
+
+            // Assert
+            //Product[] prodArray = result.ToArray();
+            Product[] prodArray = result.Products.ToArray();
+            Assert.True(prodArray.Length == 2);
+            Assert.Equal("P4", prodArray[0].Name);
+            Assert.Equal("P5", prodArray[1].Name);
+        }
+
+        [Fact]
+        public void Can_Send_Pagination_View_Model()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1"},
+                new Product {ProductID = 2, Name = "P2"},
+                new Product {ProductID = 3, Name = "P3"},
+                new Product {ProductID = 4, Name = "P4"},
+                new Product {ProductID = 5, Name = "P5"}
+                }).AsQueryable<Product>());
+
+            // Arrange
+            HomeController controller = new HomeController(mock.Object) { PageSize = 3 };
+
+            // Act
+            ProductsListViewModel result = controller.Index(2)?.ViewData.Model as ProductsListViewModel ?? new();
+
+            // Assert
+            PagingInfo pageInfo = result.PagingInfo;
+            Assert.Equal(2, pageInfo.CurrentPage);
+            Assert.Equal(3, pageInfo.ItemsPerPage);
+            Assert.Equal(5, pageInfo.TotalItems);
+            Assert.Equal(2, pageInfo.TotalPages);
+        }
+    }
+}
+
+I would usually create a common setup method, given the degree of duplication between 
+these two test methods. However, since I am delivering the unit tests in individual 
+sidebars like this one, I am going to keep everything separate so you can see each 
+test on its own.

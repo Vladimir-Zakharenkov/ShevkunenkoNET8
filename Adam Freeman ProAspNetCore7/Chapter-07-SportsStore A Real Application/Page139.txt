@@ -1,0 +1,49 @@
+You might find the going a little slow as I build up the levels of infrastructure I need, but the initial
+investment will result in maintainable, extensible, well-structured code with excellent support for unit
+testing.
+
+UNIT TESTING
+
+I include sections on unit testing different components in the SportsStore application throughout the
+development process, demonstrating how to isolate and test different ASP.NET Core components.
+
+I know that unit testing is not embraced by everyone. If you do not want to unit test, that is fine with
+me. To that end, when I have something to say that is purely about testing, I put it in a sidebar like this
+one. If you are not interested in unit testing, you can skip right over these sections, and the SportsStore
+application will work just fine. You do not need to do any kind of unit testing to get the technology
+benefits of ASP.NET Core, although, of course, support for testing is a key reason for adopting ASP.NET
+Core in many projects.
+
+Most of the features I use for the SportsStore application have their own chapters later in the book.
+Rather than duplicate everything here, I tell you just enough to make sense of the example application and
+point you to another chapter for in-depth information.
+
+I will call out each step needed to build the application so that you can see how the ASP.NET Core
+features fit together. You should pay particular attention when I create views. You will get some odd results if
+you do not follow the examples closely.
+
+7.1	Creating the Projects
+
+I am going to start with a minimal ASP.NET Core project and add the features I require as 
+they are needed. Open a new PowerShell command prompt from the Windows Start menu 
+and run the commands shown in Listing 7-1 to get started.
+
+Tip
+You can download the example project for this chapter—and for all the other chapters in this book—
+from https://github.com/manningbooks/pro-asp.net-core-7.
+See Chapter 1 for how to get help if you have problems running the examples.
+
+Listing 7.1	Creating the SportsStore Project
+
+dotnet new globaljson --sdk-version 7.0.100 --output SportsSln/SportsStore
+dotnet new web --no-https --output SportsSln/SportsStore --framework net7.0
+dotnet new sln -o SportsSln
+dotnet sln SportsSln add SportsSln/SportsStore
+
+These commands create a SportsSln solution folder that contains a SportsStore project folder created
+with the web project template. The SportsSln folder also contains a solution file, to which the SportsStore
+project is added.
+
+I am using different names for the solution and project folders to make the examples easier to follow,
+but if you create a project with Visual Studio, the default is to use the same name for both folders. There is no
+“right” approach, and you can use whatever names suit your project.

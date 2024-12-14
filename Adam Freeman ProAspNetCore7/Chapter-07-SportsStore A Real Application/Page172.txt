@@ -1,0 +1,23 @@
+The values of the attributes are automatically used to set the tag helper property values, 
+with the mapping between the HTML attribute name format (page-class-normal) and 
+the C# property name format (PageClassNormal) taken into account. This allows tag helpers 
+to respond differently based on the attributes of an HTML element, creating a more flexible 
+way to generate content in an ASP.NET Core application.
+
+Restart ASP.NET Core and request http://localhost:5000, and you will see the appearance of the
+application has been improved — at least a little, anyway — as illustrated by Figure 7.8
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-8.webp
+
+Figure 7.8 Applying styles to the SportsStore application
+
+7.5.3   Creating a Partial View
+
+As a finishing flourish for this chapter, I am going to refactor the application to simplify 
+the Index.cshtml view. I am going to create a partial view, which is a fragment of content 
+that you can embed into another view, rather like a template. I describe partial views 
+in detail in Chapter 22, and they help reduce duplication when you need the same content 
+to appear in different places in an application. Rather than copy and paste the same Razor 
+markup into multiple views, you can define it once in a partial view. To create the partial
+view, I added a Razor View called ProductSummary.cshtml to the Views/Shared folder and 
+added the markup shown in Listing 7.40

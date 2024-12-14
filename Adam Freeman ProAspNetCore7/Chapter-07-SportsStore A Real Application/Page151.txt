@@ -1,0 +1,21 @@
+Entity Framework Core can generate the schema for the database using the data model classes 
+through a feature called migrations. When you prepare a migration, Entity Framework Core 
+creates a C# class that contains the SQL commands required to prepare the database. 
+If you need to modify your model classes, then you can create a new migration that 
+contains the SQL commands required to reflect the changes. In this way, you don’t have 
+to worry about manually writing and testing SQL commands and can just focus on the
+C# model classes in the application.
+
+Entity Framework Core commands are performed from the command line. Open a PowerShell
+command prompt and run the command shown in Listing 7.21 in the SportsStore folder 
+to create the migration class that will prepare the database for its first use.
+
+Listing 7.21. Creating the Database Migration
+
+dotnet ef migrations add Initial
+
+When this command has finished, the SportsStore project will contain a Migrations folder. 
+This is where Entity Framework Core stores its migration classes. One of the file names 
+will be a timestamp followed by _Initial.cs, and this is the class that will be used 
+to create the initial schema for the database. If you examine the contents of this file, 
+you can see how the Product model class has been used to create the schema.

@@ -1,0 +1,59 @@
+﻿7.3	Displaying a List of Products
+
+As you have seen, the initial preparation work for an ASP.NET Core project can take some time. 
+But the good news is that once the foundation is in place, the pace improves, and features 
+are added more rapidly. In this section, I am going to create a controller and an action method 
+that can display details of the products in the repository.
+
+Using the Visual Studio scaffolding
+
+As I noted in Chapter 4, Visual Studio supports scaffolding to add items to a project.
+
+I don’t use scaffolding in this book. The code and markup that the scaffolding generates 
+are so generic as to be all but useless, and the scenarios that are supported are narrow 
+and don’t address common development problems. My goal in this book is not only to make 
+sure you know how to create ASP.NET Core applications but also to explain how everything 
+works behind the scenes, and that is harder to do when responsibility for creating 
+components is handed to the scaffolding.
+
+If you are using Visual Studio, add items to the project by right-clicking a folder 
+in the Solution Explorer, selecting Add ➤ New Item from the pop-up menu, and then choosing 
+an item template from the Add New Item window.
+
+You may find your development style to be different from mine, and you may find that you prefer
+working with the scaffolding in your own projects. That’s perfectly reasonable, although 
+I recommend you take the time to understand what the scaffolding does so you know where 
+to look if you don’t get the results you expect.
+
+7.3.1		Preparing the Controller
+
+Add the statements shown in Listing 7.24 to prepare the controller to display the list of products.
+
+Listing 7-24. Preparing the Controller in the HomeController.cs File in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+
+namespace SportsStore.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IStoreRepository repository;
+
+        public HomeController(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public IActionResult Index() => View(repository.Products);
+    }
+}
+
+When ASP.NET Core needs to create a new instance of the HomeController class
+to handle an HTTP request, it will inspect the constructor and see that it requires
+an object that implements the IStoreRepository interface. To determine what
+implementation class should be used, ASP.NET Core consults the configuration created
+in the Program.cs file, which tells it that EFStoreRepository should be used
+and that a new instance should be created for every request. ASP.NET Core creates a
+new EFStoreRepository object and uses it to invoke the HomeController constructor
+to create the controller object that will process the HTTP request.

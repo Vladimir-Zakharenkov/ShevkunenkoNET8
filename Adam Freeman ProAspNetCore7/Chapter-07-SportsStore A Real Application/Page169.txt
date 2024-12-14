@@ -1,0 +1,32 @@
+7.5     Styling the Content
+
+I have built a great deal of infrastructure, and the basic features of the application 
+are starting to come together, but I have not paid any attention to appearance. Even though 
+this book is not about design or CSS, the SportsStore application design is so miserably plain 
+that it undermines its technical strengths. In this section, I will put some of that right. 
+I am going to implement a classic two-column layout with a header, as shown in Figure 7.7
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-7-7.webp
+
+Figure 7.7 The design goal for the SportsStore application
+
+7.5.1   Installing the Bootstrap Package
+
+I am going to use the Bootstrap package to provide the CSS styles I will apply to the 
+application. As explained in Chapter 4, client-side packages are installed using LibMan. 
+If you did not install the LibMan package when following the examples in Chapter 4, 
+use a PowerShell command prompt to run the commands shown in Listing 7.35, 
+which remove any existing LibMan package and install the version required for this book.
+
+Listing 7.35 Installing the LibMan tool package
+
+dotnet tool uninstall --global Microsoft.Web.LibraryManager.Cli
+dotnet tool install --global Microsoft.Web.LibraryManager.Cli --version 2.1.175
+
+Once you have installed LibMan, run the commands shown in Listing 7-36 in 
+the SportsStore folder to initialize the example project and install the Bootstrap package.
+
+Listing 7.36    Initializing the Example Project
+
+libman init -p cdnjs
+libman install bootstrap@5.2.3 -d wwwroot/lib/bootstrap

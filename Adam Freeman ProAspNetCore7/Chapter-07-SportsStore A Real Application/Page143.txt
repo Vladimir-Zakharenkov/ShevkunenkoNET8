@@ -1,0 +1,53 @@
+7.1.6		Configuring the Razor View Engine
+
+The Razor view engine is responsible for processing view files, which have 
+the .cshtml extension, to generate HTML responses. Some initial preparation 
+is required to configure Razor to make it easier to create views for the application.
+
+Add a Razor View Imports file named _ViewImports.cshtml in the Views folder with 
+the content shown in Listing 7-6.
+
+Caution
+Pay close attention to the contents of this file. It is easy to make a mistake 
+that causes the application to generate incorrect HTML content.
+
+Listing 7.6 The Contents of the _ViewImports.cshtml File in the SportsStore/Views Folder
+
+@using SportsStore.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+The @using statement will allow me to use the types in the SportsStore.Models namespace in views
+without needing to refer to the namespace. The @addTagHelper statement enables the built-in tag helpers,
+which I use later to create HTML elements that reflect the configuration of the SportsStore application and
+which I describe in detail in Chapter 15. (You may see a warning or error displayed by the code editor for the
+contents of this file, but this will be resolved shortly and can be ignored.)
+
+Add a Razor View Start file named _ViewStart.cshtml to the SportsStore/Views folder with the
+content shown in Listing 7.7 (The file will already contain this expression if you create the file using the
+Visual Studio item template.)
+
+Listing 7.7 The Contents of the _ViewStart.cshtml File in the SportsStore/Views Folder
+
+@{
+	Layout = "_Layout";
+}
+
+The Razor View Start file tells Razor to use a layout file in the HTML that it generates, 
+reducing the amount of duplication in views. To create the view, add a Razor layout named 
+_Layout.cshtml to the Views/Shared folder, with the content shown in Listing 7-8.
+
+Listing 7.8 The Contents of the _Layout.cshtml File in the SportsStore/Views/Shared Folder
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>SportsStore</title>
+</head>
+<body>
+	<div>
+		@RenderBody()
+	</div>
+</body>
+</html>

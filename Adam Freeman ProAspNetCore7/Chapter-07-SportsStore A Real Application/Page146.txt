@@ -1,0 +1,43 @@
+﻿7.2.1		Installing the Entity Framework Core Packages
+
+The first step is to add Entity Framework Core to the project. Use a PowerShell 
+command prompt to run the command shown in Listing 7-13 in the SportsStore folder. 
+If you receive an error asking you to specify a project, then delete 
+the SportsStore - Backup.csproj file in the SportsStore folder and try again.
+
+Listing 7.13	Adding the Entity Framework Core Packages to the SportsStore Project
+
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.0
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.0
+
+These packages install Entity Framework Core and the support for using SQL Server. 
+Entity Framework Core also requires a tools package, which includes the command-line 
+tools required to prepare and create databases for ASP.NET Core applications. 
+Run the commands shown in Listing 7.14 to remove any existing version of the tools 
+package, if there is one, and install the version used in this book. (Since this 
+package is installed globally, you can run these commands in any folder.)
+
+Listing 7.14 Installing the Entity Framework Core Tool Package
+
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 6.0.0
+
+7.2.2		Defining the Connection String
+
+Configuration settings, such as database connection strings, are stored in 
+JSON configuration files. To describe the connection to the database that 
+will be used for the SportsStore data, add the entries shown in
+Listing 7.15 to the appsettings.json file in the SportsStore folder.
+
+The project also contains an appsettings.Development.json file that contains 
+configuration settings that are used only in development. This file is displayed 
+as nested within the appsettings.json file by Solution Explorer but is always visible 
+in Visual Studio Code. I use only the appsettings.json file for the development 
+of the SportsStore project, but I explain the relationship between the files and how 
+they are both used in detail in Chapter 15.
+
+Tip
+Connection strings must be expressed as a single unbroken line, which is fine in the code 
+editor but doesn’t fit on the printed page and is the cause of the awkward formatting 
+in Listing 7.15 When you define the connection string in your own project, make sure 
+that the value of the SportsStoreConnection item is on a single line.

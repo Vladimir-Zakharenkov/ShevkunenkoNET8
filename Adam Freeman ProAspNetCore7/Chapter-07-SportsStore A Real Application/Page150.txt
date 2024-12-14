@@ -1,0 +1,46 @@
+I’ll add additional functionality as I add features to the application, but for the moment, 
+the repository implementation just maps the Products property defined by the IStoreRepository 
+interface onto the Products property defined by the StoreDbContext class. The Products property 
+in the context class returns a DbSet<Product> object, which implements the IQueryable<T> 
+interface and makes it easy to implement the repository interface when using Entity Framework Core.
+
+Earlier in the chapter, I explained that ASP.NET Core supports services that allow objects to be accessed
+throughout the application. One benefit of services is they allow classes to use interfaces without needing to
+know which implementation class is being used. I explain this in detail in Chapter 14, but for the SportsStore
+chapters, it means that application components can access objects that implement the IStoreRepository
+interface without knowing that it is the EFStoreRepository implementation class they are using. This makes
+it easy to change the implementation class the application uses without needing to make changes to the
+individual components. Add the statement shown in Listing 7.20 to the Program.cs file to create a service for
+the IStoreRepository interface that uses EFStoreRepository as the implementation class.
+
+Tip
+Don’t worry if this doesn’t make sense right now. This topic is one of the most confusing aspects of
+working with ASP.NET Core, and it can take a while to understand.
+
+Listing 7.20 Creating the Repository Service in the Program.cs File in the SportsStore Folder
+
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
+
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+
+app.MapDefaultControllerRoute();
+
+app.Run();
+
+The AddScoped method creates a service where each HTTP request gets its own repository object, 
+which is the way that Entity Framework Core is typically used.
+Creating the Database Migration

@@ -1,0 +1,63 @@
+The PageSize field specifies that I want four products per page. I have added an optional 
+parameter to the Index method, which means that if the method is called without a parameter, 
+the call is treated as though I had supplied the value specified in the parameter definition, 
+with the effect that the action method displays the first page of products when it is invoked 
+without an argument. Within the body of the action method, I get the Product objects, 
+order them by the primary key, skip over the products that occur before the start of 
+the current page, and take the number of products specified by the PageSize field.
+
+Unit test: pagination
+
+I can unit test the pagination feature by mocking the repository, requesting a specific page from the
+controller, and making sure I get the expected subset of the data. Here is the unit test I created for this
+purpose and added to the HomeControllerTests.cs file in the SportsStore.Tests project:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SportsStore.Controllers;
+using SportsStore.Models;
+using Xunit;
+
+namespace SportsStore.Tests {
+	public class HomeControllerTests {
+
+		[Fact]
+		public void Can_Use_Repository() {
+		// ...statements omitted for brevity...
+		}
+
+		[Fact]
+		public void Can_Paginate() {
+			// Arrange
+			Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+			mock.Setup(m => m.Products).Returns((new Product[] {
+				new Product {ProductID = 1, Name = "P1"},
+				new Product {ProductID = 2, Name = "P2"},
+				new Product {ProductID = 3, Name = "P3"},
+				new Product {ProductID = 4, Name = "P4"},
+				new Product {ProductID = 5, Name = "P5"}
+				}).AsQueryable<Product>());
+
+			HomeController controller = new HomeController(mock.Object);
+
+			controller.PageSize = 3;
+
+			// Act
+			IEnumerable<Product> result =
+				(controller.Index(2) as ViewResult)?.ViewData.Model
+					as IEnumerable<Product>
+						?? Enumerable.Empty<Product>();
+
+			// Assert
+			Product[] prodArray = result.ToArray();
+			Assert.True(prodArray.Length == 2);
+			Assert.Equal("P4", prodArray[0].Name);
+			Assert.Equal("P5", prodArray[1].Name);
+		}
+	}
+}
+
+You can see the new test follows the pattern of the existing one, relying on Moq 
+to provide a known set of data with which to work.

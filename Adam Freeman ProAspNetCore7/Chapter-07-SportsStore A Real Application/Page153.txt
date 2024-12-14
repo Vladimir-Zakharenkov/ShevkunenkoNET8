@@ -1,0 +1,48 @@
+﻿The EnsurePopulated method obtains a StoreDbContext object through the IApplicationBuilder
+interface and calls the Database.Migrate method if there are any pending migrations, 
+which means that the database will be created and prepared so that it can store Product 
+objects. Next, the number of Product objects in the database is checked. If there are 
+no objects in the database, then the database is populated using a collection 
+of Product objects using the AddRange method and then written to the database using the
+SaveChanges method.
+
+The final change is to seed the database when the application starts, which I have 
+done by adding a call to the EnsurePopulated method from the Program.cs file, 
+as shown in Listing 7.23
+
+Listing 7.23 Seeding the Database in the Program.cs File in the SportsStore Folder
+
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(
+    builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
+
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+
+app.MapDefaultControllerRoute();
+
+SeedData.EnsurePopulated(app);
+
+app.Run();
+
+RESETTING THE DATABASE
+
+If you need to reset the database, then run this command in the SportsStore folder:
+
+...
+dotnet ef database drop --force --context StoreDbContext
+...
+
+Start ASP.NET Core, and the database will be re-created and seeded with data.

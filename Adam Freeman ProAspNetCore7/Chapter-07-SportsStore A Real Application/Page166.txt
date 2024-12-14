@@ -1,0 +1,19 @@
+The view is currently expecting a sequence of Product objects, so I need to update the Index.cshtml
+file, as shown in Listing 7.32, to deal with the new view model type.
+
+Listing 7.32 Updating the Index.cshtml File in the SportsStore/Views/Home Folder
+
+@model ProductsListViewModel
+
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
+{
+    <div>
+        <h3>@p.Name</h3>
+        @p.Description
+        <h4>@p.Price.ToString("c")</h4>
+    </div>
+}
+
+I have changed the @model directive to tell Razor that I am now working with a different 
+data type. I updated the foreach loop so that the data source is the Products property 
+of the model data.
