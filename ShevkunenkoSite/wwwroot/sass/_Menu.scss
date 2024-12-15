@@ -1,4 +1,13 @@
-﻿.navbar-toggler {
+﻿$button-border: 2px ridge #b5aeae;
+
+.navbar-brand {
+    padding: 0;
+    margin: 0 .3rem 0 0;
+    border: $button-border;
+    border-radius: .3rem;
+}
+
+.navbar-toggler {
     padding: .1rem !important;
     font-size: 1rem !important;
     background-color: transparent;
@@ -16,10 +25,54 @@
     height: 1.3em !important;
 }
 
+.nav-item {
+    border: $button-border !important;
+    border-radius: 0.3rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.1rem;
+    background: rgba(0,0,0,0.03) !important;
+    margin: 0 .3rem 0 0 !important;
+    padding: 0 .3rem 0 0 !important;
+    transition: all .4s ease-in-out;
+}
+
+.nav-item:hover, .nav-item span:hover, .dropdown-item li dropdown-item:hover {
+    color: darkred !important;
+    border-color: darkred !important;
+}
+
+.dropdown-item li span:hover {
+    color: darkred !important;
+}
+
+.search-button {
+    padding-top: 3px !important;
+}
+
+.nav-link span {
+    display: inline-block;
+    margin-top: 0;
+    padding: 0 .4rem;
+}
+
+.dropdown-menu li dropdown-item {
+    position: relative;
+    width: max-content;
+    border: $button-border !important;
+    border-radius: 0.3rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.1rem;
+    background-color: silver !important;
+    margin: 0 0 .3rem 0 !important;
+    padding: 0 .1rem 0 0 !important;
+    transition: all .4s ease-in-out;
+}
+
 .dropdown-menu li {
     position: relative;
-    transition: all .3s ease-in-out !important;
+    transition: all .4s ease-in-out !important;
 }
+
 
 .dropdown-menu .dropdown-submenu {
     display: none;

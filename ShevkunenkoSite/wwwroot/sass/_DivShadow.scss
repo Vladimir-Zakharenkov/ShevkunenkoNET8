@@ -8,11 +8,11 @@ $shadow-top-left: hsla(0,70%,100%,1);
     border-right: 1px ridge $shadow-bottom-right;
     border-bottom: 1px ridge $shadow-bottom-right;
     border-top: 1px ridge $shadow-top-left;
-    border-left: 1px ridge $shadow-top-left
+    border-left: 1px ridge $shadow-top-left;
 }
 
 .shadw:after, .shadw:before {
     content: "";
     position: absolute;
-    z-index: -2
+    z-index: -2;
 }

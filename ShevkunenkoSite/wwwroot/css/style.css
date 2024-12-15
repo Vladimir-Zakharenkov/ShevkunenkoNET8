@@ -12247,10 +12247,6 @@ a:active, .dropdown:active {
   border-color: darkred !important;
 }
 
-.donatealerts {
-  border-color: darkred !important;
-}
-
 .cardborder a, .borderforitem {
   border: 2px ridge transparent;
   transition: all 0.6s ease-in-out;
@@ -12463,16 +12459,25 @@ li#yandex-search {
 li#yandex-search * {
   margin-top: 0 !important;
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+td.ya-site-form__search-input {
+  padding-top: 2px !important;
 }
 
 .ya-site-form__wrap {
-  min-width: 120px !important;
+  min-width: 140px !important;
+}
+
+.ya-site-form__search-input {
+  padding-bottom: 0 !important;
 }
 
 /* Кнопка «Поделиться» */
 .ya-share2__item_more.ya-share2__item_has-pretty-view .ya-share2__link_more {
   background: rgba(0, 0, 0, 0) !important;
-  border: 0px solid rgba(0, 0, 0, 0.15) !important;
+  border-color: transparent !important;
   border-radius: 0px !important;
   padding: 1px 0.4rem !important;
   font-family: "Times New Roman", Times, serif !important;
@@ -12516,11 +12521,18 @@ li#yandex-search * {
 }
 
 .ya-share2__list.ya-share2__list_direction_vertical > .ya-share2__item {
-  margin-bottom: 0.4rem !important;
+  margin-bottom: 0.3rem !important;
   display: inline-block !important;
   width: contain !important;
   background: rgba(0, 0, 0, 0.03) !important;
   box-shadow: 0 15px 10px -10px hsla(350deg, 60%, 0%, 0.5), 0 1px 4px hsla(350deg, 60%, 0%, 0.3), 0 0 40px hsla(350deg, 60%, 0%, 0.1) inset !important;
+}
+
+.navbar-brand {
+  padding: 0;
+  margin: 0 0.3rem 0 0;
+  border: 2px ridge #b5aeae;
+  border-radius: 0.3rem;
 }
 
 .navbar-toggler {
@@ -12541,9 +12553,52 @@ li#yandex-search * {
   height: 1.3em !important;
 }
 
+.nav-item {
+  border: 2px ridge #b5aeae !important;
+  border-radius: 0.3rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.1rem;
+  background: rgba(0, 0, 0, 0.03) !important;
+  margin: 0 0.3rem 0 0 !important;
+  padding: 0 0.3rem 0 0 !important;
+  transition: all 0.4s ease-in-out;
+}
+
+.nav-item:hover, .nav-item span:hover, .dropdown-item li dropdown-item:hover {
+  color: darkred !important;
+  border-color: darkred !important;
+}
+
+.dropdown-item li span:hover {
+  color: darkred !important;
+}
+
+.search-button {
+  padding-top: 3px !important;
+}
+
+.nav-link span {
+  display: inline-block;
+  margin-top: 0;
+  padding: 0 0.4rem;
+}
+
+.dropdown-menu li dropdown-item {
+  position: relative;
+  width: max-content;
+  border: 2px ridge #b5aeae !important;
+  border-radius: 0.3rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.1rem;
+  background-color: silver !important;
+  margin: 0 0 0.3rem 0 !important;
+  padding: 0 0.1rem 0 0 !important;
+  transition: all 0.4s ease-in-out;
+}
+
 .dropdown-menu li {
   position: relative;
-  transition: all 0.3s ease-in-out !important;
+  transition: all 0.4s ease-in-out !important;
 }
 
 .dropdown-menu .dropdown-submenu {

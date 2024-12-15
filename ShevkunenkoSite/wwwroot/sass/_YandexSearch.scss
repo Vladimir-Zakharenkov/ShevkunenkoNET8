@@ -1,13 +1,22 @@
-﻿li#yandex-search{
-    max-width:800px !important;
-    min-width:120px !important;
+﻿li#yandex-search {
+    max-width: 800px !important;
+    min-width: 120px !important;
 }
 
 li#yandex-search * {
     margin-top: 0 !important;
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+td.ya-site-form__search-input {
+    padding-top: 2px !important;
 }
 
 .ya-site-form__wrap {
-    min-width: 120px !important;
+    min-width: 140px !important;
+}
+
+.ya-site-form__search-input {
+    padding-bottom: 0 !important;
 }

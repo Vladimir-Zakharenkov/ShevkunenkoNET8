@@ -1,12 +1,12 @@
 ﻿/* Кнопка «Поделиться» */
 .ya-share2__item_more.ya-share2__item_has-pretty-view .ya-share2__link_more {
     background: rgba(0,0,0,0.00) !important;
-    border: 0px solid rgba(0,0,0,0.15) !important;
+    border-color:transparent !important;
     border-radius: 0px !important;
     padding: 1px .4rem !important;
     font-family: "Times New Roman",Times,serif !important;
     font-size: 1.1rem !important;
-    margin-bottom: 0 !important
+    margin-bottom: 0 !important;
 }
 
 /* Меню ссылок */
@@ -45,7 +45,7 @@
 }
 
 .ya-share2__list.ya-share2__list_direction_vertical > .ya-share2__item {
-    margin-bottom: .4rem !important;
+    margin-bottom: .3rem !important;
     display: inline-block !important;
     width: contain !important;
     background: rgba(0,0,0,0.03) !important;
