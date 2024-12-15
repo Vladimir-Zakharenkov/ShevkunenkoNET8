@@ -1,7 +1,7 @@
 ﻿/* Кнопка «Поделиться» */
 .ya-share2__item_more.ya-share2__item_has-pretty-view .ya-share2__link_more {
     background: rgba(0,0,0,0.00) !important;
-    border-color:transparent !important;
+    border-color: transparent !important;
     border-radius: 0px !important;
     padding: 1px .4rem !important;
     font-family: "Times New Roman",Times,serif !important;
@@ -12,6 +12,7 @@
 /* Меню ссылок */
 .ya-share2__popup {
     background-color: rgba(0,0,0,0.00) !important;
+    padding-left: 1rem;
 }
 
 .ya-share2__container_size_m .ya-share2__popup:not(.ya-share2__popup_mobile) {

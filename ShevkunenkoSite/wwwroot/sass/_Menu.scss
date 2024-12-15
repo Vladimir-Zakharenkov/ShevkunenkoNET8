@@ -31,12 +31,12 @@
     font-family: 'Times New Roman', Times, serif;
     font-size: 1.1rem;
     background: rgba(0,0,0,0.03) !important;
-    margin: 0 .3rem 0 0 !important;
+    margin: 0 .3rem 0 0;
     padding: 0 .3rem 0 0 !important;
     transition: all .4s ease-in-out;
 }
 
-.nav-item:hover, .nav-item span:hover, .dropdown-item li dropdown-item:hover {
+.nav-item:hover, .nav-item span:hover {
     color: darkred !important;
     border-color: darkred !important;
 }
@@ -55,16 +55,8 @@
     padding: 0 .4rem;
 }
 
-.dropdown-menu li dropdown-item {
-    position: relative;
-    width: max-content;
+.dropdown-item {
     border: $button-border !important;
-    border-radius: 0.3rem;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.1rem;
-    background-color: silver !important;
-    margin: 0 0 .3rem 0 !important;
-    padding: 0 .1rem 0 0 !important;
     transition: all .4s ease-in-out;
 }
 
@@ -72,7 +64,6 @@
     position: relative;
     transition: all .4s ease-in-out !important;
 }
-
 
 .dropdown-menu .dropdown-submenu {
     display: none;
