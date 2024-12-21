@@ -1,10 +1,37 @@
-UNIT TEST: TESTING THE CART
+Defining Session State Extension Methods
 
-The Cart class is relatively simple, but it has a range of important behaviors that must work properly.
-A poorly functioning cart would undermine the entire SportsStore application. I have broken down
-the features and tested them individually. I created a new unit test file called CartTests.cs in the
-SportsStore.Tests project to contain these tests.
+The session state feature in ASP.NET Core stores only int, string, and byte[] values. Since I want to
+store a Cart object, I need to define extension methods to the ISession interface, which provides access
+to the session state data to serialize Cart objects into JSON and convert them back. I added a class file
+called SessionExtensions.cs to the Infrastructure folder and defined the extension methods shown in
+Listing 8.23
 
-The first behavior relates to when I add an item to the cart. If this is the first time that a given Product
-has been added to the cart, I want a new CartLine to be added. Here is the test, including the unit test
-class definition:
+using System.Text.Json;
+
+namespace SportsStore.Infrastructure
+{
+    public static class SessionExtensions
+    {
+        public static void SetJson(this ISession session, string key, object value)
+        {
+            session.SetString(key, JsonSerializer.Serialize(value));
+        }
+
+        public static T? GetJson<T>(this ISession session, string key)
+        {
+            var sessionData = session.GetString(key);
+
+            return sessionData == null ? default(T) : JsonSerializer.Deserialize<T>(sessionData);
+        }
+    }
+}
+
+These methods serialize objects into the JavaScript Object Notation format, making it easy to store and
+retrieve Cart objects.
+
+Completing the Razor Page
+
+The Cart Razor Page will receive the HTTP POST request that the browser sends when the user clicks an
+Add To Cart button. It will use the request form data to get the Product object from the database and use
+it to update the user’s cart, which will be stored as session data for use by future requests. Listing 8.24
+implements these features.

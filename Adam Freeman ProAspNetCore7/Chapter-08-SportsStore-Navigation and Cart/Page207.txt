@@ -1,30 +1,24 @@
-Defining Session State Extension Methods
+Understanding Razor Pages
 
-The session state feature in ASP.NET Core stores only int, string, and byte[] values. Since I want to
-store a Cart object, I need to define extension methods to the ISession interface, which provides access
-to the session state data to serialize Cart objects into JSON and convert them back. I added a class file
-called SessionExtensions.cs to the Infrastructure folder and defined the extension methods shown in
-Listing 8-23.
+Razor Pages can feel a little odd when you first start using them, especially if you have previous
+experience with the MVC Framework features provided by ASP.NET Core. But Razor Pages are
+complementary to the MVC Framework, and I find myself using them alongside controllers and views
+because they are well-suited to self-contained features that don’t require the complexity of the MVC
+Framework. I describe Razor Pages in Chapter 23 and show their use alongside controllers throughout
+Part 3 and Part 4 of this book.
 
-using System.Text.Json;
+The result is that the basic functions of the shopping cart are in place. First, products are listed along
+with a button to add them to the cart, which you can see by restarting ASP.NET Core and requesting 
+http://localhost:5000, as shown in Figure 8.10.
 
-namespace SportsStore.Infrastructure
-{
-    public static class SessionExtensions
-    {
-        public static void SetJson(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonSerializer.Serialize(value));
-        }
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-10.webp
 
-        public static T? GetJson<T>(this ISession session, string key)
-        {
-            var sessionData = session.GetString(key);
+Figure 8.10	The Add To Cart buttons
 
-            return sessionData == null ? default(T) : JsonSerializer.Deserialize<T>(sessionData);
-        }
-    }
-}
+Second, when the user clicks an Add To Cart button, the appropriate product is added to their cart, and
+a summary of the cart is displayed, as shown in Figure 8-11. Clicking the Continue Shopping button returns
+the user to the product page they came from.
 
-These methods serialize objects into the JavaScript Object Notation format, making it easy to store and
-retrieve Cart objects.
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-11.webp
+
+Figure 8.11Displaying the contents of the shopping cart

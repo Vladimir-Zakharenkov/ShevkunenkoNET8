@@ -1,0 +1,41 @@
+UNIT TEST: TESTING THE CART
+
+The Cart class is relatively simple, but it has a range of important behaviors that must work properly.
+A poorly functioning cart would undermine the entire SportsStore application. I have broken down
+the features and tested them individually. I created a new unit test file called CartTests.cs in the
+SportsStore.Tests project to contain these tests.
+
+The first behavior relates to when I add an item to the cart. If this is the first time that a given Product
+has been added to the cart, I want a new CartLine to be added. Here is the test, including the unit test
+class definition:
+
+using System.Linq;
+using SportsStore.Models;
+using Xunit;
+namespace SportsStore.Tests
+{
+    public class CartTests
+    {
+        [Fact]
+        public void Can_Add_New_Lines()
+        {
+            // Arrange - create some test products
+            Product p1 = new Product { ProductID = 1, Name = "P1" };
+            Product p2 = new Product { ProductID = 2, Name = "P2" };
+
+            // Arrange - create a new cart
+            Cart target = new Cart();
+
+            // Act
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+
+            CartLine[] results = target.Lines.ToArray();
+
+            // Assert
+            Assert.Equal(2, results.Length);
+            Assert.Equal(p1, results[0].Product);
+            Assert.Equal(p2, results[1].Product);
+        }
+    }
+}

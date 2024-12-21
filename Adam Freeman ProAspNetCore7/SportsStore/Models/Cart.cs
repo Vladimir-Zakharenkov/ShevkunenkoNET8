@@ -1,14 +1,4 @@
-The AddDistributedMemoryCache method call sets up the in-memory data store. The AddSession
-method registers the services used to access session data, and the UseSession method allows the session
-system to automatically associate requests with sessions when they arrive from the client.
-
-8.2.5   Implementing the Cart Feature
-
-Now that the preparations are complete, I can implement the cart features. I started by adding a class file
-called Cart.cs to the Models folder in the SportsStore project and used it to define the classes shown in
-Listing 8.22.
-
-Listing 8.22 The Contents of the Cart.cs File in the SportsStore/Models Folder
+﻿#region Listing 8.22 The contents of the Cart.cs file in the SportsStore/Models folder
 
 namespace SportsStore.Models
 {
@@ -54,7 +44,4 @@ namespace SportsStore.Models
     }
 }
 
-The Cart class uses the CartLine class, defined in the same file, to represent a product selected by the
-customer and the quantity the user wants to buy. I defined methods to add an item to the cart, remove a
-previously added item from the cart, calculate the total cost of the items in the cart, and reset the cart by
-removing all the items.
+#endregion
