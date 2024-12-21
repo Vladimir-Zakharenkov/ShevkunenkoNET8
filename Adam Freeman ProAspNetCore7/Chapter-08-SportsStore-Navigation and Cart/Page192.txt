@@ -1,0 +1,47 @@
+UNIT TEST: REPORTING THE SELECTED CATEGORY
+
+I can test that the view component correctly adds details of the selected category by reading 
+the value of the ViewBag property in a unit test, which is available through 
+the ViewViewComponentResult class. Here is the test, which I added to 
+the NavigatioMenuViewComponentTests class:
+...
+[Fact]
+public void Indicates_Selected_Category()
+{
+    // Arrange
+    string categoryToSelect = "Apples";
+
+    Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+    mock.Setup(m => m.Products).Returns((new Product[] {
+        new Product {ProductID = 1, Name = "P1", Category = "Apples"},
+        new Product {ProductID = 4, Name = "P2", Category = "Oranges"},
+    }).AsQueryable<Product>());
+
+    NavigationMenuViewComponent target =
+        new NavigationMenuViewComponent(mock.Object);
+    target.ViewComponentContext = new ViewComponentContext
+    {
+        ViewContext = new ViewContext
+        {
+            RouteData = new Microsoft.AspNetCore.Routing.RouteData()
+        }
+    };
+    target.RouteData.Values["category"] = categoryToSelect;
+
+    // Action
+    string? result = (string?)(target.Invoke()
+        as ViewViewComponentResult)?.ViewData?["SelectedCategory"];
+
+    // Assert
+    Assert.Equal(categoryToSelect, result);
+}
+...
+
+This unit test provides the view component with routing data through the ViewComponentContext
+property, which is how view components receive all their context data. The ViewComponentContext
+property provides access to view-specific context data through its ViewContext property, which in
+turn provides access to the routing information through its RouteData property. Most of the code 
+in the unit test goes into creating the context objects that will provide the selected category 
+in the same way that it would be presented when the application is running and the context data 
+is provided by ASP.NET Core MVC.

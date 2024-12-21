@@ -1,0 +1,12 @@
+Correcting the Page Count
+
+I need to correct the page links so that they work correctly when a category is selected. 
+Currently, the number of page links is determined by the total number of products in 
+the repository and not the number of products in the selected category. This means that 
+the customer can click the link for page 2 of the Chess category and end up with an empty 
+page because there are not enough chess products to fill two pages. You can see the problem 
+in Figure 8-6.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-6.png
+
+Figure 8-6. Displaying the wrong page links when a category is selected

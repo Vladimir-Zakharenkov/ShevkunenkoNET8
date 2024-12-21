@@ -1,0 +1,29 @@
+The handler methods use parameter names that match the input elements in the HTML forms
+produced by the ProductSummary.cshtml view. This allows ASP.NET Core to associate incoming form POST
+variables with those parameters, meaning I do not need to process the form directly. This is known as model
+binding and is a powerful tool for simplifying development, as I explain in detail in Chapter 28.
+
+UNDERSTANDING RAZOR PAGES
+
+Razor Pages can feel a little odd when you first start using them, especially if you have previous
+experience with the MVC Framework features provided by ASP.NET Core. But Razor Pages are
+complementary to the MVC Framework, and I find myself using them alongside controllers and views
+because they are well-suited to self-contained features that don’t require the complexity of the MVC
+Framework. I describe Razor Pages in Chapter 23 and show their use alongside controllers throughout
+Part 3 and Part 4 of this book.
+
+The result is that the basic functions of the shopping cart are in place. First, products are listed along
+with a button to add them to the cart, which you can see by restarting ASP.NET Core and requesting http://
+localhost:5000, as shown in Figure 8-10.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-10.png
+
+Figure 8-10. The Add To Cart buttons
+
+Second, when the user clicks an Add To Cart button, the appropriate product is added to their cart, and
+a summary of the cart is displayed, as shown in Figure 8-11. Clicking the Continue Shopping button returns
+the user to the product page they came from.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-11.png
+
+Figure 8-11. Displaying the contents of the shopping cart

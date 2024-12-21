@@ -1,0 +1,55 @@
+UNIT TEST: GENERATING THE CATEGORY LIST
+
+The unit test for my ability to produce a category list is relatively simple. The goal is 
+to create a list that is sorted in alphabetical order and contains no duplicates, and 
+the simplest way to do this is to supply some test data that does have duplicate categories 
+and that is not in order, pass this to the tag helper class, and assert that the data has been 
+properly cleaned up. Here is the unit test, which I defined in a new class file called 
+NavigationMenuViewComponentTests.cs in the SportsStore.Tests project:
+
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Moq;
+using SportsStore.Components;
+using SportsStore.Models;
+using Xunit;
+
+namespace SportsStore.Tests
+{
+    public class NavigationMenuViewComponentTests
+    {
+        [Fact]
+        public void Can_Select_Categories()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new();
+
+            mock.Setup(m => m.Products)
+                .Returns((new Product[]
+                {
+                    new Product {ProductID = 1, Name = "P1", Category = "Apples"},
+                    new Product {ProductID = 2, Name = "P2", Category = "Apples"},
+                    new Product {ProductID = 3, Name = "P3", Category = "Plums"},
+                    new Product {ProductID = 4, Name = "P4", Category = "Oranges"}
+                })
+                .AsQueryable<Product>());
+
+            NavigationMenuViewComponent target = new(mock.Object);
+
+            // Act = get the set of categories
+            string[] results = ((IEnumerable<string>?)(target.Invoke()
+                as ViewViewComponentResult)?.ViewData?.Model
+                    ?? Enumerable.Empty<string>()).ToArray();
+
+            // Assert
+            Assert.True(Enumerable.SequenceEqual(new string[] 
+                { "Apples", "Oranges", "Plums" }, results));
+        }
+    }
+}
+
+I created a mock repository implementation that contains repeating categories and categories 
+that are not in order. I assert that the duplicates are removed and that alphabetical ordering 
+is imposed.

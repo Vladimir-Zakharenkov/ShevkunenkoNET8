@@ -1,0 +1,7 @@
+I made three changes to the action method. First, I added a parameter called category. 
+This category parameter is used by the second change in the listing, which is an enhancement 
+to the LINQ query: if category is not null, only those Product objects with a matching 
+Category property are selected. The last change is to set the value of the CurrentCategory 
+property I added to the ProductsListViewModel class. However, these changes mean that 
+the value of PagingInfo.TotalItems is incorrectly calculated because it
+doesn’t take the category filter into account. I will fix this in a while.

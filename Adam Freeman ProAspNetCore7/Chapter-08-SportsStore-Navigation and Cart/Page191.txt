@@ -1,0 +1,53 @@
+Highlighting the Current Category
+
+There is no feedback to the user to indicate which category has been selected. It might 
+be possible to infer the category from the items in the list, but some clear visual feedback 
+seems like a good idea. ASP.NET Core components such as controllers and view components 
+can receive information about the current request by asking for a context object. Most of 
+the time, you can rely on the base classes that you use to create components to take care 
+of getting the context object for you, such as when you use the Controller base
+class to create controllers.
+
+The ViewComponent base class is no exception and provides access to context objects through 
+a set of properties. One of the properties is called RouteData, which provides information 
+about how the request URL was handled by the routing system.
+
+In Listing 8-10, I use the RouteData property to access the request data to get the value 
+for the currently selected category. I could pass the category to the view by creating 
+another view model class (and that’s what I would do in a real project), but for variety, 
+I am going to use the view bag feature, which allows unstructured data to be passed 
+to a view alongside the view model object. I describe how this feature works
+in detail in Chapter 22.
+
+Listing 8-10. Passing the Selected Category in the NavigationMenuViewComponent.cs File 
+in the SportsStore/Components Folder
+
+sing Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+
+namespace SportsStore.Components
+{
+    public class NavigationMenuViewComponent : ViewComponent
+    {
+        private IStoreRepository repository;
+        public NavigationMenuViewComponent(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public IViewComponentResult Invoke()
+        {
+            ViewBag.SelectedCategory = RouteData?.Values["category"];
+
+            return View(repository.Products
+                .Select(x => x.Category)
+                .Distinct()
+                .OrderBy(x => x));
+        }
+    }
+}
+
+Inside the Invoke method, I have dynamically assigned a SelectedCategory property to 
+the ViewBag object and set its value to be the current category, which is obtained through 
+the context object returned by the RouteData property. The ViewBag is a dynamic object 
+that allows me to define new properties simply by assigning values to them.

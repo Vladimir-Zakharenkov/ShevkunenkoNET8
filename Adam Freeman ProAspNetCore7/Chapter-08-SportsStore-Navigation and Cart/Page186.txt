@@ -1,0 +1,15 @@
+Building a Category Navigation Menu
+
+I need to provide users with a way to select a category that does not involve typing in URLs. 
+This means presenting a list of the available categories and indicating which, if any, 
+is currently selected.
+
+ASP.NET Core has the concept of view components, which are perfect for creating items such 
+as reusable navigation controls. A view component is a C# class that provides a small 
+amount of reusable application logic with the ability to select and display Razor partial views. 
+I describe view components in detail in Chapter 24.
+
+In this case, I will create a view component that renders the navigation menu and integrate 
+it into the application by invoking the component from the shared layout. This approach gives 
+me a regular C# class that can contain whatever application logic I need and that can be unit 
+tested like any other class.

@@ -1,0 +1,32 @@
+CHAPTER 8
+
+SportsStore: Navigation and Cart
+
+This chapter covers
+
+•	Navigating between product categories
+•	Correcting the pagination controls to support category navigation
+•	Using sessions to store data between requests
+•	Implementing a shopping cart using session data
+•	Displaying the shopping cart contents using Razor Pages
+
+In this chapter, I continue to build out the SportsStore example app. I add support for navigating 
+around the application and start building a shopping cart.
+
+Tip
+You can download the example project for this chapter—and for all the other chapters in this book—
+from https://github.com/manningbooks/pro-asp.net-core-7. See Chapter 1 for how to get help if you have
+problems running the examples.
+
+8.1	Adding Navigation Controls
+
+The SportsStore application will be more useful if customers can navigate products 
+by category. I will do this in three phases.
+
+	•   Enhance the Index action method in the HomeController class so that it can filter
+		the Product objects in the repository
+
+	•   Revisit and enhance the URL scheme
+
+	•   Create a category list that will go into the sidebar of the site, highlighting the
+		current category and linking to others

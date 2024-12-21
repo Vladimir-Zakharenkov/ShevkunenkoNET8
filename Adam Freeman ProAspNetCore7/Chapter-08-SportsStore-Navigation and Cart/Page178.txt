@@ -1,4 +1,16 @@
-﻿using System;
+UNIT TEST: UPDATING EXISTING UNIT TESTS
+
+I changed the signature of the Index action method, which will prevent some of the existing unit test
+methods from compiling. To address this, I need to pass null as the first parameter to the Index
+method in those unit tests that work with the controller. For example, in the Can_Use_Repository
+test in the HomeControllerTests.cs file, the action section of the unit test becomes as follows:
+
+By using null for the category argument, I receive all the Product objects that
+the controller gets from the repository, which is the same situation I had before adding
+the new parameter. I need to make the same change to the Can_Paginate and
+Can_Send_Pagination_View_Model tests as well.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -102,3 +114,6 @@ namespace SportsStore.Tests
         }
     }
 }
+
+Keeping your unit tests synchronized with your code changes quickly becomes second nature when you
+get into the testing mindset.

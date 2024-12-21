@@ -1,0 +1,37 @@
+Now that I am providing information about which category is selected, I can update 
+the view selected by the view component and vary the CSS classes used to style the links 
+so that the one representing the current category is distinct. Listing 8-11 shows the change 
+I made to the Default.cshtml file.
+
+Listing 8-11. Highlighting in the Default.cshtml File 
+in the SportsStore/Views/Shared/Components/NavigationMenu Folder
+
+@model IEnumerable<string>
+
+<div class="d-grid gap-2">
+    <a class="btn btn-outline-secondary" asp-action="Index"
+       asp-controller="Home" asp-route-category="">
+        Home
+    </a>
+
+    @foreach (string category in Model ?? Enumerable.Empty<string>())
+    {
+        <a class="btn @(category == ViewBag.SelectedCategory
+                ? "btn-primary": "btn-outline-secondary")"
+           asp-action="Index" asp-controller="Home"
+           asp-route-category="@category"
+           asp-route-productPage="1">
+            @category
+        </a>
+    }
+</div>
+
+I have used a Razor expression within the class attribute to apply the btn-primary class 
+to the element that represents the selected category and the btn-secondary class otherwise. 
+These classes apply different Bootstrap styles and make the active button obvious, which 
+you can see by restarting ASP.NET Core, requesting http://localhost:5000, and clicking 
+one of the category buttons, as shown in Figure 8-5.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-5.png
+
+Figure 8-5. Highlighting the selected category

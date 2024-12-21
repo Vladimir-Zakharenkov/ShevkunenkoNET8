@@ -1,0 +1,52 @@
+I can fix this by updating the Index action method in the Home controller so that 
+the pagination information takes the categories into account, as shown in Listing 8-12.
+
+Listing 8-12. Creating Category Pagination Data in the HomeController.cs File 
+in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+using SportsStore.Models.ViewModels;
+
+namespace SportsStore.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IStoreRepository repository;
+        public int PageSize = 4;
+        public HomeController(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public ViewResult Index(string? category, int productPage = 1)
+            => View(new ProductsListViewModel
+            {
+                Products = repository.Products
+                    .Where(p => category == null || p.Category == category)
+                    .OrderBy(p => p.ProductID)
+                    .Skip((productPage - 1) * PageSize)
+                    .Take(PageSize),
+
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = productPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = category == null
+                        ? repository.Products.Count()
+                        : repository.Products
+                            .Where(e => e.Category == category).Count()
+                },
+
+                CurrentCategory = category
+            });
+    }
+}
+
+If a category has been selected, I return the number of items in that category; if not, 
+I return the total number of products. Restart ASP.NET Core and request http://localhost:5000 
+to see the changes when a category is selected, as shown in Figure 8-7.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-7.png
+
+Figure 8-7. Displaying category-specific page counts

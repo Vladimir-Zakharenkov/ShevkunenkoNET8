@@ -1,0 +1,10 @@
+UNIT TEST: TESTING THE CART
+
+The Cart class is relatively simple, but it has a range of important behaviors that must work properly.
+A poorly functioning cart would undermine the entire SportsStore application. I have broken down
+the features and tested them individually. I created a new unit test file called CartTests.cs in the
+SportsStore.Tests project to contain these tests.
+
+The first behavior relates to when I add an item to the cart. If this is the first time that a given Product
+has been added to the cart, I want a new CartLine to be added. Here is the test, including the unit test
+class definition:

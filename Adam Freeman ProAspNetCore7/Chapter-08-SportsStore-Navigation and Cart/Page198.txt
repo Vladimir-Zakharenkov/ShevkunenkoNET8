@@ -1,0 +1,55 @@
+Configuring Razor Pages
+
+So far, I have used the MVC Framework to define the SportsStore project features. For variety, 
+I am going to use Razor Pages — another application framework supported by ASP.NET Core — to 
+implement the shopping cart. Listing 8-13 configures the Program.cs file to enable Razor Pages 
+in the SportsStore application.
+
+Listing 8-13. Enabling Razor Pages in the Program.cs File 
+in the SportsStore Folder
+
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(
+    builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
+
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+
+builder.Services.AddRazorPages();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+
+app.MapControllerRoute("catpage",
+    "{category}/Page{productPage:int}",
+    new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute("page", "Page{productPage:int}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("category", "{category}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("pagination",
+    "Products/Page{productPage}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapDefaultControllerRoute();
+
+app.MapRazorPages();
+
+SeedData.EnsurePopulated(app);
+
+app.Run();
+
+The AddRazorPages method sets up the services used by Razor Pages, and the MapRazorPages method
+registers Razor Pages as endpoints that the URL routing system can use to handle requests.

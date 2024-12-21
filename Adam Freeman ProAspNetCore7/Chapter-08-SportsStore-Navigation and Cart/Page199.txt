@@ -1,0 +1,57 @@
+Add a folder named Pages, which is the conventional location for Razor Pages, to the SportsStore
+project. Add a Razor View Imports file named _ViewImports.cshtml to the Pages folder with 
+the content shown in Listing 8-14. These expressions set the namespace that the Razor Pages 
+will belong to and allow the SportsStore classes to be used in Razor Pages without needing 
+to specify their namespace.
+
+Listing 8-14. The Contents of the _ViewImports.cshtml File 
+in the SportsStore/Pages Folder
+
+@namespace SportsStore.Pages
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using SportsStore.Models
+@using SportsStore.Infrastructure
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+Next, add a Razor View Start file named _ViewStart.cshtml to the Pages folder, with the content 
+shown in Listing 8-15. Razor Pages have their own configuration files, and this one specifies 
+that the Razor Pages in the SportsStore project will use a layout file named _CartLayout 
+by default.
+
+Listing 8-15. The Contents of the _ViewStart.cshtml File 
+in the SportsStore/Pages Folder
+
+@{
+	Layout = "_CartLayout";
+}
+
+Finally, to provide the layout the Razor Pages will use, add a Razor View named _CartLayout.cshtml to
+the Pages folder with the content shown in Listing 8-16.
+
+Listing 8-16. The Contents of the _CartLayout.cshtml File 
+in the SportsStore/Pages Folder
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SportsStore</title>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2">SPORTS STORE</span>
+    </div>
+    <div class="m-1 p-1">
+        @RenderBody()
+    </div>
+</body>
+</html>
+
+Creating a Razor Page
+
+If you are using Visual Studio, use the Razor Page template item and set the item name 
+to Cart.cshtml. This will create a Cart.cshtml file and a Cart.cshtml.cs class file. 
+Replace the contents of the file with those shown in Listing 8-17. If you are using 
+Visual Studio Code, just create a Cart.cshtml file with the content
+shown in Listing 8-17.

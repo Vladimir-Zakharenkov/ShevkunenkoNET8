@@ -1,0 +1,10 @@
+I am not going to describe these unit tests in detail because there is a simpler way to perform these
+tests, which I explain in the next chapter. The complexity in this test is mocking the ISession interface
+so that the page model class can use extension methods to retrieve a JSON representation of a Cart
+object. The ISession interface only stores byte arrays, and getting and deserializing a string is
+performed by extension methods. Once the mock objects are defined, they can be wrapped in context
+objects and used to configure an instance of the page model class, which can be subjected to tests.
+
+The process of testing the OnPost method of the page model class means capturing the byte array
+that is passed to the ISession interface mock and then deserializing it to ensure that it contains the
+expected content. Here is the unit test I added to the CartPageTests class:

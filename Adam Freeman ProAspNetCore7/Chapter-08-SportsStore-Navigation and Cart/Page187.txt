@@ -1,0 +1,74 @@
+Creating the Navigation View Component
+
+I created a folder called Components, which is the conventional home of view components, 
+in the SportsStore project and added to it a class file named NavigationMenuViewComponent.cs, 
+which I used to define the class shown in Listing 8-6.
+
+Listing 8-6. The Contents of the NavigationMenuViewComponent.cs File in the SportsStore/
+Components Folder
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace SportsStore.Components
+{
+    public class NavigationMenuViewComponent : ViewComponent
+    {
+        public string Invoke()
+        {
+            return "Hello from the Nav View Component";
+        }
+    }
+}
+
+The view component’s Invoke method is called when the component is used in a Razor view, and the
+result of the Invoke method is inserted into the HTML sent to the browser. I have started 
+with a simple view component that returns a string, but I’ll replace this with HTML shortly.
+
+I want the category list to appear on all pages, so I am going to use the view component 
+in the shared layout, rather than in a specific view. Within a view, view components are applied 
+using a tag helper, as shown in Listing 8-7.
+
+Listing 8-7. Using a View Component in the _Layout.cshtml File in the SportsStore/Views/Shared Folder
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SportsStore</title>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2">SPORTS STORE</span>
+    </div>
+
+    <div class="row m-1 p-1">
+
+        <div id="categories" class="col-3">
+            <vc:navigation-menu />
+        </div>
+
+        <div class="col-9">
+            @RenderBody()
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+I removed the placeholder text and replaced it with the vc:navigation-menu element, which inserts 
+the view component. The element omits the ViewComponent part of the class name and hyphenates it, 
+such that vc:navigation-menu specifies the NavigationMenuViewComponent class.
+
+Restart ASP.NET Core and request http://localhost:5000, and you will see that the output from the
+Invoke method is included in the HTML sent to the browser, as shown in Figure 8-3.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-3.png
+
+Figure 8-3. Using a view component

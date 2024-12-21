@@ -1,0 +1,66 @@
+8.1.1   Filtering the Product List
+
+I am going to start by enhancing the view model class, ProductsListViewModel, which I added 
+to the SportsStore project in the previous chapter. I need to communicate the current category 
+to the view to render the sidebar, and this is as good a place to start as any. Listing 8.1 
+shows the changes I made to the ProductsListViewModel.cs file in the Models/ViewModels folder.
+
+Listing 8.1     Modifying the ProductsListViewModel.cs File in the SportsStore/Models/ViewModels Folder
+
+namespace SportsStore.Models.ViewModels
+{
+    public class ProductsListViewModel
+    {
+        public IEnumerable<Product> Products { get; set; } = Enumerable.Empty<Product>();
+
+        public PagingInfo PagingInfo { get; set; } = new();
+
+        public string? CurrentCategory { get; set; }
+    }
+}
+
+I added a property called CurrentCategory. The next step is to update the Home controller 
+so that the Index action method will filter Product objects by category and use the property 
+I added to the view model to indicate which category has been selected, as shown in Listing 8.2
+
+Listing 8.2     Adding Category Support in the HomeController.cs File in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+using SportsStore.Models.ViewModels;
+
+namespace SportsStore.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IStoreRepository repository;
+
+        public int PageSize = 4;
+
+        public HomeController(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public ViewResult Index(string? category, int productPage = 1) =>
+            View
+            (
+                new ProductsListViewModel
+                {
+                    Products = repository.Products.Where(p => category == null || p.Category == category)
+                        .OrderBy(p => p.ProductID)
+                        .Skip((productPage - 1) * PageSize)
+                        .Take(PageSize),
+
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = productPage,
+                        ItemsPerPage = PageSize,
+                        TotalItems = repository.Products.Count()
+                    },
+
+                    CurrentCategory = category
+                }
+             );
+    }
+}

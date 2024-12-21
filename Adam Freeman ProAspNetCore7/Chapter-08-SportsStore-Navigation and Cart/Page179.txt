@@ -1,0 +1,14 @@
+To see the effect of the category filtering, start ASP.NET Core and select a category using 
+the following URL, taking care to use an uppercase S for Soccer:
+
+http://localhost:5000/?category=Soccer
+
+You will see only the products in the Soccer category, as shown in Figure 8-1.
+
+https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-1.png
+
+Figure 8-1. Using the query string to filter by category
+
+Users won’t want to navigate to categories using URLs, but you can see how small changes 
+can have a big impact once the basic structure of an ASP.NET Core application is in place.
+
