@@ -1,18 +1,8 @@
-If a category has been selected, I return the number of items in that category; if not, 
-I return the total number of products. Restart ASP.NET Core and request http://localhost:5000 
-to see the changes when a category is selected, as shown in Figure 8-7.
+UNIT TEST: CATEGORY FILTERING
 
-https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-7.webp
-
-Figure 8.7	Displaying category-specific page counts
-
-UNIT TEST: CATEGORY-SPECIFIC PRODUCT COUNTS
-
-Testing that I am able to generate the current product count for different categories 
-is simple. I create a mock repository that contains known data in a range of categories 
-and then call the List action method requesting each category in turn. Here is the unit 
-test method that I added to the HomeControllerTests class (you will need to import 
-the System namespace for this test):
+I need a unit test to properly test the category filtering function to ensure that the filter can
+correctly generate products in a specified category. Here is the test method I added to the
+HomeControllerTests class:
 
 using System;
 using System.Collections.Generic;
@@ -143,42 +133,9 @@ namespace SportsStore.Tests
             Assert.True(result[0].Name == "P2" && result[0].Category == "Cat2");
             Assert.True(result[1].Name == "P4" && result[1].Category == "Cat2");
         }
-
-        [Fact]
-        public void Generate_Category_Specific_Product_Count()
-        {
-            // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-
-            mock.Setup(m => m.Products).Returns((new Product[] {
-                new Product {ProductID = 1, Name = "P1", Category = "Cat1"},
-                new Product {ProductID = 2, Name = "P2", Category = "Cat2"},
-                new Product {ProductID = 3, Name = "P3", Category = "Cat1"},
-                new Product {ProductID = 4, Name = "P4", Category = "Cat2"},
-                new Product {ProductID = 5, Name = "P5", Category = "Cat3"}
-                }).AsQueryable<Product>());
-
-            HomeController target = new HomeController(mock.Object);
-
-            target.PageSize = 3;
-
-            Func<ViewResult, ProductsListViewModel?> GetModel = result
-                => result?.ViewData?.Model as ProductsListViewModel;
-
-            // Action
-            int? res1 = GetModel(target.Index("Cat1"))?.PagingInfo.TotalItems;
-            int? res2 = GetModel(target.Index("Cat2"))?.PagingInfo.TotalItems;
-            int? res3 = GetModel(target.Index("Cat3"))?.PagingInfo.TotalItems;
-            int? resAll = GetModel(target.Index(null))?.PagingInfo.TotalItems;
-
-            // Assert
-            Assert.Equal(2, res1);
-            Assert.Equal(2, res2);
-            Assert.Equal(1, res3);
-            Assert.Equal(5, resAll);
-        }
     }
 }
 
-Notice that I also call the Index method, specifying no category, to make sure I get 
-the correct total count as well.
+This test creates a mock repository containing Product objects that belong to a range of categories.
+One specific category is requested using the action method, and the results are checked to ensure 
+that the results are the right objects in the right order.

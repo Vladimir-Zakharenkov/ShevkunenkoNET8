@@ -1,42 +1,88 @@
-Creating the View
+UNIT TEST: REPORTING THE SELECTED CATEGORY
 
-Razor uses different conventions for locating views that are selected by view components. 
-Both the default name of the view and the locations that are searched for the view are different 
-from those used for controllers. To that end, I created the Views/Shared/Components/NavigationMenu 
-folder in the SportsStore project and added to it a Razor View named Default.cshtml, to which 
-I added the content shown in Listing 8-9.
+I can test that the view component correctly adds details of the selected category by reading 
+the value of the ViewBag property in a unit test, which is available through 
+the ViewViewComponentResult class. Here is the test, which I added to 
+the NavigatioMenuViewComponentTests class:
 
-Listing 8-9. The Contents of the Default.cshtml File 
-	in the SportsStore/Views/Shared/Components/NavigationMenu Folder
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Moq;
+using SportsStore.Components;
+using SportsStore.Models;
+using Xunit;
 
-@model IEnumerable<string>
-
-<div class="d-grid gap-2">
-
-    <a class="btn btn-outline-secondary" asp-action="Index"
-       asp-controller="Home" asp-route-category="">
-        Home
-    </a>
-
-    @foreach (string category in Model ?? Enumerable.Empty<string>())
+namespace SportsStore.Tests
+{
+    public class NavigationMenuViewComponentTests
     {
-        <a class="btn btn-outline-secondary"
-           asp-action="Index" asp-controller="Home"
-           asp-route-category="@category"
-           asp-route-productPage="1">
-            @category
-        </a>
+        [Fact]
+        public void Can_Select_Categories()
+        {
+            // Arrange
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1",Category = "Apples"},
+                new Product {ProductID = 2, Name = "P2",Category = "Apples"},
+                new Product {ProductID = 3, Name = "P3",Category = "Plums"},
+                new Product {ProductID = 4, Name = "P4",Category = "Oranges"},
+                }).AsQueryable<Product>());
+
+            NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
+
+            // Act = get the set of categories
+            string[] results = ((IEnumerable<string>?)(target.Invoke() as ViewViewComponentResult)?.ViewData?.Model ?? Enumerable.Empty<string>()).ToArray();
+
+            // Assert
+            Assert.True(Enumerable.SequenceEqual(new string[] { "Apples", "Oranges", "Plums" }, results));
+        }
+
+        [Fact]
+        public void Indicates_Selected_Category()
+        {
+            // Arrange
+            string categoryToSelect = "Apples";
+
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1", Category = "Apples"},
+                new Product {ProductID = 4, Name = "P2", Category = "Oranges"},
+                }).AsQueryable<Product>());
+
+            NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
+
+            target.ViewComponentContext = new ViewComponentContext
+            {
+                ViewContext = new ViewContext
+                {
+                    RouteData = new Microsoft.AspNetCore.Routing.RouteData()
+                }
+            };
+
+            target.RouteData.Values["category"] = categoryToSelect;
+
+            // Action
+            string? result = (string?)(target.Invoke() as ViewViewComponentResult)?.ViewData?["SelectedCategory"];
+
+            // Assert
+            Assert.Equal(categoryToSelect, result);
+        }
     }
+}
 
-</div>
+This unit test provides the view component with routing data through the ViewComponentContext
+property, which is how view components receive all their context data. The ViewComponentContext
+property provides access to view-specific context data through its ViewContext property, which in
+turn provides access to the routing information through its RouteData property. Most of the code 
+in the unit test goes into creating the context objects that will provide the selected category 
+in the same way that it would be presented when the application is running and the context data 
+is provided by ASP.NET Core MVC.
 
-This view uses one of the built-in tag helpers, which I describe in Chapters 25–27, to create anchor
-elements whose href attribute contains a URL that selects a different product category.
-
-Restart ASP.NET Core and request http://localhost:5000 to see the category navigation buttons. If
-you click a button, the list of items is updated to show only items from the selected category, 
-as shown in Figure 8-4.
-
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-4.png
-
-Figure 8-4. Generating category links with a view component
+Now that I am providing information about which category is selected, I can update 
+the view selected by the view component and vary the CSS classes used to style the links 
+so that the one representing the current category is distinct. Listing 8-11 shows the change 
+I made to the Default.cshtml file.

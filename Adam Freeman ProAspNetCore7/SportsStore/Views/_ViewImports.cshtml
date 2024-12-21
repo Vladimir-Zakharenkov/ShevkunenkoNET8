@@ -1,15 +1,22 @@
 ﻿<!-- #region Listing 7.6 The Contents of the _ViewImports.cshtml File in the SportsStore/Views Folder -->
-
 @* 
 @using SportsStore.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
  *@
 <!-- #endregion -->
 <!-- #region Listing 7.29 Registering a tag helper in the _ViewImports.cshtml file in the SportsStore/Views folder -->
-
+@*
 @using SportsStore.Models
 @using SportsStore.Models.ViewModels
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, SportsStore
+ *@
+<!-- #endregion -->
+<!-- #region Listing 7.6 The Contents of the _ViewImports.cshtml File in the SportsStore/Views Folder -->
+@using SportsStore.Models
+@using SportsStore.Models.ViewModels
+@using SportsStore.Infrastructure
 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SportsStore
 <!-- #endregion -->

@@ -1,74 +1,48 @@
-Refining the URL Scheme
+Decorating a tag helper property with the HtmlAttributeName attribute allows me to specify 
+a prefix for attribute names on the element, which in this case will be page-url-. The value 
+of any attribute whose name begins with this prefix will be added to the dictionary 
+that is assigned to the PageUrlValues property, which is then passed to the IUrlHelper.Action 
+method to generate the URL for the href attribute of the a elements that the tag helper produces.
 
-No one wants to see or use ugly URLs such as /?category=Soccer. To address this, 
-I am going to change the routing configuration in the Configure method of the Program.cs 
-file to create a more useful set of URLs, as shown in Listing 8-3.
+In Listing 8.5, I have added a new attribute to the div element that is processed by the tag helper,
+specifying the category that will be used to generate the URL. I have added only one new attribute to the
+view, but any attribute with the same prefix would be added to the dictionary.
 
-Listing 8-3. Changing the Routing Schema in the Program.cs File in the SportsStore Folder
+Listing 8.5     Adding a New Attribute in the Index.cshtml File in the SportsStore/Views/Home Folder
 
-using Microsoft.EntityFrameworkCore;
-using SportsStore.Models;
+@model ProductsListViewModel
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddDbContext<StoreDbContext>(opts =>
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
 {
-    opts.UseSqlServer(
-        builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
-});
+    <partial name="ProductSummary" model="p" />
+}
 
-builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+<div page-model="@Model.PagingInfo" page-action="Index"
+     page-classes-enabled="true" page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary"
+     page-url-category="@Model.CurrentCategory!"
+     class="btn-group pull-right m-1">
+</div>
 
-var app = builder.Build();
+I used the null-forgiving operator in the page-url-category expression so that I can pass a null value
+without receiving a compiler warning.
 
-app.UseStaticFiles();
+Prior to this change, the links generated for the pagination links looked like this:
 
-app.MapControllerRoute("catpage", "{category}/Page{productPage:int}",
-    new { Controller = "Home", action = "Index" });
+http://localhost:5000/Page1
 
-app.MapControllerRoute("page", "Page{productPage:int}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
+If the user clicked a page link like this, the category filter would be lost, and the application 
+would present a page containing products from all categories. By adding the current category, 
+taken from the view model, I generate URLs like this instead:
 
-app.MapControllerRoute("category", "{category}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
+http://localhost:5000/Chess/Page1
 
-app.MapControllerRoute("pagination", "Products/Page{productPage}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
+When the user clicks this kind of link, the current category will be passed to the Index action 
+method, and the filtering will be preserved. To see the effect of this change, start ASP.NET Core 
+and request http://localhost:5000/Chess, which will display just the products in the Chess category, 
+as shown in Figure 8-2.
 
-app.MapDefaultControllerRoute();
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-2.webp
 
-SeedData.EnsurePopulated(app);
-
-app.Run();
-
-Table 8-1 describes the URL scheme that these routes represent. I explain the routing system in detail in
-Chapter 13.
-
-Table 8-1. Route Summary
-
-URL                     Leads To
-
-/                         Lists the first page of products from all categories
-
-/Page2                 Lists the specified page (in this case, page 2), showing items 
-                          from all categories
-
-/Soccer                 Shows the first page of items from a specific category (in this case, 
-                           the Soccer category)
-
-/Soccer/Page2       Shows the specified page (in this case, page 2) of items from the specified 
-                          category (in this case, Soccer)
-
-The ASP.NET Core routing system handles incoming requests from clients, but it also generates 
-outgoing URLs that conform to the URL scheme and that can be embedded in web pages. By using 
-the routing system both to handle incoming requests and to generate outgoing URLs, I can ensure 
-that all the URLs in the application are consistent.
-
-The IUrlHelper interface provides access to URL-generating functionality. I used this interface 
-and the Action method it defines in the tag helper I created in the previous chapter. Now that 
-I want to start generating more complex URLs, I need a way to receive additional information 
-from the view without having to add extra properties to the tag helper class. Fortunately, 
-tag helpers have a nice feature that allows properties with a common prefix to be received 
-all together in a single collection, as shown in Listing 8-4.
+Figure 8.2 Filtering data by category

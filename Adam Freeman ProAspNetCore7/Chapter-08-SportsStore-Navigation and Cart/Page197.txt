@@ -1,15 +1,44 @@
-Building the Shopping Cart
+Listing 8.17	The Contents of the Cart.cshtml File in the SportsStore/Pages Folder
 
-The application is progressing nicely, but I cannot sell any products until I implement 
-a shopping cart. In this section, I will create the shopping cart experience shown 
-in Figure 8-8. This will be familiar to anyone who has ever made a purchase online.
+@page
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-8.png
+<h4>This is the Cart Page</h4>
 
-Figure 8-8. The basic shopping cart flow
+Restart ASP.NET Core and request http://localhost:5000/cart to see the placeholder content
+from Listing 8.17, which is shown in Figure 8.9. Notice that I have not had to register 
+the page and that the mapping between the /cart URL path and the Razor Page has been 
+handled automatically.
 
-An Add To Cart button will be displayed alongside each of the products in the catalog. 
-Clicking this button will show a summary of the products the customer has selected so far, 
-including the total cost. At this point, the user can click the Continue Shopping button 
-to return to the product catalog or click the Checkout Now button to complete the order 
-and finish the shopping session.
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-9.webp
+
+Figure 8.9	Placeholder content from a Razor Page
+
+8.2.3   Creating the Add To Cart Buttons
+
+I have some preparation to do before I can implement the cart feature. First, I need to create 
+the buttons that will add products to the cart. To prepare for this, I added a class file 
+called UrlExtensions.cs to the Infrastructure folder and defined the extension method shown 
+in Listing 8.18.
+
+Listing 8.18    The Contents of the UrlExtensions.cs File in the SportsStore/Infrastructure Folder
+
+namespace SportsStore.Infrastructure
+{
+    public static class UrlExtensions
+    {
+        public static string PathAndQuery(this HttpRequest request) =>
+            request.QueryString.HasValue
+                ? $"{request.Path}{request.QueryString}"
+                : request.Path.ToString();
+    }
+}
+
+The PathAndQuery extension method operates on the HttpRequest class, which ASP.NET Core uses
+to describe an HTTP request. The extension method generates a URL that the browser 
+will be returned to after the cart has been updated, taking into account the query string, 
+if there is one. In Listing 8.19, I have added the namespace that contains the extension method 
+to the view imports file so that I can use it in the partial view.
+
+NOTE
+This is the view imports file in the Views folder and not the one added to
+the Pages folder.

@@ -1,55 +1,54 @@
-UNIT TEST: GENERATING THE CATEGORY LIST
+Highlighting the Current Category
 
-The unit test for my ability to produce a category list is relatively simple. The goal is 
-to create a list that is sorted in alphabetical order and contains no duplicates, and 
-the simplest way to do this is to supply some test data that does have duplicate categories 
-and that is not in order, pass this to the tag helper class, and assert that the data has been 
-properly cleaned up. Here is the unit test, which I defined in a new class file called 
-NavigationMenuViewComponentTests.cs in the SportsStore.Tests project:
+There is no feedback to the user to indicate which category has been selected. It might 
+be possible to infer the category from the items in the list, but some clear visual feedback 
+seems like a good idea. ASP.NET Core components such as controllers and view components 
+can receive information about the current request by asking for a context object. Most of 
+the time, you can rely on the base classes that you use to create components to take care 
+of getting the context object for you, such as when you use the Controller base
+class to create controllers.
 
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Moq;
-using SportsStore.Components;
+The ViewComponent base class is no exception and provides access to context objects through 
+a set of properties. One of the properties is called RouteData, which provides information 
+about how the request URL was handled by the routing system.
+
+In Listing 8.10, I use the RouteData property to access the request data to get the value 
+for the currently selected category. I could pass the category to the view by creating 
+another view model class (and that’s what I would do in a real project), but for variety, 
+I am going to use the view bag feature, which allows unstructured data to be passed 
+to a view alongside the view model object. I describe how this feature works
+in detail in Chapter 22.
+
+Listing 8.10. Passing the Selected Category in the NavigationMenuViewComponent.cs File 
+in the SportsStore/Components Folder
+
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
-using Xunit;
 
-namespace SportsStore.Tests
+namespace SportsStore.Components
 {
-    public class NavigationMenuViewComponentTests
+    public class NavigationMenuViewComponent : ViewComponent
     {
-        [Fact]
-        public void Can_Select_Categories()
+        private IStoreRepository repository;
+
+        public NavigationMenuViewComponent(IStoreRepository repo)
         {
-            // Arrange
-            Mock<IStoreRepository> mock = new();
+            repository = repo;
+        }
 
-            mock.Setup(m => m.Products)
-                .Returns((new Product[]
-                {
-                    new Product {ProductID = 1, Name = "P1", Category = "Apples"},
-                    new Product {ProductID = 2, Name = "P2", Category = "Apples"},
-                    new Product {ProductID = 3, Name = "P3", Category = "Plums"},
-                    new Product {ProductID = 4, Name = "P4", Category = "Oranges"}
-                })
-                .AsQueryable<Product>());
+        public IViewComponentResult Invoke()
+        {
+            ViewBag.SelectedCategory = RouteData?.Values["category"];
 
-            NavigationMenuViewComponent target = new(mock.Object);
-
-            // Act = get the set of categories
-            string[] results = ((IEnumerable<string>?)(target.Invoke()
-                as ViewViewComponentResult)?.ViewData?.Model
-                    ?? Enumerable.Empty<string>()).ToArray();
-
-            // Assert
-            Assert.True(Enumerable.SequenceEqual(new string[] 
-                { "Apples", "Oranges", "Plums" }, results));
+            return View(repository.Products
+            .Select(x => x.Category)
+            .Distinct()
+            .OrderBy(x => x));
         }
     }
 }
 
-I created a mock repository implementation that contains repeating categories and categories 
-that are not in order. I assert that the duplicates are removed and that alphabetical ordering 
-is imposed.
+Inside the Invoke method, I have dynamically assigned a SelectedCategory property to 
+the ViewBag object and set its value to be the current category, which is obtained through 
+the context object returned by the RouteData property. The ViewBag is a dynamic object 
+that allows me to define new properties simply by assigning values to them.

@@ -1,12 +1,15 @@
-Correcting the Page Count
+8.2	Building the Shopping Cart
 
-I need to correct the page links so that they work correctly when a category is selected. 
-Currently, the number of page links is determined by the total number of products in 
-the repository and not the number of products in the selected category. This means that 
-the customer can click the link for page 2 of the Chess category and end up with an empty 
-page because there are not enough chess products to fill two pages. You can see the problem 
-in Figure 8-6.
+The application is progressing nicely, but I cannot sell any products until I implement 
+a shopping cart. In this section, I will create the shopping cart experience shown 
+in Figure 8.8. This will be familiar to anyone who has ever made a purchase online.
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-6.png
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-8.webp
 
-Figure 8-6. Displaying the wrong page links when a category is selected
+Figure 8.8 The basic shopping cart flow
+
+An Add To Cart button will be displayed alongside each of the products in the catalog. 
+Clicking this button will show a summary of the products the customer has selected so far, 
+including the total cost. At this point, the user can click the Continue Shopping button 
+to return to the product catalog or click the Checkout Now button to complete the order 
+and finish the shopping session.

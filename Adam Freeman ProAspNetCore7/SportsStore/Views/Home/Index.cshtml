@@ -72,8 +72,9 @@
      page-class-selected="btn-primary" class="btn-group pull-right m-1">
 </div>
  *@
- <!-- #endregion -->
+<!-- #endregion -->
 <!-- #region Listing 7.41 Using a partial view in the Index.cshtml file in the SportsStore/Views/Home folder -->
+@*
 @model ProductsListViewModel
 
 @foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
@@ -85,5 +86,22 @@
      page-classes-enabled="true" page-class="btn"
      page-class-normal="btn-outline-dark"
      page-class-selected="btn-primary" class="btn-group pull-right m-1">
+</div>
+*@
+<!-- #endregion -->
+<!-- #region Listing 8.5 Adding a attribute in the Index.cshtml file in the SportsStore/Views/Home folder -->
+@model ProductsListViewModel
+
+@foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
+{
+    <partial name="ProductSummary" model="p" />
+}
+
+<div page-model="@Model.PagingInfo" page-action="Index"
+     page-classes-enabled="true" page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary"
+     page-url-category="@Model.CurrentCategory!"
+     class="btn-group pull-right m-1">
 </div>
 <!-- #endregion -->

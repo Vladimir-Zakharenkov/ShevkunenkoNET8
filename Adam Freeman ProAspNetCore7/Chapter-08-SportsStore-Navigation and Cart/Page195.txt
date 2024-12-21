@@ -1,52 +1,54 @@
-I can fix this by updating the Index action method in the Home controller so that 
-the pagination information takes the categories into account, as shown in Listing 8-12.
+8.2.1   Configuring Razor Pages
 
-Listing 8-12. Creating Category Pagination Data in the HomeController.cs File 
-in the SportsStore/Controllers Folder
+So far, I have used the MVC Framework to define the SportsStore project features. For variety, 
+I am going to use Razor Pages — another application framework supported by ASP.NET Core — to 
+implement the shopping cart. Listing 8-13 configures the Program.cs file to enable Razor Pages 
+in the SportsStore application.
 
-using Microsoft.AspNetCore.Mvc;
+Listing 8.13    Enabling Razor Pages in the Program.cs File in the SportsStore Folder
+
+using Microsoft.EntityFrameworkCore;
 using SportsStore.Models;
-using SportsStore.Models.ViewModels;
 
-namespace SportsStore.Controllers
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
 {
-    public class HomeController : Controller
-    {
-        private IStoreRepository repository;
-        public int PageSize = 4;
-        public HomeController(IStoreRepository repo)
-        {
-            repository = repo;
-        }
+    opts.UseSqlServer(
+    builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
 
-        public ViewResult Index(string? category, int productPage = 1)
-            => View(new ProductsListViewModel
-            {
-                Products = repository.Products
-                    .Where(p => category == null || p.Category == category)
-                    .OrderBy(p => p.ProductID)
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize),
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = productPage,
-                    ItemsPerPage = PageSize,
-                    TotalItems = category == null
-                        ? repository.Products.Count()
-                        : repository.Products
-                            .Where(e => e.Category == category).Count()
-                },
+builder.Services.AddRazorPages();
 
-                CurrentCategory = category
-            });
-    }
-}
+var app = builder.Build();
 
-If a category has been selected, I return the number of items in that category; if not, 
-I return the total number of products. Restart ASP.NET Core and request http://localhost:5000 
-to see the changes when a category is selected, as shown in Figure 8-7.
+app.UseStaticFiles();
 
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-7.png
+app.MapControllerRoute("catpage", "{category}/Page{productPage:int}", new { Controller = "Home", action = "Index" });
 
-Figure 8-7. Displaying category-specific page counts
+app.MapControllerRoute("page", "Page{productPage:int}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("category", "{category}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("pagination", "Products/Page{productPage}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapDefaultControllerRoute();
+
+app.MapRazorPages();
+
+SeedData.EnsurePopulated(app);
+
+app.Run();
+
+The AddRazorPages method sets up the services used by Razor Pages, and the MapRazorPages method
+registers Razor Pages as endpoints that the URL routing system can use to handle requests.
+
+Add a folder named Pages, which is the conventional location for Razor Pages, to the SportsStore
+project. Add a Razor View Imports file named _ViewImports.cshtml to the Pages folder with 
+the content shown in Listing 8.14. These expressions set the namespace that the Razor Pages 
+will belong to and allow the SportsStore classes to be used in Razor Pages without needing 
+to specify their namespace.

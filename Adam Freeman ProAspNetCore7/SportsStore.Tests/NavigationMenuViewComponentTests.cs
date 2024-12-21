@@ -1,13 +1,4 @@
-UNIT TEST: GENERATING THE CATEGORY LIST
-
-The unit test for my ability to produce a category list is relatively simple. The goal is 
-to create a list that is sorted in alphabetical order and contains no duplicates, and 
-the simplest way to do this is to supply some test data that does have duplicate categories 
-and that is not in order, pass this to the tag helper class, and assert that the data has been 
-properly cleaned up. Here is the unit test, which I defined in a new class file called 
-NavigationMenuViewComponentTests.cs in the SportsStore.Tests project:
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -41,9 +32,37 @@ namespace SportsStore.Tests
             // Assert
             Assert.True(Enumerable.SequenceEqual(new string[] { "Apples", "Oranges", "Plums" }, results));
         }
+
+        [Fact]
+        public void Indicates_Selected_Category()
+        {
+            // Arrange
+            string categoryToSelect = "Apples";
+
+            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
+
+            mock.Setup(m => m.Products).Returns((new Product[] {
+                new Product {ProductID = 1, Name = "P1", Category = "Apples"},
+                new Product {ProductID = 4, Name = "P2", Category = "Oranges"},
+                }).AsQueryable<Product>());
+
+            NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
+
+            target.ViewComponentContext = new ViewComponentContext
+            {
+                ViewContext = new ViewContext
+                {
+                    RouteData = new Microsoft.AspNetCore.Routing.RouteData()
+                }
+            };
+
+            target.RouteData.Values["category"] = categoryToSelect;
+
+            // Action
+            string? result = (string?)(target.Invoke() as ViewViewComponentResult)?.ViewData?["SelectedCategory"];
+
+            // Assert
+            Assert.Equal(categoryToSelect, result);
+        }
     }
 }
-
-I created a mock repository implementation that contains repeating categories and categories 
-that are not in order. I assert that the duplicates are removed and that alphabetical ordering 
-is imposed.

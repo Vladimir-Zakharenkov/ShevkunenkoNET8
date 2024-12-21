@@ -1,57 +1,66 @@
-Add a folder named Pages, which is the conventional location for Razor Pages, to the SportsStore
-project. Add a Razor View Imports file named _ViewImports.cshtml to the Pages folder with 
-the content shown in Listing 8-14. These expressions set the namespace that the Razor Pages 
-will belong to and allow the SportsStore classes to be used in Razor Pages without needing 
-to specify their namespace.
+Note
+Notice that I have set the method attribute on the form element to post, which instructs the browser
+to submit the form data using an HTTP POST request. You can change this so that forms use the GET method,
+but you should think carefully about doing so. The HTTP specification requires that GET requests be idempotent,
+meaning that they must not cause changes, and adding a product to a cart is definitely a change.
 
-Listing 8-14. The Contents of the _ViewImports.cshtml File 
-in the SportsStore/Pages Folder
+8.2.4   Enabling Sessions
 
-@namespace SportsStore.Pages
-@using Microsoft.AspNetCore.Mvc.RazorPages
-@using SportsStore.Models
-@using SportsStore.Infrastructure
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+I am going to store details of a user’s cart using session state, which is data associated with a series of requests
+made by a user. ASP.NET provides a range of different ways to store session state, including storing it in
+memory, which is the approach that I am going to use. This has the advantage of simplicity, but it means
+that the session data is lost when the application is stopped or restarted. Enabling sessions requires adding
+services and middleware in the Program.cs file, as shown in Listing 8.21.
 
-Next, add a Razor View Start file named _ViewStart.cshtml to the Pages folder, with the content 
-shown in Listing 8-15. Razor Pages have their own configuration files, and this one specifies 
-that the Razor Pages in the SportsStore project will use a layout file named _CartLayout 
-by default.
+Listing 8.21    Enabling Sessions in the Program.cs File in the SportsStore Folder
 
-Listing 8-15. The Contents of the _ViewStart.cshtml File 
-in the SportsStore/Pages Folder
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Models;
 
-@{
-	Layout = "_CartLayout";
-}
+var builder = WebApplication.CreateBuilder(args);
 
-Finally, to provide the layout the Razor Pages will use, add a Razor View named _CartLayout.cshtml to
-the Pages folder with the content shown in Listing 8-16.
+builder.Services.AddControllersWithViews();
 
-Listing 8-16. The Contents of the _CartLayout.cshtml File 
-in the SportsStore/Pages Folder
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>SportsStore</title>
-    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="bg-dark text-white p-2">
-        <span class="navbar-brand ml-2">SPORTS STORE</span>
-    </div>
-    <div class="m-1 p-1">
-        @RenderBody()
-    </div>
-</body>
-</html>
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 
-Creating a Razor Page
+builder.Services.AddRazorPages();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
-If you are using Visual Studio, use the Razor Page template item and set the item name 
-to Cart.cshtml. This will create a Cart.cshtml file and a Cart.cshtml.cs class file. 
-Replace the contents of the file with those shown in Listing 8-17. If you are using 
-Visual Studio Code, just create a Cart.cshtml file with the content
-shown in Listing 8-17.
+var app = builder.Build();
+
+app.UseStaticFiles();
+app.UseSession();
+
+app.MapControllerRoute("catpage",
+    "{category}/Page{productPage:int}",
+    new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute("page",
+    "Page{productPage:int}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("category",
+    "{category}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("pagination",
+    "Products/Page{productPage}",
+    new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapDefaultControllerRoute();
+
+app.MapRazorPages();
+
+SeedData.EnsurePopulated(app);
+
+app.Run();
+
+The AddDistributedMemoryCache method call sets up the in-memory data store. The AddSession
+method registers the services used to access session data, and the UseSession method allows the session
+system to automatically associate requests with sessions when they arrive from the client.

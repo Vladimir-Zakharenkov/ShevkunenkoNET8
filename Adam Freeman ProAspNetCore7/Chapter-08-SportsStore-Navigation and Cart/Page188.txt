@@ -1,48 +1,41 @@
-Generating Category Lists
+Creating the View
 
-I can now return to the navigation view component and generate a real set of categories. 
-I could build the HTML for the categories programmatically, as I did for the page tag helper, 
-but one of the benefits of working with view components is they can render Razor partial views. 
-That means I can use the view component to generate the list of components and then use the more 
-expressive Razor syntax to render the HTML that will display them. The first step is to update 
-the view component, as shown in Listing 8-8.
+Razor uses different conventions for locating views that are selected by view components. 
+Both the default name of the view and the locations that are searched for the view are different 
+from those used for controllers. To that end, I created the Views/Shared/Components/NavigationMenu 
+folder in the SportsStore project and added to it a Razor View named Default.cshtml, to which 
+I added the content shown in Listing 8.9.
 
-Listing 8-8. Adding Categories in the NavigationMenuViewComponent.cs File in the SportsStore/
-Components Folder
+Listing 8.9  The Contents of the Default.cshtml File	in the SportsStore/Views/Shared/Components/NavigationMenu Folder
 
-using Microsoft.AspNetCore.Mvc;
-using SportsStore.Models;
+@model IEnumerable<string>
 
-namespace SportsStore.Components
-{
-    public class NavigationMenuViewComponent : ViewComponent
+<div class="d-grid gap-2">
+
+    <a class="btn btn-outline-secondary" asp-action="Index"
+       asp-controller="Home" asp-route-category="">
+        Home
+    </a>
+
+    @foreach (string category in Model ?? Enumerable.Empty<string>())
     {
-        private IStoreRepository repository;
-
-        public NavigationMenuViewComponent(IStoreRepository repo)
-        {
-            repository = repo;
-        }
-
-        public IViewComponentResult Invoke()
-        {
-            return View(repository.Products
-                .Select(x => x.Category)
-                .Distinct()
-                .OrderBy(x => x));
-        }
+        <a class="btn btn-outline-secondary"
+           asp-action="Index" asp-controller="Home"
+           asp-route-category="@category"
+           asp-route-productPage="1">
+            @category
+        </a>
     }
-}
 
-The constructor defined in Listing 8-8 defines an IStoreRepository parameter. When ASP.NET Core
-needs to create an instance of the view component class, it will note the need to provide 
-a value for this parameter and inspect the configuration in the Program.cs file to determine 
-which implementation object should be used. This is the same dependency injection feature that 
-I used in the controller in Chapter 7, and it has the same effect, which is to allow the view 
-component to access data without knowing which repository implementation will be used, a feature 
-I describe in detail in Chapter 14.
+</div>
 
-In the Invoke method, I use LINQ to select and order the set of categories in the repository 
-and pass them as the argument to the View method, which renders the default Razor partial view, 
-details of which are returned from the method using an IViewComponentResult object, a process 
-I describe in more detail in Chapter 24.
+This view uses one of the built-in tag helpers, which I describe in Chapters 25–27, to create anchor
+elements whose href attribute contains a URL that selects a different product category.
+
+Restart ASP.NET Core and request http://localhost:5000 to see the category navigation buttons. If
+you click a button, the list of items is updated to show only items from the selected category, 
+as shown in Figure 8.4.
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-4.webp
+
+Figure 8.4  Generating category links with a view component

@@ -1,44 +1,50 @@
-UNIT TEST: CATEGORY-SPECIFIC PRODUCT COUNTS
+Listing 8.14	The Contents of the _ViewImports.cshtml File in the SportsStore/Pages Folder
 
-Testing that I am able to generate the current product count for different categories 
-is simple. I create a mock repository that contains known data in a range of categories 
-and then call the List action method requesting each category in turn. Here is the unit 
-test method that I added to the HomeControllerTests class (you will need to import 
-the System namespace for this test):
+@namespace SportsStore.Pages
 
-...
-[Fact]
-public void Generate_Category_Specific_Product_Count()
-{
-    // Arrange
-    Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-    mock.Setup(m => m.Products).Returns((new Product[] {
-        new Product {ProductID = 1, Name = "P1", Category = "Cat1"},
-        new Product {ProductID = 2, Name = "P2", Category = "Cat2"},
-        new Product {ProductID = 3, Name = "P3", Category = "Cat1"},
-        new Product {ProductID = 4, Name = "P4", Category = "Cat2"},
-        new Product {ProductID = 5, Name = "P5", Category = "Cat3"}
-}).AsQueryable<Product>());
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using SportsStore.Models
+@using SportsStore.Infrastructure
 
-    HomeController target = new HomeController(mock.Object);
-    target.PageSize = 3;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-    Func<ViewResult, ProductsListViewModel?> GetModel = result
-    => result?.ViewData?.Model as ProductsListViewModel;
+Next, add a Razor View Start file named _ViewStart.cshtml to the Pages folder, with the content 
+shown in Listing 8.15. Razor Pages have their own configuration files, and this one specifies 
+that the Razor Pages in the SportsStore project will use a layout file named _CartLayout 
+by default.
 
-    // Action
-    int? res1 = GetModel(target.Index("Cat1"))?.PagingInfo.TotalItems;
-    int? res2 = GetModel(target.Index("Cat2"))?.PagingInfo.TotalItems;
-    int? res3 = GetModel(target.Index("Cat3"))?.PagingInfo.TotalItems;
-    int? resAll = GetModel(target.Index(null))?.PagingInfo.TotalItems;
+Listing 8.15	The Contents of the _ViewStart.cshtml File in the SportsStore/Pages Folder
 
-    // Assert
-    Assert.Equal(2, res1);
-    Assert.Equal(2, res2);
-    Assert.Equal(1, res3);
-    Assert.Equal(5, resAll);
+@{
+    Layout = "_CartLayout";
 }
-...
 
-Notice that I also call the Index method, specifying no category, to make sure I get 
-the correct total count as well.
+Finally, to provide the layout the Razor Pages will use, add a Razor View named _CartLayout.cshtml to
+the Pages folder with the content shown in Listing 8.16.
+
+Listing 8.16    The Contents of the _CartLayout.cshtml File in the SportsStore/Pages Folder
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SportsStore</title>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2">SPORTS STORE</span>
+    </div>
+    <div class="m-1 p-1">
+        @RenderBody()
+    </div>
+</body>
+</html>
+
+8.2.2   Creating a Razor Page
+
+If you are using Visual Studio, use the Razor Page template item and set the item name 
+to Cart.cshtml. This will create a Cart.cshtml file and a Cart.cshtml.cs class file. 
+Replace the contents of the file with those shown in Listing 8.17. If you are using 
+Visual Studio Code, just create a Cart.cshtml file with the content
+shown in Listing 8.17.

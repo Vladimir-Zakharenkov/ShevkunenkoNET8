@@ -1,47 +1,56 @@
-UNIT TEST: REPORTING THE SELECTED CATEGORY
+8.1.4		Correcting the Page Count
 
-I can test that the view component correctly adds details of the selected category by reading 
-the value of the ViewBag property in a unit test, which is available through 
-the ViewViewComponentResult class. Here is the test, which I added to 
-the NavigatioMenuViewComponentTests class:
-...
-[Fact]
-public void Indicates_Selected_Category()
+I need to correct the page links so that they work correctly when a category is selected. 
+Currently, the number of page links is determined by the total number of products in 
+the repository and not the number of products in the selected category. This means that 
+the customer can click the link for page 2 of the Chess category and end up with an empty 
+page because there are not enough chess products to fill two pages. You can see the problem 
+in Figure 8.6.
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-6.webp
+
+Figure 8.6 Displaying the wrong page links when a category is selected
+
+I can fix this by updating the Index action method in the Home controller so that 
+the pagination information takes the categories into account, as shown in Listing 8.12.
+
+Listing 8.12    Creating Category Pagination Data in the HomeController.cs File in the SportsStore/Controllers Folder
+
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+using SportsStore.Models.ViewModels;
+
+namespace SportsStore.Controllers
 {
-    // Arrange
-    string categoryToSelect = "Apples";
-
-    Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-
-    mock.Setup(m => m.Products).Returns((new Product[] {
-        new Product {ProductID = 1, Name = "P1", Category = "Apples"},
-        new Product {ProductID = 4, Name = "P2", Category = "Oranges"},
-    }).AsQueryable<Product>());
-
-    NavigationMenuViewComponent target =
-        new NavigationMenuViewComponent(mock.Object);
-    target.ViewComponentContext = new ViewComponentContext
+    public class HomeController : Controller
     {
-        ViewContext = new ViewContext
+        private IStoreRepository repository;
+
+        public int PageSize = 4;
+
+        public HomeController(IStoreRepository repo)
         {
-            RouteData = new Microsoft.AspNetCore.Routing.RouteData()
+            repository = repo;
         }
-    };
-    target.RouteData.Values["category"] = categoryToSelect;
 
-    // Action
-    string? result = (string?)(target.Invoke()
-        as ViewViewComponentResult)?.ViewData?["SelectedCategory"];
+        public ViewResult Index(string? category, int productPage = 1) =>
+            View(new ProductsListViewModel
+            {
+                Products = repository.Products
+                    .Where(p => category == null || p.Category == category)
+                    .OrderBy(p => p.ProductID)
+                    .Skip((productPage - 1) * PageSize)
+                    .Take(PageSize),
 
-    // Assert
-    Assert.Equal(categoryToSelect, result);
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = productPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = category == null
+                        ? repository.Products.Count() : repository.Products.Where(e => e.Category == category).Count()
+                },
+
+                CurrentCategory = category
+            });
+    }
 }
-...
-
-This unit test provides the view component with routing data through the ViewComponentContext
-property, which is how view components receive all their context data. The ViewComponentContext
-property provides access to view-specific context data through its ViewContext property, which in
-turn provides access to the routing information through its RouteData property. Most of the code 
-in the unit test goes into creating the context objects that will provide the selected category 
-in the same way that it would be presented when the application is running and the context data 
-is provided by ASP.NET Core MVC.

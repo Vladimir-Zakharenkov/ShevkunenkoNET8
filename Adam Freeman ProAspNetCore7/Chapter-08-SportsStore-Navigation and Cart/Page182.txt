@@ -1,123 +1,72 @@
-UNIT TEST: CATEGORY FILTERING
+Listing 8.4 Prefixed values in the PageLinkTagHelper.cs file in the SportsStore/Infrastructure folder
 
-need a unit test to properly test the category filtering function to ensure that the filter can
-correctly generate products in a specified category. Here is the test method I added to the
-HomeControllerTests class:
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using SportsStore.Models.ViewModels;
 
-namespace SportsStore.Tests
+namespace SportsStore.Infrastructure
 {
-    public class HomeControllerTests
+    [HtmlTargetElement("div", Attributes = "page-model")]
+    public class PageLinkTagHelper : TagHelper
     {
-        [Fact]
-        public void Can_Use_Repository()
+        private IUrlHelperFactory urlHelperFactory;
+
+        public PageLinkTagHelper(IUrlHelperFactory helperFactory)
         {
-            // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-
-            mock.Setup(m => m.Products).Returns((new Product[] {
-                new Product {ProductID = 1, Name = "P1"},
-                new Product {ProductID = 2, Name = "P2"}
-                }).AsQueryable<Product>());
-
-            HomeController controller = new HomeController(mock.Object);
-
-            // Act
-            ProductsListViewModel result =
-                controller.Index(null)?.ViewData.Model as ProductsListViewModel ?? new();
-
-            // Assert
-            Product[] prodArray = result.Products.ToArray();
-            Assert.True(prodArray.Length == 2);
-            Assert.Equal("P1", prodArray[0].Name);
-            Assert.Equal("P2", prodArray[1].Name);
+            urlHelperFactory = helperFactory;
         }
 
-        [Fact]
-        public void Can_Paginate()
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext? ViewContext { get; set; }
+
+        public PagingInfo? PageModel { get; set; }
+
+        public string? PageAction { get; set; }
+
+        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; } = new Dictionary<string, object>();
+
+        public bool PageClassesEnabled { get; set; } = false;
+
+        public string PageClass { get; set; } = String.Empty;
+
+        public string PageClassNormal { get; set; } = String.Empty;
+
+        public string PageClassSelected { get; set; } = String.Empty;
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[] {
-                new Product {ProductID = 1, Name = "P1"},
-                new Product {ProductID = 2, Name = "P2"},
-                new Product {ProductID = 3, Name = "P3"},
-                new Product {ProductID = 4, Name = "P4"},
-                new Product {ProductID = 5, Name = "P5"}
-                }).AsQueryable<Product>());
+            if (ViewContext != null && PageModel != null)
+            {
+                IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
 
-            HomeController controller = new HomeController(mock.Object);
-            controller.PageSize = 3;
+                TagBuilder result = new TagBuilder("div");
 
-            // Act
-            ProductsListViewModel result =
-                controller.Index(null, 2)?.ViewData.Model as ProductsListViewModel ?? new();
+                for (int i = 1; i <= PageModel.TotalPages; i++)
+                {
+                    TagBuilder tag = new TagBuilder("a");
 
-            // Assert
-            Product[] prodArray = result.Products.ToArray();
-            Assert.True(prodArray.Length == 2);
-            Assert.Equal("P4", prodArray[0].Name);
-            Assert.Equal("P5", prodArray[1].Name);
-        }
+                    PageUrlValues["productPage"] = i;
 
-        [Fact]
-        public void Can_Send_Pagination_View_Model()
-        {
-            // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[] {
-                new Product {ProductID = 1, Name = "P1"},
-                new Product {ProductID = 2, Name = "P2"},
-                new Product {ProductID = 3, Name = "P3"},
-                new Product {ProductID = 4, Name = "P4"},
-                new Product {ProductID = 5, Name = "P5"}
-                }).AsQueryable<Product>());
+                    tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
 
-            // Arrange
-            HomeController controller = new HomeController(mock.Object) { PageSize = 3 };
+                    if (PageClassesEnabled)
+                    {
+                        tag.AddCssClass(PageClass);
+                        tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
+                    }
 
-            // Act
-            ProductsListViewModel result =
-                controller.Index(null, 2)?.ViewData.Model as ProductsListViewModel ?? new();
+                    tag.InnerHtml.Append(i.ToString());
 
-            // Assert
-            PagingInfo pageInfo = result.PagingInfo;
-            Assert.Equal(2, pageInfo.CurrentPage);
-            Assert.Equal(3, pageInfo.ItemsPerPage);
-            Assert.Equal(5, pageInfo.TotalItems);
-            Assert.Equal(2, pageInfo.TotalPages);
-        }
+                    result.InnerHtml.AppendHtml(tag);
+                }
 
-        [Fact]
-        public void Can_Filter_Products()
-        {
-            // Arrange
-            // - create the mock repository
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-
-            mock.Setup(m => m.Products).Returns((new Product[] {
-                new Product {ProductID = 1, Name = "P1", Category = "Cat1"},
-                new Product {ProductID = 2, Name = "P2", Category = "Cat2"},
-                new Product {ProductID = 3, Name = "P3", Category = "Cat1"},
-                new Product {ProductID = 4, Name = "P4", Category = "Cat2"},
-                new Product {ProductID = 5, Name = "P5", Category = "Cat3"}
-            }).AsQueryable<Product>());
-
-            // Arrange - create a controller and make the page size 3 items
-            HomeController controller = new HomeController(mock.Object);
-            controller.PageSize = 3;
-
-            // Action
-            Product[] result = (controller.Index("Cat2", 1)?.ViewData.Model
-            as ProductsListViewModel ?? new()).Products.ToArray();
-
-            // Assert
-            Assert.Equal(2, result.Length);
-            Assert.True(result[0].Name == "P2" && result[0].Category == "Cat2");
-            Assert.True(result[1].Name == "P4" && result[1].Category == "Cat2");
+                output.Content.AppendHtml(result.InnerHtml);
+            }
         }
     }
 }
-
-This test creates a mock repository containing Product objects that belong to a range of categories.
-One specific category is requested using the action method, and the results are checked to ensure 
-that the results are the right objects in the right order.

@@ -1,15 +1,47 @@
-Building a Category Navigation Menu
+Generating Category Lists
 
-I need to provide users with a way to select a category that does not involve typing in URLs. 
-This means presenting a list of the available categories and indicating which, if any, 
-is currently selected.
+I can now return to the navigation view component and generate a real set of categories. 
+I could build the HTML for the categories programmatically, as I did for the page tag helper, 
+but one of the benefits of working with view components is they can render Razor partial views. 
+That means I can use the view component to generate the list of components and then use the more 
+expressive Razor syntax to render the HTML that will display them. The first step is to update 
+the view component, as shown in Listing 8.8.
 
-ASP.NET Core has the concept of view components, which are perfect for creating items such 
-as reusable navigation controls. A view component is a C# class that provides a small 
-amount of reusable application logic with the ability to select and display Razor partial views. 
-I describe view components in detail in Chapter 24.
+Listing 8.8     Adding Categories in the NavigationMenuViewComponent.cs File in the SportsStore/Components Folder
 
-In this case, I will create a view component that renders the navigation menu and integrate 
-it into the application by invoking the component from the shared layout. This approach gives 
-me a regular C# class that can contain whatever application logic I need and that can be unit 
-tested like any other class.
+using Microsoft.AspNetCore.Mvc;
+using SportsStore.Models;
+
+namespace SportsStore.Components
+{
+    public class NavigationMenuViewComponent : ViewComponent
+    {
+        private IStoreRepository repository;
+
+        public NavigationMenuViewComponent(IStoreRepository repo)
+        {
+            repository = repo;
+        }
+
+        public IViewComponentResult Invoke()
+        {
+            return View(repository.Products
+            .Select(x => x.Category)
+            .Distinct()
+            .OrderBy(x => x));
+        }
+    }
+}
+
+The constructor defined in Listing 8-8 defines an IStoreRepository parameter. When ASP.NET Core
+needs to create an instance of the view component class, it will note the need to provide 
+a value for this parameter and inspect the configuration in the Program.cs file to determine 
+which implementation object should be used. This is the same dependency injection feature that 
+I used in the controller in Chapter 7, and it has the same effect, which is to allow the view 
+component to access data without knowing which repository implementation will be used, a feature 
+I describe in detail in Chapter 14.
+
+In the Invoke method, I use LINQ to select and order the set of categories in the repository 
+and pass them as the argument to the View method, which renders the default Razor partial view, 
+details of which are returned from the method using an IViewComponentResult object, a process 
+I describe in more detail in Chapter 24.

@@ -1,46 +1,42 @@
-Decorating a tag helper property with the HtmlAttributeName attribute allows me to specify 
-a prefix for attribute names on the element, which in this case will be page-url-. The value 
-of any attribute whose name begins with this prefix will be added to the dictionary 
-that is assigned to the PageUrlValues property, which is then passed to the IUrlHelper.Action 
-method to generate the URL for the href attribute of the a elements that the tag helper produces.
+The view component’s Invoke method is called when the component is used in a Razor view, and the
+result of the Invoke method is inserted into the HTML sent to the browser. I have started 
+with a simple view component that returns a string, but I’ll replace this with HTML shortly.
 
-In Listing 8-5, I have added a new attribute to the div element that is processed by the tag helper,
-specifying the category that will be used to generate the URL. I have added only one new attribute to the
-view, but any attribute with the same prefix would be added to the dictionary.
+I want the category list to appear on all pages, so I am going to use the view component 
+in the shared layout, rather than in a specific view. Within a view, view components are applied 
+using a tag helper, as shown in Listing 8.7.
 
-Listing 8-5. Adding a New Attribute in the Index.cshtml File in the SportsStore/Views/Home Folder
+Listing 8.7 Using a View Component in the _Layout.cshtml File in the SportsStore/Views/Shared Folder
 
-@model ProductsListViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SportsStore</title>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2">SPORTS STORE</span>
+    </div>
+    <div class="row m-1 p-1">
+        <div id="categories" class="col-3">
+            <vc:navigation-menu />
+        </div>
+        <div class="col-9">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>
 
-@foreach (var p in Model?.Products ?? Enumerable.Empty<Product>())
-{
-    <partial name="ProductSummary" model="p" />
-}
+I removed the placeholder text and replaced it with the vc:navigation-menu element, which inserts 
+the view component. The element omits the ViewComponent part of the class name and hyphenates it, 
+such that vc:navigation-menu specifies the NavigationMenuViewComponent class.
 
-<div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-outline-dark"
-     page-class-selected="btn-primary" page-url-category="@Model?.CurrentCategory!"
-     class="btn-group pull-right m-1">
-</div>
+Restart ASP.NET Core and request http://localhost:5000, and you will see that the output from the
+Invoke method is included in the HTML sent to the browser, as shown in Figure 8.3.
 
-I used the null-forgiving operator in the page-url-category expression so that I can pass a null value
-without receiving a compiler warning.
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-8-3.webp
 
-Prior to this change, the links generated for the pagination links looked like this:
-
-http://localhost:5000/Page1
-
-If the user clicked a page link like this, the category filter would be lost, and the application 
-would present a page containing products from all categories. By adding the current category, 
-taken from the view model, I generate URLs like this instead:
-
-http://localhost:5000/Chess/Page1
-
-When the user clicks this kind of link, the current category will be passed to the Index action 
-method, and the filtering will be preserved. To see the effect of this change, start ASP.NET Core 
-and request http://localhost:5000/Chess, which will display just the products in the Chess category, 
-as shown in Figure 8-2.
-
-https://sergeyshef.ru/img/freeman-asp-net-core-6/Figure-8-2.png
-
-Figure 8-2. Filtering data by category
+Figure 8.3 Using a view component

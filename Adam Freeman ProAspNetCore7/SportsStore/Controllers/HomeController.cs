@@ -104,6 +104,50 @@
 
 #region Listing 8.2. Supporting categories in the HomeController.cs file in the SportsStore/Controllers folder
 
+//using Microsoft.AspNetCore.Mvc;
+//using SportsStore.Models;
+//using SportsStore.Models.ViewModels;
+
+//namespace SportsStore.Controllers
+//{
+//    public class HomeController : Controller
+//    {
+//        private IStoreRepository repository;
+
+//        public int PageSize = 4;
+
+//        public HomeController(IStoreRepository repo)
+//        {
+//            repository = repo;
+//        }
+
+//        public ViewResult Index(string? category, int productPage = 1) =>
+//            View
+//            (
+//                new ProductsListViewModel
+//                {
+//                    Products = repository.Products.Where(p => category == null || p.Category == category)
+//                        .OrderBy(p => p.ProductID)
+//                        .Skip((productPage - 1) * PageSize)
+//                        .Take(PageSize),
+
+//                    PagingInfo = new PagingInfo
+//                    {
+//                        CurrentPage = productPage,
+//                        ItemsPerPage = PageSize,
+//                        TotalItems = repository.Products.Count()
+//                    },
+
+//                    CurrentCategory = category
+//                }
+//             );
+//    }
+//}
+
+#endregion
+
+#region Listing 8.12 Creating Category Pagination Data in the HomeController.cs File in the SportsStore / Controllers Folder
+
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 using SportsStore.Models.ViewModels;
@@ -122,25 +166,24 @@ namespace SportsStore.Controllers
         }
 
         public ViewResult Index(string? category, int productPage = 1) =>
-            View
-            (
-                new ProductsListViewModel
+            View(new ProductsListViewModel
+            {
+                Products = repository.Products
+                    .Where(p => category == null || p.Category == category)
+                    .OrderBy(p => p.ProductID)
+                    .Skip((productPage - 1) * PageSize)
+                    .Take(PageSize),
+
+                PagingInfo = new PagingInfo
                 {
-                    Products = repository.Products.Where(p => category == null || p.Category == category)
-                        .OrderBy(p => p.ProductID)
-                        .Skip((productPage - 1) * PageSize)
-                        .Take(PageSize),
+                    CurrentPage = productPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = category == null
+                        ? repository.Products.Count() : repository.Products.Where(e => e.Category == category).Count()
+                },
 
-                    PagingInfo = new PagingInfo
-                    {
-                        CurrentPage = productPage,
-                        ItemsPerPage = PageSize,
-                        TotalItems = repository.Products.Count()
-                    },
-
-                    CurrentCategory = category
-                }
-             );
+                CurrentCategory = category
+            });
     }
 }
 

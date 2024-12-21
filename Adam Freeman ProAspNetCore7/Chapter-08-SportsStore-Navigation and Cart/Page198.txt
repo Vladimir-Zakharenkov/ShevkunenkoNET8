@@ -1,55 +1,47 @@
-Configuring Razor Pages
+Listing 8.19    Adding a Namespace in the _ViewImports.cshtml File in the SportsStore/Views Folder
 
-So far, I have used the MVC Framework to define the SportsStore project features. For variety, 
-I am going to use Razor Pages — another application framework supported by ASP.NET Core — to 
-implement the shopping cart. Listing 8-13 configures the Program.cs file to enable Razor Pages 
-in the SportsStore application.
+@using SportsStore.Models
+@using SportsStore.Models.ViewModels
+@using SportsStore.Infrastructure
 
-Listing 8-13. Enabling Razor Pages in the Program.cs File 
-in the SportsStore Folder
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SportsStore
 
-using Microsoft.EntityFrameworkCore;
-using SportsStore.Models;
+In Listing 8.20, I have updated the partial view that describes each product so that 
+it contains an Add To Cart button.
 
-var builder = WebApplication.CreateBuilder(args);
+Listing 8.20    Adding the Buttons to the ProductSummary.cshtml File View in the SportsStore/Views/Shared Folder
 
-builder.Services.AddControllersWithViews();
+@model Product
 
-builder.Services.AddDbContext<StoreDbContext>(opts =>
-{
-    opts.UseSqlServer(
-    builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
-});
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+        <h4>
+            @Model.Name
+            <span class="badge rounded-pill bg-primary text-white"
+                  style="float:right">
+                <small>@Model.Price.ToString("c")</small>
+            </span>
+        </h4>
+    </div>
+    <form id="@Model.ProductID" asp-page="/Cart" method="post">
+        <input type="hidden" asp-for="ProductID" />
+        <input type="hidden" name="returnUrl"
+               value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+        <span class="card-text p-1">
+            @Model.Description
+            <button type="submit" style="float:right"
+                    class="btn btn-success btn-sm pull-right">
+                Add To Cart
+            </button>
+        </span>
+    </form>
+</div>
 
-builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
-
-builder.Services.AddRazorPages();
-
-var app = builder.Build();
-
-app.UseStaticFiles();
-
-app.MapControllerRoute("catpage",
-    "{category}/Page{productPage:int}",
-    new { Controller = "Home", action = "Index" });
-
-app.MapControllerRoute("page", "Page{productPage:int}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
-
-app.MapControllerRoute("category", "{category}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
-
-app.MapControllerRoute("pagination",
-    "Products/Page{productPage}",
-    new { Controller = "Home", action = "Index", productPage = 1 });
-
-app.MapDefaultControllerRoute();
-
-app.MapRazorPages();
-
-SeedData.EnsurePopulated(app);
-
-app.Run();
-
-The AddRazorPages method sets up the services used by Razor Pages, and the MapRazorPages method
-registers Razor Pages as endpoints that the URL routing system can use to handle requests.
+I have added a form element that contains hidden input elements specifying the ProductID value 
+from the view model and the URL that the browser should be returned to after the cart has been 
+updated. The form element and one of the input elements are configured using built-in tag helpers, 
+which are a useful way of generating forms that contain model values and that target controllers 
+or Razor Pages, as described in Chapter 27. The other input element uses the extension method 
+I created to set the return URL. I also added a button element that will submit the form 
+to the application.

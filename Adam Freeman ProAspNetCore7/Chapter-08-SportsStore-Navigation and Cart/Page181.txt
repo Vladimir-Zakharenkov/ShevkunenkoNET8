@@ -1,0 +1,58 @@
+8.1.2   Refining the URL Scheme
+
+No one wants to see or use ugly URLs such as /?category=Soccer. To address this, 
+I am going to change the routing configuration in the Configure method of the Program.cs 
+file to create a more useful set of URLs, as shown in Listing 8.3.
+
+Listing 8.3     Changing the Routing Schema in the Program.cs File in the SportsStore Folder
+
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(
+    builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
+
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+
+app.MapControllerRoute("catpage", "{category}/Page{productPage:int}", new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute("page", "Page{productPage:int}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("category", "{category}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute("pagination", "Products/Page{productPage}", new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapDefaultControllerRoute();
+
+SeedData.EnsurePopulated(app);
+
+app.Run();
+
+Table 8.1 describes the URL scheme that these routes represent. I explain the routing system in detail in Chapter 13.
+
+Table 8.1 Route Summary
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Table-8-1.webp
+
+The ASP.NET Core routing system handles incoming requests from clients, but it also generates 
+outgoing URLs that conform to the URL scheme and that can be embedded in web pages. By using 
+the routing system both to handle incoming requests and to generate outgoing URLs, I can ensure 
+that all the URLs in the application are consistent.
+
+The IUrlHelper interface provides access to URL-generating functionality. I used this interface 
+and the Action method it defines in the tag helper I created in the previous chapter. Now that 
+I want to start generating more complex URLs, I need a way to receive additional information 
+from the view without having to add extra properties to the tag helper class. Fortunately, 
+tag helpers have a nice feature that allows properties with a common prefix to be received 
+all together in a single collection, as shown in Listing 8.4.

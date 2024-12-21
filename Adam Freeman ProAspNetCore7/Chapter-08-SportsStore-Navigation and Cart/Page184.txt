@@ -1,65 +1,36 @@
-Listing 8-4. Prefixed Values in the PageLinkTagHelper.cs File 
-in the SportsStore/Infrastructure Folder
+8.1.3		Building a Category Navigation Menu
+
+I need to provide users with a way to select a category that does not involve typing in URLs. 
+This means presenting a list of the available categories and indicating which, if any, 
+is currently selected.
+
+ASP.NET Core has the concept of view components, which are perfect for creating items such 
+as reusable navigation controls. A view component is a C# class that provides a small 
+amount of reusable application logic with the ability to select and display Razor partial views. 
+I describe view components in detail in Chapter 24.
+
+In this case, I will create a view component that renders the navigation menu and integrate 
+it into the application by invoking the component from the shared layout. This approach gives 
+me a regular C# class that can contain whatever application logic I need and that can be unit 
+tested like any other class.
+
+Creating the Navigation View Component
+
+I created a folder called Components, which is the conventional home of view components, 
+in the SportsStore project and added to it a class file named NavigationMenuViewComponent.cs, 
+which I used to define the class shown in Listing 8-6.
+
+Listing 8.6     The Contents of the NavigationMenuViewComponent.cs File in the SportsStore/Components Folder
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using SportsStore.Models.ViewModels;
 
-namespace SportsStore.Infrastructure
+namespace SportsStore.Components
 {
-    [HtmlTargetElement("div", Attributes = "page-model")]
-    public class PageLinkTagHelper : TagHelper
+    public class NavigationMenuViewComponent : ViewComponent
     {
-        private IUrlHelperFactory urlHelperFactory;
-        public PageLinkTagHelper(IUrlHelperFactory helperFactory)
+        public string Invoke()
         {
-            urlHelperFactory = helperFactory;
-        }
-
-        [ViewContext]
-        [HtmlAttributeNotBound]
-        public ViewContext? ViewContext { get; set; }
-
-        public PagingInfo? PageModel { get; set; }
-
-        public string? PageAction { get; set; }
-
-        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
-        public Dictionary<string, object> PageUrlValues { get; set; }
-            = new Dictionary<string, object>();
-
-        public bool PageClassesEnabled { get; set; } = false;
-        public string PageClass { get; set; } = String.Empty;
-        public string PageClassNormal { get; set; } = String.Empty;
-        public string PageClassSelected { get; set; } = String.Empty;
-
-        public override void Process(TagHelperContext context,
-            TagHelperOutput output)
-        {
-            if (ViewContext != null && PageModel != null)
-            {
-                IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
-                TagBuilder result = new TagBuilder("div");
-                for (int i = 1; i <= PageModel.TotalPages; i++)
-                {
-                    TagBuilder tag = new TagBuilder("a");
-                    PageUrlValues["productPage"] = i;
-                    tag.Attributes["href"] = urlHelper.Action(PageAction,
-                    PageUrlValues);
-                    if (PageClassesEnabled)
-                    {
-                        tag.AddCssClass(PageClass);
-                        tag.AddCssClass(i == PageModel.CurrentPage
-                        ? PageClassSelected : PageClassNormal);
-                    }
-                    tag.InnerHtml.Append(i.ToString());
-                    result.InnerHtml.AppendHtml(tag);
-                }
-                output.Content.AppendHtml(result.InnerHtml);
-            }
+            return "Hello from the Nav View Component";
         }
     }
 }
