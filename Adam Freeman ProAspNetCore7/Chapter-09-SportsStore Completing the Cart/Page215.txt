@@ -1,0 +1,66 @@
+The AddScoped method specifies that the same object should be used to satisfy related
+requests for Cart instances. How requests are related can be configured, but by default,
+it means that any Cart required by components handling the same HTTP request will
+receive the same object.
+
+Rather than provide the AddScoped method with a type mapping, as I did for the
+repository, I have specified a lambda expression that will be invoked to satisfy Cart
+requests. The expression receives the collection of services that have been registered
+and passes the collection to the GetCart method of the SessionCart class. The result
+is that requests for the Cart service will be handled by creating SessionCart objects,
+which will serialize themselves as session data when they are modified.
+
+I also added a service using the AddSingleton method, which specifies that the
+same object should always be used. The service I created tells ASP.NET Core to use the
+HttpContextAccessor class when implementations of the IHttpContextAccessor
+interface are required. This service is required so I can access the current session in the
+SessionCart class.
+
+9.1.3		Simplifying the cart Razor Page
+
+The benefit of creating this kind of service is that it allows me to simplify the code
+where Cart objects are used. In listing 9.4, I have reworked the page model class for
+the Cart Razor Page to take advantage of the new service.
+
+Listing 9.4 Using the service in the Cart.cshtml.cs file in the SportsStore/Pages folder
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using SportsStore.Infrastructure;
+using SportsStore.Models;
+namespace SportsStore.Pages
+{
+    public class CartModel : PageModel
+    {
+        private IStoreRepository repository;
+
+        public CartModel(IStoreRepository repo, Cart cartService)
+        {
+            repository = repo;
+            Cart = cartService;
+        }
+
+        public Cart Cart { get; set; }
+
+        public string ReturnUrl { get; set; } = "/";
+
+        public void OnGet(string returnUrl)
+        {
+            ReturnUrl = returnUrl ?? "/";
+            //Cart = HttpContext.Session.GetJson<Cart>("cart")
+            // ?? new Cart();
+        }
+
+        public IActionResult OnPost(long productId, string returnUrl)
+        {
+            Product? product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
+
+            if (product != null)
+            {
+                Cart.AddItem(product, 1);
+            }
+
+            return RedirectToPage(new { returnUrl = returnUrl });
+        }
+    }
+}

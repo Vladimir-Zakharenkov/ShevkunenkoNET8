@@ -378,6 +378,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-08-SportsStore-Navi
 		Adam Freeman ProAspNetCore7\Chapter-08-SportsStore-Navigation and Cart\Page210.txt = Adam Freeman ProAspNetCore7\Chapter-08-SportsStore-Navigation and Cart\Page210.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chapter-09-SportsStore Completing the Cart", "Chapter-09-SportsStore Completing the Cart", "{F0781CD2-5FBB-46BA-9B8C-14E1473DA874}"
+	ProjectSection(SolutionItems) = preProject
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page211.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page211.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page212.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page212.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page213.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page213.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page214.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page214.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page215.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page215.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page216.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page216.txt
+		Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page217.txt = Adam Freeman ProAspNetCore7\Chapter-09-SportsStore Completing the Cart\Page217.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -545,6 +556,7 @@ Global
 		{738F133C-B70B-43A5-A57A-CDA302A3E7CA} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 		{D789BC5E-A295-44F9-8416-82838FE8AE76} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 		{CABC6583-6305-4AB6-83E5-3C1E7811294D} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
+		{F0781CD2-5FBB-46BA-9B8C-14E1473DA874} = {4EC0CE4B-CB37-4694-B1E5-0C005C8653C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

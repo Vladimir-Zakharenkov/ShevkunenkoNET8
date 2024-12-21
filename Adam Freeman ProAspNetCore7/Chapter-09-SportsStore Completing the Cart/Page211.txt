@@ -1,0 +1,28 @@
+CHAPTER 9
+
+SportsStore: Completing the Cart
+
+This chapter covers
+
+•   Updating the shopping cart so that it persists itself as session data
+
+•   Creating a shopping cart summary widget using a view component
+
+•   Receiving and validating user data
+
+•   Displaying data validation errors to the user
+
+In this chapter, I continue to build the SportsStore example app. In the previous chapter, I added the basic
+support for a shopping cart, and now I am going to improve on and complete that functionality.
+
+Tip
+You can download the example project for this chapter—and for all the other chapters in this book—
+from https://github.com/ManningBooks/pro-asp.net-core-7
+See Chapter 1 for how to get help if you have problems running the examples.
+
+9.1 Refining the Cart Model with a Service
+
+I defined a Cart model class in the previous chapter and demonstrated how it can be stored using the
+session feature, allowing the user to build up a set of products for purchase. The responsibility for managing
+the persistence of the Cart class fell to the Cart Razor Page, which has to deal with getting and storing Cart
+objects as session data.

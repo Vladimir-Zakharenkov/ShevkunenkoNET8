@@ -1,4 +1,18 @@
-ï»¿using Microsoft.AspNetCore.Http;
+The page model class indicates that it needs a Cart object by declaring a constructor
+argument, which has allowed me to remove the statements that load and store sessions
+from the handler methods. The result is a simpler page model class that focuses on its
+role in the application without having to worry about how Cart objects are created or
+persisted. And, since services are available throughout the application, any component
+can get hold of the user’s cart using the same technique.
+
+Updating the unit tests
+
+The simplification of the CartModel class in listing 9.4 requires a corresponding change
+to the unit tests in the CartPageTests.cs file in the unit test project so that the Cart
+is provided as a constructor argument and not accessed through the context objects.
+Here is the change to the test for reading the cart:
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Routing;
@@ -73,32 +87,30 @@ namespace SportsStore.Tests
 
             Cart? testCart = new Cart();
 
-            //Mock<ISession> mockSession = new Mock<ISession>();
+            Mock<ISession> mockSession = new Mock<ISession>();
 
-            //mockSession.Setup(s =>
-            //    s.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
-            //    .Callback<string, byte[]>((key, val) =>
-            //        {
-            //            testCart = JsonSerializer.Deserialize<Cart>(
-            //                Encoding.UTF8.GetString(val));
-            //        });
+            mockSession.Setup(s =>
+                s.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Callback<string, byte[]>((key, val) =>
+                    {
+                        testCart = JsonSerializer.Deserialize<Cart>(
+                            Encoding.UTF8.GetString(val));
+                    });
 
-            //Mock<HttpContext> mockContext = new Mock<HttpContext>();
+            Mock<HttpContext> mockContext = new Mock<HttpContext>();
 
-            //mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
+            mockContext.SetupGet(c => c.Session).Returns(mockSession.Object);
 
             // Action
-            //CartModel cartModel = new CartModel(mockRepo.Object)
-            //{
-            //    PageContext = new PageContext(new ActionContext
-            //    {
-            //        HttpContext = mockContext.Object,
-            //        RouteData = new RouteData(),
-            //        ActionDescriptor = new PageActionDescriptor()
-            //    })
-            //};
-
-            CartModel cartModel = new CartModel(mockRepo.Object, testCart);
+            CartModel cartModel = new CartModel(mockRepo.Object)
+            {
+                PageContext = new PageContext(new ActionContext
+                {
+                    HttpContext = mockContext.Object,
+                    RouteData = new RouteData(),
+                    ActionDescriptor = new PageActionDescriptor()
+                })
+            };
 
             cartModel.OnPost(1, "myUrl");
 
@@ -109,3 +121,5 @@ namespace SportsStore.Tests
         }
     }
 }
+
+I applied the same change to the unit test that checks changes to the cart:

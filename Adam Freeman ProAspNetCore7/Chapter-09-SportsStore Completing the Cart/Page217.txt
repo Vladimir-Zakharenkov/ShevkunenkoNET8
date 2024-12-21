@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Routing;
@@ -109,3 +109,19 @@ namespace SportsStore.Tests
         }
     }
 }
+
+Using services simplifies the testing process and makes it much easier to provide the
+class being tested with its dependencies.
+
+9.2 Completing the cart functionality
+
+Now that I have introduced the Cart service, it is time to complete the cart functionality
+by adding two new features. The first will allow the customer to remove an item
+from the cart. The second feature will display a summary of the cart at the top of the
+page.
+
+9.2.1 Removing items from the cart
+
+To remove items from the cart, I need to add a Remove button to the content rendered
+by the Cart Razor Page that will submit an HTTP POST request. The changes are
+shown in listing 9.5.
