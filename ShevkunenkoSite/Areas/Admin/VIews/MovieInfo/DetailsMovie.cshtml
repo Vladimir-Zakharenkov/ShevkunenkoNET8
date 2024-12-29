@@ -33,12 +33,12 @@
 
         @* Идентификатор в базе данных *@
         <h2 class="lh-1">
-            <span class="fs-5 text-primary">MovieFileModelId :</span>
-            <br />
-            <span class="fs-5 text_shadow">
-                @Model.MovieItem.MovieFileModelId
+            <span class="fs-5 text-primary">
+                MovieFileModelId :<br />
             </span>
-            <br />
+            <span class="fs-5 text_shadow">
+                @Model.MovieItem.MovieFileModelId<br />
+            </span>
             <span class="fs-6 form-text text-success px-2">
                 идентификатор в базе данных (GUID)
             </span>
@@ -386,11 +386,11 @@
                                             MovieDescriptionHtml&nbsp;:
                                         </span><br />
 
-                                        <div class="border border-1 border-secondary p-2 paragraph mb-2">
+                                        <div class="border border-1 border-secondary p-2 justify mb-2">
                                             @Html.Raw(Model.MovieItem.MovieDescriptionHtml)
                                         </div>
 
-                                        <div class="border border-1 border-secondary p-2 mb-2 paragraph">
+                                        <div class="border border-1 border-secondary p-2 mb-2 justify">
                                             <p class="text-center text-primary fw-bold fs-5">(HTML код)</p>
                                             @Model.MovieItem.MovieDescriptionHtml
                                         </div>
