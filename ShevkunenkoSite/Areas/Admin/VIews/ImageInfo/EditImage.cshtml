@@ -134,11 +134,11 @@
                     <hr class="liniya" />
 
                     @* Каталог картинки *@
-                    <p class="mb-3"><span class="fs-5 text-primary fw-bold">Текущий каталог: </span><span class="fs-5 text_shadow">@Model.EditImage.ImagePath.Substring(8)</span></p>
+                    <p class="mb-3"><span class="fs-5 text-primary fw-bold">Текущий каталог: </span><span class="fs-5 text_shadow">@Model.EditImage.ImagePath</span></p>
 
                     <label asp-for="EditImage.ImagePath" class="form-label text-primary fs-5 fw-bold"></label>
                     <select asp-for="EditImage.ImagePath" asp-items="Model.ImageDirectories" aria-describedby="ImagePathInputHelpBlock">
-                        <option selected value="@Model.EditImage.ImagePath.Substring(8)">@Model.EditImage.ImagePath.Substring(8)</option>
+                        <option selected value="@Model.EditImage.ImagePath">@Model.EditImage.ImagePath</option>
                     </select>
                     <div id="ImagePathInputHelpBlock" class="form-text col-12">
                         выбрать каталог картинки (в каталоге «images»)
