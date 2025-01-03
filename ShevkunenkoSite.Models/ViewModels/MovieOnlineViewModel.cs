@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Sergeyshef
+﻿// Ignore Spelling: Sergeyshef Youtube Mailru
 
 namespace ShevkunenkoSite.Models.ViewModels;
 
@@ -19,4 +19,6 @@ public class MovieOnlineViewModel
     public string? SergeyshefBorder { get; set; }
 
     public bool SergeyshefRu { get; set; }
+
+    public string SitePath { get; set; } = string.Empty;
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShevkunenkoSite.Services;
 
@@ -11,9 +12,11 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class SiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250102162014_02-01-2025-19-19")]
+    partial class _020120251919
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,10 +385,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HeadingOfArticle1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IconType1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -626,10 +625,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeriesSearchFilter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TextOfArticle1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

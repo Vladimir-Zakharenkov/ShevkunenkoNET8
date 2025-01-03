@@ -16,7 +16,7 @@ public class HeadMain(IPageInfoRepository pageInfoContext, IIconFileRepository i
         return View(new HeadViewModel
         {
             PageInfo = pageInfoModel,
-            IconList = iconList,
+            IconList = iconList
         });
     }
 }

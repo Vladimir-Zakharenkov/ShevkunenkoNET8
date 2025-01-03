@@ -1809,10 +1809,23 @@ public class MovieInfoController(
 
             #endregion
 
-            #region Ограничения для просмотра
+            #region Ограничения по возрасту
 
-            movieUpdate.MovieAdult = editMovie.MovieItem.MovieAdult;
-            movieUpdate.MovieIsFamilyFriendly = editMovie.MovieItem.MovieIsFamilyFriendly;
+            if (editMovie.MovieItem.MovieAdult)
+            {
+                movieUpdate.MovieAdult = true;
+                movieUpdate.MovieIsFamilyFriendly = false;
+            }
+            else
+            {
+                movieUpdate.MovieAdult = false;
+                movieUpdate.MovieIsFamilyFriendly = true;
+            }
+
+            #endregion
+
+            #region В списке фильмов сайта
+
             movieUpdate.MovieInMainList = editMovie.MovieItem.MovieInMainList;
 
             #endregion
@@ -1953,6 +1966,13 @@ public class MovieInfoController(
             movieUpdate.IconType3 = editMovie.MovieItem.IconType3;
             movieUpdate.IsPartsMoreOne3 = editMovie.MovieItem.IsPartsMoreOne3;
             movieUpdate.AllMoviesFromDB3 = editMovie.MovieItem.AllMoviesFromDB3;
+
+            #endregion
+
+            #region Статья о фильме 1
+
+            movieUpdate.HeadingOfArticle1 = editMovie.MovieItem.HeadingOfArticle1.Trim();
+            movieUpdate.TextOfArticle1 = editMovie.MovieItem.TextOfArticle1.Trim();
 
             #endregion
 

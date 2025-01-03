@@ -83,20 +83,14 @@ public class MovieOnline(IPageInfoRepository pageInfoContext) : ViewComponent
         return View(new MovieOnlineViewModel
         {
             PageInfo = pageInfoModel,
-
             VideoRef = videoRef!,
-
             YoutubeImageBorder = youtubeImageBorder,
-
             OkImageBorder = okImageBorder,
-
             MailruImageBorder = mailruImageBorder,
-
             VkImageBorder = vkImageBorder,
-
             SergeyshefBorder = sergeyshefImageBorder,
-
-            SergeyshefRu = sergeyshefRu
+            SergeyshefRu = sergeyshefRu,
+            SitePath = $"{httpContext.Request.Protocol}//{httpContext.Request.Host}"
         });
     }
 }

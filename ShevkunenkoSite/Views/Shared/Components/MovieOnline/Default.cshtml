@@ -1,5 +1,5 @@
 ﻿@{
-    string sitePath = "https://" + Context.Request.Host;
+    // string sitePath = $"{Context.Request.Protocol}//{Context.Request.Host}";
 
     string screenFormat = ((int)(((double)Model.PageInfo.MovieFile!.MovieHeight / (double)Model.PageInfo.MovieFile.MovieWidth) * 100)).ToString() + "%";
 
@@ -36,8 +36,8 @@
             <meta itemprop="description" content="@Model.PageInfo.MovieFile.MovieDescriptionForSchemaOrg" />
             <meta itemprop="duration" content="@Model.PageInfo.MovieFile.MovieDuration.ToString("'T'hh'H'mm'M'ss'S'")" />
             <meta itemprop="isFamilyFriendly" content="@Model.PageInfo.MovieFile.MovieIsFamilyFriendly.ToString()" />
-            <link itemprop="thumbnail" href="@sitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
-            <link itemprop="thumbnailUrl" href="@sitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <link itemprop="thumbnail" href="@Model.SitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <link itemprop="thumbnailUrl" href="@Model.SitePath@Model.PageInfo.MovieFile.ImageFileModel!.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
             <meta itemprop="uploadDate" content="@Model.PageInfo.MovieFile.MovieUploadDate.ToString("yyyy-MM-dd")" />
             <meta itemprop="height" content="@Model.PageInfo.MovieFile.MovieHeight" />
             <meta itemprop="width" content="@Model.PageInfo.MovieFile.MovieWidth" />
@@ -147,7 +147,7 @@
                 <meta itemprop="actor" content="@Model.PageInfo.MovieFile.MovieActor10" />
             }
 
-            <meta itemprop="image" content="@sitePath@Model.PageInfo.MovieFile.ImageFileModel.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
+            <meta itemprop="image" content="@Model.SitePath@Model.PageInfo.MovieFile.ImageFileModel.ImagePath/@Model.PageInfo.MovieFile.ImageFileModel.ImageFileName" />
             <meta itemprop="playerType" content="@Model.PageInfo.MovieFile.MovieMimeType" />
             <meta itemprop="availablePlatform" content="Desktop" />
             <meta itemprop="availablePlatform" content="Mobile" />

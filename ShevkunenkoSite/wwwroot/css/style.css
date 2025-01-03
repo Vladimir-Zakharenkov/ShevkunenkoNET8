@@ -12018,6 +12018,10 @@ body {
   text-align: justify;
 }
 
+.text-indent-0 {
+  text-indent: 0 !important;
+}
+
 .fordetails {
   text-align: justify;
   margin-bottom: 0;
@@ -12145,6 +12149,28 @@ body {
   content: "";
   position: absolute;
   z-index: -2;
+}
+
+.lay1 {
+  position: relative;
+  background: hsl(0deg, 50%, 99%);
+  box-shadow: 0 15px 10px -10px hsla(180deg, 60%, 0%, 0.5), 0 1px 4px hsla(180deg, 60%, 0%, 0.3), 0 0 40px hsla(180deg, 60%, 0%, 0.1) inset;
+  border-right: 1px ridge hsl(0deg, 0%, 40%);
+  border-bottom: 1px ridge hsl(0deg, 0%, 40%);
+  border-top: 1px ridge hsl(0deg, 70%, 100%);
+  border-left: 1px ridge hsl(0deg, 70%, 100%);
+}
+
+.lay1:before, .lay1:after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+}
+
+.stranicy:hover {
+  color: hsl(1deg, 60%, 100%) !important;
+  background-color: hsl(240deg, 60%, 50%) !important;
+  transition: all 0.5s ease;
 }
 
 .adp90_img {

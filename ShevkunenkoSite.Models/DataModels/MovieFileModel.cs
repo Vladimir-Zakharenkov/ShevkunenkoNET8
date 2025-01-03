@@ -289,27 +289,27 @@ public class MovieFileModel
     #region Ссылки на видеохостинги
 
     [DataType(DataType.Url)]
-    [Display(Name = "Адрес файла в интернете: ")]
+    [Display(Name = "sergeyshef.ru : ")]
     public Uri? MovieContentUrl { get; set; } = null!;
 
     [DataType(DataType.Url)]
-    [Display(Name = "Фильм на YouTube: ")]
+    [Display(Name = "YouTube : ")]
     public Uri? MovieYouTube { get; set; }
 
     [DataType(DataType.Url)]
-    [Display(Name = "Фильм на VK: ")]
+    [Display(Name = "VK : ")]
     public Uri? MovieVkVideo { get; set; }
 
     [DataType(DataType.Url)]
-    [Display(Name = "Фильм на MailRu: ")]
+    [Display(Name = "MailRu : ")]
     public Uri? MovieMailRuVideo { get; set; }
 
     [DataType(DataType.Url)]
-    [Display(Name = "Фильм на OK: ")]
+    [Display(Name = "OK : ")]
     public Uri? MovieOkVideo { get; set; }
 
     [DataType(DataType.Url)]
-    [Display(Name = "Фильм на Яндекс Диск: ")]
+    [Display(Name = "Яндекс Диск : ")]
     public Uri? MovieYandexDiskVideo { get; set; }
 
     #endregion
@@ -480,6 +480,20 @@ public class MovieFileModel
     [Display(Name = "Все найденные фильмы")]
     // true -> все найденные фильмы, false - фильмы с параметром InMainList (true)
     public bool AllMoviesFromDB3 { get; set; } = true;
+
+    #endregion
+
+    #region Статья 1 о фильме
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Заголовок статьи о фильме 1 (HTML)")]
+    public string HeadingOfArticle1 { get; set; } = string.Empty;
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Текст статьи о фильме 1 (HTML)")]
+    public string TextOfArticle1 { get; set; } = string.Empty;
 
     #endregion
 }
