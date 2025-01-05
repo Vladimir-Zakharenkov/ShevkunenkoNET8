@@ -512,7 +512,6 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     <label asp-for="MovieItem.MovieCaption" class="form-label text-primary fs-5"></label>
-
                                     <input id="MovieCaptionInput" class="form-control text-center" asp-for="MovieItem.MovieCaption" aria-describedby="MovieCaptionInputHelpBlock" />
 
                                     <div id="MovieCaptionInputHelpBlock" class="form-text mb-2">
@@ -524,7 +523,6 @@
                                     <hr class="mb-2 w-50 mx-auto " />
 
                                     <label asp-for="MovieItem.MovieCaptionForOnline" class="form-label text-primary fs-5"></label>
-
                                     <input id="MovieCaptionForOnlineInput" asp-for="MovieItem.MovieCaptionForOnline" class="form-control text-center" aria-describedby="MovieCaptionForOnlineInputHelpBlock" />
 
                                     <div id="MovieCaptionForOnlineInputHelpBlock" class="form-text mb-2">
@@ -536,7 +534,6 @@
                                     <hr class="mb-2 w-50 mx-auto " />
 
                                     <label asp-for="MovieItem.MovieDescriptionForSchemaOrg" class="form-label text-primary fs-5"></label>
-
                                     <textarea id="MovieDescriptionForSchemaOrgInput" rows="7" asp-for="MovieItem.MovieDescriptionForSchemaOrg" class="form-control" aria-describedby="MovieDescriptionForSchemaOrgInputHelpBlock"></textarea>
 
                                     <div id="MovieDescriptionForSchemaOrgInputHelpBlock" class="form-text pb-2">
@@ -548,7 +545,6 @@
                                     <hr class="mb-2 w-50 mx-auto " />
 
                                     <label asp-for="MovieItem.MovieDescriptionHtml" class="form-label text-primary fs-5"></label>
-
                                     <textarea id="MovieDescriptionHtmlInput" rows="7" asp-for="MovieItem.MovieDescriptionHtml" class="form-control" aria-describedby="MovieDescriptionHtmlHelpBlock"></textarea>
 
                                     <div id="MovieDescriptionHtmlHelpBlock" class="form-text pb-2">
@@ -560,7 +556,6 @@
                                     <hr class="mb-2 w-50 mx-auto " />
 
                                     <label asp-for="MovieItem.FramesAroundMovie" class="form-label text-primary fs-5"></label>
-
                                     <input id="MovieFramesAroundMovieInput" asp-for="MovieItem.FramesAroundMovie" class="form-control" aria-describedby="MovieFramesAroundMovieHelpBlock" />
 
                                     <div id="MovieFramesAroundMovieHelpBlock" class="form-text pb-2">
@@ -571,7 +566,6 @@
                                     <hr class="mb-2 w-50 mx-auto " />
 
                                     <label asp-for="MovieItem.MovieNote" class="form-label text-primary fs-5"></label>
-
                                     <textarea id="MovieNoteInput" rows="2" asp-for="MovieItem.MovieNote" class="form-control" aria-describedby="MovieNoteHelpBlock"></textarea>
 
                                     <div id="MovieNoteHelpBlock" class="form-text pb-2">
@@ -1755,6 +1749,44 @@
                                                 <span class="fs-6 text-success">все фильмы или из основного списка</span>
                                             </div>
                                             <span asp-validation-for="MovieItem.AllMoviesFromDB3" class="text-danger"></span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                @* Статья о видео 1*@
+                                <div class="accordion-item mb-3 shadw ms-5">
+
+                                    @* заголовок группы «Статья о видео 1» *@
+                                    <h2 class="accordion-header" id="headingAddLinks4">
+                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks4" aria-expanded="true" aria-controls="AddLinks4">
+                                            <span class="form-label fs-5">Статья о видео 1 :</span>
+                                        </button>
+                                    </h2>
+
+                                    <div id="AddLinks4" class="accordion-collapse collapse" aria-labelledby="headingAddLinks4" data-bs-parent="#accordionLinks">
+
+                                        <div class="accordion-body text-center fs-5 text-indent-0">
+
+                                            @* заголовок статьи о видео (1) *@
+                                            <label asp-for="MovieItem.HeadingOfArticle1" class="col-12 form-label text-primary"></label>
+                                            <input id="HeadingOfArticle1Input" asp-for="MovieItem.HeadingOfArticle1" class="col-12 form-control text-center" aria-describedby="HeadingOfArticle1InputHelpBlock" />
+                                            <div id="HeadingOfArticle1InputHelpBlock" class="form-text mb-3">
+                                                <span class="fs-6 text-success">заголовок статьи о видео (1)</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.HeadingOfArticle1" class="text-danger"></span>
+
+                                            <hr class="mb-2 w-50 mx-auto " />
+
+                                            <label asp-for="MovieItem.TextOfArticle1" class="form-label text-primary fs-5"></label>
+                                            <textarea id="TextOfArticle1Input" rows="7" asp-for="MovieItem.TextOfArticle1" class="form-control" aria-describedby="TextOfArticle1HelpBlock"></textarea>
+
+                                            <div id="TextOfArticle1HelpBlock" class="form-text pb-2">
+                                                <span class="fs-6 text-success">содержание статьи (HTML)</span>
+                                            </div>
+                                            <span asp-validation-for="MovieItem.TextOfArticle1" class="text-danger"></span>
 
                                         </div>
 

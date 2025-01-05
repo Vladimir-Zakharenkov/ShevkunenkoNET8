@@ -1,9 +1,7 @@
 ﻿namespace ShevkunenkoSite.Services;
 
-public class SiteDbContext : DbContext
+public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(options)
 {
-    public SiteDbContext(DbContextOptions<SiteDbContext> options) : base(options) { }
-
     public DbSet<PageInfoModel> PageInfo => Set<PageInfoModel>();
 
     public DbSet<BackgroundFileModel> BackgroundFile => Set<BackgroundFileModel>();
@@ -17,6 +15,8 @@ public class SiteDbContext : DbContext
     public DbSet<AccessModel> Access => Set<AccessModel>();
 
     public DbSet<TopicMovieModel> TopicMovie => Set<TopicMovieModel>();
+
+    public DbSet<TextInfoModel> TextFile => Set<TextInfoModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -15,7 +15,7 @@
 
 </div>
 
-@* Основной блок ВИДЕО*@
+@* Основной блок ВИДЕО *@
 <div class="row">
 
     @* Кадры слева от видео *@
@@ -402,21 +402,23 @@
                 </div>
 
                 @* Статья, интервью и т.п. *@
-                <div class="accordion-item shadw mt-3">
+                @if (!string.IsNullOrEmpty(Model.MovieFile.HeadingOfArticle1))
+                {
+                    <div class="accordion-item shadw mt-3">
 
-                    <h2 id="heading4" class="accordion-header">
-                        <button class="accordion-button collapsed p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="collapse4">
-                            <span>ИНТЕРВЬЮ С СОЗДАТЕЛЯМИ СЕРИАЛА</span>
-                        </button>
-                    </h2>
+                        <h2 id="heading4" class="accordion-header">
+                            <button class="accordion-button collapsed p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                <span>Пресса</span>
+                            </button>
+                        </h2>
 
-                    <div id="collapse4" class="accordion-collapse collapse h" aria-labelledby="heading4" data-bs-parent="#movieDescription">
+                        <div id="collapse4" class="accordion-collapse collapse h" aria-labelledby="heading4" data-bs-parent="#movieDescription">
 
-                        <div class="accordion-body">
+                            <div class="accordion-body">
+								@Html.Raw(Model.MovieFile.HeadingOfArticle1)
+                                @Html.Raw(Model.MovieFile.TextOfArticle1)
 
-		 					@Html.Raw("<h2>ЭКРАНИЗАЦИЯ ВЕЛИКОГО РОМАНА</h2>")
-
-@* 		// 														< p >< a class="atext" href="/rybakov/pesok/index.htm">&laquo;Тяжелый песок&raquo;</a> - одна
+                                @* 		// 														< p >< a class="atext" href="/rybakov/pesok/index.htm">&laquo;Тяжелый песок&raquo;</a> - одна
 		// 														из самых значительных книг<a class="atext" href="/rybakov/index.htm">Анатолия Рыбакова</a>
 		// 														(1911 -1998). Роман впервые был опубликован в &laquo;застойные&raquo; времена и стал
 		// 														событием в литературной жизни страны.</p>
@@ -1103,12 +1105,12 @@
 		// 										<p class="t-a-r">Газета &quot;Музыкальная правда&quot; №34 от 19 сентября 2008 года</p>
 		//)
  *@
+                            </div>
+
                         </div>
 
                     </div>
-
-                </div>
-
+                }
 
             </div>
 
