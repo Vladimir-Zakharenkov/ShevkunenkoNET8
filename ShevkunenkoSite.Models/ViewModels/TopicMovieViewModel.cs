@@ -2,7 +2,7 @@
 
 public class TopicMovieViewModel
 {
-    public TopicMovieModel[] AllTopics { get; set; } = Array.Empty<TopicMovieModel>();
+    public TopicMovieModel[] AllTopics { get; set; } = [];
 
     public PagingInfoViewModel PagingInfo { get; set; } = new();
 

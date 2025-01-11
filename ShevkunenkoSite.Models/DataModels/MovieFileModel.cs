@@ -495,5 +495,8 @@ public class MovieFileModel
     [Display(Name = "Текст статьи о фильме 1 (HTML)")]
     public string TextOfArticle1 { get; set; } = string.Empty;
 
+    public Guid? TextInfoModelId { get; set; }
+    public TextInfoModel? TextInfoModel { get; set; }
+
     #endregion
 }

@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
 public class TopicMovieController(ITopicMovieRepository topicContext, IMovieFileRepository movieContext) : Controller
 {
-
     #region Список тем видео
 
     public int topicsPerPage = 10;

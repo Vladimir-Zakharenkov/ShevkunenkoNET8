@@ -1,0 +1,155 @@
+﻿@model TextInfoViewModel
+
+@* Значение строки поиска *@
+<div class="row">
+
+    @if (!String.IsNullOrEmpty(Model.TextSearchString))
+    {
+        <p class="fs-5 text-primary mb-0">
+            Поиск по строке: <span class="text-black text_shadow">@Model.TextSearchString</span>
+        </p>
+    }
+
+</div>
+
+@* Сообщение количестве текстов *@
+@if (Model.PagingInfo.TotalItems == 0)
+{
+    <div class="row">
+
+        <div class="col text-center p-2">
+
+            <p class="fs-5 text_shadow mb-0">В базе данных нет текстов</p>
+
+        </div>
+
+    </div>
+
+    <hr class="liniya" />
+}
+else
+{
+    <div class="row">
+
+        <div class="col-12 text-center">
+
+            <p class="fs-5 text-primary mb-0">Количество текстов:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+
+        </div>
+
+    </div>
+
+    <hr class="liniya" />
+}
+
+@* Добавить текст - Поиск текста *@
+<div class="row">
+
+    <div class="col-12 col-md-3">
+        <a class="btn btn-outline-danger shadw mt-2"
+           asp-area="Admin"
+           asp-controller="TextInfo"
+           asp-action="AddText"
+           title="добавить текст">
+            Добавить
+        </a>
+    </div>
+
+    <hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
+
+    <div class="col-12 col-md-9 mb-2">
+
+        <form method="get" class="text-center text-md-end mt-md-2"
+              asp-area="Admin"
+              asp-controller="TextInfo"
+              asp-action="Index">
+
+            <input type="text" class="d-inline-block align-middle mt-1 w-50" asp-for="TextSearchString" />
+
+            <input type="submit" class="btn btn-outline-success shadw me-md-3" value=" Поиск" title="поиск текста" />
+
+        </form>
+
+    </div>
+
+    <hr class="liniya" />
+
+</div>
+
+
+@* Таблица данных *@
+<div class="row">
+
+    <div class="col m-1 shadw">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-hover caption-top align-middle">
+
+                <thead>
+
+                    <tr class="table-secondary text-start">
+                        <th scope="col" class="text-primary">Описание</th>
+                        <th scope="col" class="text-primary d-none d-md-table-cell">Текст</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var text in Model.AllTexts)
+                    {
+                        <tr class="text-start">
+
+                            <td scope="col" class="text-start text_shadow">@text.TextDescription</td>
+
+                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.ClearText.StartOfDescription()</td>
+
+                            <td scope="col" title="Информация">
+                                <a class="btn btn-outline-primary py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TextInfo"
+                                   asp-action="DetailsText"
+                                   asp-route-textId="@text.TextInfoModelId"
+                                   title="Информация о тексте">
+                                    Info
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Редактировать">
+                                <a class="btn btn-outline-success py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TextInfo"
+                                   asp-action="EditText"
+                                   asp-route-textId="@text.TextInfoModelId"
+                                   title="Изменить текст">
+                                    Edit
+                                </a>
+                            </td>
+
+                            <td scope="col" title="Удалить">
+                                <a class="btn btn-outline-danger py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="TextInfo"
+                                   asp-action="DeleteText"
+                                   asp-route-textId="@text.TextInfoModelId"
+                                   title="Удалить текст">
+                                    Del
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

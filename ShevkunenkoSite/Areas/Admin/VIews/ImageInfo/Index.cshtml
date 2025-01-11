@@ -1,9 +1,6 @@
 ﻿@model ImageListViewModel
 
-@{
-}
-
-<!-- Строка поиска -->
+@* Строка поиска *@
 <div class="row">
 
     @if (!String.IsNullOrEmpty(Model.ImageSearchString))
@@ -13,7 +10,7 @@
 
 </div>
 
-<!-- Количество картинок -->
+@* Количество картинок *@
 @if (Model.AllImages.Count() == 0)
 {
     <div class="row">
@@ -41,7 +38,7 @@ else
 
 <hr class="liniya" />
 
-<!-- Добавить картинку - Иконки - Поиск картинок -->
+@* Добавить картинку - Иконки - Поиск картинок *@
 <div class="row row-cols-2 row-cols-md-3 justify-content-center px-2">
 
     <div class="col-6 col-md-2">
@@ -83,7 +80,7 @@ else
 
 <hr class="liniya" />
 
-<!-- Страницы -->
+@* Страницы *@
 @if (Model.PagingInfo.TotalPages > 1)
 {
     <div class="row p-2 m-2">
@@ -103,7 +100,11 @@ else
 
     </div>
 }
+else
+{
+}
 
+@* Таблица данных *@
 <div class="row">
 
     <div class="col m-1 shadw">
@@ -256,7 +257,7 @@ else
 
 </div>
 
-<!-- Страницы -->
+@* Страницы *@
 @if (Model.PagingInfo.TotalPages > 1)
 {
     <div class="row p-2 m-2">
@@ -275,4 +276,7 @@ else
         </div>
 
     </div>
+}
+else
+{
 }

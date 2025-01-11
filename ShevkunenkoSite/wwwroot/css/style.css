@@ -5,6 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 @import url("https://fonts.googleapis.com/css2?family=Philosopher&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Philosopher&display=swap");
 :root,
 [data-bs-theme=light] {
   --bs-blue: #0d6efd;
@@ -11895,6 +11896,44 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+body {
+  font-family: "Philosopher", sans-serif;
+}
+
+.container-fluid-1920 {
+  max-width: 1920px;
+  min-width: 320px;
+}
+
+/* тег hr */
+.liniya {
+  width: 96%;
+  height: 1px !important;
+  color: hsla(330deg, 60%, 45%, 0.9);
+  border-color: hsla(0deg, 90%, 40%, 0.9);
+  box-shadow: 0.1em 0.1em 0.1em hsla(0deg, 0%, 0%, 0.6);
+  opacity: 0.9 !important;
+  margin: 0.5rem auto;
+}
+
+.footer-image img {
+  border-width: 0 !important;
+}
+
+.footer-image a:hover {
+  text-decoration: none;
+}
+
+.fotoplenka {
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  background-position: center;
+}
+
+.ten {
+  box-shadow: 0.5rem 0.4rem 0.4rem hsla(0deg, 0%, 0%, 0.6);
+}
+
 /* страницы книги */
 .raised {
   position: relative;
@@ -12084,56 +12123,6 @@ body {
   -o-hyphenate-limit-last: always;
   hyphenate-limit-last: always;
    hyphenate-limit-zone: 8% */
-}
-
-.container-fluid-1920 {
-  max-width: 1920px;
-  min-width: 320px;
-}
-
-/* тег hr */
-.liniya {
-  width: 96%;
-  height: 1px !important;
-  color: hsla(330deg, 60%, 45%, 0.9);
-  border-color: hsla(0deg, 90%, 40%, 0.9);
-  box-shadow: 0.1em 0.1em 0.1em hsla(0deg, 0%, 0%, 0.6);
-  opacity: 0.9 !important;
-  margin: 0.5rem auto;
-}
-
-.footer-image img {
-  border-width: 0 !important;
-}
-
-.footer-image a:hover {
-  text-decoration: none;
-}
-
-.fotoplenka {
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  background-position: center;
-}
-
-.ten {
-  box-shadow: 0.5rem 0.4rem 0.4rem hsla(0deg, 0%, 0%, 0.6);
-}
-
-.maxwidthcontent {
-  max-width: max-content;
-}
-
-.maxwidth28percent {
-  max-width: 28%;
-}
-
-.maxwidth50percent {
-  max-width: 50%;
-}
-
-.maxwidth800px {
-  max-width: 800px;
 }
 
 .shadw {
@@ -12786,4 +12775,47 @@ li#yandex-search * {
 
 .adap16_old_site {
   max-height: 26rem;
+}
+
+.bookpages {
+  display: block;
+  clear: both;
+  background-color: hsla(0deg, 40%, 96%, 0.8);
+  margin: 1rem auto;
+  padding: 1rem;
+}
+
+.descr {
+  font-size: 13pt;
+  line-height: 18pt;
+  padding: 3rem 2rem;
+}
+
+.descr p {
+  text-align: justify;
+  text-indent: 1.5rem;
+}
+
+.height400 {
+  height: 400px;
+}
+
+.height600 {
+  height: 600px;
+}
+
+.maxwidthcontent {
+  max-width: max-content;
+}
+
+.maxwidth28percent {
+  max-width: 28%;
+}
+
+.maxwidth50percent {
+  max-width: 50%;
+}
+
+.maxwidth800px {
+  max-width: 800px;
 }

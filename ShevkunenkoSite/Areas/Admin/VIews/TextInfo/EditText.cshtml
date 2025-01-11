@@ -1,0 +1,110 @@
+﻿@model TextInfoModel
+
+<hr class="liniya" />
+
+<h1 class="fs-3 text_shadow">Изменить текст</h1>
+
+<hr class="liniya" />
+
+<div class="col-12 col-xxl-10 mx-auto">
+
+    <div class="bookpages lay1">
+
+        <label asp-for="HtmlText" class="col-form-label text-primary fs-5 mb-1"></label>
+
+        <div class="descr lay1 overflow-y-scroll height400">
+
+            @Html.Raw(Model.HtmlText)
+
+        </div>
+
+        <div class="form-text mt-3">
+            <span class="fs-6 text-success">вид текста</span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col card p-2">
+
+    <div class="col-12 card-body mx-auto">
+
+        <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
+
+            <input asp-for="TextInfoModelId" type="hidden" />
+
+            @if (Context.Request.Method == "POST")
+            {
+                <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+            }
+
+            @* Тег «TextDescription» *@
+            <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+            <textarea id="TextDescriptionInput" class="form-control fordetails"
+                      asp-for="TextDescription"
+                      rows="3"
+                      aria-describedby="TextDescriptionInputHelpBlock">
+             </textarea>
+            <div id="TextDescriptionInputHelpBlock" class="form-text">
+                <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
+                <span class="fs-6 text-danger">обязательное поле</span>
+            </div>
+
+            <span asp-validation-for="TextDescription" class="text-danger"></span>
+
+            <hr class="liniya" />
+
+            @* Тег «ClearText» *@
+            <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
+            <textarea id="ClearTextInput" class="form-control fordetails"
+                      asp-for="ClearText"
+                      rows="7"
+                      aria-describedby="ClearTextInputHelpBlock">
+             </textarea>
+            <div id="ClearTextInputHelpBlock" class="form-text">
+                <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
+                <span class="fs-6 text-danger">обязательное поле</span>
+            </div>
+
+            <span asp-validation-for="ClearText" class="text-danger"></span>
+
+            <hr class="liniya" />
+
+            @* Тег «HtmlText» *@
+            <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
+            <textarea id="HtmlTextInput" class="form-control fordetails"
+                      asp-for="HtmlText"
+                      rows="7"
+                      aria-describedby="HtmlTextInputHelpBlock">
+             </textarea>
+            <div id="HtmlTextInputHelpBlock" class="form-text">
+                <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
+                <span class="fs-6 text-danger">обязательное поле</span>
+            </div>
+
+            <span asp-validation-for="HtmlText" class="text-danger"></span>
+
+            <div class="card-footer p-0 pb-2 mt-4">
+
+                <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
+                        title="Сохранить">
+                    Сохранить
+                </button>
+
+                <a class="btn btn-outline-danger mt-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="TextInfo"
+                   asp-action="DetailsText"
+                   asp-route-textId="@Model.TextInfoModelId"
+                   title="Отменить">
+                    Отменить
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

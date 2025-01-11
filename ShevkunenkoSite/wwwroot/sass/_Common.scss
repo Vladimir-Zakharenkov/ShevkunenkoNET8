@@ -1,4 +1,10 @@
-﻿.container-fluid-1920 {
+﻿@import url('https://fonts.googleapis.com/css2?family=Philosopher&display=swap');
+
+body {
+    font-family: 'Philosopher', sans-serif;
+}
+
+.container-fluid-1920 {
     max-width: 1920px;
     min-width: 320px;
 }
@@ -30,20 +36,4 @@
 
 .ten {
     box-shadow: .5rem .4rem .4rem hsla(0,0%,0%,.6);
-}
-
-.maxwidthcontent {
-    max-width: max-content;
-}
-
-.maxwidth28percent {
-    max-width: 28%;
-}
-
-.maxwidth50percent {
-    max-width: 50%;
-}
-
-.maxwidth800px {
-    max-width: 800px;
 }

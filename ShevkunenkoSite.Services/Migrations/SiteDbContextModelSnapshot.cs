@@ -629,6 +629,9 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TextInfoModelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TextOfArticle1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -652,6 +655,8 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasIndex("PageInfoModelId")
                         .IsUnique()
                         .HasFilter("[PageInfoModelId] IS NOT NULL");
+
+                    b.HasIndex("TextInfoModelId");
 
                     b.ToTable("MovieFile");
                 });
@@ -903,6 +908,10 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithOne("MovieFile")
                         .HasForeignKey("ShevkunenkoSite.Models.DataModels.MovieFileModel", "PageInfoModelId");
 
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.TextInfoModel", "TextInfoModel")
+                        .WithMany()
+                        .HasForeignKey("TextInfoModelId");
+
                     b.Navigation("FullMovie");
 
                     b.Navigation("ImageFileModel");
@@ -914,6 +923,8 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("PageForMovieSeries");
 
                     b.Navigation("PageInfoModel");
+
+                    b.Navigation("TextInfoModel");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
