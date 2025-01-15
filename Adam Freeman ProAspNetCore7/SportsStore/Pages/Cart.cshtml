@@ -1,15 +1,13 @@
 ﻿@page
 
-<!-- #region Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder -->
-@*
-<h4>This is the Cart Page</h4>
-*@
-<!-- #endregion -->
-<!-- #region Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder -->
+@* Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder *@
+@* <h4>This is the Cart Page</h4> *@
+
+
+@* Listing 8.24 Handling requests in the Cart.cshtml file in the SportsStore/Pages folder *@
 @model CartModel
 
 <h2>Your cart</h2>
-
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -20,8 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var line in Model.Cart?.Lines
-        ?? Enumerable.Empty<CartLine>())
+        @foreach (var line in Model.Cart?.Lines ?? Enumerable.Empty<CartLine>())
         {
             <tr>
                 <td class="text-center">@line.Quantity</td>
@@ -50,4 +47,3 @@
         Continue shopping
     </a>
 </div>
-<!-- #endregion -->

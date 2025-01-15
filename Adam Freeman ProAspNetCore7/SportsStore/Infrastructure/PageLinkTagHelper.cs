@@ -134,14 +134,9 @@ using SportsStore.Models.ViewModels;
 namespace SportsStore.Infrastructure
 {
     [HtmlTargetElement("div", Attributes = "page-model")]
-    public class PageLinkTagHelper : TagHelper
+    public class PageLinkTagHelper(IUrlHelperFactory helperFactory) : TagHelper
     {
-        private IUrlHelperFactory urlHelperFactory;
-
-        public PageLinkTagHelper(IUrlHelperFactory helperFactory)
-        {
-            urlHelperFactory = helperFactory;
-        }
+        private readonly IUrlHelperFactory urlHelperFactory = helperFactory;
 
         [ViewContext]
         [HtmlAttributeNotBound]
@@ -152,7 +147,7 @@ namespace SportsStore.Infrastructure
         public string? PageAction { get; set; }
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
-        public Dictionary<string, object> PageUrlValues { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object> PageUrlValues { get; set; } = [];
 
         public bool PageClassesEnabled { get; set; } = false;
 
@@ -168,11 +163,11 @@ namespace SportsStore.Infrastructure
             {
                 IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
 
-                TagBuilder result = new TagBuilder("div");
+                TagBuilder result = new("div");
 
                 for (int i = 1; i <= PageModel.TotalPages; i++)
                 {
-                    TagBuilder tag = new TagBuilder("a");
+                    TagBuilder tag = new("a");
 
                     PageUrlValues["productPage"] = i;
 

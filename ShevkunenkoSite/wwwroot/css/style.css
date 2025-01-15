@@ -12201,18 +12201,18 @@ body {
 }
 
 .imageref {
-  border: 0.1rem ridge transparent;
+  border: 0.2rem ridge rgba(194, 10, 41, 0);
   border-radius: 0.3rem;
   transition: all 0.3s ease-in-out;
 }
 
 .imageref:hover {
-  border: 0.1rem rgba(194, 10, 41, 0.9) ridge;
+  border-color: rgba(194, 10, 41, 0.9);
   opacity: 0.9;
 }
 
 .setimage_border {
-  border: 0.1rem rgba(194, 10, 41, 0.9) ridge;
+  border-color: rgba(194, 10, 41, 0.9);
 }
 
 .footer-image img {

@@ -46,7 +46,7 @@ else
 <div class="row">
 
     <div class="col-12 col-md-3">
-        <a class="btn btn-outline-danger shadw mt-2"
+        <a class="btn btn-outline-danger shadw py-1 mt-2"
            asp-area="Admin"
            asp-controller="TextInfo"
            asp-action="AddText"
@@ -66,7 +66,7 @@ else
 
             <input type="text" class="d-inline-block align-middle mt-1 w-50" asp-for="TextSearchString" />
 
-            <input type="submit" class="btn btn-outline-success shadw me-md-3" value=" Поиск" title="поиск текста" />
+            <input type="submit" class="btn btn-outline-success shadw py-1 me-md-3" value=" Поиск" title="поиск текста" />
 
         </form>
 
@@ -75,7 +75,6 @@ else
     <hr class="liniya" />
 
 </div>
-
 
 @* Таблица данных *@
 <div class="row">
@@ -108,37 +107,50 @@ else
 
                             <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.ClearText.StartOfDescription()</td>
 
-                            <td scope="col" title="Информация">
+                            <td scope="col" title="информация">
                                 <a class="btn btn-outline-primary py-1 px-1 shadw"
                                    asp-area="Admin"
                                    asp-controller="TextInfo"
                                    asp-action="DetailsText"
                                    asp-route-textId="@text.TextInfoModelId"
-                                   title="Информация о тексте">
+                                   title="информация о тексте">
                                     Info
                                 </a>
                             </td>
 
-                            <td scope="col" title="Редактировать">
+                            <td scope="col" title="редактировать">
                                 <a class="btn btn-outline-success py-1 px-1 shadw"
                                    asp-area="Admin"
                                    asp-controller="TextInfo"
                                    asp-action="EditText"
                                    asp-route-textId="@text.TextInfoModelId"
-                                   title="Изменить текст">
+                                   title="изменить текст">
                                     Edit
                                 </a>
                             </td>
 
-                            <td scope="col" title="Удалить">
+                            <td scope="col" title="удалить">
                                 <a class="btn btn-outline-danger py-1 px-1 shadw"
                                    asp-area="Admin"
                                    asp-controller="TextInfo"
                                    asp-action="DeleteText"
                                    asp-route-textId="@text.TextInfoModelId"
-                                   title="Удалить текст">
+                                   title="удалить текст">
                                     Del
                                 </a>
+                            </td>
+
+                            <td scope="col" title="выбрать текст">
+                                <form method="post"
+                                      asp-area="Admin"
+                                      asp-controller="MovieInfo"
+                                      asp-action="DetailsMovie"
+                                      asp-route-movieId="3de64a4c-8432-4574-bf1d-08dd0748c098">
+                                    <input type="hidden" name="textId" value="@text.TextInfoModelId" />
+                                    <button type="submit" class="btn btn-outline-danger py-1 px-1 shadw">
+                                        Add
+                                    </button>
+                                </form>
                             </td>
 
                         </tr>

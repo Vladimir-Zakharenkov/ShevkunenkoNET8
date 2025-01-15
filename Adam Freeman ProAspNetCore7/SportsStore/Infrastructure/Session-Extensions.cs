@@ -15,7 +15,7 @@ namespace SportsStore.Infrastructure
         {
             var sessionData = session.GetString(key);
 
-            return sessionData == null ? default(T) : JsonSerializer.Deserialize<T>(sessionData);
+            return sessionData == null ? default : JsonSerializer.Deserialize<T>(sessionData);
         }
     }
 }

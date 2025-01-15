@@ -233,78 +233,39 @@ public class AllVideoController(
                     fullMovie = await movieContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieItem.FullMovieID);
                 }
 
-                string queryString = HttpContext.Request.QueryString.ToString();
+               //string queryString = HttpContext.Request.QueryString.ToString();
 
                 bool sergeyshefRu = false;
 
                 Uri? videoRef;
-
-                string? youtubeImageBorder, vkImageBorder, okImageBorder, mailruImageBorder, sergeyshefImageBorder = null;
 
                 if (!string.IsNullOrEmpty(videoHosting))
                 {
                     if (videoHosting.Contains("vk.com") || videoHosting.Contains("vkvideo.ru"))
                     {
                         videoRef = movieItem.MovieVkVideo;
-
-                        youtubeImageBorder = null;
-                        vkImageBorder = "setimage_border";
-                        okImageBorder = null;
-                        mailruImageBorder = null;
-                        sergeyshefImageBorder = null;
                     }
                     else if (videoHosting.Contains("mail.ru"))
                     {
                         videoRef = movieItem.MovieMailRuVideo;
-
-                        youtubeImageBorder = null;
-                        vkImageBorder = null;
-                        okImageBorder = null;
-                        mailruImageBorder = "setimage_border";
-                        sergeyshefImageBorder = null;
                     }
                     else if (videoHosting.Contains("ok.ru"))
                     {
                         videoRef = movieItem.MovieOkVideo;
-
-                        youtubeImageBorder = null;
-                        vkImageBorder = null;
-                        okImageBorder = "setimage_border";
-                        mailruImageBorder = null;
-                        sergeyshefImageBorder = null;
                     }
                     else if (videoHosting.Contains("youtube.com"))
                     {
                         videoRef = movieItem.MovieYouTube;
-
-                        youtubeImageBorder = "setimage_border";
-                        vkImageBorder = null;
-                        okImageBorder = null;
-                        mailruImageBorder = null;
-                        sergeyshefImageBorder = null;
                     }
                     else
                     {
                         videoRef = movieItem.MovieContentUrl;
-
-                        youtubeImageBorder = null;
-                        vkImageBorder = null;
-                        okImageBorder = null;
-                        mailruImageBorder = null;
-                        sergeyshefImageBorder = "setimage_border";
-
                         sergeyshefRu = true;
                     }
                 }
                 else
                 {
                     videoRef = movieItem.MovieYouTube;
-
-                    youtubeImageBorder = "setimage_border";
-                    vkImageBorder = null;
-                    okImageBorder = null;
-                    mailruImageBorder = null;
-                    sergeyshefImageBorder = null;
                 }
 
                 return View("Movie", new MoviePageViewModel
@@ -313,11 +274,6 @@ public class AllVideoController(
                     FullMovie = fullMovie,
                     SergeyshefRu = sergeyshefRu,
                     VideoRef = videoRef!,
-                    YoutubeImageBorder = youtubeImageBorder,
-                    OkImageBorder = okImageBorder,
-                    MailruImageBorder = mailruImageBorder,
-                    VkImageBorder = vkImageBorder,
-                    SergeyshefBorder = sergeyshefImageBorder
                 });
             }
             else if (imageID != null)

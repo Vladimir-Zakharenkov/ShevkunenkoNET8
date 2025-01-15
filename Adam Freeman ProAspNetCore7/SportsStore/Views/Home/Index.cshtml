@@ -1,9 +1,9 @@
-﻿<!-- #region Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder -->
+﻿@* Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
 <h4>Welcome to SportsStore</h4>
 *@
-<!-- #endregion -->
-<!-- #region Listing 7.25 Using the product data in the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 7.25 Using the product data in the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
  @model IQueryable<Product>
 
@@ -16,8 +16,8 @@
     </div>
 }
  *@
-<!-- #endregion -->
-<!-- #region Listing 7.32 Updating the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 7.32 Updating the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
 @model ProductsListViewModel
 
@@ -30,8 +30,8 @@
     </div>
 }
  *@
-<!-- #endregion -->
-<!-- #region Listing 7.33 Adding the pagination links in the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 7.33 Adding the pagination links in the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
 @model ProductsListViewModel
 
@@ -46,8 +46,8 @@
 
 <div page-model="@Model.PagingInfo" page-action="Index"></div>
 *@
-<!-- #endregion -->
-<!-- #region Listing 7.38 Styling content in the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 7.38 Styling content in the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
 @model ProductsListViewModel
 
@@ -73,8 +73,8 @@
      page-class-selected="btn-primary" class="btn-group pull-right m-1">
 </div>
  *@
-<!-- #endregion -->
-<!-- #region Listing 7.41 Using a partial view in the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 7.41 Using a partial view in the Index.cshtml file in the SportsStore/Views/Home folder *@
 @*
 @model ProductsListViewModel
 
@@ -89,8 +89,8 @@
      page-class-selected="btn-primary" class="btn-group pull-right m-1">
 </div>
 *@
-<!-- #endregion -->
-<!-- #region Listing 8.5 Adding a attribute in the Index.cshtml file in the SportsStore/Views/Home folder -->
+
+@* Listing 8.5 Adding a attribute in the Index.cshtml file in the SportsStore/Views/Home folder *@
 @model ProductsListViewModel
 
 @foreach (var p in Model.Products ?? Enumerable.Empty<Product>())
@@ -105,4 +105,3 @@
      page-url-category="@Model.CurrentCategory!"
      class="btn-group pull-right m-1">
 </div>
-<!-- #endregion -->

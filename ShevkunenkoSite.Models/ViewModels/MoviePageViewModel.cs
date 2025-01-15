@@ -11,14 +11,4 @@ public class MoviePageViewModel
     public bool SergeyshefRu {  get; set; } = false;
 
     public Uri VideoRef { get; set; } = null!;
-
-    public string? YoutubeImageBorder { get; set; }
-
-    public string? VkImageBorder { get; set; }
-
-    public string? OkImageBorder { get; set; }
-
-    public string? MailruImageBorder { get; set; }
-
-    public string? SergeyshefBorder { get; set; }
 }

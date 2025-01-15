@@ -1,5 +1,3 @@
-using WebMarkupMin.AspNetCoreLatest;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -68,6 +66,10 @@ services.Configure<RouteOptions>(options =>
     options.AppendTrailingSlash = true;
 });
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession();
+
 services.AddWebMarkupMin(
         options =>
         {
@@ -133,6 +135,8 @@ app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseAuthentication();
 
