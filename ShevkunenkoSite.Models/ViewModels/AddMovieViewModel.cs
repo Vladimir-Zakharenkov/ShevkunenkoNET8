@@ -26,12 +26,13 @@ public class AddMovieViewModel : MovieFileModel
     public IFormFile? FullMovieFormFile { get; set; }
 
     [DataType(DataType.Text)]
-    [Display(Name = "Страница фильма:")]
-    public string? PageForMovie { get; set; } = null;
-
-    [DataType(DataType.Text)]
     [Display(Name = "Страница серий:")]
     public string? PageForSeries { get; set; } = null;
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Темы видео :")]
+    public List<TopicMovieModel> TopicsForMovie { get; set; } = [];
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]

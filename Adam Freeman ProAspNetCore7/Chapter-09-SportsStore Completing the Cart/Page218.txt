@@ -1,55 +1,6 @@
-﻿@page
+Listing 9.5 Removing cart items in the Cart.cshtml file in the SportsStore/Pages folder
 
-@* Listing 7.10 The contents of the Index.cshtml file in the SportsStore/Views/Home folder *@
-@* <h4>This is the Cart Page</h4> *@
-
-@* Listing 8.24 Handling requests in the Cart.cshtml file in the SportsStore/Pages folder *@
-@* @model CartModel
-
-<h2>Your cart</h2>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Quantity</th>
-            <th>Item</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var line in Model.Cart?.Lines ?? Enumerable.Empty<CartLine>())
-        {
-            <tr>
-                <td class="text-center">@line.Quantity</td>
-                <td class="text-left">@line.Product.Name</td>
-                <td class="text-right">
-                    @line.Product.Price.ToString("c")
-                </td>
-                <td class="text-right">
-                    @((line.Quantity * line.Product.Price).ToString("c"))
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">
-                @Model.Cart?.ComputeTotalValue().ToString("c")
-            </td>
-        </tr>
-    </tfoot>
-</table>
-
-<div class="text-center">
-    <a class="btn btn-primary" href="@Model.ReturnUrl">
-        Continue shopping
-    </a>
-</div> *@
-
-@* Listing 9.5 Removing cart items in the Cart.cshtml file in the SportsStore/Pages folder *@
-@model CartModel
-
+@page
 <h2>Your cart</h2>
 <table class="table table-bordered table-striped">
     <thead>

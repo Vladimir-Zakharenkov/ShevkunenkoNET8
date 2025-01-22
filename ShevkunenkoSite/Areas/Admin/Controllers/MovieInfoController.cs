@@ -290,7 +290,15 @@ public class MovieInfoController(
     #region Добавить фильм в базу данных
 
     [HttpGet]
-    public ViewResult AddMovie() => View();
+    public ViewResult AddMovie()
+    {
+        AddMovieViewModel movieItem = new()
+        {
+            TopicsForMovie = [.. topicMovieContext.TopicMovies]
+        };
+
+        return View(movieItem);
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -468,39 +476,6 @@ public class MovieInfoController(
 
                 movieItem.MoviePosterString = posterFile.ImageFileName;
                 movieItem.MoviePosterId = movieItem.ImageFileModelId;
-            }
-
-            #endregion
-
-            #region Добавить ссылку на страницу фильма
-
-            if (!string.IsNullOrEmpty(movieItem.PageForMovie))
-            {
-                movieItem.PageForMovie = "/" + movieItem.PageForMovie.Trim().Trim('/');
-
-                if (!await pageInfoContext.PagesInfo.Where(p => p.PageFullPath == movieItem.PageForMovie).AnyAsync())
-                {
-                    ModelState.AddModelError("PageForMovie", "Указанной страницы нет в базе данных");
-
-                    return View();
-                }
-
-                PageInfoModel pageInfo = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPath == movieItem.PageForMovie);
-
-                if (await movieInfoContext.MovieFiles.Where(m => m.PageInfoModelId == pageInfo.PageInfoModelId).AnyAsync())
-                {
-                    MovieFileModel movieSet = await movieInfoContext.MovieFiles.FirstAsync(m => m.PageInfoModelId == pageInfo.PageInfoModelId);
-
-                    ModelState.AddModelError("PageForMovie", $"Указанная страница связана с фильмом {movieSet.MovieCaption}");
-
-                    return View();
-                }
-
-                movieItem.PageInfoModelId = pageInfo.PageInfoModelId;
-            }
-            else
-            {
-                movieItem.PageInfoModelId = null;
             }
 
             #endregion
@@ -946,14 +921,33 @@ public class MovieInfoController(
 
             #endregion
 
-            #region Возрастная категория фильма
+            #region Темы видео
 
-            if (movieItem.MovieAdult == true)
+            var topicFilters = Request.Form["topicOptions"].ToString().Split(',');
+
+            string topics = string.Empty;
+
+            if (Request.Form["topicOptions"].Count > 0)
             {
+                movieItem.TopicGuidList = Request.Form["topicOptions"].ToString().TrimEnd(',');
+            }
+            else
+            {
+                movieItem.TopicGuidList = string.Empty;
+            }
+
+            #endregion
+
+            #region Ограничения по возрасту
+
+            if (movieItem.MovieAdult)
+            {
+                movieItem.MovieAdult = true;
                 movieItem.MovieIsFamilyFriendly = false;
             }
             else
             {
+                movieItem.MovieAdult = false;
                 movieItem.MovieIsFamilyFriendly = true;
             }
 
@@ -994,7 +988,6 @@ public class MovieInfoController(
         {
             return View();
         }
-
     }
 
     #endregion
@@ -1733,12 +1726,6 @@ public class MovieInfoController(
             {
                 movieUpdate.FramesAroundMovie = string.Empty;
             }
-
-            #endregion
-
-            #region Формат изображения
-
-            movieUpdate.MovieScreenFormat = editMovie.MovieItem.MovieScreenFormat.Trim();
 
             #endregion
 

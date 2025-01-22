@@ -1,0 +1,66 @@
+Listing 9.6 Removing an item in the Cart.cshtml.cs file in the SportsStore/Pages folder
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using SportsStore.Infrastructure;
+using SportsStore.Models;
+
+namespace SportsStore.Pages
+{
+    public class CartModel : PageModel
+    {
+        private IStoreRepository repository;
+        public CartModel(IStoreRepository repo, Cart cartService)
+        {
+            repository = repo;
+            Cart = cartService;
+        }
+
+        public Cart Cart { get; set; }
+
+        public string ReturnUrl { get; set; } = "/";
+
+        public void OnGet(string returnUrl)
+        {
+            ReturnUrl = returnUrl ?? "/";
+        }
+
+        public IActionResult OnPost(long productId, string returnUrl)
+        {
+            Product? product = repository.Products
+            .FirstOrDefault(p => p.ProductID == productId);
+            if (product != null)
+            {
+                Cart.AddItem(product, 1);
+            }
+            return RedirectToPage(new { returnUrl = returnUrl });
+        }
+
+        public IActionResult OnPostRemove(long productId,
+        string returnUrl)
+        {
+            Cart.RemoveLine(Cart.Lines.First(cl =>
+            cl.Product.ProductID == productId).Product);
+            return RedirectToPage(new { returnUrl = returnUrl });
+        }
+    }
+}
+
+The new HTML content defines an HTML form. The handler method that will receive
+the request is specified with the asp-page-handler tag helper attribute, like this:
+
+...
+<form asp-page-handler="Remove" method="post">
+...
+
+The specified name is prefixed with On and given a suffix that matches the request
+type so that a value of Remove selects the OnPostRemove handler method. The handler
+method uses the value it receives to locate the item in the cart and remove it.
+
+Restart ASP.NET Core and request http://localhost:5000. Click the Add To Cart buttons
+to add items to the cart and then click a Remove button. The cart will be updated
+to remove the item you specified, as shown in figure 9.1.
+
+https://sergeyshef.ru/images/freeman-asp-net-core-7/Figure-9-1.webp
+
+Figure 9.1 Removing items from the shopping cart

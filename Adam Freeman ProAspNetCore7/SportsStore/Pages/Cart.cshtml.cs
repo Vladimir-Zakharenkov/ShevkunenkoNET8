@@ -16,44 +16,45 @@
 
 #region Listing 8.25 The Cart.cshtml.cs file in the SportsStore/Pages folder
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SportsStore.Infrastructure;
-using SportsStore.Models;
-namespace SportsStore.Pages
-{
-    public class CartModel(IStoreRepository repo) : PageModel
-    {
-        private readonly IStoreRepository repository = repo;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc.RazorPages;
+//using SportsStore.Infrastructure;
+//using SportsStore.Models;
 
-        public Cart? Cart { get; set; }
+//namespace SportsStore.Pages
+//{
+//    public class CartModel(IStoreRepository repo) : PageModel
+//    {
+//        private readonly IStoreRepository repository = repo;
 
-        public string ReturnUrl { get; set; } = "/";
+//        public Cart? Cart { get; set; }
 
-        public void OnGet(string returnUrl)
-        {
-            ReturnUrl = returnUrl ?? "/";
+//        public string ReturnUrl { get; set; } = "/";
 
-            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
-        }
+//        public void OnGet(string returnUrl)
+//        {
+//            ReturnUrl = returnUrl ?? "/";
 
-        public IActionResult OnPost(long productId, string returnUrl)
-        {
-            Product? product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
+//            Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+//        }
 
-            if (product != null)
-            {
-                Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+//        public IActionResult OnPost(long productId, string returnUrl)
+//        {
+//            Product? product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
 
-                Cart.AddItem(product, 1);
+//            if (product != null)
+//            {
+//                Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
 
-                HttpContext.Session.SetJson("cart", Cart);
-            }
+//                Cart.AddItem(product, 1);
 
-            return RedirectToPage(new { returnUrl });
-        }
-    }
-}
+//                HttpContext.Session.SetJson("cart", Cart);
+//            }
+
+//            return RedirectToPage(new { returnUrl });
+//        }
+//    }
+//}
 
 #endregion
 
@@ -63,19 +64,14 @@ namespace SportsStore.Pages
 //using Microsoft.AspNetCore.Mvc.RazorPages;
 //using SportsStore.Infrastructure;
 //using SportsStore.Models;
+
 //namespace SportsStore.Pages
 //{
-//    public class CartModel : PageModel
+//    public class CartModel(IStoreRepository repo, Cart cartService) : PageModel
 //    {
-//        private IStoreRepository repository;
+//        private readonly IStoreRepository repository = repo;
 
-//        public CartModel(IStoreRepository repo, Cart cartService)
-//        {
-//            repository = repo;
-//            Cart = cartService;
-//        }
-
-//        public Cart Cart { get; set; }
+//        public Cart Cart { get; set; } = cartService;
 
 //        public string ReturnUrl { get; set; } = "/";
 
@@ -95,9 +91,54 @@ namespace SportsStore.Pages
 //                Cart.AddItem(product, 1);
 //            }
 
-//            return RedirectToPage(new { returnUrl = returnUrl });
+//            return RedirectToPage(new { returnUrl });
 //        }
 //    }
 //}
+
+#endregion
+
+#region Listing 9.6 Removing an item in the Cart.cshtml.cs file in the SportsStore/Pages folder
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using SportsStore.Infrastructure;
+using SportsStore.Models;
+
+namespace SportsStore.Pages
+{
+    public class CartModel(IStoreRepository repo, Cart cartService) : PageModel
+    {
+        private readonly IStoreRepository repository = repo;
+
+        public Cart Cart { get; set; } = cartService;
+
+        public string ReturnUrl { get; set; } = "/";
+
+        public void OnGet(string returnUrl)
+        {
+            ReturnUrl = returnUrl ?? "/";
+        }
+
+        public IActionResult OnPost(long productId, string returnUrl)
+        {
+            Product? product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
+
+            if (product != null)
+            {
+                Cart.AddItem(product, 1);
+            }
+
+            return RedirectToPage(new { returnUrl });
+        }
+
+        public IActionResult OnPostRemove(long productId, string returnUrl)
+        {
+            Cart.RemoveLine(Cart.Lines.First(cl => cl.Product.ProductID == productId).Product);
+
+            return RedirectToPage(new { returnUrl });
+        }
+    }
+}
 
 #endregion

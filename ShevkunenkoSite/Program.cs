@@ -122,8 +122,6 @@ if (environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 
     app.UseDeveloperExceptionPage();
-
-    SeedData.EnsurePopulated(app);
 }
 
 app.UseStatusCodePagesWithReExecute("/Shevkunenko/Error{0}");

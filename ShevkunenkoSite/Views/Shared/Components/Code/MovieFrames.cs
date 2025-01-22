@@ -1,8 +1,6 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class MovieFrames(
-    IImageFileRepository imageFileContext
-    ) : ViewComponent
+public class MovieFrames(IImageFileRepository imageFileContext) : ViewComponent
 {
     ImageFileModel[] imageItems = [];
 

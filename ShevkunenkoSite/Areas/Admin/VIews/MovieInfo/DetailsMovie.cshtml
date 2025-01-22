@@ -467,42 +467,6 @@
 
                 </div>
 
-                @* Формат кадра *@
-                <div class="accordion-item  mb-3 shadw">
-
-                    <h2 class="accordion-header" id="headingScreenFormat">
-                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#ScreenFormat" aria-expanded="true" aria-controls="ScreenFormat">
-                            <span class="form-label text-success fs-5">Формат кадра :</span>
-                        </button>
-                    </h2>
-
-                    <div id="ScreenFormat" class="accordion-collapse collapse" aria-labelledby="headingScreenFormat" data-bs-parent="#accordionDetailsMovie">
-
-                        <div class="accordion-body accordion-body-nointend  text-center">
-
-                            <ul class="list-group list-group-flush text-center">
-
-                                @* Формат кадра *@
-                                <li class="list-group-item">
-                                    <span class="fw-bold fs-5 text-primary">
-                                        MovieScreenFormat&nbsp;:
-                                    </span><br />
-                                    <span class="fs-5 text_shadow">
-                                        @Model.MovieItem.MovieScreenFormat
-                                    </span><br />
-                                    <span class="fs-6 form-text text-bg-primary px-2">
-                                        формат изображения
-                                    </span>
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
                 @* Размер кадра *@
                 @if (Model.MovieItem.MovieWidth != 0 && Model.MovieItem.MovieHeight != 0)
                 {

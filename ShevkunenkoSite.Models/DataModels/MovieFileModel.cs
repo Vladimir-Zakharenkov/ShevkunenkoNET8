@@ -107,14 +107,6 @@ public class MovieFileModel
 
     #endregion
 
-    #region Формат изображения
-
-    [DataType(DataType.Text)]
-    [Display(Name = "Формат изображения:")]
-    public string MovieScreenFormat { get; set; } = string.Empty;
-
-    #endregion
-
     #region Жанр фильма
 
     [Required(ErrorMessage = "Введите жанр фильма")]
@@ -158,17 +150,17 @@ public class MovieFileModel
     [Required(ErrorMessage = "Введите дату создания")]
     [DataType(DataType.Date)]
     [Display(Name = "Дата создания фильма:")]
-    public DateTime MovieDateCreated { get; set; }
+    public DateTime MovieDateCreated { get; set; } = DateTime.Today;
 
     [Required(ErrorMessage = "Введите дату премьеры")]
     [DataType(DataType.Date)]
     [Display(Name = "Дата премьеры фильма:")]
-    public DateTime MovieDatePublished { get; set; }
+    public DateTime MovieDatePublished { get; set; } = DateTime.Today;
 
     [Required(ErrorMessage = "Введите дату загрузки на сервер")]
     [DataType(DataType.Date)]
     [Display(Name = "Дата публикации на сайте:")]
-    public DateTime MovieUploadDate { get; set; }
+    public DateTime MovieUploadDate { get; set; } = DateTime.Today;
 
     #endregion
 
@@ -385,7 +377,7 @@ public class MovieFileModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Название фильма для ленты кадров:")]
+    [Display(Name = "Название для ленты кадров:")]
     public string FramesAroundMovie { get; set; } = string.Empty;
 
     #endregion

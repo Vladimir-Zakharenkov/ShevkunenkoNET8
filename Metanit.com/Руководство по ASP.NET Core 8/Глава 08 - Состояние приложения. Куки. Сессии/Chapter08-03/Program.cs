@@ -88,7 +88,7 @@ app.Run(async (context) =>
     }
     else
     {
-        Person person = new Person { Name = "Tom", Age = 22 };
+        Person person = new() { Name = "Tom", Age = 22 };
 
         context.Session.Set<Person>("person", person);
 

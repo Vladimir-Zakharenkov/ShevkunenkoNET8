@@ -18,6 +18,7 @@
 
         <hr class="liniya" />
 
+        @* Показ ошибок ввода данных *@
         @if (Context.Request.Method == "POST")
         {
             <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
@@ -104,7 +105,7 @@
                                     </div>
 
                                     <div id="FileForMovieFormFileInputHelpBlock" class="form-text">
-                                        <span class="fs-6 text-success">выбрать файл</span>
+                                        <span class="fs-6 text-success">выбрать файл фильма</span>
                                     </div>
 
                                     @if (Context.Request.Method == "POST")
@@ -579,48 +580,6 @@
 
                         </div>
 
-                        @* формат изображения *@
-                        <div class="accordion-item mb-3 shadw">
-
-                            @* заголовок группы *@
-                            <h2 class="accordion-header" id="headingScreenFormat">
-                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#ScreenFormat" aria-expanded="true" aria-controls="ScreenFormat">
-                                    <span class="form-label fs-5">Формат изображения :</span>
-                                </button>
-                            </h2>
-
-                            <div id="ScreenFormat" class="accordion-collapse collapse" aria-labelledby="headingScreenFormat" data-bs-parent="#accordionEditMovie">
-
-                                <div class="accordion-body accordion-body-nointend text-center">
-
-                                    @* формат изображения *@
-                                    <div class="row g-2 justify-content-center">
-
-                                        <div class="col-auto">
-                                            <label asp-for="MovieItem.MovieScreenFormat" class="col-form-label text-primary fs-5"></label>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <select id="ScreenFormatInput" asp-for="MovieItem.MovieScreenFormat" class="form-select" aria-describedby="ScreenFormatInputHelpBlock">
-                                                <option value="">Формат</option>
-                                                <option value="4X3">4x3</option>
-                                                <option value="16X9">16x9</option>
-                                            </select>
-                                        </div>
-
-                                        <div id="ScreenFormatInputHelpBlock" class="fs-6 form-text">
-                                            <span class="fs-6 text-success">формат изображения</span>
-                                        </div>
-                                        <span asp-validation-for="MovieItem.MovieScreenFormat" class="text-danger"></span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
                         @* даты фильма *@
                         <div class="accordion-item mb-3 shadw">
 
@@ -704,7 +663,7 @@
                         @* фильтры поиска *@
                         <div class="accordion-item mb-3 shadw">
 
-                            @* заголовок группы *@
+                            @* заголовок группы «Жанр, фильтры поиска, тема» *@
                             <h2 class="accordion-header" id="headingSearch">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Search" aria-expanded="true" aria-controls="Search">
                                     <span class="form-label fs-5">Жанр, фильтры поиска, тема :</span>
@@ -780,10 +739,12 @@
                                     </select>
 
                                     <div id="TopicGuidListInputHelpBlock" class="form-text">
-                                        <span class="fs-6 text-success">изменить темы фильма</span>
-                                    </div>
-                                    <span asp-validation-for="MovieItem.TopicGuidList" class="text-danger"></span>
 
+                                        <span class="fs-6 text-success">изменить темы фильма</span>
+
+                                    </div>
+
+                                    <span asp-validation-for="MovieItem.TopicGuidList" class="text-danger"></span>
                                 </div>
 
                             </div>
@@ -979,16 +940,20 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     <div class="row g-2 justify-content-center">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieItem.MovieРroductionCompany" class="form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <input id="РroductionCompanyInput" asp-for="MovieItem.MovieРroductionCompany" class="form-control text-center" aria-describedby="РroductionCompanyInputHelpBlock" />
                                         </div>
+
                                         <div id="РroductionCompanyInputHelpBlock" class="form-text">
                                             <span class="fs-6 text-success">кинокомпания - </span>
                                             <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
+
                                         <span asp-validation-for="MovieItem.MovieРroductionCompany" class="text-danger"></span>
                                     </div>
 

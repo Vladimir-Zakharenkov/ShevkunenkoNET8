@@ -4,146 +4,175 @@
 
 <div class="row">
 
-    <div class="col col-lg-9 col-xl-7 col-xxl-6 d-block mx-auto px-2">
+    @* Кадры фильма слева *@
+    <vc:movie-frames image-filter=null left-side="true" one-frame="false" />
 
-        <hr class="liniya" />
+    <div class="col d-block mx-auto px-2">
 
         <h1 class="fs-3 text_shadow">Добавить фильм</h1>
 
         <hr class="liniya" />
 
-        <div class="card p-2">
+        @* Показ ошибок ввода данных *@
+        @if (Context.Request.Method == "POST")
+        {
+            <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+        }
+
+        <div class="card p-2 lay1">
 
             <div class="card-body mx-0 p-0">
 
                 <form method="post" enctype="multipart/form-data">
 
                     <input asp-for="MovieFileModelId" type="hidden" value="@Guid.Empty" />
-
-                    @* сообщения об ошибках *@
-                    @if (Context.Request.Method == "POST")
-                    {
-                        <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
-                    }
-
-                    @* выбрать файл фильма *@
-                    <div class="row g-2 justify-content-center">
-
-                        <div class="col-auto">
-                            <label asp-for="FileForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                        </div>
-
-                        <div class="col-auto">
-                            <input id="FileForMovieFormFile" asp-for="FileForMovieFormFile" class="form-control text-center" aria-describedby="FileForMovieFormFileInputHelpBlock" />
-                        </div>
-
-                        <div id="FileForMovieFormFileInputHelpBlock" class="form-text">
-
-                            <span class="fs-6 text-success">выбрать файл фильма </span>
-
-                        </div>
-
-                        @if (Context.Request.Method == "POST")
-                        {
-                            <span asp-validation-for="FileForMovieFormFile" class="text-danger"></span>
-                        }
-
-                        <hr class="liniya" />
-
-                    </div>
-
-                    @* выбрать файл полной версии фильма *@
-                    <div class="row g-2 justify-content-center">
-
-                        <div class="col-auto">
-                            <label for="FullMovieFormFileInput" asp-for="FullMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                        </div>
-
-                        <div class="col-auto">
-                            <input id="FullMovieFormFile" asp-for="FullMovieFormFile" class="form-control text-center" aria-describedby="FullMovieFormFileInputHelpBlock" />
-                        </div>
-
-                        <div id="FullMovieFormFileInputHelpBlock" class="form-text">
-                            <span>выбрать файл полного фильма</span>
-                        </div>
-
-                        @if (Context.Request.Method == "POST")
-                        {
-                            <span asp-validation-for="FullMovieFormFile" class="text-danger"></span>
-                        }
-
-                        <hr class="liniya" />
-
-                    </div>
-
-                    @* выбрать картинку фильма *@
-                    <div class="row g-2 justify-content-center">
-
-                        <div class="col-auto">
-                            <label asp-for="ImageForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                        </div>
-
-                        <div class="col-auto">
-                            <input id="ImageForMovieFormFileInput" class="form-control text-center" asp-for="ImageForMovieFormFile" aria-describedby="ImageForMovieFormFileInputHelpBlock" />
-                        </div>
-
-                        <div id="ImageForMovieFormFileInputHelpBlock" class="form-text">
-                            <span>выбрать картинку для фильму - </span><span class="text-danger">обязательное поле</span>
-                        </div>
-
-                        @if (Context.Request.Method == "POST")
-                        {
-                            <span asp-validation-for="ImageForMovieFormFile" class="text-danger"></span>
-                        }
-
-                        <hr class="liniya" />
-
-                    </div>
-
-                    @* выбрать постер фильма *@
-                    <div class="row g-2 justify-content-center">
-
-                        <div class="col-auto">
-                            <label class="col-form-label text-primary fs-5 me-2" asp-for="PosterForMovieFormFile"></label>
-                        </div>
-
-                        <div class="col-auto">
-                            <input id="PosterForMovieFormFileInput" class="form-control text-center" asp-for="PosterForMovieFormFile" aria-describedby="PosterForMovieFormFileInputHelpBlock" />
-                        </div>
-
-                        <div id="PosterForMovieFormFileInputHelpBlock" class="form-text">
-                            <span>выбрать постер для фильму</span>
-                        </div>
-
-                        <hr class="liniya" />
-
-                    </div>
-
-                    @* страница фильма *@
-                    <div class="mb-3">
-
-                        <label class="form-label text-primary fs-5 await" asp-for="PageForMovie"></label>
-
-                        <input id="PageForMovieInput" class="form-control text-center" asp-for="PageForMovie" aria-describedby="PageForMovieInputHelpBlock" />
-
-                        <div id="PageForMovieInputHelpBlock" class="form-text">
-                            <span> адрес страницы фильма</span>
-                        </div>
-
-                        <span asp-validation-for="PageForMovie" class="text-danger"></span>
-
-                    </div>
+                    <input asp-for="PageInfoModelId" type="hidden" value="@null" />
 
                     @* данные по группам*@
                     <div class="accordion" id="accordionAddMovie">
 
-                        @* данные многосерийного фильма *@
-                        <div class="accordion-item">
+                        @* файл фильма *@
+                        <div class="accordion-item mb-3 shadw">
 
-                            @* заголовок группы *@
+                            @* заголовок группы «файл фильма» *@
+                            <h2 class="accordion-header" id="headingInputFile">
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#InputFile" aria-expanded="true" aria-controls="InputFile">
+                                    <span class="form-label fs-5">Файл фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="InputFile" class="accordion-collapse collapse" aria-labelledby="headingInputFile" data-bs-parent="#accordionAddMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* выбрать файл фильма *@
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label asp-for="FileForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input id="FileForMovieFormFile" asp-for="FileForMovieFormFile" class="form-control text-center" aria-describedby="FileForMovieFormFileInputHelpBlock" />
+                                        </div>
+
+                                        <div id="FileForMovieFormFileInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">выбрать файл фильма</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="FileForMovieFormFile" class="text-danger"></span>
+                                        }
+
+                                    </div>
+
+                                    <hr class="w-50 mx-auto" />
+
+                                    @* выбрать файл полной версии фильма *@
+                                    <div class="row g-2 justify-content-center">
+
+                                        <div class="col-auto">
+                                            <label for="FullMovieFormFileInput" asp-for="FullMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input id="FullMovieFormFile" asp-for="FullMovieFormFile" class="form-control text-center" aria-describedby="FullMovieFormFileInputHelpBlock" />
+                                        </div>
+
+                                        <div id="FullMovieFormFileInputHelpBlock" class="form-text">
+                                            <span class="fs-6 text-success">выбрать файл полного фильма</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="FullMovieFormFile" class="text-danger"></span>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* картинка и постер фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы «картинка и постер фильма» *@
+                            <h2 class="accordion-header" id="headingInputPicture">
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#InputPicture" aria-expanded="true" aria-controls="InputPicture">
+                                    <span class="form-label fs-5">Картинка и постер фильма :</span>
+                                </button>
+                            </h2>
+
+                            <div id="InputPicture" class="accordion-collapse collapse" aria-labelledby="headingInputPicture" data-bs-parent="#accordionAddMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* выбрать картинку фильма *@
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label asp-for="ImageForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input id="ImageForMovieFormFileInput" class="form-control text-center" asp-for="ImageForMovieFormFile" aria-describedby="ImageForMovieFormFileInputHelpBlock" />
+                                        </div>
+
+                                        <div id="ImageForMovieFormFileInputHelpBlock" class="form-text">
+                                            <span class="fs-6 text-success">выбрать картинку для фильму - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="ImageForMovieFormFile" class="text-danger"></span>
+                                        }
+
+                                    </div>
+
+                                    <hr class="w-50 mx-auto" />
+
+                                    @* выбрать постер фильма *@
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label class="col-form-label text-primary fs-5 me-2" asp-for="PosterForMovieFormFile"></label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input id="PosterForMovieFormFileInput" class="form-control text-center" asp-for="PosterForMovieFormFile" aria-describedby="PosterForMovieFormFileInputHelpBlock" />
+                                        </div>
+
+                                        <div id="PosterForMovieFormFileInputHelpBlock" class="form-text">
+                                            <span class="fs-6 text-success">выбрать постер для фильму</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="PosterForMovieFormFile" class="text-danger"></span>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* данные многосерийного фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* заголовок группы «многосерийный фильм» *@
                             <h2 class="accordion-header" id="headingSeries">
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmSeries" aria-expanded="true" aria-controls="FilmSeries">
-                                    <span class="form-label text-success fs-5">Многосерийный фильм :</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmSeries" aria-expanded="true" aria-controls="FilmSeries">
+                                    <span class="form-label fs-5">Многосерийный фильм :</span>
                                 </button>
                             </h2>
 
@@ -152,18 +181,25 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* текст поиска всех серий *@
-                                    <div class="mb-3">
+                                    <div class="row g-2 justify-content-center mb-3">
 
-                                        <label class="form-label text-primary fs-5 await" asp-for="SeriesSearchFilter"></label>
-                                        <input id="SeriesSearchFilterInput" class="form-control text-center" asp-for="SeriesSearchFilter" aria-describedby="SeriesSearchFilterInputHelpBlock" />
+                                        <div class="col-auto text-end">
+                                            <label class="form-label text-primary fs-5" asp-for="SeriesSearchFilter"></label>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <input id="SeriesSearchFilterInput" class="form-control text-center" asp-for="SeriesSearchFilter" aria-describedby="SeriesSearchFilterInputHelpBlock" />
+                                        </div>
 
                                         <div id="SeriesSearchFilterInputHelpBlock" class="form-text">
-                                            <span>текст поиска всех серий фильма</span>
+                                            <span class="fs-6 text-success">текст поиска всех серий фильма</span>
                                         </div>
 
                                         <span asp-validation-for="SeriesSearchFilter" class="text-danger"></span>
 
                                     </div>
+
+                                    <hr class="w-50 mx-auto" />
 
                                     @*  количество серий *@
                                     <div class="row g-2 justify-content-center mb-3">
@@ -174,7 +210,8 @@
                                             <input id="MovieTotalPartsInput" asp-for="MovieTotalParts" value="1" class="form-control text-center" aria-describedby="MovieTotalPartsInputHelpBlock" />
                                         </div>
                                         <div id="MovieTotalPartsInputHelpBlock" class="form-text">
-                                            <span>количество серий - </span><span class="text-danger">обязательное поле</span>
+                                            <span class="fs-6 text-success">количество серий - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
 
                                         <span asp-validation-for="MovieTotalParts" class="text-danger"></span>
@@ -189,11 +226,14 @@
                                             <input id="MoviePartInput" asp-for="MoviePart" value="1" class="form-control text-center" aria-describedby="MoviePartInputHelpBlock" />
                                         </div>
                                         <div id="MoviePartInputHelpBlock" class="form-text">
-                                            <span>серия - </span><span class="text-danger">обязательное поле</span>
+                                            <span class="fs-6 text-success">серия - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
 
                                         <span asp-validation-for="MoviePart" class="text-danger"></span>
                                     </div>
+
+                                    <hr class="w-50 mx-auto" />
 
                                     @* выбрать файл картинки для заголовка страницы серий *@
                                     <div class="row g-2 justify-content-center mb-3">
@@ -207,7 +247,8 @@
                                         </div>
 
                                         <div id="ImageHeadForSeriesFormFileInputHelpBlock" class="form-text">
-                                            <span>картинка на странице серий - </span><span class="text-danger">выбирать только для 1-ой серии</span>
+                                            <span class="fs-6 text-success">картинка на странице серий - </span><br />
+                                            <span class="fs-6 text-danger">выбирать только для 1-ой серии</span>
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -217,13 +258,19 @@
 
                                     </div>
 
+                                    <hr class="w-50 mx-auto" />
+
                                     @* адрес страницы серий *@
-                                    <div>
-                                        <label class="form-label text-primary fs-5 await" asp-for="PageForSeries"></label>
-                                        <input id="PageForSeriesInput" class="form-control text-center" asp-for="PageForSeries" aria-describedby="PageForSeriesInputHelpBlock" />
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <label class="form-label text-primary fs-5" asp-for="PageForSeries"></label>
+
+                                        <div class="col-10">
+                                            <input id="PageForSeriesInput" class="form-control text-centermx-auto" asp-for="PageForSeries" aria-describedby="PageForSeriesInputHelpBlock" />
+                                        </div>
 
                                         <div id="PageForSeriesInputHelpBlock" class="form-text">
-                                            <span>адрес страницы серий фильма</span>
+                                            <span class="fs-6 text-success">адрес страницы серий фильма</span>
                                         </div>
 
                                         <span asp-validation-for="PageForSeries" class="text-danger"></span>
@@ -236,12 +283,12 @@
                         </div>
 
                         @* описание фильма *@
-                        <div class="accordion-item">
+                        <div class="accordion-item mb-3 shadw">
 
                             @* заголовок группы *@
                             <h2 class="accordion-header" id="headingDescription">
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDescription" aria-expanded="true" aria-controls="FilmDescription">
-                                    <span class="form-label text-success fs-5">Заголовок, описание:</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDescription" aria-expanded="true" aria-controls="FilmDescription">
+                                    <span class="form-label fs-5">Заголовок, описание :</span>
                                 </button>
                             </h2>
 
@@ -249,53 +296,132 @@
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
-                                    <label asp-for="MovieCaption" class="form-label text-primary fs-5"></label>
-                                    <input id="MovieCaptionInput" asp-for="MovieCaption" class="form-control text-center" aria-describedby="MovieCaptionInputHelpBlock" />
-                                    <div id="MovieCaptionInputHelpBlock" class="form-text mb-2">
-                                        <span>название фильма - </span><span class="text-danger">обязательное поле</span>
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label asp-for="MovieCaption" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-12 col-md-8">
+                                            <input id="MovieCaptionInput" asp-for="MovieCaption" class="form-control text-center" aria-describedby="MovieCaptionInputHelpBlock" />
+                                        </div>
+
+                                        <div id="MovieCaptionInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">название фильма - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieCaption" class="text-danger"></span>
+                                        }
+
                                     </div>
 
-                                    <span asp-validation-for="MovieCaption" class="text-danger"></span>
+                                    <hr class="w-50 mx-auto" />
 
-                                    <label asp-for="MovieCaptionForOnline" class="form-label text-primary fs-5"></label>
-                                    <input id="MovieCaptionForOnlineInput" asp-for="MovieCaptionForOnline" class="form-control text-center" aria-describedby="MovieCaptionForOnlineInputHelpBlock" />
-                                    <div id="MovieCaptionForOnlineInputHelpBlock" class="form-text mb-2">
-                                        <span>заголовок страницы фильма (HTML) - </span><span class="text-danger">обязательное поле</span>
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label asp-for="MovieCaptionForOnline" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-12 col-md-8">
+                                            <input id="MovieCaptionForOnlineInput" asp-for="MovieCaptionForOnline" class="form-control text-center" aria-describedby="MovieCaptionForOnlineInputHelpBlock" />
+                                        </div>
+
+                                        <div id="MovieCaptionForOnlineInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">заголовок страницы фильма - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieCaptionForOnline" class="text-danger"></span>
+                                        }
+
                                     </div>
 
-                                    <span asp-validation-for="MovieCaptionForOnline" class="text-danger"></span>
+                                    <hr class="w-50 mx-auto" />
 
                                     <label asp-for="MovieDescriptionForSchemaOrg" class="form-label text-primary fs-5"></label>
+
                                     <textarea id="MovieDescriptionForSchemaOrgInput" rows="3" asp-for="MovieDescriptionForSchemaOrg" class="form-control" aria-describedby="MovieDescriptionForSchemaOrgInputHelpBlock"></textarea>
+
                                     <div id="MovieDescriptionForSchemaOrgInputHelpBlock" class="form-text mb-2">
-                                        <span>краткое содержание (SchemaOrg) - </span><span class="text-danger">обязательное поле</span>
+
+                                        <span class="fs-6 text-success">краткое содержание (SchemaOrg) - </span>
+                                        <span class="fs-6 text-danger">обязательное поле</span>
+
                                     </div>
 
-                                    <span asp-validation-for="MovieDescriptionForSchemaOrg" class="text-danger"></span>
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="MovieDescriptionForSchemaOrg" class="text-danger"></span>
+                                    }
+
+                                    <hr class="w-50 mx-auto" />
 
                                     <label asp-for="MovieDescriptionHtml" class="form-label text-primary fs-5"></label>
-                                    <textarea id="MovieDescriptionHtmlInput" rows="3" asp-for="MovieDescriptionHtml" class="form-control" aria-describedby="MovieDescriptionHtmlHelpBlock"></textarea>
+
+                                    <textarea id="MovieDescriptionHtmlInput" rows="5" asp-for="MovieDescriptionHtml" class="form-control" aria-describedby="MovieDescriptionHtmlHelpBlock"></textarea>
+
                                     <div id="MovieDescriptionHtmlHelpBlock" class="form-text mb-2">
-                                        <span>краткое содержание (HTML) - </span><span class="text-danger">обязательное поле</span>
+
+                                        <span class="fs-6 text-success">краткое содержание (HTML) - </span>
+                                        <span class="fs-6 text-danger">обязательное поле</span>
+
                                     </div>
 
-                                    <span asp-validation-for="MovieDescriptionHtml" class="text-danger"></span>
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="MovieDescriptionHtml" class="text-danger"></span>
+                                    }
 
-                                    <label asp-for="FramesAroundMovie" class="form-label text-primary fs-5"></label>
-                                    <input id="MovieFramesAroundMovieInput" asp-for="FramesAroundMovie" class="form-control" aria-describedby="MovieFramesAroundMovieHelpBlock" />
-                                    <div id="MovieFramesAroundMovieHelpBlock" class="form-text mb-2">
-                                        <span>название фильма для ленты кадров</span>
+                                    <hr class="w-50 mx-auto" />
+
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-auto">
+                                            <label asp-for="FramesAroundMovie" class="col-form-label text-primary fs-5 me-2"></label>
+                                        </div>
+
+                                        <div class="col-12 col-md-8">
+                                            <input id="FramesAroundMovieInput" asp-for="FramesAroundMovie" class="form-control text-center" aria-describedby="FramesAroundMovieInputHelpBlock" />
+                                        </div>
+
+                                        <div id="FramesAroundMovieInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">название фильма для ленты кадров</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="FramesAroundMovie" class="text-danger"></span>
+                                        }
+
                                     </div>
 
-                                    <span asp-validation-for="FramesAroundMovie" class="text-danger"></span>
+                                    <hr class="w-50 mx-auto" />
 
                                     <label asp-for="MovieNote" class="form-label text-primary fs-5"></label>
                                     <textarea id="MovieNoteInput" rows="2" asp-for="MovieNote" class="form-control" aria-describedby="MovieNoteHelpBlock"></textarea>
+
                                     <div id="MovieNoteHelpBlock" class="form-text">
-                                        <span>примечания к фильму</span>
+
+                                        <span class="fs-6 text-success">примечания к фильму</span>
+
                                     </div>
 
-                                    <span asp-validation-for="MovieNote" class="text-danger"></span>
+                                    @if (Context.Request.Method == "POST")
+                                    {
+                                        <span asp-validation-for="MovieNote" class="text-danger"></span>
+                                    }
 
                                 </div>
 
@@ -303,139 +429,233 @@
 
                         </div>
 
-                        @* даты формат фильтры фильма *@
-                        <div class="accordion-item">
+                        @* даты фильма *@
+                        <div class="accordion-item mb-3 shadw">
 
-                            <h2 class="accordion-header" id="headingDate">
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDate" aria-expanded="true" aria-controls="FilmDate">
-                                    <span class="form-label text-success fs-5">Дата, формат, ограничения:</span>
+                            <h2 class="accordion-header" id="headingFilmDate">
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDate" aria-expanded="true" aria-controls="FilmDate">
+                                    <span class="form-label fs-5">Даты :</span>
                                 </button>
                             </h2>
 
-                            <div id="FilmDate" class="accordion-collapse collapse" aria-labelledby="headingDate" data-bs-parent="#accordionAddMovie">
+                            <div id="FilmDate" class="accordion-collapse collapse" aria-labelledby="headingFilmDate" data-bs-parent="#accordionAddMovie">
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
+                                    @* дата примьеры фильма *@
                                     <div class="row g-2 justify-content-center">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieScreenFormat" class="col-form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <select id="ScreenFormatInput" asp-for="MovieScreenFormat" class="form-select" aria-describedby="ScreenFormatInputHelpBlock">
-                                                <option value="">Формат</option>
-                                                <option value="4X3">4x3</option>
-                                                <option value="16X9">16x9</option>
-                                            </select>
-                                        </div>
-                                        <div id="ScreenFormatInputHelpBlock" class="form-text mb-2">
-                                            <span>формат изображения -</span>
-                                        </div>
 
-                                        <span asp-validation-for="MovieScreenFormat" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="row g-2 justify-content-center">
                                         <div class="col-auto">
                                             <label asp-for="MovieDatePublished" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
-                                            <input id="MovieDatePublishedInput" asp-for="MovieDatePublished" class="form-control text-center" aria-describedby="MovieDatePublishedInputHelpBlock" />
-                                        </div>
-                                        <div id="MovieDatePublishedInputHelpBlock" class="form-text mb-2">
-                                            <span>дата премьеры - </span><span class="text-danger">обязательное поле</span>
+                                            <input id="MovieDatePublishedInput" asp-for="MovieDatePublished" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieDatePublishedInputHelpBlock" />
                                         </div>
 
-                                        <span asp-validation-for="MovieDatePublished" class="text-danger"></span>
+                                        <div id="MovieDatePublishedInputHelpBlock" class="form-text mb-2">
+
+                                            <span class="fs-6 text-success">дата премьеры - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieDatePublished" class="text-danger"></span>
+                                        }
                                     </div>
 
+                                    @* дата создания фильма *@
                                     <div class="row g-2 justify-content-center">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieDateCreated" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
-                                            <input id="MovieDateCreatedInput" asp-for="MovieDateCreated" class="form-control text-center" aria-describedby="MovieDateCreatedInputHelpBlock" />
-                                        </div>
-                                        <div id="MovieDateCreatedInputHelpBlock" class="form-text mb-2">
-                                            <span>дата производства - </span><span class="text-danger">обязательное поле</span>
+                                            <input id="MovieDateCreatedInput" asp-for="MovieDateCreated" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieDateCreatedInputHelpBlock" />
                                         </div>
 
-                                        <span asp-validation-for="MovieDateCreated" class="text-danger"></span>
+                                        <div id="MovieDateCreatedInputHelpBlock" class="form-text mb-2">
+
+                                            <span class="fs-6 text-success">дата производства - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieDateCreated" class="text-danger"></span>
+                                        }
                                     </div>
 
+                                    @* дата загрузки фильма на сайт *@
                                     <div class="row g-2 justify-content-center">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieUploadDate" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
-                                            <input id="MovieUploadDateInput" asp-for="MovieUploadDate" class="form-control text-center" aria-describedby="MovieUploadDateInputHelpBlock" />
+                                            <input id="MovieUploadDateInput" asp-for="MovieUploadDate" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieUploadDateInputHelpBlock" />
                                         </div>
+
                                         <div id="MovieUploadDateInputHelpBlock" class="form-text mb-2">
-                                            <span>дата публикации на сайте - </span><span class="text-danger">обязательное поле</span>
+
+                                            <span class="fs-6 text-success">дата публикации на сайте - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
                                         </div>
 
-                                        <span asp-validation-for="MovieUploadDate" class="text-danger"></span>
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieUploadDate" class="text-danger"></span>
+                                        }
                                     </div>
 
-                                    <label asp-for="MovieGenre" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <input id="MovieGenreInput" asp-for="MovieGenre" class="align-text-bottom" aria-describedby="MovieGenreInputHelpBlock" />
-                                    <div id="MovieGenreInputHelpBlock" class="form-text mb-2">
-                                        <span>жанр фильма</span>
-                                    </div>
-
-                                    <span asp-validation-for="MovieGenre" class="text-danger"></span>
-
-                                    <label asp-for="SearchFilter" class="form-label text-primary fs-5"></label>
-                                    <textarea id="SearchFilterInput" rows="3" asp-for="SearchFilter" class="form-control" aria-describedby="SearchFilterInputHelpBlock"></textarea>
-                                    <div id="SearchFilterInputHelpBlock" class="form-text mb-2">
-                                        <span>фильтры поиска - </span>
-                                    </div>
-
-                                    <span asp-validation-for="SearchFilter" class="text-danger"></span>
-
-                                    <label asp-for="MovieInMainList" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <input id="MovieInMainListInput" asp-for="MovieInMainList" class="align-text-bottom" aria-describedby="MovieInMainListInputHelpBlock" />
-                                    <div id="MovieInMainListInputHelpBlock" class="form-text">
-                                        <span>поставить отметку для включения в список</span>
-                                    </div>
-
-                                    <span asp-validation-for="MovieInMainList" class="text-danger"></span>
-
-                                    <label asp-for="MovieAdult" class="col-form-label text-primary fs-5 me-2"></label>
-
-                                    <div class="col-2 text-start mx-auto">
-
-                                        <div class="form-check">
-                                            <input id="IsMovieAdulttrue" class="form-check-input" asp-for="MovieAdult" type="radio" value="true">
-                                            <label class="form-check-label" for="IsMovieAdulttrue">
-                                                Да
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input id="IsMovieAdultfalse" class="form-check-input" asp-for="MovieAdult" type="radio" value="false" checked>
-                                            <label class="form-check-label" for="IsMovieAdultfalse">
-                                                Нет
-                                            </label>
-                                        </div>
-
-                                    </div>
-
-                                    <div id="IsMovieAdultHelpBlock" class="form-text">
-                                        <span>выбрать возрастную категорию фильма</span>
-                                    </div>
-
-                                    <span asp-validation-for="MovieAdult" class="text-danger"></span>
                                 </div>
 
                             </div>
 
                         </div>
 
-                        @* язык субтитры фильма *@
-                        <div class="accordion-item">
+                        @* фильтры фильма *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            <h2 class="accordion-header" id="headingFilmFilters">
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmFilters" aria-expanded="true" aria-controls="FilmFilters">
+                                    <span class="form-label fs-5">Фильтры :</span>
+                                </button>
+                            </h2>
+
+                            <div id="FilmFilters" class="accordion-collapse collapse" aria-labelledby="headingFilmFilters" data-bs-parent="#accordionAddMovie">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    @* жанры фильма *@
+                                    <div>
+                                        <label asp-for="MovieGenre" class="col-form-label text-primary fs-5 me-2"></label>
+
+                                        <input id="MovieGenreInput" asp-for="MovieGenre" class="align-text-bottom" aria-describedby="MovieGenreInputHelpBlock" />
+
+                                        <div id="MovieGenreInputHelpBlock" class="form-text mb-2">
+
+                                            <span class="fs-6 text-success">жанр фильма</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieGenre" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+                                    </div>
+
+                                    @* темы фильма *@
+                                    <div>
+                                        <label asp-for="TopicGuidList" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <select name="topicOptions" multiple>
+
+                                            @foreach (var item in Model.TopicsForMovie.ToDictionary(k => k.TopicMovieModelId.ToString(), v => v.TopicDescription))
+                                            {
+                                                <option value="@item.Key">@item.Value</option>
+                                            }
+
+                                        </select>
+
+                                        <div id="TopicGuidListInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">темы фильма</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="TopicGuidList" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+                                    </div>
+
+                                    @* фильтры поиска фильма *@
+                                    <div class="row g-2 justify-content-center mb-3">
+
+                                        <div class="col-12">
+                                            <label asp-for="SearchFilter" class="form-label text-primary fs-5"></label>
+                                        </div>
+
+                                        <div class="col-12 col-md-10">
+                                            <textarea id="SearchFilterInput" rows="2" asp-for="SearchFilter" class="form-control" aria-describedby="SearchFilterInputHelpBlock"></textarea>
+                                        </div>
+
+                                        <div id="SearchFilterInputHelpBlock" class="form-text mb-2">
+
+                                            <span class="fs-6 text-success">фильтры поиска</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="SearchFilter" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+
+                                    </div>
+
+                                    @* фильм в основном списке *@
+                                    <div>
+                                        <label asp-for="MovieInMainList" class="col-form-label text-primary fs-5 me-2"></label>
+
+                                        <input id="MovieInMainListInput" asp-for="MovieInMainList" class="align-text-bottom" aria-describedby="MovieInMainListInputHelpBlock" />
+
+                                        <div id="MovieInMainListInputHelpBlock" class="form-text">
+
+                                            <span class="fs-6 text-success">поставить отметку для включения в список</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieInMainList" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+                                    </div>
+
+                                    @* фильм для взрослых *@
+                                    <div>
+                                        <label asp-for="MovieAdult" class="col-form-label text-primary fs-5 me-2"></label>
+
+                                        <input id="MovieAdultInput" asp-for="MovieAdult" class="align-text-bottom" aria-describedby="MovieAdultInputHelpBlock" />
+
+                                        <div id="MovieAdultInputHelpBlock" class="fs-6 form-text">
+
+                                            <span class="fs-6 text-success">поставить отметку для фильма 18+</span>
+
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieAdult" class="text-danger"></span>
+                                        }
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* язык и субтитры фильма *@
+                        <div class="accordion-item mb-3 shadw">
 
                             <h2 class="accordion-header" id="headingLanguage">
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmLanguage" aria-expanded="true" aria-controls="FilmLanguage">
-                                    <span class="form-label text-success fs-5">Язык фильма:</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmLanguage" aria-expanded="true" aria-controls="FilmLanguage">
+                                    <span class="form-label fs-5">Язык и субтитры :</span>
                                 </button>
                             </h2>
 
@@ -443,10 +663,13 @@
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
+                                    @* язык фильма (1)*@
                                     <div class="row g-2 justify-content-center">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieInLanguage1" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <select id="MovieInLanguage1Input" asp-for="MovieInLanguage1" class="form-select" aria-describedby="MovieInLanguage1InputHelpBlock">
                                                 <option value="">Язык</option>
@@ -454,20 +677,30 @@
                                                 <option value="en">en</option>
                                             </select>
                                         </div>
+
                                         <div class="col-12 justify-content-center mb-2">
-                                            <span id="MovieInLanguage1InputHelpBlock" class="form-text">
+                                            <span id="MovieInLanguage1InputHelpBlock" class="fs-6 text-success">
                                                 язык звуковой дорожки (1) -
                                             </span>
-                                            <span class="text-danger">обязательное поле</span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieInLanguage1" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
-                                    <span asp-validation-for="MovieInLanguage1" class="text-danger"></span>
-
+                                    @* язык фильма (2)*@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieInLanguage2" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <select id="MovieInLanguage2Input" asp-for="MovieInLanguage2" class="form-select" aria-describedby="MovieInLanguage2InputHelpBlock">
                                                 <option value="">Язык</option>
@@ -475,19 +708,29 @@
                                                 <option value="en">en</option>
                                             </select>
                                         </div>
+
                                         <div class="col-12 justify-content-center">
-                                            <span id="MovieInLanguage2InputHelpBlock" class="form-text">
-                                                язык звуковой дорожки (2) -
+                                            <span id="MovieInLanguage2InputHelpBlock" class="fs-6 text-success">
+                                                язык звуковой дорожки (2)
                                             </span>
                                         </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieInLanguage2" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
-                                    <span asp-validation-for="MovieInLanguage2" class="text-danger"></span>
-
+                                    @* субтитры фильма (1)*@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieSubtitles1" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <select id="MovieSubtitles1Input" asp-for="MovieSubtitles1" class="form-select" aria-describedby="MovieSubtitles1InputHelpBlock">
                                                 <option value="">Язык</option>
@@ -495,19 +738,29 @@
                                                 <option value="en">en</option>
                                             </select>
                                         </div>
+
                                         <div class="col-12 justify-content-center">
-                                            <span id="MovieSubtitles1InputHelpBlock" class="form-text">
-                                                язык субтитров (1) -
+                                            <span id="MovieSubtitles1InputHelpBlock" class="fs-6 text-success">
+                                                язык субтитров (1)
                                             </span>
                                         </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieSubtitles1" class="text-danger"></span>
+                                        }
+
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
-                                    <span asp-validation-for="MovieSubtitles1" class="text-danger"></span>
-
+                                    @* субтитры фильма (2)*@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieSubtitles2" class="col-form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <select id="MovieSubtitles2Input" asp-for="MovieSubtitles2" class="form-select" aria-describedby="MovieSubtitles2InputHelpBlock">
                                                 <option value="">Язык</option>
@@ -515,14 +768,20 @@
                                                 <option value="en">en</option>
                                             </select>
                                         </div>
+
                                         <div class="col-12 justify-content-center">
-                                            <span id="MovieSubtitles2InputHelpBlock" class="form-text">
-                                                язык субтитров (2) -
+                                            <span id="MovieSubtitles2InputHelpBlock" class="fs-6 text-success">
+                                                язык субтитров (2)
                                             </span>
                                         </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieSubtitles2" class="text-danger"></span>
+                                        }
+
                                     </div>
 
-                                    <span asp-validation-for="MovieSubtitles2" class="text-danger"></span>
                                 </div>
 
                             </div>
@@ -530,11 +789,11 @@
                         </div>
 
                         @* съёмочная группа фильма *@
-                        <div class="accordion-item">
+                        <div class="accordion-item mb-3 shadw">
 
                             <h2 class="accordion-header" id="headingFilmCrew">
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#FilmCrew" aria-expanded="true" aria-controls="FilmCrew">
-                                    <span class="form-label text-success fs-5">Съемочная группа:</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmCrew" aria-expanded="true" aria-controls="FilmCrew">
+                                    <span class="form-label fs-5">Съемочная группа :</span>
                                 </button>
                             </h2>
 
@@ -542,186 +801,306 @@
 
                                 <div class="accordion-body accordion-body-nointend text-center">
 
+                                    @* кинокомпания *@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieРroductionCompany" class="form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <input id="РroductionCompanyInput" asp-for="MovieРroductionCompany" class="form-control text-center" aria-describedby="РroductionCompanyInputHelpBlock" />
                                         </div>
+
                                         <div id="РroductionCompanyInputHelpBlock" class="form-text">
-                                            <span>кинокомпания - </span><span class="text-danger">обязательное поле</span>
+                                            <span class="fs-6 text-success">кинокомпания - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
-                                        <span asp-validation-for="MovieРroductionCompany" class="text-danger"></span>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieРroductionCompany" class="text-danger"></span>
+                                        }
                                     </div>
 
+                                    @* режиссер фильма (1) *@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieDirector1" class="form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <input id="Director1Input" asp-for="MovieDirector1" class="form-control text-center" aria-describedby="Director1InputHelpBlock" />
                                         </div>
+
                                         <div id="Director1InputHelpBlock" class="form-text">
-                                            <span>режиссер (1) - </span><span class="text-danger">обязательное поле</span>
+                                            <span class="fs-6 text-success">режиссер (1) - </span>
+                                            <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
-                                        <span asp-validation-for="MovieDirector1" class="text-danger"></span>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieDirector1" class="text-danger"></span>
+                                        }
                                     </div>
 
+                                    @* режиссер фильма (2) *@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieDirector2" class="form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <input id="Director2Input" asp-for="MovieDirector2" class="form-control text-center" aria-describedby="Director2InputHelpBlock" />
                                         </div>
+
                                         <div id="Director2InputHelpBlock" class="form-text">
-                                            <span>режиссер (2) - </span>
+                                            <span class="fs-6 text-success">режиссер (2)</span>
                                         </div>
-                                        <span asp-validation-for="MovieDirector2" class="text-danger"></span>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieDirector2" class="text-danger"></span>
+                                        }
                                     </div>
 
+                                    @* композитор фильма *@
                                     <div class="row g-2 justify-content-center mb-2">
+
                                         <div class="col-auto">
                                             <label asp-for="MovieMusicBy" class="form-label text-primary fs-5"></label>
                                         </div>
+
                                         <div class="col-auto">
                                             <input id="MovieMusicByInput" asp-for="MovieMusicBy" class="form-control text-center" aria-describedby="MovieMusicByInputHelpBlock" />
                                         </div>
+
                                         <div id="MovieMusicByInputHelpBlock" class="form-text">
-                                            <span>композитор</span>
+                                            <span class="fs-6 text-success">композитор</span>
                                         </div>
-                                        <span asp-validation-for="MovieMusicBy" class="text-danger"></span>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+
+                                            <span asp-validation-for="MovieMusicBy" class="text-danger"></span>
+                                        }
                                     </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor01" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor01Input" asp-for="MovieActor01" class="form-control text-center" aria-describedby="MovieActor01InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor01InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor01" class="text-danger"></span>
-                                    </div>
+                                    @* актёры фильма *@
+                                    <div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor02" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor02Input" asp-for="MovieActor02" class="form-control text-center" aria-describedby="MovieActor02InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor02InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor02" class="text-danger"></span>
-                                    </div>
+                                        @* актёр (1) *@
+                                        <div class="row g-2 justify-content-center mb-2">
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor03" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor03Input" asp-for="MovieActor03" class="form-control text-center" aria-describedby="MovieActor03InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor03InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor03" class="text-danger"></span>
-                                    </div>
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor01" class="form-label text-primary fs-5"></label>
+                                            </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor04" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor04Input" asp-for="MovieActor04" class="form-control text-center" aria-describedby="MovieActor04InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor04InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor04" class="text-danger"></span>
-                                    </div>
+                                            <div class="col-auto">
+                                                <input id="MovieActor01Input" asp-for="MovieActor01" class="form-control text-center" aria-describedby="MovieActor01InputHelpBlock" />
+                                            </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor05" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor05Input" asp-for="MovieActor05" class="form-control text-center" aria-describedby="MovieActor05InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor05InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor05" class="text-danger"></span>
-                                    </div>
+                                            <div id="MovieActor01InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor06" class="form-label text-primary fs-5"></label>
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor01" class="text-danger"></span>
+                                            }
                                         </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor06Input" asp-for="MovieActor06" class="form-control text-center" aria-describedby="MovieActor06InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor06InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor06" class="text-danger"></span>
-                                    </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor07" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor07Input" asp-for="MovieActor07" class="form-control text-center" aria-describedby="MovieActor07InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor07InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor07" class="text-danger"></span>
-                                    </div>
+                                        @* актёр (2) *@
+                                        <div class="row g-2 justify-content-center mb-2">
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor08" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor08Input" asp-for="MovieActor08" class="form-control text-center" aria-describedby="MovieActor08InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor08InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor08" class="text-danger"></span>
-                                    </div>
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor02" class="form-label text-primary fs-5"></label>
+                                            </div>
 
-                                    <div class="row g-2 justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor09" class="form-label text-primary fs-5"></label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor09Input" asp-for="MovieActor09" class="form-control text-center" aria-describedby="MovieActor09InputHelpBlock" />
-                                        </div>
-                                        <div id="MovieActor09InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
-                                        </div>
-                                        <span asp-validation-for="MovieActor09" class="text-danger"></span>
-                                    </div>
+                                            <div class="col-auto">
+                                                <input id="MovieActor02Input" asp-for="MovieActor02" class="form-control text-center" aria-describedby="MovieActor02InputHelpBlock" />
+                                            </div>
 
-                                    <div class="row g-2 justify-content-center">
-                                        <div class="col-auto">
-                                            <label asp-for="MovieActor10" class="form-label text-primary fs-5"></label>
+                                            <div id="MovieActor02InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor02" class="text-danger"></span>
+                                            }
                                         </div>
-                                        <div class="col-auto">
-                                            <input id="MovieActor10Input" asp-for="MovieActor10" class="form-control text-center" aria-describedby="MovieActor10InputHelpBlock" />
+
+                                        @* актёр (3) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor03" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor03Input" asp-for="MovieActor03" class="form-control text-center" aria-describedby="MovieActor03InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor03InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor03" class="text-danger"></span>
+                                            }
                                         </div>
-                                        <div id="MovieActor10InputHelpBlock" class="form-text">
-                                            <span>актер (актриса)</span>
+
+                                        @* актёр (4) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor04" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor04Input" asp-for="MovieActor04" class="form-control text-center" aria-describedby="MovieActor04InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor04InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor04" class="text-danger"></span>
+                                            }
                                         </div>
-                                        <span asp-validation-for="MovieActor10" class="text-danger"></span>
+
+                                        @* актёр (5) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor05" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor05Input" asp-for="MovieActor05" class="form-control text-center" aria-describedby="MovieActor05InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor05InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor05" class="text-danger"></span>
+                                            }
+                                        </div>
+
+                                        @* актёр (6) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor06" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor06Input" asp-for="MovieActor06" class="form-control text-center" aria-describedby="MovieActor06InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor06InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor06" class="text-danger"></span>
+                                            }
+                                        </div>
+
+                                        @* актёр (7) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor07" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor07Input" asp-for="MovieActor07" class="form-control text-center" aria-describedby="MovieActor07InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor07InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor07" class="text-danger"></span>
+                                            }
+                                        </div>
+
+                                        @* актёр (8) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor08" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor08Input" asp-for="MovieActor08" class="form-control text-center" aria-describedby="MovieActor08InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor08InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor08" class="text-danger"></span>
+                                            }
+                                        </div>
+
+                                        @* актёр (9) *@
+                                        <div class="row g-2 justify-content-center mb-2">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor09" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor09Input" asp-for="MovieActor09" class="form-control text-center" aria-describedby="MovieActor09InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor09InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor09" class="text-danger"></span>
+                                            }
+                                        </div>
+
+                                        @* актёр (10) *@
+                                        <div class="row g-2 justify-content-center">
+
+                                            <div class="col-auto">
+                                                <label asp-for="MovieActor10" class="form-label text-primary fs-5"></label>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <input id="MovieActor10Input" asp-for="MovieActor10" class="form-control text-center" aria-describedby="MovieActor10InputHelpBlock" />
+                                            </div>
+
+                                            <div id="MovieActor10InputHelpBlock" class="form-text">
+                                                <span class="fs-6 text-success">актер (актриса)</span>
+                                            </div>
+
+                                            @if (Context.Request.Method == "POST")
+                                            {
+                                                <span asp-validation-for="MovieActor10" class="text-danger"></span>
+                                            }
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -731,12 +1110,12 @@
                         </div>
 
                         @* ссылки на фильм *@
-                        <div class="accordion-item">
+                        <div class="accordion-item mb-3 shadw">
 
                             <h2 class="accordion-header" id="headingRef">
 
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#refForMovie" aria-expanded="true" aria-controls="refForMovie">
-                                    <span class="form-label text-success fs-5">Ссылки на фильм :</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#refForMovie" aria-expanded="true" aria-controls="refForMovie">
+                                    <span class="form-label fs-5">Ссылки на фильм :</span>
                                 </button>
 
                             </h2>
@@ -745,45 +1124,86 @@
 
                                 <div class="accordion-body text-center">
 
-                                    <label asp-for="MovieYouTube" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieYouTubeInput" class="align-text-bottom col-11" asp-for="MovieYouTube" aria-describedby="MovieYouTubeInputHelpBlock" />
-                                    <div id="MovieYouTubeInputHelpBlock" class="form-text mb-2">
-                                        <span>фильм на YOUTUBE</span>
-                                    </div>
-                                    <span asp-validation-for="MovieYouTube" class="text-danger"></span>
+                                    @* фильм на youtube *@
+                                    <div>
+                                        <label asp-for="MovieYouTube" class="col-form-label text-primary fs-5 me-2"></label> <br />
 
-                                    <label asp-for="MovieVkVideo" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieVkVideoInput" class="align-text-bottom col-11" asp-for="MovieVkVideo" aria-describedby="MovieVkVideoInputHelpBlock" />
-                                    <div id="MovieVkVideoInputHelpBlock" class="form-text mb-2">
-                                        <span>фильм на VK</span>
-                                    </div>
-                                    <span asp-validation-for="MovieVkVideo" class="text-danger"></span>
+                                        <input id="MovieYouTubeInput" class="align-text-bottom col-11" asp-for="MovieYouTube" aria-describedby="MovieYouTubeInputHelpBlock" />
 
-                                    <label asp-for="MovieMailRuVideo" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieMailRuVideoInput" class="align-text-bottom col-11" asp-for="MovieMailRuVideo" aria-describedby="MovieMailRuVideoInputHelpBlock" />
-                                    <div id="MovieMailRuVideoInputHelpBlock" class="form-text mb-2">
-                                        <span>фильм на MAIL.RU</span>
-                                    </div>
-                                    <span asp-validation-for="MovieMailRuVideo" class="text-danger"></span>
+                                        <div id="MovieYouTubeInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">фильм на YOUTUBE</span>
+                                        </div>
 
-                                    <label asp-for="MovieOkVideo" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieOkVideoInput" class="align-text-bottom col-11" asp-for="MovieOkVideo" aria-describedby="MovieOkVideoInputHelpBlock" />
-                                    <div id="MovieOkVideoInputHelpBlock" class="form-text mb-2">
-                                        <span>фильм на OK</span>
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieYouTube" class="text-danger"></span>
+                                        }
                                     </div>
-                                    <span asp-validation-for="MovieOkVideo" class="text-danger"></span>
 
-                                    <label asp-for="MovieYandexDiskVideo" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieYandexDiskVideoInput" class="align-text-bottom col-11" asp-for="MovieYandexDiskVideo" aria-describedby="MovieYandexDiskVideoInputHelpBlock" />
-                                    <div id="MovieYandexDiskVideoInputHelpBlock" class="form-text">
-                                        <span>фильм на YandexDisk</span>
+                                    @* фильм на vkvideo *@
+                                    <div>
+                                        <label asp-for="MovieVkVideo" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieVkVideoInput" class="align-text-bottom col-11" asp-for="MovieVkVideo" aria-describedby="MovieVkVideoInputHelpBlock" />
+
+                                        <div id="MovieVkVideoInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">фильм на VK</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieVkVideo" class="text-danger"></span>
+                                        }
                                     </div>
-                                    <span asp-validation-for="MovieYandexDiskVideo" class="text-danger"></span>
+
+                                    @* фильм на mail.ru *@
+                                    <div>
+                                        <label asp-for="MovieMailRuVideo" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieMailRuVideoInput" class="align-text-bottom col-11" asp-for="MovieMailRuVideo" aria-describedby="MovieMailRuVideoInputHelpBlock" />
+
+                                        <div id="MovieMailRuVideoInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">фильм на MAIL.RU</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieMailRuVideo" class="text-danger"></span>
+                                        }
+                                    </div>
+
+                                    @* фильм на mail.ru *@
+                                    <div>
+                                        <label asp-for="MovieOkVideo" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieOkVideoInput" class="align-text-bottom col-11" asp-for="MovieOkVideo" aria-describedby="MovieOkVideoInputHelpBlock" />
+
+                                        <div id="MovieOkVideoInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">фильм на OK</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieOkVideo" class="text-danger"></span>
+                                        }
+                                    </div>
+
+                                    @* фильм на yandex.disk *@
+                                    <div>
+                                        <label asp-for="MovieYandexDiskVideo" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieYandexDiskVideoInput" class="align-text-bottom col-11" asp-for="MovieYandexDiskVideo" aria-describedby="MovieYandexDiskVideoInputHelpBlock" />
+
+                                        <div id="MovieYandexDiskVideoInputHelpBlock" class="form-text">
+                                            <span class="fs-6 text-success">фильм на YandexDisk</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieYandexDiskVideo" class="text-danger"></span>
+                                        }
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -791,43 +1211,65 @@
                         </div>
 
                         @* ссылки на информацию о фильме *@
-                        <div class="accordion-item">
+                        <div class="accordion-item mb-3 shadw">
 
                             <h2 class="accordion-header" id="headingInfoRef">
-
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#infoRef" aria-expanded="true" aria-controls="infoRef">
-                                    <span class="form-label text-success fs-5">Ссылки на информацию :</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#infoRef" aria-expanded="true" aria-controls="infoRef">
+                                    <span class="form-label fs-5">Ссылки на информацию :</span>
                                 </button>
-
                             </h2>
 
                             <div id="infoRef" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionAddMovie">
 
                                 <div class="accordion-body text-center">
 
-                                    <label asp-for="MovieKinoTeatrRu" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieKinoTeatrRuInput" asp-for="MovieKinoTeatrRu" class="align-text-bottom col-11" aria-describedby="MovieKinoTeatrRuInputHelpBlock" />
-                                    <div id="MovieKinoTeatrRuInputHelpBlock" class="form-text mb-2">
-                                        <span>информация на kino-teatr.ru</span>
-                                    </div>
-                                    <span asp-validation-for="MovieKinoTeatrRu" class="text-danger"></span>
+                                    @* инфо на kino-teatr.ru *@
+                                    <div>
+                                        <label asp-for="MovieKinoTeatrRu" class="col-form-label text-primary fs-5 me-2"></label><br />
 
-                                    <label asp-for="MovieKinoPoisk" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieKinoPoiskInput" asp-for="MovieKinoPoisk" class="align-text-bottom col-11" aria-describedby="MovieKinoPoiskInputHelpBlock" />
-                                    <div id="MovieKinoPoiskInputHelpBlock" class="form-text mb-2">
-                                        <span>информация на kinopoisk.ru</span>
-                                    </div>
-                                    <span asp-validation-for="MovieKinoPoisk" class="text-danger"></span>
+                                        <input id="MovieKinoTeatrRuInput" asp-for="MovieKinoTeatrRu" class="align-text-bottom col-11" aria-describedby="MovieKinoTeatrRuInputHelpBlock" />
 
-                                    <label asp-for="MovieImbd" class="col-form-label text-primary fs-5 me-2"></label>
-                                    <br />
-                                    <input id="MovieImbdInput" asp-for="MovieImbd" class="align-text-bottom col-11" aria-describedby="MovieImbdInputHelpBlock" />
-                                    <div id="MovieImbdInputHelpBlock" class="form-text">
-                                        <span>информация на imdb.com</span>
+                                        <div id="MovieKinoTeatrRuInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">информация на kino-teatr.ru</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieKinoTeatrRu" class="text-danger"></span>
+                                        }
                                     </div>
-                                    <span asp-validation-for="MovieImbd" class="text-danger"></span>
+
+                                    @* инфо на kinopoisk.ru *@
+                                    <div>
+                                        <label asp-for="MovieKinoPoisk" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieKinoPoiskInput" asp-for="MovieKinoPoisk" class="align-text-bottom col-11" aria-describedby="MovieKinoPoiskInputHelpBlock" />
+
+                                        <div id="MovieKinoPoiskInputHelpBlock" class="form-text mb-2">
+                                            <span class="fs-6 text-success">информация на kinopoisk.ru</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieKinoPoisk" class="text-danger"></span>
+                                        }
+                                    </div>
+
+                                    @* инфо на kinopoisk.ru *@
+                                    <div>
+                                        <label asp-for="MovieImbd" class="col-form-label text-primary fs-5 me-2"></label><br />
+
+                                        <input id="MovieImbdInput" asp-for="MovieImbd" class="align-text-bottom col-11" aria-describedby="MovieImbdInputHelpBlock" />
+
+                                        <div id="MovieImbdInputHelpBlock" class="form-text">
+                                            <span class="fs-6 text-success">информация на imdb.com</span>
+                                        </div>
+
+                                        @if (Context.Request.Method == "POST")
+                                        {
+                                            <span asp-validation-for="MovieImbd" class="text-danger"></span>
+                                        }
+                                    </div>
 
                                 </div>
 
@@ -840,8 +1282,8 @@
 
                             <h2 class="accordion-header" id="headingAddLinks">
 
-                                <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
-                                    <span class="form-label text-success fs-5">Группа ссылок под видео :</span>
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
+                                    <span class="form-label fs-5">Группа ссылок под видео :</span>
                                 </button>
 
                             </h2>
@@ -853,8 +1295,8 @@
 
                                     <h2 class="accordion-header" id="FotoCarousel">
 
-                                        <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Carousel" aria-expanded="true" aria-controls="Carousel">
-                                            <span class="form-label text-success fs-5">Фотокарусель :</span>
+                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Carousel" aria-expanded="true" aria-controls="Carousel">
+                                            <span class="form-label fs-5">Фотокарусель :</span>
                                         </button>
 
                                     </h2>
@@ -1279,8 +1721,18 @@
                     @* сохранить-отменить данные *@
                     <div class="card-footer p-2">
 
-                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="сохранить">Сохранить</button>
-                        <a asp-area="Admin" asp-controller="MovieInfo" asp-action="Index" class="btn btn-outline-danger m-2 shadw" title="отменить">Отменить</a>
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw"
+                                title="сохранить">
+                            Сохранить
+                        </button>
+
+                        <a class="btn btn-outline-danger m-2 shadw"
+                           asp-area="Admin"
+                           asp-controller="MovieInfo"
+                           asp-action="Index"
+                           title="отменить">
+                            Отменить
+                        </a>
 
                     </div>
 
@@ -1291,6 +1743,9 @@
         </div>
 
     </div>
+
+    @* Кадры фильма справа *@
+    <vc:movie-frames image-filter=null left-side="false" one-frame="false" />
 
 </div>
 

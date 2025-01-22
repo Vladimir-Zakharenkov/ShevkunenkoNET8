@@ -1,8 +1,5 @@
 ﻿@model MoviesListViewModel
 
-@{
-}
-
 <div class="row">
 
     @if (!String.IsNullOrEmpty(Model.MovieCaptionSearchString))
@@ -186,94 +183,80 @@ else
     </div>
 }
 
-<div class="row">
+<div class="table-responsive">
 
-    <div class="col">
+    <table class="table table-hover caption-top align-middle">
 
-        <table class="table table-sm table-hover caption-top align-middle">
+        <thead>
 
-            <thead>
+            <tr>
+                <th scope="col" class="text-start">Название</th>
+                <th scope="col" class="d-none d-md-table-cell text-start">Серия</th>
+                <th scope="col" class="d-none d-lg-table-cell text-start">Файл</th>
+                <th scope="col" class="d-none d-xl-table-cell text-start">Время</th>
+                <th scope="col"></th>
+            </tr>
 
-                <tr>
-                    <th scope="col" class="text-start">Название</th>
-                    <th scope="col" class="text-start">Серия</th>
-                    <th scope="col" class="d-none d-lg-table-cell text-start">Файл</th>
-                    <th scope="col" class="d-none d-xl-table-cell text-start">Формат</th>
-                    <th scope="col" class="d-none d-xl-table-cell text-start">Время</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
+        </thead>
 
-            </thead>
+        <tbody>
 
-            <tbody>
+            @foreach (var movieInfo in Model?.Movies ?? Enumerable.Empty<MovieFileModel>())
+            {
+                <tr class="text-start">
 
-                @foreach (var movieInfo in Model?.Movies ?? Enumerable.Empty<MovieFileModel>())
-                {
-                    <tr class="text-start">
+                    <td scope="col" class="text-start text_shadow">@movieInfo.MovieCaption</td>
 
-                        <td scope="col" class="text-start">@movieInfo.MovieCaption</td>
+                    <td scope="col" class="d-none d-md-table-cell text-start text_shadow">
+                        &nbsp;&nbsp;&nbsp;
+                        @if (movieInfo.MovieTotalParts > 1)
+                        {
+                            @movieInfo.MoviePart
+                        }
+                    </td>
 
-                        <td scope="col" class="text-start">
-                            &nbsp;&nbsp;&nbsp;
-                            @if (movieInfo.MovieTotalParts > 1)
-                            {
-                                @movieInfo.MoviePart
-                            }
-                        </td>
+                    <td scope="col" class="d-none d-lg-table-cell text-start text_shadow" title="@movieInfo.MovieFileName">@movieInfo.MovieFileName</td>
 
-                        <td scope="col" class="d-none d-lg-table-cell text-start" title="@movieInfo.MovieFileName">@movieInfo.MovieFileName</td>
+                    <td scope="col" class="d-none d-xl-table-cell text-start text_shadow">@movieInfo.MovieDuration.ToString(@"hh\:mm\:ss")</td>
 
-                        <td scope="col" class="d-none d-xl-table-cell text-start">@movieInfo.MovieScreenFormat</td>
+                    <td scope="col" class="text-center">
+                        <a asp-area="Admin"
+                           asp-controller="MovieInfo"
+                           asp-action="DetailsMovie"
+                           asp-route-movieid="@movieInfo.MovieFileModelId"
+                           class="btn btn-outline-primary p-1 mb-1 shadw"
+                           title="информация">Info</a>
 
-                        <td scope="col" class="d-none d-xl-table-cell text-start">@movieInfo.MovieDuration.ToString(@"hh\:mm\:ss")</td>
+                        <a asp-area="Admin"
+                           asp-controller="MovieInfo"
+                           asp-action="EditMovie"
+                           asp-route-movieid="@movieInfo.MovieFileModelId"
+                           class="btn btn-outline-success p-1 mb-1 shadw"
+                           title="редактировать">Edit</a>
 
-                        <td scope="col" class="text-end">
-                            <a asp-area="Admin"
-                               asp-controller="MovieInfo"
-                               asp-action="DetailsMovie"
-                               asp-route-movieid="@movieInfo.MovieFileModelId"
-                               class="btn btn-outline-primary p-1 shadw"
-                               title="информация">Info</a>
-                        </td>
-
-                        <td scope="col" class="text-end">
-                            <a asp-area="Admin"
-                               asp-controller="MovieInfo"
-                               asp-action="EditMovie"
-                               asp-route-movieid="@movieInfo.MovieFileModelId"
-                               class="btn btn-outline-success p-1 shadw"
-                               title="редактировать">Edit</a>
-                        </td>
-
-                        <td scope="col" class="text-end">
-                            <a asp-area="Admin"
-                               asp-controller="MovieInfo"
-                               asp-action="DeleteMovie"
-                               asp-route-movieid="@movieInfo.MovieFileModelId"
-                               class="btn btn-outline-danger p-1 shadw"
-                               title="удалить">Del</a>
-                        </td>
+                        <a asp-area="Admin"
+                           asp-controller="MovieInfo"
+                           asp-action="DeleteMovie"
+                           asp-route-movieid="@movieInfo.MovieFileModelId"
+                           class="btn btn-outline-danger p-1 mb-1 shadw"
+                           title="удалить">Del&nbsp;</a>
 
                         @if (movieInfo.PageInfoModelId != null && movieInfo.PageInfoModelId != Guid.Empty)
                         {
-                            <td scope="col" class="text-end">
-                                <a href="@Url.Content(movieInfo.PageInfoModel?.PageFullPathWithData)"
-                                   class="btn btn-outline-primary py-0 px-1 shadw"
-                                   title="просмотр">Run</a>
-                            </td>
+                            <a href="@Url.Content(movieInfo.PageInfoModel?.PageFullPathWithData)"
+                               class="btn btn-outline-primary p-1 mb-1 shadw"
+                               title="просмотр">
+                                Run
+                            </a>
                         }
+                    </td>
 
-                    </tr>
-                }
+                </tr>
+            }
 
-            </tbody>
+        </tbody>
 
-        </table>
-
-    </div>
+    </table>
 
 </div>
 

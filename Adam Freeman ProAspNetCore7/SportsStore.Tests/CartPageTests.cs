@@ -18,15 +18,15 @@ namespace SportsStore.Tests
         public void Can_Load_Cart()
         {
             // Arrange - create a mock repository
-            Product p1 = new Product { ProductID = 1, Name = "P1" };
-            Product p2 = new Product { ProductID = 2, Name = "P2" };
+            Product p1 = new() { ProductID = 1, Name = "P1" };
+            Product p2 = new() { ProductID = 2, Name = "P2" };
 
             Mock<IStoreRepository> mockRepo = new Mock<IStoreRepository>();
 
             mockRepo.Setup(m => m.Products).Returns((new Product[] { p1, p2 }).AsQueryable<Product>());
 
             // - create a cart
-            Cart testCart = new Cart();
+            Cart testCart = new();
 
             testCart.AddItem(p1, 2);
             testCart.AddItem(p2, 1);
@@ -52,7 +52,7 @@ namespace SportsStore.Tests
             //        ActionDescriptor = new PageActionDescriptor()
             //    })
             //};
-            CartModel cartModel = new CartModel(mockRepo.Object, testCart);
+            CartModel cartModel = new(mockRepo.Object, testCart);
 
             cartModel.OnGet("myUrl");
 
