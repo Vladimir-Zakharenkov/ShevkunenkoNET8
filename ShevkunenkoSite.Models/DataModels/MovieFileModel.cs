@@ -57,7 +57,7 @@ public class MovieFileModel
 
     #region Включать фильм в MainList
 
-    [Display(Name = "Включать фильм в список видео:")]
+    [Display(Name = "В списке видео сайта:")]
     public bool MovieInMainList { get; set; } = true;
 
     #endregion
@@ -132,7 +132,7 @@ public class MovieFileModel
     [Display(Name = "Нет ограничений по возрасту:")]
     public bool MovieIsFamilyFriendly { get; set; } = true;
 
-    [Display(Name = "Фильм для взрослых (18+):")]
+    [Display(Name = "Фильм 18+ :")]
     public bool MovieAdult { get; set; } = false;
 
     #endregion
@@ -372,12 +372,12 @@ public class MovieFileModel
 
     #region Карусель кадров
 
-    [Display(Name = "Карусель кадров фильма:")] // карусель кадров фильма
+    [Display(Name = "Карусель кадров:")] // карусель кадров фильма
     public bool Carousel { get; set; } = false;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Название для ленты кадров:")]
+    [Display(Name = "Фильтр ленты кадров:")]
     public string FramesAroundMovie { get; set; } = string.Empty;
 
     #endregion
@@ -386,28 +386,28 @@ public class MovieFileModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок (1) связанных видео")]
+    [Display(Name = "Заголовок")]
     public string HeadTitleForVideoLinks1 { get; set; } = string.Empty; // заголовок 1 связанных видео
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска (1)  связанных видео")]
+    [Display(Name = "Фильтры поиска")]
     public string SearchFilter1 { get; set; } = string.Empty;
 
     [Display(Name = "Выбрать постер или картинку для видео")]
     // true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео
     public bool? IsImage1 { get; set; } = false;
 
-    [Display(Name = "Выбрать параметры изображения")]
+    [Display(Name = "Тип картинки")]
     // "hd", "icon300", "icon200", "icon100", "image", "webhd", "webicon300", "webicon200", "webicon100", "webimage" 
     public string IconType1 { get; set; } = string.Empty;
 
-    [Display(Name = "Выбрать ссылку на страницу фильма")]
+    [Display(Name = "Страница фильма")]
     // true -> определяем путь к главной странице многосерийного фильма
     public bool IsPartsMoreOne1 { get; set; } = true;
 
-    [Display(Name = "Все найденные фильмы")]
+    [Display(Name = "Фильмы сайта")]
     // true -> все найденные фильмы, false - фильмы с параметром InMainList (true)
     public bool AllMoviesFromDB1 { get; set; } = true;
 
@@ -417,28 +417,28 @@ public class MovieFileModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок (2) связанных видео")]
+    [Display(Name = "Заголовок")]
     public string HeadTitleForVideoLinks2 { get; set; } = string.Empty; // заголовок 2 связанных видео
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска (2)  связанных видео ")]
+    [Display(Name = "Фильтры поиска")]
     public string SearchFilter2 { get; set; } = string.Empty;
 
     [Display(Name = "Выбрать постер или картинку для видео")]
     // true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео
     public bool? IsImage2 { get; set; } = false;
 
-    [Display(Name = "Выбрать параметры изображения")]
+    [Display(Name = "Тип картинки")]
     // "hd", "icon300", "icon200", "icon100", "image", "webhd", "webicon300", "webicon200", "webicon100", "webimage" 
     public string IconType2 { get; set; } = string.Empty;
 
-    [Display(Name = "Выбрать ссылку на страницу фильма")]
+    [Display(Name = "Страница фильма")]
     // true -> определяем путь к главной странице многосерийного фильма
     public bool IsPartsMoreOne2 { get; set; } = true;
 
-    [Display(Name = "Все найденные фильмы")]
+    [Display(Name = "Фильмы сайта")]
     // true -> все найденные фильмы, false - фильмы с параметром InMainList (true)
     public bool AllMoviesFromDB2 { get; set; } = true;
 
@@ -448,28 +448,28 @@ public class MovieFileModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок (3) связанных видео")]
+    [Display(Name = "Заголовок")]
     public string HeadTitleForVideoLinks3 { get; set; } = string.Empty; // заголовок 2 связанных видео
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска (3)  связанных видео ")]
+    [Display(Name = "Фильтры поиска")]
     public string SearchFilter3 { get; set; } = string.Empty;
 
     [Display(Name = "Выбрать постер или картинку для видео")]
     // true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео
     public bool? IsImage3 { get; set; } = false;
 
-    [Display(Name = "Выбрать параметры изображения")]
+    [Display(Name = "Тип картинки")]
     // "hd", "icon300", "icon200", "icon100", "image", "webhd", "webicon300", "webicon200", "webicon100", "webimage" 
     public string IconType3 { get; set; } = string.Empty;
 
-    [Display(Name = "Выбрать ссылку на страницу фильма")]
+    [Display(Name = "Страница фильма")]
     // true -> определяем путь к главной странице многосерийного фильма
     public bool IsPartsMoreOne3 { get; set; } = true;
 
-    [Display(Name = "Все найденные фильмы")]
+    [Display(Name = "Фильмы сайта")]
     // true -> все найденные фильмы, false - фильмы с параметром InMainList (true)
     public bool AllMoviesFromDB3 { get; set; } = true;
 
@@ -479,14 +479,15 @@ public class MovieFileModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок статьи о фильме 1 (HTML)")]
+    [Display(Name = "Заголовок (HTML)")]
     public string HeadingOfArticle1 { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Текст статьи о фильме 1 (HTML)")]
+    [Display(Name = "Текст (HTML)")]
     public string TextOfArticle1 { get; set; } = string.Empty;
 
+    [Display(Name = "GUID статьи")]
     public Guid? TextInfoModelId { get; set; }
     public TextInfoModel? TextInfoModel { get; set; }
 

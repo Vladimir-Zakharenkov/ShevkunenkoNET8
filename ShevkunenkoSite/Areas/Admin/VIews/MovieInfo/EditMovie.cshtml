@@ -1289,22 +1289,26 @@
 
                                         <div class="accordion-body text-center text-indent-0 fs-5">
 
-                                            <label asp-for="MovieItem.Carousel" class=" col-12 form-label text-primary"></label>
+                                            <label asp-for="MovieItem.Carousel" class="col-12 form-label text-primary"></label>
+
                                             <div class="form-check d-inline-flex me-5">
                                                 <input id="Carouseltrue" asp-for="MovieItem.Carousel" class="form-check-input me-2" type="radio" value="true">
                                                 <label class="form-check-label text_shadow" for="Carouseltrue">
                                                     Показывать
                                                 </label>
                                             </div>
+
                                             <div class="form-check d-inline-flex">
                                                 <input id="Carouselfalse" asp-for="MovieItem.Carousel" class="form-check-input me-2" type="radio" value="false">
                                                 <label class="form-check-label text_shadow" for="Carouselfalse">
                                                     Не показывать
                                                 </label>
                                             </div>
+
                                             <div id="CarouselInputHelpBlock" class="form-text">
                                                 <span class="fs-6 text-success">запуск фотокарусели под видео</span>
                                             </div>
+
                                             <span asp-validation-for="MovieItem.Carousel" class="text-danger"></span>
 
                                         </div>

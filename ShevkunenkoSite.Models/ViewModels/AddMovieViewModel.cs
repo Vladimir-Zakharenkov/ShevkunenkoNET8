@@ -18,7 +18,7 @@ public class AddMovieViewModel : MovieFileModel
     public IFormFile? PosterForMovieFormFile { get; set; } = null;
 
     [DataType(DataType.Upload)]
-    [Display(Name = "Картинка заголовка страницы серий:")]
+    [Display(Name = "Картинка над сериями:")]
     public IFormFile? ImageHeadForSeriesFormFile { get; set; } = null;
 
     [DataType(DataType.Upload)]
@@ -36,16 +36,16 @@ public class AddMovieViewModel : MovieFileModel
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [Display(Name = "Тип картинки для ссылок (1):")]
+    [Display(Name = "Вид ссылок:")]
     public string ImageTypeForRef1 { get; set; } = string.Empty;
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [Display(Name = "Тип картинки для ссылок (2):")]
+    [Display(Name = "Вид ссылок:")]
     public string ImageTypeForRef2 { get; set; } = string.Empty;
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [Display(Name = "Тип картинки для ссылок (3):")]
+    [Display(Name = "Вид ссылок:")]
     public string ImageTypeForRef3 { get; set; } = string.Empty;
 }
