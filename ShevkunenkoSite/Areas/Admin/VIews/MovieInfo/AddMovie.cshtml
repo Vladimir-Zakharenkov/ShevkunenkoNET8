@@ -46,7 +46,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* выбрать файл фильма *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="FileForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -58,16 +58,16 @@
 
                                         <div id="FileForMovieFormFileInputHelpBlock" class="form-text">
 
-                                            <span class="fs-6 text-success">выбрать файл фильма</span>
+                                            <span class="fs-6 text-success">файл фильма</span>
 
                                         </div>
-
-                                        <hr class="w-50 mx-auto" />
 
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="FileForMovieFormFile" class="text-danger"></span>
                                         }
+
+                                        <hr class="w-50 mx-auto" />
 
                                     </div>
 
@@ -83,7 +83,7 @@
                                         </div>
 
                                         <div id="FullMovieFormFileInputHelpBlock" class="form-text">
-                                            <span class="fs-6 text-success">выбрать файл полного фильма</span>
+                                            <span class="fs-6 text-success">файл полного фильма</span>
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -114,7 +114,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* выбрать картинку фильма *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="ImageForMovieFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -125,21 +125,24 @@
                                         </div>
 
                                         <div id="ImageForMovieFormFileInputHelpBlock" class="form-text">
-                                            <span class="fs-6 text-success">выбрать картинку для фильму - </span>
-                                            <span class="fs-6 text-danger">обязательное поле</span>
-                                        </div>
 
-                                        <hr class="w-50 mx-auto" />
+                                            <span class="fs-6 text-success">картинка для фильму - </span>
+                                            <br class="d-inline-block d-xl-none" />
+                                            <span class="fs-6 text-danger">обязательное поле</span>
+
+                                        </div>
 
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="ImageForMovieFormFile" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
                                     @* выбрать постер фильма *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label class="col-form-label text-primary fs-5 me-2" asp-for="PosterForMovieFormFile"></label>
@@ -150,7 +153,9 @@
                                         </div>
 
                                         <div id="PosterForMovieFormFileInputHelpBlock" class="form-text">
-                                            <span class="fs-6 text-success">выбрать постер для фильму</span>
+
+                                            <span class="fs-6 text-success">постер для фильму</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -181,7 +186,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* текст поиска всех серий *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto text-end">
                                             <label class="form-label text-primary fs-5" asp-for="SeriesSearchFilter"></label>
@@ -195,17 +200,17 @@
                                             <span class="fs-6 text-success">текст поиска всех серий фильма</span>
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="SeriesSearchFilter" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
                                     @*  количество серий *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center mb-2 mb-xl-4">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieTotalParts" class="form-label text-primary fs-5"></label>
@@ -229,7 +234,7 @@
                                     </div>
 
                                     @*  номер серии *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="MoviePart" class="form-label text-primary fs-5"></label>
@@ -244,17 +249,17 @@
                                             <span class="fs-6 text-danger">обязательное поле</span>
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MoviePart" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
                                     @* выбрать файл картинки для заголовка страницы серий *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="ImageHeadForSeriesFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -269,17 +274,17 @@
                                             <span class="fs-6 text-danger">выбирать только для 1-ой серии</span>
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="ImageHeadForSeriesFormFile" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
                                     @* адрес страницы серий *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <label class="form-label text-primary fs-5" asp-for="PageForSeries"></label>
 
@@ -288,7 +293,7 @@
                                         </div>
 
                                         <div id="PageForSeriesInputHelpBlock" class="form-text">
-                                            <span class="fs-6 text-success">адрес страницы серий фильма</span>
+                                            <span class="fs-6 text-success">страница серий</span>
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -319,7 +324,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* название фильма *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieCaption" class="col-form-label text-primary fs-5 me-2"></label>
@@ -337,17 +342,17 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MovieCaption" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto mb-2" />
+
                                     </div>
 
-                                    @* название фильма для страницы *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    @* заголовок страницы фильма *@
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieCaptionForOnline" class="col-form-label text-primary fs-5 me-2"></label>
@@ -364,12 +369,12 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MovieCaptionForOnline" class="text-danger"></span>
                                         }
+
+                                        <hr class="w-50 mx-auto" />
 
                                     </div>
 
@@ -387,12 +392,12 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MovieDescriptionForSchemaOrg" class="text-danger"></span>
                                         }
+
+                                        <hr class="w-50 mx-auto" />
 
                                     </div>
 
@@ -410,17 +415,17 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MovieDescriptionHtml" class="text-danger"></span>
                                         }
 
+                                        <hr class="w-50 mx-auto" />
+
                                     </div>
 
                                     @* название фильма для ленты кадров *@
-                                    <div class="row g-2 justify-content-center mb-3">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="FramesAroundMovie" class="col-form-label text-primary fs-5 me-2"></label>
@@ -436,12 +441,12 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="FramesAroundMovie" class="text-danger"></span>
                                         }
+
+                                        <hr class="w-50 mx-auto" />
 
                                     </div>
 
@@ -486,7 +491,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* дата примьеры фильма *@
-                                    <div class="row g-2 justify-content-center">
+                                    <div class="row g-2 justify-content-center mb-xl-2">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieDatePublished" class="col-form-label text-primary fs-5"></label>
@@ -511,7 +516,7 @@
                                     </div>
 
                                     @* дата создания фильма *@
-                                    <div class="row g-2 justify-content-center">
+                                    <div class="row g-2 justify-content-center mb-xl-2">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieDateCreated" class="col-form-label text-primary fs-5"></label>
@@ -672,12 +677,12 @@
 
                                         </div>
 
-                                        <hr class="w-50 mx-auto" />
-
                                         @if (Context.Request.Method == "POST")
                                         {
                                             <span asp-validation-for="MovieInMainList" class="text-danger"></span>
                                         }
+
+                                        <hr class="w-50 mx-auto" />
 
                                     </div>
 
@@ -722,7 +727,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* язык фильма (1)*@
-                                    <div class="row g-2 justify-content-center">
+                                    <div class="row g-2 justify-content-center mb-xl-2">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieInLanguage1" class="col-form-label text-primary fs-5"></label>
@@ -754,7 +759,7 @@
                                     </div>
 
                                     @* язык фильма (2)*@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-xl-2">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieInLanguage2" class="col-form-label text-primary fs-5"></label>
@@ -784,7 +789,7 @@
                                     </div>
 
                                     @* субтитры фильма (1)*@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-xl-2">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieSubtitles1" class="col-form-label text-primary fs-5"></label>
@@ -814,7 +819,7 @@
                                     </div>
 
                                     @* субтитры фильма (2)*@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieSubtitles2" class="col-form-label text-primary fs-5"></label>
@@ -862,7 +867,7 @@
                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                     @* кинокомпания *@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieРroductionCompany" class="form-label text-primary fs-5"></label>
@@ -886,7 +891,7 @@
                                     </div>
 
                                     @* режиссер фильма (1) *@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieDirector1" class="form-label text-primary fs-5"></label>
@@ -910,7 +915,7 @@
                                     </div>
 
                                     @* режиссер фильма (2) *@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieDirector2" class="form-label text-primary fs-5"></label>
@@ -931,7 +936,7 @@
                                     </div>
 
                                     @* композитор фильма *@
-                                    <div class="row g-2 justify-content-center mb-2">
+                                    <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                         <div class="col-auto">
                                             <label asp-for="MovieMusicBy" class="form-label text-primary fs-5"></label>
@@ -956,7 +961,7 @@
                                     <div>
 
                                         @* актёр (1) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor01" class="form-label text-primary fs-5"></label>
@@ -977,7 +982,7 @@
                                         </div>
 
                                         @* актёр (2) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor02" class="form-label text-primary fs-5"></label>
@@ -998,7 +1003,7 @@
                                         </div>
 
                                         @* актёр (3) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor03" class="form-label text-primary fs-5"></label>
@@ -1019,7 +1024,7 @@
                                         </div>
 
                                         @* актёр (4) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor04" class="form-label text-primary fs-5"></label>
@@ -1040,7 +1045,7 @@
                                         </div>
 
                                         @* актёр (5) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor05" class="form-label text-primary fs-5"></label>
@@ -1061,7 +1066,7 @@
                                         </div>
 
                                         @* актёр (6) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor06" class="form-label text-primary fs-5"></label>
@@ -1082,7 +1087,7 @@
                                         </div>
 
                                         @* актёр (7) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor07" class="form-label text-primary fs-5"></label>
@@ -1103,7 +1108,7 @@
                                         </div>
 
                                         @* актёр (8) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor08" class="form-label text-primary fs-5"></label>
@@ -1124,7 +1129,7 @@
                                         </div>
 
                                         @* актёр (9) *@
-                                        <div class="row g-2 justify-content-center mb-2">
+                                        <div class="row g-2 justify-content-center mb-2 mb-xl-3">
 
                                             <div class="col-auto">
                                                 <label asp-for="MovieActor09" class="form-label text-primary fs-5"></label>
@@ -1195,7 +1200,9 @@
                                         <input id="MovieYouTubeInput" class="align-text-bottom col-12 col-md-10" asp-for="MovieYouTube" aria-describedby="MovieYouTubeInputHelpBlock" />
 
                                         <div id="MovieYouTubeInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">фильм на YOUTUBE</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1213,7 +1220,9 @@
                                         <input id="MovieVkVideoInput" class="align-text-bottom col-12 col-md-10" asp-for="MovieVkVideo" aria-describedby="MovieVkVideoInputHelpBlock" />
 
                                         <div id="MovieVkVideoInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">фильм на VK</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1231,7 +1240,9 @@
                                         <input id="MovieMailRuVideoInput" class="align-text-bottom col-12 col-md-10" asp-for="MovieMailRuVideo" aria-describedby="MovieMailRuVideoInputHelpBlock" />
 
                                         <div id="MovieMailRuVideoInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">фильм на MAIL.RU</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1241,7 +1252,7 @@
 
                                     </div>
 
-                                    @* фильм на mail.ru *@
+                                    @* фильм на ok.ru *@
                                     <div>
 
                                         <label asp-for="MovieOkVideo" class="col-form-label text-primary fs-5 me-2"></label><br />
@@ -1249,7 +1260,9 @@
                                         <input id="MovieOkVideoInput" class="align-text-bottom col-12 col-md-10" asp-for="MovieOkVideo" aria-describedby="MovieOkVideoInputHelpBlock" />
 
                                         <div id="MovieOkVideoInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">фильм на OK</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1267,7 +1280,9 @@
                                         <input id="MovieYandexDiskVideoInput" class="align-text-bottom col-12 col-md-10" asp-for="MovieYandexDiskVideo" aria-describedby="MovieYandexDiskVideoInputHelpBlock" />
 
                                         <div id="MovieYandexDiskVideoInputHelpBlock" class="form-text">
+
                                             <span class="fs-6 text-success">фильм на YandexDisk</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1305,7 +1320,9 @@
                                         <input id="MovieKinoTeatrRuInput" asp-for="MovieKinoTeatrRu" class="align-text-bottom col-12 col-md-10" aria-describedby="MovieKinoTeatrRuInputHelpBlock" />
 
                                         <div id="MovieKinoTeatrRuInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">информация на kino-teatr.ru</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1323,7 +1340,9 @@
                                         <input id="MovieKinoPoiskInput" asp-for="MovieKinoPoisk" class="align-text-bottom col-12 col-md-10" aria-describedby="MovieKinoPoiskInputHelpBlock" />
 
                                         <div id="MovieKinoPoiskInputHelpBlock" class="form-text mb-2">
+
                                             <span class="fs-6 text-success">информация на kinopoisk.ru</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1333,7 +1352,7 @@
 
                                     </div>
 
-                                    @* инфо на kinopoisk.ru *@
+                                    @* инфо на imdb.com *@
                                     <div>
 
                                         <label asp-for="MovieImbd" class="col-form-label text-primary fs-5 me-2"></label><br />
@@ -1341,7 +1360,9 @@
                                         <input id="MovieImbdInput" asp-for="MovieImbd" class="align-text-bottom col-12 col-md-10" aria-describedby="MovieImbdInputHelpBlock" />
 
                                         <div id="MovieImbdInputHelpBlock" class="form-text">
+
                                             <span class="fs-6 text-success">информация на imdb.com</span>
+
                                         </div>
 
                                         @if (Context.Request.Method == "POST")
@@ -1459,7 +1480,9 @@
                                                 <textarea id="SearchFilter1Input" rows="2" asp-for="SearchFilter1" class="form-control" aria-describedby="SearchFilter1InputHelpBlock"></textarea>
 
                                                 <div id="SearchFilter1InputHelpBlock" class="form-text mb-3">
+
                                                     <span class="fs-6 text-success mb-3">фильтры поиска</span>
+
                                                 </div>
 
                                                 @if (Context.Request.Method == "POST")
@@ -1883,7 +1906,9 @@
                                                 <textarea id="SearchFilter3Input" rows="2" asp-for="SearchFilter2" class="form-control" aria-describedby="SearchFilter3InputHelpBlock"></textarea>
 
                                                 <div id="SearchFilter3InputHelpBlock" class="form-text mb-3">
+
                                                     <span class="fs-6 text-success mb-3">фильтры поиска</span>
+
                                                 </div>
 
                                                 @if (Context.Request.Method == "POST")

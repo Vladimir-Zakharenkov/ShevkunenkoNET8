@@ -14,6 +14,8 @@ public class MovieInfoController(
 
     MovieFileModel? fullMovie = new();
 
+    private readonly List<TopicMovieModel> topicsForMovie = [.. topicMovieContext.TopicMovies];
+
     #region Список фильмов на сайте
 
     public int moviesPerPage = 12;
@@ -294,7 +296,7 @@ public class MovieInfoController(
     {
         AddMovieViewModel movieItem = new()
         {
-            TopicsForMovie = [.. topicMovieContext.TopicMovies]
+            TopicsForMovie = topicsForMovie
         };
 
         return View(movieItem);
@@ -986,7 +988,9 @@ public class MovieInfoController(
         }
         else
         {
-            return View();
+            movieItem.TopicsForMovie = topicsForMovie;
+
+            return View(movieItem);
         }
     }
 

@@ -26,7 +26,7 @@ public class MovieFileModel
 
     [Required(ErrorMessage = "Введите заголовок страницы")]
     [DataType(DataType.Text)]
-    [Display(Name = "Заголовок страницы фильма: ")]
+    [Display(Name = "Заголовок страницы: ")]
     public string MovieCaptionForOnline { get; set; } = string.Empty;
 
     #endregion
