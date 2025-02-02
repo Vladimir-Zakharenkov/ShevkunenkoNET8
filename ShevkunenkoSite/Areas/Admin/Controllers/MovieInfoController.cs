@@ -1,4 +1,9 @@
 ﻿//Ignore Spelling: Org
+using Microsoft.AspNetCore.Http;
+using ShevkunenkoSite.Models.DataModels;
+using ShevkunenkoSite.Services.Infrastructure;
+using System.Linq;
+
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
@@ -7,7 +12,8 @@ public class MovieInfoController(
     IMovieFileRepository movieInfoContext,
     IPageInfoRepository pageInfoContext,
     IImageFileRepository imageContext,
-    ITopicMovieRepository topicMovieContext
+    ITopicMovieRepository topicMovieContext,
+    ITextInfoRepository textInfoContext
     ) : Controller
 {
     //PageInfoModel? pageForSeries = new();
@@ -15,6 +21,9 @@ public class MovieInfoController(
     MovieFileModel? fullMovie = new();
 
     private readonly List<TopicMovieModel> topicsForMovie = [.. topicMovieContext.TopicMovies];
+
+    AddMovieViewModel movieItem = new();
+
 
     #region Список фильмов на сайте
 
@@ -292,22 +301,48 @@ public class MovieInfoController(
     #region Добавить фильм в базу данных
 
     [HttpGet]
-    public ViewResult AddMovie()
+    [ImportModelState]
+    public async Task<IActionResult> AddMovie()
     {
-        AddMovieViewModel movieItem = new()
+        movieItem.TopicsForMovie = topicsForMovie;
+
+        if (HttpContext.Session.Keys.Contains("textinfomodelid"))
         {
-            TopicsForMovie = topicsForMovie
-        };
+            if (Guid.TryParse(HttpContext.Session.GetString("textinfomodelid"), out var guidForTextInfoModelId))
+            {
+                if (await textInfoContext.Texts.Where(t => t.TextInfoModelId == guidForTextInfoModelId).AnyAsync())
+                {
+                    var textInfoModel = await textInfoContext.Texts.FirstAsync(t => t.TextInfoModelId == guidForTextInfoModelId);
+
+                    movieItem.TextInfoModelId = guidForTextInfoModelId;
+                    movieItem.HeadingOfArticle1 = textInfoModel.TextDescription;
+                    movieItem.TextOfArticle1 = textInfoModel.ClearText;
+                }
+            }
+        }
 
         return View(movieItem);
     }
 
+    [ExportModelState]
+    public IActionResult SaveData(Guid textinfomodelid)
+    {
+        HttpContext.Session.SetString("textinfomodelid", textinfomodelid.ToString());
+        var test = HttpContext.Session.GetString("textinfomodelid");
+
+        movieItem.TextInfoModelId = textinfomodelid;
+
+        return RedirectToAction("AddMovie");
+    }
+
+
     [HttpPost]
+    [ExportModelState]
     [ValidateAntiForgeryToken]
     [DisableRequestSizeLimit]
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
-    public async Task<IActionResult> AddMovie(AddMovieViewModel movieItem)
+    public async Task<IActionResult> AddMovie(AddMovieViewModel movieItem, Guid? textinfomodelid)
     {
         if (ModelState.IsValid)
         {
@@ -379,14 +414,14 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("ImageForMovieFormFile", $"Добавьте картинку «{movieItem.ImageForMovieFormFile.FileName}» в базу данных");
 
-                    return View();
+                    return View(movieItem);
                 }
             }
             else
             {
                 ModelState.AddModelError("ImageForMovieFormFile", $"Выберите картинку");
 
-                return View();
+                return View(movieItem);
             }
 
             #endregion
@@ -469,7 +504,7 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("PosterForMovieFormFile", $"Добавьте картинку постера «{movieItem.PosterForMovieFormFile.FileName}» в базу данных");
 
-                    return View();
+                    return View(movieItem);
                 }
             }
             else
@@ -552,7 +587,7 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("ImageHeadForSeriesFormFile", $"Добавьте картинку серий «{movieItem.ImageHeadForSeriesFormFile.FileName}» в базу данных");
 
-                    return View();
+                    return View(movieItem);
                 }
             }
             else
@@ -572,7 +607,7 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("PageForSeries", "Указанной страницы нет в базе данных");
 
-                    return View();
+                    return View(movieItem);
                 }
 
                 var pageForSeries = await pageInfoContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == movieItem.PageForSeries);
@@ -598,14 +633,14 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("FileForMovieFormFile", "Формат фильмов на сайте «mp4»");
 
-                    return View();
+                    return View(movieItem);
                 }
 
                 if (await movieInfoContext.MovieFiles.Where(c => c.MovieFileName == movieItem.FileForMovieFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("FileForMovieFormFile", $"Файл {movieItem.FileForMovieFormFile.FileName} уже есть в базе данных"); ;
 
-                    return View();
+                    return View(movieItem);
                 }
 
                 string path = Path.Combine(DataConfig.MovieFoldersPath, movieItem.FileForMovieFormFile.FileName);
@@ -628,7 +663,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieDuration", "Продолжительность фильма равна 0");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -642,7 +677,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieWidth", "Ширина кадра равна 0");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -658,7 +693,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieHeight", "Высота кадра равна 0");
 
-                                return View();
+                                return View(movieItem);
                             }
                         }
 
@@ -668,7 +703,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieFileName", "Название файла не определено");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -682,7 +717,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieFileExtension", "Расширение файла не определено");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -696,7 +731,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieMimeType", "MIME/TYPE файла не определен");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -710,7 +745,7 @@ public class MovieInfoController(
                             {
                                 ModelState.AddModelError("movieItem.MovieFileSize", "Размер файла равен 0");
 
-                                return View();
+                                return View(movieItem);
                             }
                             else
                             {
@@ -736,11 +771,11 @@ public class MovieInfoController(
 
             #region Добавить ссылку на полный вариант фильма
 
-            if (movieItem.FileForMovieFormFile?.FileName == movieItem.FullMovieFormFile?.FileName)
+            if (movieItem.FileForMovieFormFile != null & movieItem.FileForMovieFormFile?.FileName == movieItem.FullMovieFormFile?.FileName)
             {
                 ModelState.AddModelError("FullMovieFormFile", $"Выбран {movieItem.FileForMovieFormFile?.FileName} один файл для отрывка и полного фильма."); ;
 
-                return View();
+                return View(movieItem);
 
             }
 
@@ -756,7 +791,7 @@ public class MovieInfoController(
                 {
                     ModelState.AddModelError("FullMovieFormFile", $"Файл фильма {movieItem.FullMovieFormFile.FileName} не найден в базе данных."); ;
 
-                    return View();
+                    return View(movieItem);
                 }
             }
             else
@@ -775,7 +810,7 @@ public class MovieInfoController(
             {
                 ModelState.AddModelError("movieItem.MovieCaption", $"Фильм «{movieItem.MovieCaption}» количество серий - {movieItem.MovieTotalParts} серия {movieItem.MoviePart} уже существует");
 
-                return View();
+                return View(movieItem);
             }
 
             movieItem.MovieCaptionForOnline = movieItem.MovieCaptionForOnline.Trim();
@@ -867,6 +902,17 @@ public class MovieInfoController(
             }
 
             #endregion
+
+            #endregion
+
+            #region Статья о видео 1
+
+            movieItem.TextInfoModelId = movieItem.TextInfoModelId;
+
+            if (!movieItem.TextInfoModelId.HasValue)
+            {
+                movieItem.TextInfoModelId = null;
+            }
 
             #endregion
 

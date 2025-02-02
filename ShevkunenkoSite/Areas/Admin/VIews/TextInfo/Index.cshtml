@@ -141,16 +141,14 @@ else
                             </td>
 
                             <td scope="col" title="выбрать текст">
-                                <form method="post"
-                                      asp-area="Admin"
-                                      asp-controller="MovieInfo"
-                                      asp-action="DetailsMovie"
-                                      asp-route-movieId="3de64a4c-8432-4574-bf1d-08dd0748c098">
-                                    <input type="hidden" name="textId" value="@text.TextInfoModelId" />
-                                    <button type="submit" class="btn btn-outline-danger py-1 px-1 shadw">
-                                        Add
-                                    </button>
-                                </form>
+                                <a class="btn btn-outline-danger py-1 px-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="MovieInfo"
+                                   asp-action="SaveData"
+                                   asp-route-textinfomodelid="@text.TextInfoModelId">
+                                    @* <input type="hidden" asp-for="TextInfoModelId" value="@text.TextInfoModelId" /> *@
+                                    Add
+                                </a>
                             </td>
 
                         </tr>

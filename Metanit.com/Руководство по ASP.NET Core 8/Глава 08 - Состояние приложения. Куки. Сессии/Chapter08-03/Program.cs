@@ -11,27 +11,27 @@
 
 #region Example01
 
-//var builder = WebApplication.CreateBuilder();
+var builder = WebApplication.CreateBuilder();
 
-//builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
-//builder.Services.AddSession();  // добавляем сервисы сессии
+builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
+builder.Services.AddSession();  // добавляем сервисы сессии
 
-//var app = builder.Build();
+var app = builder.Build();
 
-//app.UseSession();   // добавляем middleware для работы с сессиями
+app.UseSession();   // добавляем middleware для работы с сессиями
 
-//app.Run(async (context) =>
-//{
-//    if (context.Session.Keys.Contains("name"))
-//        await context.Response.WriteAsync($"Hello {context.Session.GetString("name")}!");
-//    else
-//    {
-//        context.Session.SetString("name", "Tom");
-//        await context.Response.WriteAsync("Hello World!");
-//    }
-//});
+app.Run(async (context) =>
+{
+    if (context.Session.Keys.Contains("name"))
+        await context.Response.WriteAsync($"Hello {context.Session.GetString("name")}!");
+    else
+    {
+        context.Session.SetString("name", "Tom");
+        await context.Response.WriteAsync("Hello World!");
+    }
+});
 
-//app.Run();
+app.Run();
 
 #endregion
 
@@ -68,34 +68,34 @@
 
 #region Example03
 
-using Chapter08_03;
+//using Chapter08_03;
 
-var builder = WebApplication.CreateBuilder();
+//var builder = WebApplication.CreateBuilder();
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession();
 
-var app = builder.Build();
+//var app = builder.Build();
 
-app.UseSession();
+//app.UseSession();
 
-app.Run(async (context) =>
-{
-    if (context.Session.Keys.Contains("person"))
-    {
-        Person? person = context.Session.Get<Person>("person");
-        await context.Response.WriteAsync($"Hello {person?.Name}, your age: {person?.Age}!");
-    }
-    else
-    {
-        Person person = new() { Name = "Tom", Age = 22 };
+//app.Run(async (context) =>
+//{
+//    if (context.Session.Keys.Contains("person"))
+//    {
+//        Person? person = context.Session.Get<Person>("person");
+//        await context.Response.WriteAsync($"Hello {person?.Name}, your age: {person?.Age}!");
+//    }
+//    else
+//    {
+//        Person person = new() { Name = "Tom", Age = 22 };
 
-        context.Session.Set<Person>("person", person);
+//        context.Session.Set<Person>("person", person);
 
-        await context.Response.WriteAsync("Hello World!");
-    }
-});
+//        await context.Response.WriteAsync("Hello World!");
+//    }
+//});
 
-app.Run();
+//app.Run();
 
 #endregion

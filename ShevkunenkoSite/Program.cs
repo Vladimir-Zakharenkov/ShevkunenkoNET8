@@ -1,3 +1,5 @@
+using ShevkunenkoSite.Controllers;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -16,8 +18,10 @@ IWebHostEnvironment environment = builder.Environment;
 
 IServiceCollection services = builder.Services;
 
+// Работа с MVC
 services.AddControllersWithViews();
 
+// Работа с RazorPages
 services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeAreaPage("Admin", "/Index");
@@ -144,7 +148,7 @@ app.UseAuthorization();
 
 app.UseWebMarkupMin();
 
-#region Rooting
+#region Маршруты
 
 app.MapAreaControllerRoute(
         name: "videos_area",

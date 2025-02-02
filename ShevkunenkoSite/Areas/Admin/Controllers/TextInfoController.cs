@@ -12,6 +12,7 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
     public int textsPerPage = 16;
 
+    [HttpGet]
     public async Task<IActionResult> Index(string? textSearchString,
                                                                 int pageNumber = 1)
     {

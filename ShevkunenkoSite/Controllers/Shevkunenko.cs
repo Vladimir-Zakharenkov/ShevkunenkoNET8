@@ -1,9 +1,11 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using Microsoft.Docs.Samples;
+
+namespace ShevkunenkoSite.Controllers;
 
 public class Shevkunenko(
     IImageFileRepository imageContext,
     IPageInfoRepository pageContext
-    ) : Controller
+        ) : Controller
 {
     public IActionResult Index() => View();
 

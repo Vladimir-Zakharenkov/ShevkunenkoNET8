@@ -13,7 +13,7 @@
 
         <hr class="liniya" />
 
-        @* Показ ошибок ввода данных *@
+        @* Показ всех ошибок ввода данных *@
         @if (Context.Request.Method == "POST")
         {
             <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
@@ -23,10 +23,10 @@
 
             <div class="card-body mx-0 p-0">
 
-                <form method="post" enctype="multipart/form-data">
+                <form asp-area="Admin" asp-controller="MovieInfo" asp-action="AddMovie" method="post" enctype="multipart/form-data">
 
-                    <input asp-for="MovieFileModelId" type="hidden" value="@Guid.Empty" />
-                    <input asp-for="PageInfoModelId" type="hidden" value="@null" />
+                    <input asp-for="MovieFileModelId" type="hidden" value=@Guid.Empty />
+                    <input asp-for="PageInfoModelId" type="hidden" value=@null />
 
                     @* данные по группам*@
                     <div class="accordion" id="accordionAddMovie">
@@ -498,7 +498,7 @@
                                         </div>
 
                                         <div class="col-auto">
-                                            <input id="MovieDatePublishedInput" asp-for="MovieDatePublished" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieDatePublishedInputHelpBlock" />
+                                            <input id="MovieDatePublishedInput" asp-for="MovieDatePublished" class="form-control text-center" aria-describedby="MovieDatePublishedInputHelpBlock" />
                                         </div>
 
                                         <div id="MovieDatePublishedInputHelpBlock" class="form-text mb-2">
@@ -523,7 +523,7 @@
                                         </div>
 
                                         <div class="col-auto">
-                                            <input id="MovieDateCreatedInput" asp-for="MovieDateCreated" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieDateCreatedInputHelpBlock" />
+                                            <input id="MovieDateCreatedInput" asp-for="MovieDateCreated" class="form-control text-center" aria-describedby="MovieDateCreatedInputHelpBlock" />
                                         </div>
 
                                         <div id="MovieDateCreatedInputHelpBlock" class="form-text mb-2">
@@ -549,7 +549,7 @@
                                         </div>
 
                                         <div class="col-auto">
-                                            <input id="MovieUploadDateInput" asp-for="MovieUploadDate" value="@DateTime.Today" class="form-control text-center" aria-describedby="MovieUploadDateInputHelpBlock" />
+                                            <input id="MovieUploadDateInput" asp-for="MovieUploadDate" class="form-control text-center" aria-describedby="MovieUploadDateInputHelpBlock" />
                                         </div>
 
                                         <div id="MovieUploadDateInputHelpBlock" class="form-text mb-2">
@@ -2130,7 +2130,7 @@
 
                                                     <label asp-for="TextOfArticle1" class="form-label text-primary fs-5"></label>
 
-                                                    <textarea id="TextOfArticle1Input" rows="7" asp-for="TextInfoModelId" class="form-control" aria-describedby="TextOfArticle1HelpBlock"></textarea>
+                                                    <textarea id="TextOfArticle1Input" rows="7" asp-for="TextOfArticle1" class="form-control" aria-describedby="TextOfArticle1HelpBlock"></textarea>
 
                                                     <div id="TextOfArticle1HelpBlock" class="form-text pb-2">
 
@@ -2152,7 +2152,7 @@
 
                                                     <label asp-for="TextInfoModelId" class="form-label text-primary fs-5"></label>
 
-                                                    <input id="TextInfoModelIdInput" asp-for="HeadingOfArticle1" class="col-12 form-control text-center" aria-describedby="TextInfoModelIdInputHelpBlock" />
+                                                    <input id="TextInfoModelIdInput" asp-for="TextInfoModelId" class="col-12 form-control text-center" aria-describedby="TextInfoModelIdInputHelpBlock" />
 
                                                     <div id="TextInfoModelIdInputHelpBlock" class="form-text pb-2">
 
