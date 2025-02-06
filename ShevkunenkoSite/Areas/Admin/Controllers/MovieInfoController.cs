@@ -22,8 +22,7 @@ public class MovieInfoController(
 
     private readonly List<TopicMovieModel> topicsForMovie = [.. topicMovieContext.TopicMovies];
 
-    AddMovieViewModel movieItem = new();
-
+    readonly AddMovieViewModel movieItem = new();
 
     #region Список фильмов на сайте
 
@@ -316,7 +315,7 @@ public class MovieInfoController(
 
                     movieItem.TextInfoModelId = guidForTextInfoModelId;
                     movieItem.HeadingOfArticle1 = textInfoModel.TextDescription;
-                    movieItem.TextOfArticle1 = textInfoModel.ClearText;
+                    //movieItem.TextOfArticle1 = textInfoModel.ClearText;
                 }
             }
         }
@@ -324,16 +323,16 @@ public class MovieInfoController(
         return View(movieItem);
     }
 
-    [ExportModelState]
-    public IActionResult SaveData(Guid textinfomodelid)
-    {
-        HttpContext.Session.SetString("textinfomodelid", textinfomodelid.ToString());
-        var test = HttpContext.Session.GetString("textinfomodelid");
+    //[ExportModelState]
+    //public IActionResult SaveData(Guid textinfomodelid)
+    //{
+    //    HttpContext.Session.SetString("textinfomodelid", textinfomodelid.ToString());
+    //    var test = HttpContext.Session.GetString("textinfomodelid");
 
-        movieItem.TextInfoModelId = textinfomodelid;
+    //    movieItem.TextInfoModelId = textinfomodelid;
 
-        return RedirectToAction("AddMovie");
-    }
+    //    return RedirectToAction("AddMovie");
+    //}
 
 
     [HttpPost]
@@ -342,7 +341,7 @@ public class MovieInfoController(
     [DisableRequestSizeLimit]
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
-    public async Task<IActionResult> AddMovie(AddMovieViewModel movieItem, Guid? textinfomodelid)
+    public async Task<IActionResult> AddMovie(AddMovieViewModel movieItem)
     {
         if (ModelState.IsValid)
         {

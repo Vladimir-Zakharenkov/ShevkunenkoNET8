@@ -10,7 +10,7 @@
 
     <div class="bookpages lay1">
 
-        <label asp-for="HtmlText" class="col-form-label text-primary fs-5 mb-1"></label>
+       @*  <label asp-for="HtmlText" class="col-form-label text-primary fs-5 mb-1"></label>
 
         <div class="descr lay1 overflow-y-scroll height400">
 
@@ -20,7 +20,7 @@
 
         <div class="form-text mt-3">
             <span class="fs-6 text-success">вид текста</span>
-        </div>
+        </div> *@
 
     </div>
 
@@ -56,7 +56,7 @@
             <hr class="liniya" />
 
             @* Тег «ClearText» *@
-            <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
+            @* <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="ClearTextInput" class="form-control fordetails"
                       asp-for="ClearText"
                       rows="7"
@@ -67,12 +67,12 @@
                 <span class="fs-6 text-danger">обязательное поле</span>
             </div>
 
-            <span asp-validation-for="ClearText" class="text-danger"></span>
+            <span asp-validation-for="ClearText" class="text-danger"></span> *@
 
             <hr class="liniya" />
 
             @* Тег «HtmlText» *@
-            <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
+            @* <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="HtmlTextInput" class="form-control fordetails"
                       asp-for="HtmlText"
                       rows="7"
@@ -83,7 +83,7 @@
                 <span class="fs-6 text-danger">обязательное поле</span>
             </div>
 
-            <span asp-validation-for="HtmlText" class="text-danger"></span>
+            <span asp-validation-for="HtmlText" class="text-danger"></span> *@
 
             <div class="card-footer p-0 pb-2 mt-4">
 

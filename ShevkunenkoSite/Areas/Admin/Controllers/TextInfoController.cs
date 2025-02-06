@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using NuGet.Configuration;
-using ShevkunenkoSite.Models.DataModels;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -16,25 +12,27 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
     public async Task<IActionResult> Index(string? textSearchString,
                                                                 int pageNumber = 1)
     {
-        var allTexts = from m in textContext.Texts
-            .Where
-            (
-                s => s.ClearText.Contains((textSearchString ?? string.Empty).Trim())
-            )
-                       select m;
+        //var allTexts = from m in textContext.Texts
+        //    .Where
+        //    (
+        //        s => s.ClearText.Contains((textSearchString ?? string.Empty).Trim())
+        //    )
+        //               select m;
+
+        var allTexts = await textContext.Texts.ToListAsync();
 
         return View(new TextInfoViewModel
         {
-            AllTexts = await allTexts
+            AllTexts = allTexts
                      .Skip((pageNumber - 1) * textsPerPage)
                      .Take(textsPerPage)
-                     .ToArrayAsync(),
+                     .ToArray(),
 
             PagingInfo = new PagingInfoViewModel
             {
                 CurrentPage = pageNumber,
                 ItemsPerPage = textsPerPage,
-                TotalItems = allTexts.Count()
+                TotalItems = allTexts.Count
             },
 
             TextSearchString = textSearchString ?? string.Empty
@@ -81,14 +79,14 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
     [HttpGet]
     public ViewResult AddText()
     {
-        TextInfoModel newText = new();
+        AddTextInfoViewModel newText = new();
 
         return View(newText);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddText(TextInfoModel addText)
+    public async Task<IActionResult> AddText(AddTextInfoViewModel addText)
     {
         if (ModelState.IsValid)
         {
@@ -96,25 +94,74 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
             addText.TextDescription = addText.TextDescription.Trim();
 
-            #endregion
+            if (await textContext.Texts.Where(file => file.TextDescription == addText.TextDescription).AnyAsync())
+            {
+                ModelState.AddModelError("TextDescription", $"Описание «{addText.TextDescription}» уже существует в БД");
 
-            #region Текст без разметки
-
-            addText.ClearText = addText.ClearText.Trim();
-
-            #endregion
-
-            #region Текст с разметкой (html)
-
-            addText.HtmlText = addText.HtmlText.Trim();
+                return View(addText);
+            }
 
             #endregion
+
+            #region TXT файл
+
+            if (addText.TxtFileFormFile != null)
+            {
+                addText.TxtFileName = addText.TxtFileFormFile.FileName;
+                addText.TxtFileSize = (int)addText.TxtFileFormFile.Length;
+            }
+
+            if (!addText.TxtFileName.EndsWith(".txt"))
+            {
+                ModelState.AddModelError("TxtFileFormFile", "Выберите файл формата «.txt»");
+
+                return View(addText);
+            }
+
+            if (await textContext.Texts.Where(file => file.TxtFileName == addText.TxtFileName).AnyAsync())
+            {
+                ModelState.AddModelError("TxtFileFormFile", $"Файл с именем «{addText.TxtFileName}» уже существует в БД");
+
+                return View(addText);
+            }
+
+            #endregion
+
+            #region HTML файл
+
+            if (addText.HtmlFileFormFile != null)
+            {
+                addText.HtmlFileName = addText.HtmlFileFormFile.FileName;
+                addText.HtmlFileSize = (int)addText.HtmlFileFormFile.Length;
+            }
+
+            if (!addText.HtmlFileName.EndsWith(".html"))
+            {
+                ModelState.AddModelError("HtmlFileFormFile", "Выберите файл формата «.html»");
+
+                return View(addText);
+            }
+
+            if (await textContext.Texts.Where(file => file.HtmlFileName == addText.HtmlFileName).AnyAsync())
+            {
+                ModelState.AddModelError("HtmlFileFormFile", $"Файл с именем «{addText.HtmlFileName}» уже существует в БД");
+
+                return View(addText);
+            }
+
+            #endregion
+
+            #region Добавить файл в БД
 
             await textContext.AddNewTextAsync(addText);
 
-            #region Открытие списка текстов
+            #endregion
 
-            return RedirectToAction("Index", new { Area = "Admin" });
+            #region Открытие параметров добавленного файла
+
+            var newText = await textContext.Texts.FirstAsync(file => file.TxtFileName == addText.TxtFileName);
+
+            return RedirectToAction(nameof(DetailsText), new { textId = newText.TextInfoModelId });
 
             #endregion
         }
@@ -151,7 +198,7 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
     {
         if (ModelState.IsValid)
         {
-            TextInfoModel textUpdate = await textContext.Texts.FirstAsync(txt =>txt.TextInfoModelId == textItem.TextInfoModelId);
+            TextInfoModel textUpdate = await textContext.Texts.FirstAsync(txt => txt.TextInfoModelId == textItem.TextInfoModelId);
 
             #region Описание текста
 
@@ -161,13 +208,13 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
             #region Текст без разметки (txt)
 
-            textUpdate.ClearText = textItem.ClearText;
+            //textUpdate.ClearText = textItem.ClearText;
 
             #endregion
 
             #region Текст с разметкой (html)
 
-            textUpdate.HtmlText = textItem.HtmlText;
+            //textUpdate.HtmlText = textItem.HtmlText;
 
             #endregion
 

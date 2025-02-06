@@ -7,19 +7,23 @@ public class TextInfoModel
     public Guid TextInfoModelId { get; set; }
 
     [Required(ErrorMessage = "Добавьте описание текста")]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Описание текста :")]
     public string TextDescription { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Введите текст")]
-    [DataType(DataType.MultilineText)]
-    [Display(Name = "Текст без разметки (txt) :")]
-    public string ClearText { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Введите html текст")]
+    [DataType(DataType.Text)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.MultilineText)]
-    [Display(Name = "Текст с разметкой (html) :")]
-    public string HtmlText { get; set; } = string.Empty;
+    [Display(Name = "Файл (txt) :")]
+    public string TxtFileName { get; set; } = string.Empty;
+
+    [Display(Name = "Размер файла (txt) :")]
+    public int TxtFileSize { get; set; }
+
+    [DataType(DataType.Text)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Файл (html) :")]
+    public string HtmlFileName { get; set; } = string.Empty;
+
+    [Display(Name = "Размер файла (html) :")]
+    public int HtmlFileSize { get; set; }
 }

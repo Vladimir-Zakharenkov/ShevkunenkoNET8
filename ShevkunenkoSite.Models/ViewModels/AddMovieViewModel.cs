@@ -8,6 +8,10 @@ public class AddMovieViewModel : MovieFileModel
     [Display(Name = "Файл фильма:")]
     public IFormFile? FileForMovieFormFile { get; set; }
 
+    [DataType(DataType.Upload)]
+    [Display(Name = "Полный вариант фильма:")]
+    public IFormFile? FullMovieFormFile { get; set; }
+
     [Required(ErrorMessage = "Выберите картинку для фильма")]
     [DataType(DataType.Upload)]
     [Display(Name = "Картинка фильма:")]
@@ -20,10 +24,6 @@ public class AddMovieViewModel : MovieFileModel
     [DataType(DataType.Upload)]
     [Display(Name = "Картинка над сериями:")]
     public IFormFile? ImageHeadForSeriesFormFile { get; set; } = null;
-
-    [DataType(DataType.Upload)]
-    [Display(Name = "Полный вариант фильма:")]
-    public IFormFile? FullMovieFormFile { get; set; }
 
     [DataType(DataType.Text)]
     [Display(Name = "Страница серий:")]

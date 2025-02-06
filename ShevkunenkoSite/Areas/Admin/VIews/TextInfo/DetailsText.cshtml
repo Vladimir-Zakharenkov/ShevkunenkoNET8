@@ -59,7 +59,7 @@
 
         <div class="col-12 col-xxl-10 mx-auto">
 
-            <label asp-for="HtmlText" class="col-form-label text-primary fs-5"></label>
+            @* <label asp-for="HtmlText" class="col-form-label text-primary fs-5"></label>
 
             <div class="bookpages lay1">
 
@@ -75,7 +75,7 @@
                 <span class="fs-6 text-success">вид текста</span>
             </div>
 
-            <hr class="liniya" />
+            <hr class="liniya" /> *@
 
             <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="TextDescriptionInput" class="form-control fordetails"
@@ -91,7 +91,7 @@
 
             <hr class="liniya" />
 
-            <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
+            @* <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="ClearTextInput" class="form-control fordetails"
                       asp-for="ClearText"
                       readonly
@@ -101,11 +101,11 @@
             <div id="ClearTextInputHelpBlock" class="form-text">
                 <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
                 <span class="fs-6 text-success">текст без разметки (txt)</span>
-            </div>
+            </div> *@
 
             <hr class="liniya" />
 
-            <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
+            @* <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="HtmlTextInput" class="form-control fordetails"
                       asp-for="HtmlText"
                       readonly
@@ -115,7 +115,7 @@
             <div class="form-text">
                 <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
                 <span class="fs-6 text-success">текст c разметкой (html)</span>
-            </div>
+            </div> *@
 
         </div>
 
