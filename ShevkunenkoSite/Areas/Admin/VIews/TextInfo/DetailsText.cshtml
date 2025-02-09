@@ -1,7 +1,5 @@
 ﻿@model TextInfoModel
 
-<hr class="liniya" />
-
 <h1 class="fs-3 text_shadow">Информация о тексте</h1>
 
 <hr class="liniya" />
@@ -45,6 +43,7 @@
 
         </div>
 
+        @* Идентификатор в базе данных *@
         <h2 class="lh-1">
             <span class="fs-5 text-primary">
                 TextInfoModelId :<br />
@@ -58,6 +57,35 @@
         </h2>
 
         <div class="col-12 col-xxl-10 mx-auto">
+
+            @* Описание текста *@
+            <div>
+
+                <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+                <textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
+                          asp-for="TextDescription"
+                          readonly
+                          rows="2"
+                          aria-describedby="TextDescriptionInputHelpBlock">
+                 </textarea>
+
+                <div id="TextDescriptionInputHelpBlock" class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
+                    <span class="fs-6 text-success">описание текста</span>
+                </div>
+
+                <hr class="liniya" />
+
+            </div>
+
+            @* Файл TXT *@
+            <div>
+
+                <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                <span class="fs-5 text_shadow">@Model.TxtFileName</span>
+
+            </div>
+
 
             @* <label asp-for="HtmlText" class="col-form-label text-primary fs-5"></label>
 
@@ -77,19 +105,8 @@
 
             <hr class="liniya" /> *@
 
-            <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
-            <textarea id="TextDescriptionInput" class="form-control fordetails"
-                      asp-for="TextDescription"
-                      readonly
-                      rows="3"
-                      aria-describedby="TextDescriptionInputHelpBlock">
-             </textarea>
-            <div id="TextDescriptionInputHelpBlock" class="form-text">
-                <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
-                <span class="fs-6 text-success">описание текста</span>
-            </div>
 
-            <hr class="liniya" />
+            @* <hr class="liniya" /> *@
 
             @* <label asp-for="ClearText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="ClearTextInput" class="form-control fordetails"
@@ -103,7 +120,7 @@
                 <span class="fs-6 text-success">текст без разметки (txt)</span>
             </div> *@
 
-            <hr class="liniya" />
+            @* <hr class="liniya" /> *@
 
             @* <label asp-for="HtmlText" class="col-form-label text-primary fs-5 me-2"></label>
             <textarea id="HtmlTextInput" class="form-control fordetails"

@@ -1,5 +1,3 @@
-using ShevkunenkoSite.Controllers;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -169,9 +167,9 @@ app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Shevkunenko}/{action=Index}/{id?}");
 
-#endregion
-
 app.MapRazorPages();
+
+#endregion
 
 #endregion
 
