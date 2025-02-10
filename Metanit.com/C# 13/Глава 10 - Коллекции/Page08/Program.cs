@@ -1,6 +1,6 @@
 ﻿#region Example 01
 
-//Numbers numbers = new Numbers();
+//Numbers numbers = new();
 
 //foreach (int n in numbers)
 //{
@@ -9,7 +9,9 @@
 
 //class Numbers
 //{
+//#pragma warning disable CA1822 // Mark members as static
 //    public IEnumerator<int> GetEnumerator()
+//#pragma warning restore CA1822 // Mark members as static
 //    {
 //        for (int i = 0; i < 6; i++)
 //        {
@@ -22,19 +24,19 @@
 
 #region Example 02
 
-//foreach (var n in 5) Console.WriteLine(n);
+foreach (var n in 5) Console.WriteLine(n);
 
-//foreach (var n in -5) Console.WriteLine(n);
+foreach (var n in -5) Console.WriteLine(n);
 
-//static class Int32Extension
-//{
-//    public static IEnumerator<int> GetEnumerator(this int number)
-//    {
-//        int k = (number > 0) ? number : 0;
+static class Int32Extension
+{
+    public static IEnumerator<int> GetEnumerator(this int number)
+    {
+        int k = (number > 0) ? number : 0;
 
-//        for (int i = number - k; i <= k; i++) yield return i;
-//    }
-//}
+        for (int i = number - k; i <= k; i++) yield return i;
+    }
+}
 
 #endregion
 
@@ -88,48 +90,48 @@
 
 #region Example 04
 
-var people = new Person[]
-{
-    new Person("Tom"),
-    new Person("Bob"),
-    new Person("Sam")
-};
+//var people = new Person[]
+//{
+//    new Person("Tom"),
+//    new Person("Bob"),
+//    new Person("Sam")
+//};
 
-var microsoft = new Company(people);
+//var microsoft = new Company(people);
 
-foreach (Person employee in microsoft.GetPersonnel(5))
-{
-    Console.WriteLine(employee.Name);
-}
+//foreach (Person employee in microsoft.GetPersonnel(5))
+//{
+//    Console.WriteLine(employee.Name);
+//}
 
-class Person
-{
-    public string Name { get; }
-    public Person(string name) => Name = name;
-}
+//class Person
+//{
+//    public string Name { get; }
+//    public Person(string name) => Name = name;
+//}
 
-class Company
-{
-    Person[] personnel;
+//class Company
+//{
+//    Person[] personnel;
 
-    public Company(Person[] personnel) => this.personnel = personnel;
+//    public Company(Person[] personnel) => this.personnel = personnel;
 
-    public int Length => personnel.Length;
+//    public int Length => personnel.Length;
 
-    public IEnumerable<Person> GetPersonnel(int max)
-    {
-        for (int i = 0; i < max; i++)
-        {
-            if (i == personnel.Length)
-            {
-                yield break;
-            }
-            else
-            {
-                yield return personnel[i];
-            }
-        }
-    }
-}
+//    public IEnumerable<Person> GetPersonnel(int max)
+//    {
+//        for (int i = 0; i < max; i++)
+//        {
+//            if (i == personnel.Length)
+//            {
+//                yield break;
+//            }
+//            else
+//            {
+//                yield return personnel[i];
+//            }
+//        }
+//    }
+//}
 
 #endregion

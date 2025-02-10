@@ -18,6 +18,9 @@ public class DataConfig
     // каталог с файлами фильмов
     public static string MovieFoldersPath { get; set; } = null!;
 
+    // каталог с файлами текстов
+    public static string TextsFolderPath { get; set; } = null!;
+
     // колличество видео на странице для постраничного представления
     public static int NumberOfVideoPerPage { get; set; }
 }

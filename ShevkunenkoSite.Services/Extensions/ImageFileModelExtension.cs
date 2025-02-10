@@ -16,15 +16,4 @@ public static class ImageFileModelExtension
             }
         }
     }
-
-    //public static IEnumerable<ImageFileModel> FuncSearch(this IEnumerable<ImageFileModel> imageFileModel, Func<ImageFileModel, bool> funcSearch)
-    //{
-    //    foreach (var foundImage in imageFileModel)
-    //    {
-    //        if (funcSearch(foundImage))
-    //        {
-    //            yield return foundImage;
-    //        }
-    //    }
-    //}
 }

@@ -8,31 +8,21 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
     public int textsPerPage = 16;
 
-    [HttpGet]
-    public async Task<IActionResult> Index(string? textSearchString,
-                                                                int pageNumber = 1)
+    public IActionResult Index(string? textSearchString, int pageNumber = 1)
     {
-        //var allTexts = from m in textContext.Texts
-        //    .Where
-        //    (
-        //        s => s.ClearText.Contains((textSearchString ?? string.Empty).Trim())
-        //    )
-        //               select m;
-
-        var allTexts = await textContext.Texts.ToListAsync();
+        var allTexts = textContext.Texts.TextSearch(textSearchString);
 
         return View(new TextInfoViewModel
         {
-            AllTexts = allTexts
+            AllTexts = [.. allTexts
                      .Skip((pageNumber - 1) * textsPerPage)
-                     .Take(textsPerPage)
-                     .ToArray(),
+                     .Take(textsPerPage)],
 
             PagingInfo = new PagingInfoViewModel
             {
                 CurrentPage = pageNumber,
                 ItemsPerPage = textsPerPage,
-                TotalItems = allTexts.Count
+                TotalItems = allTexts.Count()
             },
 
             TextSearchString = textSearchString ?? string.Empty
@@ -45,26 +35,27 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
     public async Task<IActionResult> DetailsText(Guid? textId)
     {
-        if (textId.HasValue)
+        if (textId.HasValue & await textContext.Texts.Where(p => p.TextInfoModelId == textId).AnyAsync())
         {
-            TextInfoModel textItem;
+            var textItem = await textContext.Texts
+                 .AsNoTracking()
+                 .FirstAsync(p => p.TextInfoModelId == textId);
 
-            #region Инициализация textItem
+            using StreamReader clearText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.TxtFileName);
 
-            if (await textContext.Texts.Where(p => p.TextInfoModelId == textId).AnyAsync())
+            using StreamReader htmlText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.HtmlFileName);
+
+            return View(new DetailsTextViewModel
             {
-                textItem = await textContext.Texts
-                    .AsNoTracking()
-                    .FirstAsync(p => p.TextInfoModelId == textId);
-
-                return View(textItem);
-            }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            #endregion
+                TextInfoModelId = textItem.TextInfoModelId,
+                TextDescription = textItem.TextDescription,
+                TxtFileName = textItem.TxtFileName,
+                HtmlFileName = textItem.HtmlFileName,
+                TxtFileSize = textItem.TxtFileSize,
+                HtmlFileSize = textItem.HtmlFileSize,
+                ClearText = clearText.ReadToEnd(),
+                HtmlText = htmlText.ReadToEnd()
+            });
         }
         else
         {
