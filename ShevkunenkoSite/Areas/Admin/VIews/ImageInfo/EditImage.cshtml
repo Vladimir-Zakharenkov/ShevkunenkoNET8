@@ -19,7 +19,10 @@
 
             <div class="card-body mx-0 p-0">
 
-                <form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="ImageInfo" asp-action="EditImage">
+                <form method="post" enctype="multipart/form-data"
+                      asp-area="Admin"
+                      asp-controller="ImageInfo"
+                      asp-action="EditImage">
 
                     <input asp-for="EditImage.ImageFileModelId" type="hidden" />
 
@@ -542,12 +545,12 @@
 
                         <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="сохранить изменения">Сохранить</button>
 
-                        <a class="btn btn-outline-danger m-2 shadw" 
-                            asp-area="Admin" 
-                            asp-controller="ImageInfo" 
-                            asp-action="Index" 
-                            asp-route-iconlist="false" 
-                            title="отменить изменения">Отмена</a>
+                        <a class="btn btn-outline-danger m-2 shadw"
+                           asp-area="Admin"
+                           asp-controller="ImageInfo"
+                           asp-action="Index"
+                           asp-route-iconlist="false"
+                           title="отменить изменения">Отмена</a>
 
                     </div>
 

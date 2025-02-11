@@ -1,46 +1,40 @@
 ﻿     @model TextInfoViewModel
 
 @* Значение строки поиска *@
-
-@if (!String.IsNullOrEmpty(Model.TextSearchString))
-{
-    <div class="row mb-0">
-        <p class="col-12 fs-5 text-primary">
-            Поиск по строке: <span class="text-black text_shadow">@Model.TextSearchString</span>
-        </p>
-    </div>
-}
+<div>
+    @if (!String.IsNullOrEmpty(Model.TextSearchString))
+    {
+        <div class="row mb-0">
+            <p class="col-12 fs-5 text-primary">
+                Поиск по строке: <span class="text-black text_shadow">@Model.TextSearchString</span>
+            </p>
+        </div>
+    }
+</div>
 
 @* Сообщение о количестве текстов *@
+<div>
 
-@if (Model.PagingInfo.TotalItems == 0)
-{
-    <div class="row">
-
-        <div class="col text-center p-2">
-
-            <p class="fs-5 text_shadow mb-0">В базе данных нет текстов</p>
-
+    @if (Model.PagingInfo.TotalItems == 0)
+    {
+        <div class="row">
+            <div class="col text-center p-2">
+                <p class="fs-5 text_shadow mb-0">В базе данных нет текстов</p>
+            </div>
         </div>
-
-    </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                <p class="fs-5 text-primary mb-0">Количество текстов:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+            </div>
+        </div>
+    }
 
     <hr class="liniya" />
-}
-else
-{
-    <div class="row">
 
-        <div class="col-12 text-center">
-
-            <p class="fs-5 text-primary mb-0">Количество текстов:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
-
-        </div>
-
-    </div>
-
-    <hr class="liniya" />
-}
+</div>
 
 @* Добавить текст - Поиск текста *@
 <div class="row">
@@ -89,7 +83,8 @@ else
 
                     <tr class="table-secondary text-start">
                         <th scope="col" class="text-primary">Описание</th>
-                        @* <th scope="col" class="text-primary d-none d-md-table-cell">Текст</th> *@
+                        <th scope="col" class="text-primary d-none d-md-table-cell">Файл</th>
+                        <th scope="col" class="text-primary text-center d-none d-md-table-cell">Размер (байт)</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -105,7 +100,9 @@ else
 
                             <td scope="col" class="text-start text_shadow">@text.TextDescription</td>
 
-                            @* <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.ClearText.StartOfDescription()</td> *@
+                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.TxtFileName</td>
+
+                           <td scope="col" class="text-center text_shadow d-none d-md-table-cell">@text.TxtFileSize</td>
 
                             <td scope="col" title="информация">
                                 <a class="btn btn-outline-primary py-1 px-1 shadw"
@@ -137,17 +134,6 @@ else
                                    asp-route-textId="@text.TextInfoModelId"
                                    title="удалить текст">
                                     Del
-                                </a>
-                            </td>
-
-                            <td scope="col" title="выбрать текст">
-                                <a class="btn btn-outline-danger py-1 px-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="MovieInfo"
-                                   asp-action="SaveData"
-                                   asp-route-textinfomodelid="@text.TextInfoModelId">
-                                    @* <input type="hidden" asp-for="TextInfoModelId" value="@text.TextInfoModelId" /> *@
-                                    Add
                                 </a>
                             </td>
 

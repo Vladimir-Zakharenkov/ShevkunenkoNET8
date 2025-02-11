@@ -175,7 +175,21 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
         {
             editText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == textId);
 
-            return View(editText);
+            using StreamReader clearText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + editText.TxtFileName);
+
+            using StreamReader htmlText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + editText.HtmlFileName);
+
+            return View(new DetailsTextViewModel
+            {
+                TextInfoModelId = editText.TextInfoModelId,
+                TextDescription = editText.TextDescription,
+                TxtFileName = editText.TxtFileName,
+                HtmlFileName = editText.HtmlFileName,
+                TxtFileSize = editText.TxtFileSize,
+                HtmlFileSize = editText.HtmlFileSize,
+                ClearText = clearText.ReadToEnd(),
+                HtmlText = htmlText.ReadToEnd()
+            });
         }
         else
         {
@@ -185,7 +199,7 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditText(TextInfoModel textItem)
+    public async Task<IActionResult> EditText(DetailsTextViewModel textItem)
     {
         if (ModelState.IsValid)
         {
@@ -199,19 +213,45 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
             #region Текст без разметки (txt)
 
-            //textUpdate.ClearText = textItem.ClearText;
+            if (!string.IsNullOrEmpty(textItem.ClearText))
+            {
+                _ = textItem.ClearText.Trim();
+
+                // путь к файлу 
+                var path = System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.TxtFileName;
+
+                // полная перезапись файла 
+                using StreamWriter writer = new(path, false);
+
+                await writer.WriteLineAsync(textItem.ClearText);
+            }
 
             #endregion
 
             #region Текст с разметкой (html)
 
-            //textUpdate.HtmlText = textItem.HtmlText;
+            if (!string.IsNullOrEmpty(textItem.HtmlText))
+            {
+                _ = textItem.HtmlText.Trim();
+
+                // путь к файлу 
+                var path = System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.HtmlFileName;
+
+                // полная перезапись файла 
+                using StreamWriter writer = new(path, false);
+
+                await writer.WriteLineAsync(textItem.HtmlText);
+            }
 
             #endregion
+
+            #region Сохранить и перейти к DetailsText
 
             await textContext.SaveChangesInTextAsync();
 
             return RedirectToAction(nameof(DetailsText), new { textId = textUpdate.TextInfoModelId });
+
+            #endregion
         }
         else
         {

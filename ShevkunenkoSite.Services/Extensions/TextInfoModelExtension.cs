@@ -12,7 +12,8 @@ public static class TextInfoModelExtension
 
             var clearString = clearText.ReadToEnd();
 
-            if (clearString.Contains((textSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase))
+            if (clearString.Contains((textSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)
+                || foundText.TextDescription.Contains((textSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 yield return foundText;
             }
