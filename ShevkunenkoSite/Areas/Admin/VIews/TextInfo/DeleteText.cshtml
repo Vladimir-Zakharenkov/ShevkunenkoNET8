@@ -1,0 +1,113 @@
+﻿@model DetailsTextViewModel
+
+<h1 class="fs-3 text_shadow">Удалить текст</h1>
+
+<hr class="liniya" />
+
+@* Информация о тексте *@
+<div class="card w-100 mx-auto p-2">
+
+    <div class="col-12 card-body mx-auto mb-2">
+
+        @* Удалить - отменить *@
+        <div class="card-footer p-0 my-2">
+
+            <form method="post"
+                  asp-area="Admin"
+                  asp-controller="TextInfo"
+                  asp-action="DeleteText"
+                  asp-route-textid="@Model.TextInfoModelId" class="mt-2">
+
+                <input asp-for="@Model.TextInfoModelId" type="hidden" />
+
+                <div class="card-footer p-2">
+
+                    <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить текст">Удалить</button>
+
+                    @* Список текстов сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="Index"
+                       title="список текстов">
+                        Отменить
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        @* Идентификатор в базе данных *@
+        <h2 class="lh-1">
+            <span class="fs-5 text-primary">
+                TextInfoModelId :<br />
+            </span>
+            <span class="fs-5 text_shadow">
+                @Model.TextInfoModelId<br />
+            </span>
+            <span class="fs-6 form-text text-success px-2">
+                идентификатор в базе данных (GUID)
+            </span>
+        </h2>
+
+        <div class="col-12 col-xxl-10 mx-auto">
+
+            @* Вид текста на сайте *@
+            <div class="bookpages lay1">
+
+                <div class="descr lay1 overflow-y-scroll height400">
+
+                    @Html.Raw(Model.HtmlText)
+
+                </div>
+
+                <div class="form-text mt-3">
+                    <span class="fs-6 text-success">вид текста на сайте</span>
+                </div>
+
+            </div>
+
+            <p class="fs-5 my-5">
+                Файлы <span class="text_shadow">@Model.TxtFileName</span> и
+                <span class="text_shadow">@Model.HtmlFileName</span> будут перенесены в папку
+                <span class="text_shadow">«Archive/Texts»</span>
+            </p>
+
+        </div>
+
+        @* Удалить - отменить *@
+        <div class="card-footer p-0 my-2">
+
+            <form method="post"
+                  asp-area="Admin"
+                  asp-controller="TextInfo"
+                  asp-action="DeleteText"
+                  asp-route-textid="@Model.TextInfoModelId" class="mt-2">
+
+                <input asp-for="@Model.TextInfoModelId" type="hidden" />
+
+                <div class="card-footer p-2">
+
+                    @* Удалить текст *@
+                    <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить текст">Удалить</button>
+
+                    @* Список текстов сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="Index"
+                       title="список текстов">
+                        Отменить
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

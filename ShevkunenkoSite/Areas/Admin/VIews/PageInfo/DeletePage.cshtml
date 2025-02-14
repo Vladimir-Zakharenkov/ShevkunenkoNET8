@@ -34,7 +34,13 @@
                     <div class="card-footer p-2">
 
                         <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить страницу">Delete</button>
-                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="Index" class="btn btn-outline-success shadw" title="не удалять">Cancel</a>
+
+                        <a class="btn btn-outline-success shadw"
+                           asp-area="Admin"
+                           asp-controller="PageInfo"
+                           asp-action="Index" title="не удалять">
+                            Cancel
+                        </a>
 
                     </div>
 

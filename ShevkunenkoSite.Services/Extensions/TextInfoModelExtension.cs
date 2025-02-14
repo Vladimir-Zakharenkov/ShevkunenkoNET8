@@ -1,14 +1,17 @@
-﻿using ShevkunenkoSite.Models;
+﻿using Microsoft.AspNetCore.Hosting;
+using ShevkunenkoSite.Models;
 
 namespace ShevkunenkoSite.Services.Extensions;
 
 public static class TextInfoModelExtension
 {
-    public static IEnumerable<TextInfoModel> TextSearch(this IEnumerable<TextInfoModel> textInfoModel, string? textSearchString)
+    public static IEnumerable<TextInfoModel> TextSearch(this IEnumerable<TextInfoModel> textInfoModel, string? textSearchString, IWebHostEnvironment hostEnvironment)
     {
+        var rootPath = hostEnvironment.WebRootPath;
+
         foreach (var foundText in textInfoModel)
         {
-            using StreamReader clearText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + foundText.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + foundText.TxtFileName);
 
             var clearString = clearText.ReadToEnd();
 

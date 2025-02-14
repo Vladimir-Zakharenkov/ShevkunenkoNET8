@@ -8,7 +8,8 @@
     "ManifestPath": "/manifests",
     "IconFoldersPath": "/wwwroot/images/pageicons/",
     "MovieFoldersPath": "F:\\site-video",
-    "TextsFolderPath": "/wwwroot/texts/",
+    "TextsFolderPath": "\\texts\\",
+    "ArchiveTextsFolderPath": "\\Archive\\Texts\\",
     "Test": "appsetting",
     "NumberOfVideoPerPage": 12
   }

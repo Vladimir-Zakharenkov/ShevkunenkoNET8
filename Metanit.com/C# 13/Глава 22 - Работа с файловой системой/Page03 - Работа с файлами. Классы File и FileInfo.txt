@@ -1,0 +1,119 @@
+–абота с файлами.  лассы File и FileInfo
+
+ѕодобно паре Directory/DirectoryInfo дл€ работы с файлами предназначена пара классов File и FileInfo. 
+— их помощью мы можем создавать, удал€ть, перемещать файлы, получать их свойства и многое другое.
+
+FileInfo
+
+Ќекоторые полезные методы и свойства класса FileInfo:
+
+Х	CopyTo(path): копирует файл в новое место по указанному пути path
+
+Х	Create(): создает файл
+
+Х	Delete(): удал€ет файл
+
+Х	MoveTo(destFileName): перемещает файл в новое место
+
+Х	—войство Directory: получает родительский каталог в виде объекта DirectoryInfo
+
+Х	—войство DirectoryName: получает полный путь к родительскому каталогу
+
+Х	—войство Exists: указывает, существует ли файл
+
+Х	—войство Length: получает размер файла
+
+Х	—войство Extension: получает расширение файла
+
+Х	—войство Name: получает им€ файла
+
+Х	—войство FullName: получает полное им€ файла
+
+ƒл€ создани€ объекта FileInfo примен€етс€ конструктор, который получает в качестве параметра путь к файлу:
+
+FileInfo fileInf = new FileInfo(@"C:\app\content.txt");
+
+File
+
+ ласс File реализует похожую функциональность с помощью статических методов:
+
+Х	Copy(): копирует файл в новое место
+
+Х	Create(): создает файл
+
+Х	Delete(): удал€ет файл
+
+Х	Move: перемещает файл в новое место
+
+Х	Exists(file): определ€ет, существует ли файл
+
+ѕути к файлам
+
+ƒл€ работы с файлами можно примен€ть как абсолютные, так и относительные пути:
+
+// абсолютные пути
+string path1 = @"C:\Users\eugene\Documents\content.txt";  // дл€ Windows
+string path2 = "C:\\Users\\eugene\\Documents\\content.txt";  // дл€ Windows
+string path3 = "/Users/eugene/Documents/content.txt";  // дл€ MacOS/Linux
+ 
+// относительные пути
+string path4 = "MyDir\\content.txt";  // дл€ Windows
+string path5 = "MyDir/content.txt";  // дл€ MacOS/Linux
+
+ѕолучение информации о файле
+
+string path = @"C:\Users\eugene\Documents\content.txt";
+// string path = "/Users/eugene/Documents/content.txt";  // дл€ MacOS/Linux
+
+FileInfo fileInfo = new FileInfo(path);
+
+if (fileInfo.Exists)
+{
+    Console.WriteLine($"»м€ файла: {fileInfo.Name}");
+    Console.WriteLine($"¬рем€ создани€: {fileInfo.CreationTime}");
+    Console.WriteLine($"–азмер: {fileInfo.Length}");
+}
+
+”даление файла
+
+string path = @"C:\app\content.txt";
+
+FileInfo fileInf = new FileInfo(path);
+
+if (fileInf.Exists)
+{
+   fileInf.Delete();
+
+   // альтернатива с помощью класса File
+   // File.Delete(path);
+}
+
+ѕеремещение файла
+
+string path =  @"C:\OldDir\content.txt";
+string newPath = @"C:\NewDir\index.txt";
+
+FileInfo fileInf = new FileInfo(path);
+
+if (fileInf.Exists)
+{
+   fileInf.MoveTo(newPath);       
+   // альтернатива с помощью класса File
+   // File.Move(path, newPath);
+}
+
+≈сли файл по новому пути уже существует, то с помощью дополнительного параметра можно указать, 
+надо ли перезаписать файл (при значении true файл перезаписываетс€)
+
+string path =  @"C:\OldDir\content.txt";
+string newPath = @"C:\NewDir\index.txt";
+
+FileInfo fileInf = new FileInfo(path);
+
+if (fileInf.Exists)
+{
+   fileInf.MoveTo(newPath, true);
+   
+   // альтернатива с помощью класса File
+   // File.Move(path, newPath, true);
+}

@@ -21,6 +21,9 @@ public class DataConfig
     // каталог с файлами текстов
     public static string TextsFolderPath { get; set; } = null!;
 
+    // каталог для архива файлов текстов
+    public static string ArchiveTextsFolderPath { get; set; } = null!;
+
     // колличество видео на странице для постраничного представления
     public static int NumberOfVideoPerPage { get; set; }
 }

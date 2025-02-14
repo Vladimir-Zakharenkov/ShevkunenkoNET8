@@ -2,15 +2,17 @@
 
 [Area("Admin")]
 [Authorize]
-public class TextInfoController(ITextInfoRepository textContext) : Controller
+public class TextInfoController(ITextInfoRepository textContext, IWebHostEnvironment hostEnvironment) : Controller
 {
+    private readonly string rootPath = hostEnvironment.WebRootPath;
+
     #region Список текстов
 
     public int textsPerPage = 16;
 
     public IActionResult Index(string? textSearchString, int pageNumber = 1)
     {
-        var allTexts = textContext.Texts.TextSearch(textSearchString);
+        var allTexts = textContext.Texts.TextSearch(textSearchString, hostEnvironment);
 
         return View(new TextInfoViewModel
         {
@@ -41,9 +43,9 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
                  .AsNoTracking()
                  .FirstAsync(p => p.TextInfoModelId == textId);
 
-            using StreamReader clearText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName);
 
-            using StreamReader htmlText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textItem.HtmlFileName);
 
             return View(new DetailsTextViewModel
             {
@@ -83,8 +85,6 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
         {
             #region Описание текста
 
-            addText.TextDescription = addText.TextDescription.Trim();
-
             if (await textContext.Texts.Where(file => file.TextDescription == addText.TextDescription).AnyAsync())
             {
                 ModelState.AddModelError("TextDescription", $"Описание «{addText.TextDescription}» уже существует в БД");
@@ -92,28 +92,30 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
                 return View(addText);
             }
 
+            addText.TextDescription = addText.TextDescription.Trim();
+
             #endregion
 
             #region TXT файл
 
             if (addText.TxtFileFormFile != null)
             {
+                if (!addText.TxtFileFormFile.FileName.EndsWith(".txt"))
+                {
+                    ModelState.AddModelError("TxtFileFormFile", "Выберите файл формата «.txt»");
+
+                    return View(addText);
+                }
+
+                if (await textContext.Texts.Where(file => file.TxtFileName == addText.TxtFileFormFile.FileName).AnyAsync())
+                {
+                    ModelState.AddModelError("TxtFileFormFile", $"Файл с именем «{addText.TxtFileFormFile.FileName}» уже существует в БД");
+
+                    return View(addText);
+                }
+
                 addText.TxtFileName = addText.TxtFileFormFile.FileName;
                 addText.TxtFileSize = (int)addText.TxtFileFormFile.Length;
-            }
-
-            if (!addText.TxtFileName.EndsWith(".txt"))
-            {
-                ModelState.AddModelError("TxtFileFormFile", "Выберите файл формата «.txt»");
-
-                return View(addText);
-            }
-
-            if (await textContext.Texts.Where(file => file.TxtFileName == addText.TxtFileName).AnyAsync())
-            {
-                ModelState.AddModelError("TxtFileFormFile", $"Файл с именем «{addText.TxtFileName}» уже существует в БД");
-
-                return View(addText);
             }
 
             #endregion
@@ -122,27 +124,41 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
 
             if (addText.HtmlFileFormFile != null)
             {
+                if (!addText.HtmlFileFormFile.FileName.EndsWith(".html"))
+                {
+                    ModelState.AddModelError("HtmlFileFormFile", "Выберите файл формата «.html»");
+
+                    return View(addText);
+                }
+
+                if (await textContext.Texts.Where(file => file.HtmlFileName == addText.HtmlFileFormFile.FileName).AnyAsync())
+                {
+                    ModelState.AddModelError("HtmlFileFormFile", $"Файл с именем «{addText.HtmlFileFormFile.FileName}» уже существует в БД");
+
+                    return View(addText);
+                }
+
                 addText.HtmlFileName = addText.HtmlFileFormFile.FileName;
                 addText.HtmlFileSize = (int)addText.HtmlFileFormFile.Length;
             }
 
-            if (!addText.HtmlFileName.EndsWith(".html"))
-            {
-                ModelState.AddModelError("HtmlFileFormFile", "Выберите файл формата «.html»");
-
-                return View(addText);
-            }
-
-            if (await textContext.Texts.Where(file => file.HtmlFileName == addText.HtmlFileName).AnyAsync())
-            {
-                ModelState.AddModelError("HtmlFileFormFile", $"Файл с именем «{addText.HtmlFileName}» уже существует в БД");
-
-                return View(addText);
-            }
-
             #endregion
 
-            #region Добавить файл в БД
+            #region Копировать файлы и добавить в БД
+
+            if (addText.TxtFileFormFile != null)
+            {
+                using FileStream txtStream = new(rootPath + DataConfig.TextsFolderPath + addText.TxtFileFormFile.FileName, FileMode.Create);
+
+                await addText.TxtFileFormFile.CopyToAsync(txtStream);
+            }
+
+            if (addText.HtmlFileFormFile != null)
+            {
+                using FileStream htmlStream = new(rootPath + DataConfig.TextsFolderPath + addText.HtmlFileFormFile.FileName, FileMode.Create);
+
+                await addText.HtmlFileFormFile.CopyToAsync(htmlStream);
+            }
 
             await textContext.AddNewTextAsync(addText);
 
@@ -175,9 +191,9 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
         {
             editText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == textId);
 
-            using StreamReader clearText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + editText.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + editText.TxtFileName);
 
-            using StreamReader htmlText = new(System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + editText.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + editText.HtmlFileName);
 
             return View(new DetailsTextViewModel
             {
@@ -218,7 +234,7 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
                 _ = textItem.ClearText.Trim();
 
                 // путь к файлу 
-                var path = System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.TxtFileName;
+                var path = rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName;
 
                 // полная перезапись файла 
                 using StreamWriter writer = new(path, false);
@@ -235,7 +251,7 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
                 _ = textItem.HtmlText.Trim();
 
                 // путь к файлу 
-                var path = System.IO.Directory.GetCurrentDirectory() + DataConfig.TextsFolderPath + textItem.HtmlFileName;
+                var path = rootPath + DataConfig.TextsFolderPath + textItem.HtmlFileName;
 
                 // полная перезапись файла 
                 using StreamWriter writer = new(path, false);
@@ -258,5 +274,88 @@ public class TextInfoController(ITextInfoRepository textContext) : Controller
             return View(textItem);
         }
     }
+
+    #endregion
+
+    #region Удалить текст
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteText(Guid? textId)
+    {
+        TextInfoModel deleteText = new();
+
+        if (textId.HasValue & await textContext.Texts.Where(i => i.TextInfoModelId == textId).AnyAsync())
+        {
+            deleteText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == textId);
+
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + deleteText.TxtFileName);
+
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.HtmlFileName);
+
+            return View(new DetailsTextViewModel
+            {
+                TextInfoModelId = deleteText.TextInfoModelId,
+                TextDescription = deleteText.TextDescription,
+                TxtFileName = deleteText.TxtFileName,
+                HtmlFileName = deleteText.HtmlFileName,
+                TxtFileSize = deleteText.TxtFileSize,
+                HtmlFileSize = deleteText.HtmlFileSize,
+                ClearText = clearText.ReadToEnd(),
+                HtmlText = htmlText.ReadToEnd()
+            });
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteText(TextInfoModel? deleteText)
+    {
+        if (deleteText != null)
+        {
+            if (await textContext.Texts.Where(i => i.TextInfoModelId == deleteText.TextInfoModelId).AnyAsync())
+            {
+                deleteText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == deleteText.TextInfoModelId);
+
+                var txtPath = rootPath + DataConfig.TextsFolderPath + deleteText.TxtFileName;
+
+                FileInfo txtFile = new(txtPath);
+
+                if (txtFile.Exists)
+                {
+                    var txtMoveToPath = rootPath + DataConfig.ArchiveTextsFolderPath + deleteText.TxtFileName;
+
+                    txtFile.MoveTo(txtMoveToPath, true);
+                }
+
+                var htmlPath = rootPath + DataConfig.TextsFolderPath + deleteText.HtmlFileName;
+
+                FileInfo htmlFile = new(htmlPath);
+
+                if (htmlFile.Exists)
+                {
+                    var htmlMoveToPath = rootPath + DataConfig.ArchiveTextsFolderPath + deleteText.HtmlFileName;
+
+                    htmlFile.MoveTo(htmlMoveToPath, true);
+                }
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await textContext.DeleteTextAsync(deleteText.TextInfoModelId);
+
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
     #endregion
 }

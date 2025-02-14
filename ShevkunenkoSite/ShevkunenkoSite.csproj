@@ -39,6 +39,7 @@
   <ItemGroup>
     <Folder Include="Areas\Videos\Models\" />
     <Folder Include="Temp\" />
+    <Folder Include="wwwroot\Archive\Texts\" />
     <Folder Include="wwwroot\images\browserconfig\admin\" />
     <Folder Include="wwwroot\images\manifest\admin\" />
     <Folder Include="wwwroot\images\test-100\" />
