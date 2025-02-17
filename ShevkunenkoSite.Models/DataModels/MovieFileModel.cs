@@ -477,16 +477,6 @@ public class MovieFileModel
 
     #region Статья 1 о фильме
 
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок (HTML)")]
-    public string HeadingOfArticle1 { get; set; } = string.Empty;
-
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Текст (HTML)")]
-    public string TextOfArticle1 { get; set; } = string.Empty;
-
     [Display(Name = "GUID статьи")]
     public Guid? TextInfoModelId { get; set; }
     public TextInfoModel? TextInfoModel { get; set; }

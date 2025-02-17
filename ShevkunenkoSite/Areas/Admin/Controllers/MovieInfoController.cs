@@ -314,7 +314,6 @@ public class MovieInfoController(
                     var textInfoModel = await textInfoContext.Texts.FirstAsync(t => t.TextInfoModelId == guidForTextInfoModelId);
 
                     movieItem.TextInfoModelId = guidForTextInfoModelId;
-                    movieItem.HeadingOfArticle1 = textInfoModel.TextDescription;
                     //movieItem.TextOfArticle1 = textInfoModel.ClearText;
                 }
             }
@@ -2002,13 +2001,6 @@ public class MovieInfoController(
             movieUpdate.IconType3 = editMovie.MovieItem.IconType3;
             movieUpdate.IsPartsMoreOne3 = editMovie.MovieItem.IsPartsMoreOne3;
             movieUpdate.AllMoviesFromDB3 = editMovie.MovieItem.AllMoviesFromDB3;
-
-            #endregion
-
-            #region Статья о фильме 1
-
-            movieUpdate.HeadingOfArticle1 = editMovie.MovieItem.HeadingOfArticle1.Trim();
-            movieUpdate.TextOfArticle1 = editMovie.MovieItem.TextOfArticle1.Trim();
 
             #endregion
 

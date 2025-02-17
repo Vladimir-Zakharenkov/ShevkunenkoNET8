@@ -11,4 +11,6 @@ public class MoviePageViewModel
     public bool SergeyshefRu {  get; set; } = false;
 
     public Uri VideoRef { get; set; } = null!;
+
+    public string? ArticleAboutMovie { get; set; }
 }

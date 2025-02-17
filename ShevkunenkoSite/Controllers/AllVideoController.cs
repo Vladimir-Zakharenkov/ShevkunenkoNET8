@@ -7,9 +7,12 @@ public class AllVideoController(
     IMovieFileRepository movieContext,
     IImageFileRepository imageContext,
     ITopicMovieRepository topicMovieContext,
-    IPageInfoRepository pageContext
+    IPageInfoRepository pageContext,
+    IWebHostEnvironment hostEnvironment
     ) : Controller
 {
+    private readonly string rootPath = hostEnvironment.WebRootPath;
+
     #region Фильмы на сайте
 
     public async Task<ViewResult> Index(Guid? topicId, int pageNumber = 1)
@@ -202,7 +205,7 @@ public class AllVideoController(
         }
         else if (movieId.HasValue && await movieContext.MovieFiles.Where(m => m.MovieFileModelId == movieId).AnyAsync())
         {
-            MovieFileModel movieItem = await movieContext.MovieFiles.FirstAsync(m => m.MovieFileModelId == movieId);
+            MovieFileModel movieItem = await movieContext.MovieFiles.Include(t => t.TextInfoModel).FirstAsync(m => m.MovieFileModelId == movieId);
 
             if (pageOfSeries == true && movieItem.MovieTotalParts > 1 && !string.IsNullOrEmpty(movieItem.SeriesSearchFilter))
             {
@@ -233,11 +236,22 @@ public class AllVideoController(
                     fullMovie = await movieContext.MovieFiles.AsNoTracking().FirstAsync(m => m.MovieFileModelId == movieItem.FullMovieID);
                 }
 
-               //string queryString = HttpContext.Request.QueryString.ToString();
-
                 bool sergeyshefRu = false;
 
                 Uri? videoRef;
+
+                #region Статья о фильме (ArticleAboutMovie)
+
+                string articleAboutMovie = string.Empty;
+
+                if (movieItem.TextInfoModel != null)
+                {
+                    StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + movieItem.TextInfoModel.HtmlFileName);
+
+                    articleAboutMovie = htmlText.ReadToEnd();
+                }
+
+                #endregion
 
                 if (!string.IsNullOrEmpty(videoHosting))
                 {
@@ -274,6 +288,7 @@ public class AllVideoController(
                     FullMovie = fullMovie,
                     SergeyshefRu = sergeyshefRu,
                     VideoRef = videoRef!,
+                    ArticleAboutMovie = articleAboutMovie
                 });
             }
             else if (imageID != null)

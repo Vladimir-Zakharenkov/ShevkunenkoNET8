@@ -31,7 +31,7 @@
                     @* данные по группам*@
                     <div class="accordion" id="accordionAddMovie">
 
-                        @* файл фильма *@
+                        @* Файл фильма *@
                         <div class="accordion-item mb-3 shadw">
 
                             @* заголовок группы «файл фильма» *@
@@ -2101,51 +2101,6 @@
                                             <hr class="mb-2 w-50 mx-auto " />
 
                                             @* статья о видео (1) *@
-                                            <div>
-
-                                                @* заголовок статьи 1*@
-                                                <div>
-
-                                                    <label asp-for="HeadingOfArticle1" class="col-12 form-label text-primary"></label>
-
-                                                    <input id="HeadingOfArticle1Input" asp-for="HeadingOfArticle1" class="col-12 form-control text-center" aria-describedby="HeadingOfArticle1InputHelpBlock" />
-
-                                                    <div id="HeadingOfArticle1InputHelpBlock" class="form-text mb-3">
-
-                                                        <span class="fs-6 text-success">заголовок статьи</span>
-
-                                                    </div>
-
-                                                    @if (Context.Request.Method == "POST")
-                                                    {
-                                                        <span asp-validation-for="HeadingOfArticle1" class="text-danger"></span>
-                                                    }
-
-                                                    <hr class="mb-2 w-50 mx-auto " />
-
-                                                </div>
-
-                                                @* текст статьи *@
-                                                <div>
-
-                                                    <label asp-for="TextOfArticle1" class="form-label text-primary fs-5"></label>
-
-                                                    <textarea id="TextOfArticle1Input" rows="7" asp-for="TextOfArticle1" class="form-control" aria-describedby="TextOfArticle1HelpBlock"></textarea>
-
-                                                    <div id="TextOfArticle1HelpBlock" class="form-text pb-2">
-
-                                                        <span class="fs-6 text-success">текст (HTML)</span>
-
-                                                    </div>
-
-                                                    @if (Context.Request.Method == "POST")
-                                                    {
-                                                        <span asp-validation-for="TextOfArticle1" class="text-danger"></span>
-                                                    }
-
-                                                    <hr class="mb-2 w-50 mx-auto " />
-
-                                                </div>
 
                                                 @* GUID статьи *@
                                                 <div>
@@ -2178,8 +2133,6 @@
                             </div>
 
                         </div>
-
-                    </div>
 
                     @* сохранить-отменить данные *@
                     <div class="card-footer p-2">
