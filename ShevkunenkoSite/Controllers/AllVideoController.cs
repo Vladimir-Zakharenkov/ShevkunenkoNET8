@@ -240,15 +240,15 @@ public class AllVideoController(
 
                 Uri? videoRef;
 
-                #region Статья о фильме (ArticleAboutMovie)
+                #region Статья о фильме (ArticleAboutMovie1)
 
-                string articleAboutMovie = string.Empty;
+                string articleAboutMovie1 = string.Empty;
 
                 if (movieItem.TextInfoModel != null)
                 {
                     StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + movieItem.TextInfoModel.HtmlFileName);
 
-                    articleAboutMovie = htmlText.ReadToEnd();
+                    articleAboutMovie1 = htmlText.ReadToEnd();
                 }
 
                 #endregion
@@ -288,7 +288,7 @@ public class AllVideoController(
                     FullMovie = fullMovie,
                     SergeyshefRu = sergeyshefRu,
                     VideoRef = videoRef!,
-                    ArticleAboutMovie = articleAboutMovie
+                    ArticleAboutMovie1 = articleAboutMovie1
                 });
             }
             else if (imageID != null)

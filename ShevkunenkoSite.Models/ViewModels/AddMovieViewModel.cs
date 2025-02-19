@@ -25,6 +25,10 @@ public class AddMovieViewModel : MovieFileModel
     [Display(Name = "Картинка над сериями:")]
     public IFormFile? ImageHeadForSeriesFormFile { get; set; } = null;
 
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать статью :")]
+    public IFormFile? ArticleAboutMovie1FormFile { get; set; } = null;
+
     [DataType(DataType.Text)]
     [Display(Name = "Страница серий:")]
     public string? PageForSeries { get; set; } = null;

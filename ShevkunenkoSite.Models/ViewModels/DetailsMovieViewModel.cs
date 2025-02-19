@@ -38,4 +38,7 @@ public class DetailsMovieViewModel
     public string[] SearchFilters { get; set; } = [];
 
     public string[] TopicFilters { get; set; } = [];
+
+    // статья о фильме (1)
+    public string? ArticleAboutMovie1 { get; set; }
 }

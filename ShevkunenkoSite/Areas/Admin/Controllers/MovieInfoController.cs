@@ -13,10 +13,11 @@ public class MovieInfoController(
     IPageInfoRepository pageInfoContext,
     IImageFileRepository imageContext,
     ITopicMovieRepository topicMovieContext,
-    ITextInfoRepository textInfoContext
+    ITextInfoRepository textInfoContext,
+    IWebHostEnvironment hostEnvironment
     ) : Controller
 {
-    //PageInfoModel? pageForSeries = new();
+    private readonly string rootPath = hostEnvironment.WebRootPath;
 
     MovieFileModel? fullMovie = new();
 
@@ -95,6 +96,7 @@ public class MovieInfoController(
                 .Include(img => img.MoviePoster)
                 .Include(page => page.PageInfoModel)
                 .Include(page => page.PageForMovieSeries)
+                .Include(t => t.TextInfoModel)
                 .Include(mov => mov.FullMovie).ThenInclude(page => page!.PageInfoModel)
                 .AsNoTracking()
                 .FirstAsync(p => p.MovieFileModelId == movieId);
@@ -276,6 +278,20 @@ public class MovieInfoController(
 
             #endregion
 
+            #region Статья о фильме 1 (ArticleAboutMovie1)
+
+            string articleAboutMovie1 = string.Empty;
+
+            if (movieItem.TextInfoModel != null)
+            {
+                StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + movieItem.TextInfoModel.HtmlFileName);
+
+                articleAboutMovie1 = htmlText.ReadToEnd();
+            }
+
+            #endregion
+
+
             return View(new DetailsMovieViewModel
             {
                 MovieItem = movieItem,
@@ -286,7 +302,8 @@ public class MovieInfoController(
                 LinksToVideosByFilter3 = linksToVideosByFilter3,
                 ListsMoviesFileModel3 = listsMoviesFileModel3,
                 SearchFilters = searchFilters ?? [],
-                TopicFilters = topicFilters ?? []
+                TopicFilters = topicFilters ?? [],
+                ArticleAboutMovie1 = articleAboutMovie1
             });
         }
         else
@@ -300,42 +317,14 @@ public class MovieInfoController(
     #region Добавить фильм в базу данных
 
     [HttpGet]
-    [ImportModelState]
-    public async Task<IActionResult> AddMovie()
+    public IActionResult AddMovie()
     {
         movieItem.TopicsForMovie = topicsForMovie;
-
-        if (HttpContext.Session.Keys.Contains("textinfomodelid"))
-        {
-            if (Guid.TryParse(HttpContext.Session.GetString("textinfomodelid"), out var guidForTextInfoModelId))
-            {
-                if (await textInfoContext.Texts.Where(t => t.TextInfoModelId == guidForTextInfoModelId).AnyAsync())
-                {
-                    var textInfoModel = await textInfoContext.Texts.FirstAsync(t => t.TextInfoModelId == guidForTextInfoModelId);
-
-                    movieItem.TextInfoModelId = guidForTextInfoModelId;
-                    //movieItem.TextOfArticle1 = textInfoModel.ClearText;
-                }
-            }
-        }
 
         return View(movieItem);
     }
 
-    //[ExportModelState]
-    //public IActionResult SaveData(Guid textinfomodelid)
-    //{
-    //    HttpContext.Session.SetString("textinfomodelid", textinfomodelid.ToString());
-    //    var test = HttpContext.Session.GetString("textinfomodelid");
-
-    //    movieItem.TextInfoModelId = textinfomodelid;
-
-    //    return RedirectToAction("AddMovie");
-    //}
-
-
     [HttpPost]
-    [ExportModelState]
     [ValidateAntiForgeryToken]
     [DisableRequestSizeLimit]
     [RequestSizeLimit(5_268_435_456)]
@@ -1003,18 +992,42 @@ public class MovieInfoController(
 
             if (movieItem.FramesAroundMovie != string.Empty)
             {
-                //if (!await movieInfoContext.MovieFiles.Where(p => p.MovieCaption == movieItem.FramesAroundMovie.Trim()).AnyAsync())
-                //{
-                //    ModelState.AddModelError("FramesAroundMovie", $"Фильма «{movieItem.FramesAroundMovie}»  нет в базе данных");
-
-                //    return View();
-                //}
-
                 movieItem.FramesAroundMovie = movieItem.FramesAroundMovie.Trim();
             }
             else
             {
                 movieItem.FramesAroundMovie = string.Empty;
+            }
+
+            #endregion
+
+            #region Статья о фильме (1)
+
+            if (movieItem.ArticleAboutMovie1FormFile != null)
+            {
+                if (await textInfoContext.Texts.Where(t => t.TxtFileName == movieItem.ArticleAboutMovie1FormFile.FileName).AnyAsync())
+                {
+                    var textAboutMovie = await textInfoContext.Texts.FirstAsync(t => t.TxtFileName == movieItem.ArticleAboutMovie1FormFile.FileName);
+
+                    movieItem.TextInfoModelId = textAboutMovie.TextInfoModelId;
+                }
+                else if (await textInfoContext.Texts.Where(t => t.HtmlFileName == movieItem.ArticleAboutMovie1FormFile.FileName).AnyAsync())
+                {
+                    var textAboutMovie = await textInfoContext.Texts.FirstAsync(t => t.HtmlFileName == movieItem.ArticleAboutMovie1FormFile.FileName);
+
+                    movieItem.TextInfoModelId = textAboutMovie.TextInfoModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("ArticleAboutMovie1FormFile", $"Файла «{movieItem.ArticleAboutMovie1FormFile.FileName}» нет в базе данных"); ;
+
+                    return View(movieItem);
+                }
+
+            }
+            else
+            {
+                movieItem.TextInfoModelId = null;
             }
 
             #endregion

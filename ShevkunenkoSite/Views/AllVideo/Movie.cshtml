@@ -204,6 +204,7 @@
                     <iframe class="video-adaptiv" src="@Model.VideoRef" allowfullscreen></iframe>
                 }
 
+
             </div>
 
             @* Списки под видео *@
@@ -403,7 +404,7 @@
                 </div>
 
                 @* Статья, интервью и т.п. *@
-                @if (!string.IsNullOrEmpty(Model.ArticleAboutMovie))
+                @if (!string.IsNullOrEmpty(Model.ArticleAboutMovie1))
                 {
                     <div class="accordion-item shadw mt-3">
 
@@ -421,12 +422,13 @@
                         @* Текст статьи, интервью и т.п. *@
                         <div class="descr lay1 mt-2 overflow-y-scroll height600">
 
-                            @Html.Raw(Model.ArticleAboutMovie)
+                            @Html.Raw(Model.ArticleAboutMovie1)
 
                         </div>
 
                     </div>
                 }
+
 
             </div>
 

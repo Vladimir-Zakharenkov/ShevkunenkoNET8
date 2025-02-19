@@ -2,16 +2,16 @@
 
 <script src="~/js/ckeditor5/ckeditor.js"></script>
 
+<h1 class="fs-3 text_shadow">Добавить фильм</h1>
+
+<hr class="liniya" />
+
 <div class="row">
 
     @* Кадры фильма слева *@
     <vc:movie-frames image-filter=null left-side="true" one-frame="false" />
 
     <div class="col d-block mx-auto px-2">
-
-        <h1 class="fs-3 text_shadow">Добавить фильм</h1>
-
-        <hr class="liniya" />
 
         @* Показ всех ошибок ввода данных *@
         @if (Context.Request.Method == "POST")
@@ -23,7 +23,11 @@
 
             <div class="card-body mx-0 p-0">
 
-                <form asp-area="Admin" asp-controller="MovieInfo" asp-action="AddMovie" method="post" enctype="multipart/form-data">
+                <form asp-area="Admin"
+                      asp-controller="MovieInfo"
+                      asp-action="AddMovie"
+                      method="post"
+                      enctype="multipart/form-data">
 
                     <input asp-for="MovieFileModelId" type="hidden" value=@Guid.Empty />
                     <input asp-for="PageInfoModelId" type="hidden" value=@null />
@@ -1382,16 +1386,16 @@
                         <div class="accordion-item shadw">
 
                             @* заголовок группы «блоки ссылок под видео» *@
-                            <h2 class="accordion-header mb-2" id="headingAddLinks">
+                            <h2 class="accordion-header" id="headingAddLinks">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
                                     <span class="form-label fs-5">Ссылки под видео :</span>
                                 </button>
                             </h2>
 
-                            <div id="accordionLinks" class="accordion-collapse collapse col-11" aria-labelledby="headingInfoRef" data-bs-parent="#accordionAddMovie">
+                            <div id="accordionLinks" class="accordion-collapse collapse mt-2 ms-5" aria-labelledby="headingInfoRef" data-bs-parent="#accordionAddMovie">
 
                                 @* фотокарусель *@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw">
 
                                     @* Заголовок группы «Фотокарусель» *@
                                     <h2 class="accordion-header" id="FotoCarousel">
@@ -1439,7 +1443,7 @@
                                 </div>
 
                                 @* Блок ссылок под видео 1 *@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw">
 
                                     @* заголовок группы «Блок ссылок под видео 1» *@
                                     <h2 class="accordion-header" id="headingAddLinks1">
@@ -1653,7 +1657,7 @@
                                 </div>
 
                                 @* Блок ссылок под видео 2 *@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw">
 
                                     @* заголовок группы «Блок ссылок под видео 2» *@
                                     <h2 class="accordion-header" id="headingAddLinks2">
@@ -1865,7 +1869,7 @@
                                 </div>
 
                                 @* Блок ссылок под видео 3 *@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw">
 
                                     @* заголовок группы «Блок ссылок под видео 3» *@
                                     <h2 class="accordion-header" id="headingAddLinks3">
@@ -2076,51 +2080,40 @@
                                 </div>
 
                                 @* Статья о видео 1*@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw">
 
                                     @* заголовок группы «Статья о видео 1» *@
-                                    <h2 class="accordion-header" id="headingAddLinks4">
-                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks4" aria-expanded="true" aria-controls="AddLinks4">
+                                    <h2 class="accordion-header" id="headingArticleAboutMovie1FormFile">
+                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#ArticleAboutMovie1FormFile" aria-expanded="true" aria-controls="ArticleAboutMovie1FormFile">
                                             <span class="form-label fs-5">Статья 1 :</span>
                                         </button>
                                     </h2>
 
-                                    <div id="AddLinks4" class="accordion-collapse collapse" aria-labelledby="headingAddLinks4" data-bs-parent="#accordionLinks">
+                                    <div id="ArticleAboutMovie1FormFile" class="accordion-collapse collapse" aria-labelledby="headingArticleAboutMovie1FormFile" data-bs-parent="#accordionLinks">
 
                                         <div class="accordion-body text-center fs-5 text-indent-0">
 
-                                            <label class="col-12 form-label text-primary">
-                                                Выбрать статью :
-                                                <a class="btn btn-outline-danger py-1 m-2 shadw"
-                                                   asp-area="Admin"
-                                                   asp-controller="TextInfo"
-                                                   asp-action="Index"
-                                                   title="выбрать статью">СТАТЬИ</a>
-                                            </label>
+                                            @* выбрать статью о фильме (1) *@
+                                            <div class="row g-2 justify-content-center">
 
-                                            <hr class="mb-2 w-50 mx-auto " />
+                                                <div class="col-auto">
+                                                    <label asp-for="ArticleAboutMovie1FormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                                                </div>
 
-                                            @* статья о видео (1) *@
+                                                <div class="col-auto text-start">
+                                                    <input id="ArticleAboutMovie1FormFileInput" asp-for="ArticleAboutMovie1FormFile" class="form-control" aria-describedby="ArticleAboutMovie1FormFileInputHelpBlock" />
+                                                </div>
 
-                                                @* GUID статьи *@
-                                                <div>
+                                                <div id="ArticleAboutMovie1FormFileInputHelpBlock" class="form-text">
 
-                                                    <label asp-for="TextInfoModelId" class="form-label text-primary fs-5"></label>
-
-                                                    <input id="TextInfoModelIdInput" asp-for="TextInfoModelId" class="col-12 form-control text-center" aria-describedby="TextInfoModelIdInputHelpBlock" />
-
-                                                    <div id="TextInfoModelIdInputHelpBlock" class="form-text pb-2">
-
-                                                        <span class="fs-6 text-success">GUID статьи</span>
-
-                                                    </div>
-
-                                                    @if (Context.Request.Method == "POST")
-                                                    {
-                                                        <span asp-validation-for="TextInfoModelId" class="text-danger"></span>
-                                                    }
+                                                    <span class="fs-6 text-success">статья о фильме</span>
 
                                                 </div>
+
+                                                @if (Context.Request.Method == "POST")
+                                                {
+                                                    <span asp-validation-for="ArticleAboutMovie1FormFile" class="text-danger"></span>
+                                                }
 
                                             </div>
 
@@ -2133,6 +2126,8 @@
                             </div>
 
                         </div>
+
+                    </div>
 
                     @* сохранить-отменить данные *@
                     <div class="card-footer p-2">

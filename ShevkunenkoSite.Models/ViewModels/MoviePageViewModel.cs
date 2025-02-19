@@ -12,5 +12,5 @@ public class MoviePageViewModel
 
     public Uri VideoRef { get; set; } = null!;
 
-    public string? ArticleAboutMovie { get; set; }
+    public string? ArticleAboutMovie1 { get; set; }
 }

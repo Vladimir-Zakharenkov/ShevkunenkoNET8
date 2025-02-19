@@ -8,7 +8,6 @@
 
 <hr class="liniya" />
 
-
 <div class="row">
 
     @* Кадры фильма слева *@
@@ -1502,13 +1501,13 @@
                 <div class="accordion-item shadw">
 
                     @* Заголовок групп «ссылки под видео» *@
-                    <h2 class="accordion-header mb-2" id="headingAddLinks">
+                    <h2 class="accordion-header" id="headingAddLinks">
                         <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
                             <span class="form-label fs-5">Ссылки под видео :</span>
                         </button>
                     </h2>
 
-                    <div id="accordionLinks" class="accordion-collapse collapse" aria-labelledby="headingInfoRef" data-bs-parent="#accordionDetailsMovie">
+                    <div id="accordionLinks" class="accordion-collapse collapse mt-2 ms-5" aria-labelledby="headingInfoRef" data-bs-parent="#accordionDetailsMovie">
 
                         @* Фотокарусель *@
                         <div class="accordion-item mb-3 shadw">
@@ -1839,18 +1838,12 @@
                                         Заголовок группы (3) :
                                     </p>
 
-                                    @if (string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks3))
-                                    {
-                                        <p class="fs-5 text-center text_shadow">
-                                            не задан
-                                        </p>
-                                    }
-                                    else
-                                    {
-                                        <p class="px-5 text-center text_shadow fluid-font-size">
-                                            @Model.MovieItem.HeadTitleForVideoLinks3
-                                        </p>
-                                    }
+                                    <p class="@(string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks3) ? "fs-5 text-center text_shadow" : "d-none")">
+                                        не задан
+                                    </p>
+                                    <p class="@(string.IsNullOrEmpty(Model.MovieItem.HeadTitleForVideoLinks3) ? "d-none" : "px-5 text-center text_shadow fluid-font-size")">
+                                        @Model.MovieItem.HeadTitleForVideoLinks3
+                                    </p>
 
                                     <hr class="liniya" />
 
@@ -1952,6 +1945,42 @@
 
                                     <p class="text-center mt-2">
                                         <span class="fs-6 form-text text-success px-2">группа ссылок под видео (3)</span>
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @* Блок статьи о видео 1 *@
+                        <div class="accordion-item mb-3 shadw">
+
+                            @* Заголовок группы « статья о видео 1» *@
+                            <h2 class="accordion-header" id="headingArticle1AboutMovie">
+                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Article1AboutMovie" aria-expanded="true" aria-controls="Article1AboutMovie">
+                                    <span class="form-label fs-5">Статья 1 :</span>
+                                </button>
+                            </h2>
+
+                            @* Статья о видео 1 *@
+                            <div id="Article1AboutMovie" class="accordion-collapse collapse" aria-labelledby="headingArticle1AboutMovie" data-bs-parent="#accordionLinks">
+
+                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                    <p class="@(string.IsNullOrEmpty(Model.ArticleAboutMovie1) ? "fs-5 text-center text_shadow" : "d-none")">
+                                        не задана
+                                    </p>
+
+                                    @* Текст статьи, интервью и т.п. *@
+                                    <div class="@(string.IsNullOrEmpty(Model.ArticleAboutMovie1) ? "d-none" : "descr lay1 mt-2 overflow-y-scroll height600")">
+
+                                        @Html.Raw(Model.ArticleAboutMovie1)
+
+                                    </div>
+
+                                    <p class="text-center mt-2">
+                                        <span class="fs-6 form-text text-success px-2">статья о видео (1)</span>
                                     </p>
 
                                 </div>
