@@ -5,4 +5,6 @@ public class DetailsTextViewModel : TextInfoModel
     public string? ClearText { get; set; }
 
     public string? HtmlText { get; set; }
+
+    public string? RefInMovies { get; set; }
 }

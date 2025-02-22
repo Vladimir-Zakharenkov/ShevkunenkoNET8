@@ -1,8 +1,13 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using System.Xml;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
-public class TextInfoController(ITextInfoRepository textContext, IWebHostEnvironment hostEnvironment) : Controller
+public class TextInfoController(
+    ITextInfoRepository textContext,
+    IMovieFileRepository movieContext,
+    IWebHostEnvironment hostEnvironment) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
 
@@ -316,6 +321,29 @@ public class TextInfoController(ITextInfoRepository textContext, IWebHostEnviron
     {
         if (deleteText != null)
         {
+            if (await movieContext.MovieFiles.Where(i => i.TextInfoModelId == deleteText.TextInfoModelId).AnyAsync())
+            {
+                deleteText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == deleteText.TextInfoModelId);
+
+                using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + deleteText.TxtFileName);
+
+                using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.HtmlFileName);
+
+                return View(new DetailsTextViewModel
+                {
+                    TextInfoModelId = deleteText.TextInfoModelId,
+                    TextDescription = deleteText.TextDescription,
+                    TxtFileName = deleteText.TxtFileName,
+                    HtmlFileName = deleteText.HtmlFileName,
+                    TxtFileSize = deleteText.TxtFileSize,
+                    HtmlFileSize = deleteText.HtmlFileSize,
+                    ClearText = clearText.ReadToEnd(),
+                    HtmlText = htmlText.ReadToEnd(),
+                    RefInMovies = "Ссылка на файл в базе фильмов сайта!"
+                });
+
+            }
+
             if (await textContext.Texts.Where(i => i.TextInfoModelId == deleteText.TextInfoModelId).AnyAsync())
             {
                 deleteText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == deleteText.TextInfoModelId);
@@ -341,15 +369,15 @@ public class TextInfoController(ITextInfoRepository textContext, IWebHostEnviron
 
                     htmlFile.MoveTo(htmlMoveToPath, true);
                 }
+
+                await textContext.DeleteTextAsync(deleteText.TextInfoModelId);
+
+                return RedirectToAction(nameof(Index));
             }
             else
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            await textContext.DeleteTextAsync(deleteText.TextInfoModelId);
-
-            return RedirectToAction(nameof(Index));
         }
         else
         {

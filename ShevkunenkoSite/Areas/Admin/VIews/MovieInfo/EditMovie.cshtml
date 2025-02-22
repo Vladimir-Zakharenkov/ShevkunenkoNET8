@@ -1,5 +1,9 @@
 ﻿@model EditMovieViewModel
 
+<h1 class="fs-3 text_shadow">Изменить данные фильма</h1>
+
+<hr class="liniya" />
+
 <div class="row">
 
     @* Кадры фильма слева *@
@@ -13,10 +17,6 @@
     }
 
     <div class="col d-block mx-auto px-2">
-
-        <h1 class="fs-3 text_shadow">Изменить данные фильма</h1>
-
-        <hr class="liniya" />
 
         @* Показ ошибок ввода данных *@
         @if (Context.Request.Method == "POST")
@@ -101,7 +101,7 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <input id="FileForMovieFormFileInput" asp-for="FileForMovieFormFile" class="form-control text-center" aria-describedby="FileForMovieFormFileInputHelpBlock" />
+                                        <input id="FileForMovieFormFileInput" class="form-control text-center" asp-for="FileForMovieFormFile" aria-describedby="FileForMovieFormFileInputHelpBlock" />
                                     </div>
 
                                     <div id="FileForMovieFormFileInputHelpBlock" class="form-text">
@@ -504,7 +504,7 @@
                             @* заголовок группы *@
                             <h2 class="accordion-header" id="headingDescription">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FilmDescription" aria-expanded="true" aria-controls="FilmDescription">
-                                    <span class="form-label fs-5">Заголовок, описание, лента кадров :</span>
+                                    <span class="form-label fs-5">Заголовок, описание :</span>
                                 </button>
                             </h2>
 
@@ -666,7 +666,7 @@
                             @* заголовок группы «Жанр, фильтры поиска, тема» *@
                             <h2 class="accordion-header" id="headingSearch">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Search" aria-expanded="true" aria-controls="Search">
-                                    <span class="form-label fs-5">Жанр, фильтры поиска, тема :</span>
+                                    <span class="form-label fs-5">Фильтры поиска :</span>
                                 </button>
                             </h2>
 
@@ -757,7 +757,7 @@
                             @* заголовок группы «ограничения по возрасту» *@
                             <h2 class="accordion-header" id="headingRestrict">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Restrict" aria-expanded="true" aria-controls="Restrict">
-                                    <span class="form-label fs-5">Ограничения по возрасту :</span>
+                                    <span class="form-label fs-5">Ограничения :</span>
                                 </button>
                             </h2>
 
@@ -787,7 +787,7 @@
                             @* заголовок группы «в списке фильмов сайта» *@
                             <h2 class="accordion-header" id="headingInMainLisst">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#InMainList" aria-expanded="true" aria-controls="InMainList">
-                                    <span class="form-label fs-5">В списке фильмов сайта :</span>
+                                    <span class="form-label fs-5">В основном списке :</span>
                                 </button>
                             </h2>
 
@@ -1227,7 +1227,7 @@
                             @* заголовок группы «ссылки на информацию» *@
                             <h2 class="accordion-header" id="headingInfoRef">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#infoRef" aria-expanded="true" aria-controls="infoRef">
-                                    <span class="form-label fs-5">Ссылки на информацию :</span>
+                                    <span class="form-label fs-5">Ссылки на инфо :</span>
                                 </button>
                             </h2>
 
@@ -1266,16 +1266,16 @@
                         <div class="accordion-item shadw">
 
                             @* заголовок группы «блоки ссылок под видео» *@
-                            <h2 class="accordion-header mb-2" id="headingAddLinks">
+                            <h2 class="accordion-header" id="headingAddLinks">
                                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLinks" aria-expanded="true" aria-controls="accordionLinks">
-                                    <span class="form-label fs-5">Группа ссылок под видео :</span>
+                                    <span class="form-label fs-5">Ссылки под видео :</span>
                                 </button>
                             </h2>
 
-                            <div id="accordionLinks" class="accordion-collapse collapse col-11" aria-labelledby="headingInfoRef" data-bs-parent="#accordionEditMovie">
+                            <div id="accordionLinks" class="accordion-collapse collapse mt-2 ms-sm-2" aria-labelledby="headingInfoRef" data-bs-parent="#accordionEditMovie">
 
                                 @* Фотокарусель *@
-                                <div class="accordion-item mb-3 shadw ms-5">
+                                <div class="accordion-item mb-3 shadw mt-3 ms-5">
 
                                     @* Заголовок группы «Фотокарусель» *@
                                     <h2 class="accordion-header" id="FotoCarousel">
@@ -1729,24 +1729,58 @@
                                 <div class="accordion-item mb-3 shadw ms-5">
 
                                     @* заголовок группы «Статья о видео 1» *@
-                                    <h2 class="accordion-header" id="headingAddLinks4">
-                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#AddLinks4" aria-expanded="true" aria-controls="AddLinks4">
-                                            <span class="form-label fs-5">Статья о видео 1 :</span>
+                                    <h2 class="accordion-header" id="headingArticle1AboutMovie">
+                                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Article1AboutMovie" aria-expanded="true" aria-controls="Article1AboutMovie">
+                                            <span class="form-label fs-5">Статья 1 :</span>
                                         </button>
                                     </h2>
 
-                                    <div id="AddLinks4" class="accordion-collapse collapse" aria-labelledby="headingAddLinks4" data-bs-parent="#accordionLinks">
+                                    <div id="Article1AboutMovie" class="accordion-collapse collapse" aria-labelledby="headingArticle1AboutMovie" data-bs-parent="#accordionLinks">
 
                                         <div class="accordion-body text-center fs-5 text-indent-0">
 
-                                            <label class="col-12 form-label text-primary">
-                                                Выбрать статью :
-                                                <a class="btn btn-outline-danger py-1 m-2 shadw"
-                                                   asp-area="Admin"
-                                                   asp-controller="TextInfo"
-                                                   asp-action="Index"
-                                                   title="выбрать статью">СТАТЬИ</a>
-                                            </label>
+                                            <p class="@(string.IsNullOrEmpty(Model.ArticleAboutMovie1) ? "fs-5 text-center text_shadow" : "d-none")">
+                                                не задана
+                                            </p>
+
+                                            @* Текст статьи, интервью и т.п. *@
+                                            <div class="@(string.IsNullOrEmpty(Model.ArticleAboutMovie1) ? "d-none" : "")">
+
+                                                <p><span class="text-primary">Файл статьи: </span><span class="text_shadow">@Model.MovieItem.TextInfoModel?.HtmlFileName</span></p>
+
+                                                <div class="descr lay1 mt-2 overflow-y-scroll height600">
+
+                                                    @Html.Raw(Model.ArticleAboutMovie1)
+
+                                                </div>
+
+                                            </div>
+
+                                            @* выбрать статью о фильме (1) *@
+                                            <div class="row g-2 justify-content-center mt-2">
+
+                                                <div class="col-auto">
+                                                    <label asp-for="ArticleAboutMovie1FormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                                                </div>
+
+                                                <div class="col-auto text-start">
+                                                    <input id="ArticleAboutMovie1FormFileInput" asp-for="ArticleAboutMovie1FormFile" class="form-control" aria-describedby="ArticleAboutMovie1FormFileInputHelpBlock" />
+                                                </div>
+
+                                                <p class="@(string.IsNullOrEmpty(Model.ArticleAboutMovie1) ? "d-none" : "text-center mt-2")">
+                                                    <span class="fs-6 form-text text-info px-2">для удаления ссылки выбрать файл «DelRefToArticle.txt»</span>
+                                                </p>
+
+                                                @if (Context.Request.Method == "POST")
+                                                {
+                                                    <span asp-validation-for="ArticleAboutMovie1FormFile" class="text-danger"></span>
+                                                }
+
+                                            </div>
+
+                                            <p class="text-center mt-2">
+                                                <span class="fs-6 form-text text-success px-2">статья о видео (1)</span>
+                                            </p>
 
                                         </div>
 

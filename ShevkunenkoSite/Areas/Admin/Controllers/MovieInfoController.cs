@@ -291,7 +291,6 @@ public class MovieInfoController(
 
             #endregion
 
-
             return View(new DetailsMovieViewModel
             {
                 MovieItem = movieItem,
@@ -1060,12 +1059,16 @@ public class MovieInfoController(
     {
         if (movieId.HasValue && await movieInfoContext.MovieFiles.Where(i => i.MovieFileModelId == movieId).AnyAsync())
         {
-            var movieItem = await movieInfoContext.MovieFiles
+            MovieFileModel movieItem = await movieInfoContext.MovieFiles
                 .Include(img => img.ImageFileModel)
                 .Include(img => img.ImageForHeadSeries)
+                .Include(img => img.MoviePoster)
                 .Include(page => page.PageInfoModel)
                 .Include(page => page.PageForMovieSeries)
-                .FirstAsync(i => i.MovieFileModelId == movieId);
+                .Include(t => t.TextInfoModel)
+                .Include(mov => mov.FullMovie).ThenInclude(page => page!.PageInfoModel)
+                .AsNoTracking()
+                .FirstAsync(p => p.MovieFileModelId == movieId);
 
             #region Текущие темы для фильма
 
@@ -1135,6 +1138,19 @@ public class MovieInfoController(
 
             #endregion
 
+            #region Статья о фильме 1 (ArticleAboutMovie1)
+
+            string articleAboutMovie1 = string.Empty;
+
+            if (movieItem.TextInfoModel != null)
+            {
+                StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + movieItem.TextInfoModel.HtmlFileName);
+
+                articleAboutMovie1 = htmlText.ReadToEnd();
+            }
+
+            #endregion
+
             EditMovieViewModel editMovie = new()
             {
                 // редактируемый фильм
@@ -1154,6 +1170,9 @@ public class MovieInfoController(
 
                 // тип картинки для ссылок (3)
                 ImageTypeForRef3 = imageTypeForRef3,
+
+                // статья о фильме (1)
+                ArticleAboutMovie1 = articleAboutMovie1
             };
 
             #region Адрес страницы фильма
@@ -2014,6 +2033,41 @@ public class MovieInfoController(
             movieUpdate.IconType3 = editMovie.MovieItem.IconType3;
             movieUpdate.IsPartsMoreOne3 = editMovie.MovieItem.IsPartsMoreOne3;
             movieUpdate.AllMoviesFromDB3 = editMovie.MovieItem.AllMoviesFromDB3;
+
+            #endregion
+
+            #region Статья о фильме (1)
+
+            if (editMovie.ArticleAboutMovie1FormFile != null)
+            {
+                if (await textInfoContext.Texts.Where(t => t.TxtFileName == editMovie.ArticleAboutMovie1FormFile.FileName).AnyAsync())
+                {
+                    var textAboutMovie = await textInfoContext.Texts.FirstAsync(t => t.TxtFileName == editMovie.ArticleAboutMovie1FormFile.FileName);
+
+                    movieUpdate.TextInfoModelId = textAboutMovie.TextInfoModelId;
+                }
+                else if (await textInfoContext.Texts.Where(t => t.HtmlFileName == editMovie.ArticleAboutMovie1FormFile.FileName).AnyAsync())
+                {
+                    var textAboutMovie = await textInfoContext.Texts.FirstAsync(t => t.HtmlFileName == editMovie.ArticleAboutMovie1FormFile.FileName);
+
+                    movieUpdate.TextInfoModelId = textAboutMovie.TextInfoModelId;
+                }
+                else if (editMovie.ArticleAboutMovie1FormFile.FileName == "DelRefToArticle.txt")
+                {
+                    movieUpdate.TextInfoModelId = null;
+                }
+                else
+                {
+                    ModelState.AddModelError("ArticleAboutMovie1FormFile", $"Файла «{editMovie.ArticleAboutMovie1FormFile.FileName}» нет в базе данных"); ;
+
+                    return View(editMovie);
+                }
+
+            }
+            else
+            {
+                movieUpdate.TextInfoModelId = movieUpdate.TextInfoModelId;
+            }
 
             #endregion
 

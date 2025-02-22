@@ -22,6 +22,10 @@ public class EditMovieViewModel : DetailsMovieViewModel
     [Display(Name = "Картинка страницы серий :")]
     public IFormFile? ImageHeadForSeriesFormFile { get; set; } = null;
 
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать статью :")]
+    public IFormFile? ArticleAboutMovie1FormFile { get; set; } = null;
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
@@ -53,4 +57,5 @@ public class EditMovieViewModel : DetailsMovieViewModel
     [DataType(DataType.Text)]
     [Display(Name = "Тип картинки для ссылок (3) :")]
     public string ImageTypeForRef3 { get; set; } = string.Empty;
+
 }

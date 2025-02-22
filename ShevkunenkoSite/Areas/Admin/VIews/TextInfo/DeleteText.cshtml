@@ -39,6 +39,14 @@
 
         </div>
 
+        @* Ссылки на файл в базе данных фильмов *@
+        @if (Context.Request.Method == "POST")
+        {
+            <p class="@(string.IsNullOrEmpty(Model.RefInMovies) ? "d-none" : "text-danger fs-5 mt-2")">@Model.RefInMovies</p>
+
+            <hr class="@(string.IsNullOrEmpty(Model.RefInMovies) ? "d-none" : "w-75 mx-auto")" />
+        }
+
         @* Идентификатор в базе данных *@
         <h2 class="lh-1">
             <span class="fs-5 text-primary">
@@ -70,8 +78,14 @@
             </div>
 
             <p class="fs-5 my-5">
-                Файлы <span class="text_shadow">@Model.TxtFileName</span> и
-                <span class="text_shadow">@Model.HtmlFileName</span> будут перенесены в папку
+                Файлы
+                <br />
+                <span class="text_shadow">@Model.TxtFileName</span>
+                <br />
+                <span class="text_shadow">@Model.HtmlFileName</span>
+                <br />
+                будут перенесены в папку
+                <br />
                 <span class="text_shadow">«Archive/Texts»</span>
             </p>
 
@@ -84,9 +98,11 @@
                   asp-area="Admin"
                   asp-controller="TextInfo"
                   asp-action="DeleteText"
-                  asp-route-textid="@Model.TextInfoModelId" class="mt-2">
+                  asp-route-textid="@Model.TextInfoModelId"
+                  class="mt-2">
 
                 <input asp-for="@Model.TextInfoModelId" type="hidden" />
+                <input asp-for="@Model.TextDescription" type="hidden" />
 
                 <div class="card-footer p-2">
 
