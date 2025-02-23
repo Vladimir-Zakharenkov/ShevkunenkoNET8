@@ -7,6 +7,4 @@ public class TextInfoViewModel
     public PagingInfoViewModel PagingInfo { get; set; } = new();
 
     public string? TextSearchString { get; set; }
-
-    public Guid? TextInfoModelId { get; set; }
 }

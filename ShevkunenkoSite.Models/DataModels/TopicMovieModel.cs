@@ -1,6 +1,4 @@
-﻿using System.Runtime.ConstrainedExecution;
-
-namespace ShevkunenkoSite.Models.DataModels;
+﻿namespace ShevkunenkoSite.Models.DataModels;
 
 public class TopicMovieModel
 {

@@ -18,6 +18,8 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<TextInfoModel> TextFile => Set<TextInfoModel>();
 
+    public DbSet<BooksAndArticlesModel> BooksAndArticles => Set<BooksAndArticlesModel>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PageInfoModel>()

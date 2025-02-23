@@ -110,6 +110,7 @@ services.AddScoped<IMovieFileRepository, MovieFileImplementation>();
 services.AddScoped<IAccessRepository, AccessImplementation>();
 services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
 services.AddScoped<ITextInfoRepository, TextInfoImplementation>();
+services.AddScoped<IBooksAndArticlesRepository, BooksAndArticlesImplementation>();
 
 #endregion
 
