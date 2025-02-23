@@ -1,0 +1,171 @@
+﻿@model BooksAndArticlesModel
+
+<h1 class="@(Model.TypeOfText.Contains("book") ? "fs-3 text_shadow" : "d-none")">Информация о книге</h1>
+<h1 class="@(Model.TypeOfText.Contains("article") ? "fs-3 text_shadow" : "d-none")">Информация о статье</h1>
+
+<hr class="liniya" />
+
+@* Информация о книге или статье *@
+<div class="card w-100 mx-auto p-2">
+
+    <div class="col-12 card-body mx-auto mb-2">
+
+        @* Список, изменить, удалить *@
+        <div class="card-footer p-0 my-2">
+
+            @* Список текстов сайта *@
+            <a class="btn btn-outline-primary py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="Index"
+               title="список книг и статей">
+                Список
+            </a>
+
+            @* Изменить текст *@
+            <a class="btn btn-outline-success py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="EditBook"
+               asp-route-textId="@Model.BooksAndArticlesModelId"
+               title="изменить инфо">
+                Изменить
+            </a>
+
+            @* Удалить текст *@
+            <a class="btn btn-outline-danger py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="DeleteBook"
+               asp-route-movieId="@Model.BooksAndArticlesModelId"
+               title="удалить текст">
+                Удалить
+            </a>
+
+        </div>
+
+        @* Идентификатор в базе данных *@
+        <h2 class="lh-1">
+            <span class="fs-5 text-primary d-inline-block mb-2">
+                BooksAndArticlesModelId :
+            </span>
+            <br class="d-lg-none" />
+            <span class="fs-5 text_shadow">
+                @Model.BooksAndArticlesModelId
+            </span>
+            <br />
+            <span class="fs-6 form-text text-success px-2">
+                идентификатор GUID
+            </span>
+        </h2>
+
+        <hr class="w-75 mx-auto" />
+
+        <div class="col-12 col-xxl-10 mx-auto">
+
+            @* Автор книги или статьи *@
+            <div>
+
+                <label asp-for="AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <p class="fs-4 text-center text_shadow">@Model.AuthorOfText</p>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «AuthorOfText» - </span>
+                    <span class="fs-6 text-success">автор текста</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Название книги или статьи *@
+            <div>
+
+                <label asp-for="CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <p class="fs-4 text-center text_shadow">@Model.CaptionOfText</p>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfText» - </span>
+                    <span class="fs-6 text-success">название книги (статьи)</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Описание книги или статьи *@
+            <div>
+
+                <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <textarea class="form-control fordetails fs-5 text_shadow"
+                          asp-for="BookDescription"
+                          readonly
+                          rows="2"
+                          aria-describedby="TextDescriptionInputHelpBlock">
+                 </textarea>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «BookDescription» - </span>
+                    <span class="fs-6 text-success">описание книги (статьи)</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+        </div>
+
+        @* Колличество страниц *@
+        <div>
+
+            <label asp-for="NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
+
+            <p class="fs-4 text-center text_shadow">@Model.NumberOfPages</p>
+
+            <div class="form-text">
+                <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
+                <span class="fs-6 text-success">колличество страниц</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    @* Список, изменить, удалить *@
+    <div class="card-footer p-0 my-2">
+
+        @* Список текстов сайта *@
+        <a class="btn btn-outline-primary py-1 m-2 shadw"
+           asp-area="Admin"
+           asp-controller="BooksAndArticles"
+           asp-action="Index"
+           title="список книг и статей">
+            Список
+        </a>
+
+        @* Изменить текст *@
+        <a class="btn btn-outline-success py-1 m-2 shadw"
+           asp-area="Admin"
+           asp-controller="BooksAndArticles"
+           asp-action="EditBook"
+           asp-route-textId="@Model.BooksAndArticlesModelId"
+           title="изменить инфо">
+            Изменить
+        </a>
+
+        @* Удалить текст *@
+        <a class="btn btn-outline-danger py-1 m-2 shadw"
+           asp-area="Admin"
+           asp-controller="BooksAndArticles"
+           asp-action="DeleteBook"
+           asp-route-movieId="@Model.BooksAndArticlesModelId"
+           title="удалить текст">
+            Удалить
+        </a>
+
+    </div>
+
+</div>

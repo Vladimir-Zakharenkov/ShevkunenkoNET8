@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using System.Configuration;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -28,6 +30,26 @@ public class BooksAndArticlesController(
 
             BookSearchString = bookSearchString ?? string.Empty
         });
+    }
+
+    #endregion
+
+    #region Информация о книге или статье
+
+    public async Task<IActionResult> DetailsBook(Guid? bookId)
+    {
+        if (bookId.HasValue & await bookContext.BooksAndArticles.Where(b => b.BooksAndArticlesModelId == bookId).AnyAsync())
+        {
+            var bookItem = await bookContext.BooksAndArticles
+                 .AsNoTracking()
+                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
+
+            return View(bookItem);
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
     }
 
     #endregion
