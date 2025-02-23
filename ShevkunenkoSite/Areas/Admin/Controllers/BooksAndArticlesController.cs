@@ -1,5 +1,7 @@
 ﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
+[Area("Admin")]
+[Authorize]
 public class BooksAndArticlesController(
     IBooksAndArticlesRepository bookContext) : Controller
 {
@@ -26,6 +28,15 @@ public class BooksAndArticlesController(
 
             BookSearchString = bookSearchString ?? string.Empty
         });
+    }
+
+    #endregion
+
+    #region Добавить книгу или статью
+
+    public IActionResult AddBook()
+    {
+        return View();
     }
 
     #endregion

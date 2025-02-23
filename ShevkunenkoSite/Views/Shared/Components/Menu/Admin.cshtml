@@ -218,7 +218,7 @@
                     <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Texts" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="тексты" itemprop="item">
                         <span class="px-2" itemprop="name">Тексты</span>
                     </a>
-                    <meta itemprop="position" content="3">
+                    <meta itemprop="position" content="4">
 
                     <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Texts" itemscope itemtype="http://schema.org/BreadcrumbList">
 
@@ -238,6 +238,42 @@
                                asp-area="Admin"
                                asp-controller="TextInfo"
                                asp-action="AddText"
+                               itemprop="item">
+                                <span itemprop="name">Добавить</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                @* Книги и статьи *@
+                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Books" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="книги" itemprop="item">
+                        <span class="px-2" itemprop="name">Книги</span>
+                    </a>
+                    <meta itemprop="position" content="5">
+
+                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Books" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список книг (статей)" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="BooksAndArticles"
+                               asp-action="Index"
+                               temprop="item">
+                                <span itemprop="name">Список</span>
+                            </a>
+                            <meta itemprop="position" content="0">
+                        </li>
+
+                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить книгу (статью)" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                               asp-area="Admin"
+                               asp-controller="BooksAndArticles"
+                               asp-action="AddBook"
                                itemprop="item">
                                 <span itemprop="name">Добавить</span>
                             </a>
