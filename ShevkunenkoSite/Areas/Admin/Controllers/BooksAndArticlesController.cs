@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -70,6 +68,20 @@ public class BooksAndArticlesController(
     {
         if (ModelState.IsValid)
         {
+            #region Тип текста
+
+            if (addBook.TypeOfText != null)
+            {
+                addBook.TypeOfText = addBook.TypeOfText.Trim();
+            }
+            else
+            {
+                addBook.TypeOfText = string.Empty;
+            }
+
+            #endregion
+
+
             #region Автор книги или статьи
 
             if (addBook.AuthorOfText != null)
@@ -149,6 +161,12 @@ public class BooksAndArticlesController(
             BooksAndArticlesModel bookUpdate = await bookContext.BooksAndArticles
                 .FirstAsync(book => book.BooksAndArticlesModelId == bookItem.BooksAndArticlesModelId);
 
+            #region Тип текста
+
+            bookUpdate.TypeOfText = bookItem.TypeOfText.Trim();
+
+            #endregion
+
             #region Автор книги или статьи
 
             bookUpdate.AuthorOfText = bookItem.AuthorOfText.Trim();
@@ -184,6 +202,48 @@ public class BooksAndArticlesController(
         else
         {
             return View(bookItem);
+        }
+    }
+
+    #endregion
+
+    #region Удалить книгу или статью
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteBook(Guid? bookId)
+    {
+        if (bookId.HasValue & await bookContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == bookId).AnyAsync())
+        {
+            var deleteBook = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookId);
+
+            return View(deleteBook);
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteBook(BooksAndArticlesModel? deleteBook)
+    {
+        if (deleteBook != null)
+        {
+            if (await bookContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == deleteBook.BooksAndArticlesModelId).AnyAsync())
+            {
+                await bookContext.DeleteBookOrArticleAsync(deleteBook.BooksAndArticlesModelId);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
         }
     }
 

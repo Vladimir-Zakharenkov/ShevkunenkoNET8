@@ -1,0 +1,74 @@
+﻿@model BooksAndArticlesModel
+
+<h1 class="@(Model.TypeOfText.Contains("book") ? "fs-3 text_shadow" : "d-none")">Удалить инфо о книге</h1>
+<h1 class="@(Model.TypeOfText.Contains("article") ? "fs-3 text_shadow" : "d-none")">Удалить инфо о статье</h1>
+
+<hr class="liniya" />
+
+<div class="card w-100 mx-auto p-2">
+
+    <div class="col-12 card-body mx-auto mb-2">
+
+        @* Удалить - отменить *@
+        <div class="card-footer p-0 my-2">
+
+            <form method="post"
+                  asp-area="Admin"
+                  asp-controller="BooksAndArticles"
+                  asp-action="DeleteBook"
+                  asp-route-textid="@Model.BooksAndArticlesModelId" class="mt-2">
+
+                <input asp-for="@Model.BooksAndArticlesModelId" type="hidden" />
+
+                <div class="card-footer p-2">
+
+                    <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить книгу (статью)">Удалить</button>
+
+                    @* Список книг и статей сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="BooksAndArticles"
+                       asp-action="Index"
+                       title="список книг и статей">
+                        Отменить
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        @* Удалить - отменить *@
+        <div class="card-footer p-0 my-2">
+
+            <form method="post"
+                  asp-area="Admin"
+                  asp-controller="BooksAndArticles"
+                  asp-action="DeleteBook"
+                  asp-route-textid="@Model.BooksAndArticlesModelId" class="mt-2">
+
+                <input asp-for="@Model.BooksAndArticlesModelId" type="hidden" />
+
+                <div class="card-footer p-2">
+
+                    <button type="submit" class="btn btn-outline-danger me-2 shadw" title="удалить книгу (статью)">Удалить</button>
+
+                    @* Список книг и статей сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="BooksAndArticles"
+                       asp-action="Index"
+                       title="список книг и статей">
+                        Отменить
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

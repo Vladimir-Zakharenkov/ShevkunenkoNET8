@@ -1,6 +1,7 @@
 ﻿@model BooksAndArticlesModel
 
-<h1 class="fs-3 text_shadow">Добавить книгу (статью)</h1>
+<h1 class="@(Model.TypeOfText.Contains("book") ? "fs-3 text_shadow" : "d-none")">Изменить инфо о книге</h1>
+<h1 class="@(Model.TypeOfText.Contains("article") ? "fs-3 text_shadow" : "d-none")">Изменить инфо о статье</h1>
 
 <hr class="liniya" />
 
@@ -22,6 +23,44 @@
                 <input asp-for="BooksAndArticlesModelId" type="hidden" />
 
             </div>
+
+            @* Выбор типа текста *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="TypeOfText" class="col-form-label text-primary fs-5"></label>
+                </div>
+
+                <div class="col-auto" aria-describedby="TypesOfTextInputHelpBlock">
+
+                    <select id="TypesOfText" asp-for="TypeOfText" class="form-select">
+                        @{
+                            for (int i = 0; i < Model.TypesOfText.Count(); i++)
+                            {
+                                <option value="@Model.TypesOfText[i]">@Model.TypesOfText[i]</option>
+                            }
+                        }
+                    </select>
+
+                </div>
+
+                <div class="col-12 justify-content-center" id="TypesOfTextInputHelpBlock">
+
+                    <span class="fs-6 text-success">тип текста - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="TypesOfText" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
 
             @* автор книги (статьи) *@
             <div class="row g-2 justify-content-center">

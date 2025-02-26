@@ -63,6 +63,22 @@
 
         <div class="col-12 col-xxl-10 mx-auto">
 
+            @* Тип текста *@
+            <div>
+
+                <label asp-for="TypeOfText" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <p class="fs-4 text-center text_shadow">@Model.TypeOfText</p>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TypeOfText» - </span>
+                    <span class="fs-6 text-success">тип текста</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
             @* Автор книги или статьи *@
             <div>
 
