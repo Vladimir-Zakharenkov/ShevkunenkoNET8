@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using System.Configuration;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -123,7 +125,67 @@ public class BooksAndArticlesController(
 
     #region Изменить книгу или статью
 
+    [HttpGet]
+    public async Task<IActionResult> EditBook(Guid? bookId)
+    {
+        if (bookId.HasValue & await bookContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == bookId).AnyAsync())
+        {
+            var editBook = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookId);
 
+            return View(editBook);
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditBook(BooksAndArticlesModel bookItem)
+    {
+        if (ModelState.IsValid)
+        {
+            BooksAndArticlesModel bookUpdate = await bookContext.BooksAndArticles
+                .FirstAsync(book => book.BooksAndArticlesModelId == bookItem.BooksAndArticlesModelId);
+
+            #region Автор книги или статьи
+
+            bookUpdate.AuthorOfText = bookItem.AuthorOfText.Trim();
+
+            #endregion
+
+            #region Название книги или статьи
+
+            bookUpdate.BookDescription = bookItem.BookDescription.Trim();
+
+            #endregion
+
+            #region Описание книги или статьи
+
+            bookUpdate.CaptionOfText = bookItem.CaptionOfText.Trim();
+
+            #endregion
+
+            #region Колличество страниц
+
+            bookUpdate.NumberOfPages = bookItem.NumberOfPages;
+
+            #endregion
+
+            #region Сохранить и перейти к DetailsBook
+
+            await bookContext.SaveChangesInBookOrArticleAsync();
+
+            return RedirectToAction(nameof(DetailsBook), new { bookId = bookUpdate.BooksAndArticlesModelId });
+
+            #endregion
+        }
+        else
+        {
+            return View(bookItem);
+        }
+    }
 
     #endregion
 }
