@@ -1,1 +1,155 @@
-﻿<h1>Test</h1>
+﻿@model BooksAndArticlesModel
+
+<h1 class="fs-3 text_shadow">Добавить книгу (статью)</h1>
+
+<hr class="liniya" />
+
+@* Показ всех ошибок ввода данных *@
+@if (Context.Request.Method == "POST")
+{
+        <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+}
+
+<div class="col card p-2">
+
+    <div class="col-12 card-body mx-auto">
+
+        <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
+
+            @* скрытые поля формы *@
+            <div>
+
+                <input asp-for="BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
+
+            </div>
+
+            @* автор книги (статьи) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto text-start">
+                    <input id="AuthorOfTextInput" asp-for="AuthorOfText" class="form-control" aria-describedby="AuthorOfTextInputHelpBlock" />
+                </div>
+
+                <div id="AuthorOfTextInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">автор книги (статьи) - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="AuthorOfText" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* заголовок книги (статьи) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto text-start">
+                    <input id="CaptionOfTextInput" asp-for="CaptionOfText" class="form-control" aria-describedby="CaptionOfTextInputHelpBlock" />
+                </div>
+
+                <div id="CaptionOfTextInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">заголовок книги (статьи) - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="CaptionOfText" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* описание текста *@
+            <div>
+
+                <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <textarea id="BookDescriptionInput" class="form-control fordetails"
+                          asp-for="BookDescription"
+                          rows="3"
+                          aria-describedby="BookDescriptionInputHelpBlock">
+                </textarea>
+
+                <div id="BookDescriptionInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">описание текста - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                <span asp-validation-for="BookDescription" class="text-danger"></span>
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* колличество страниц *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto text-start">
+                    <input id="NumberOfPagesInput" asp-for="NumberOfPages" class="form-control text-center" aria-describedby="NumberOfPagesInputHelpBlock" />
+                </div>
+
+                <div id="NumberOfPagesInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">колличество страниц - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="NumberOfPages" class="text-danger"></span>
+                }
+
+            </div>
+
+            @* сохранить - отменить *@
+            <div class="card-footer p-0 pb-2 mt-4">
+
+                <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
+                        title="Сохранить">
+                    Сохранить
+                </button>
+
+                <a class="btn btn-outline-danger mt-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="BooksAndArticles"
+                   asp-action="Index"
+                   title="Отменить">
+                    Отменить
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

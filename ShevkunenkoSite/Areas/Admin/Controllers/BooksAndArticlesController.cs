@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -56,10 +54,76 @@ public class BooksAndArticlesController(
 
     #region Добавить книгу или статью
 
-    public IActionResult AddBook()
+    [HttpGet]
+    public ViewResult AddBook()
     {
-        return View();
+        BooksAndArticlesModel newBook = new();
+
+        return View(newBook);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddBook(BooksAndArticlesModel addBook)
+    {
+        if (ModelState.IsValid)
+        {
+            #region Автор книги или статьи
+
+            if (addBook.AuthorOfText != null)
+            {
+                addBook.AuthorOfText = addBook.AuthorOfText.Trim();
+            }
+            else
+            {
+                addBook.AuthorOfText = string.Empty;
+            }
+
+            #endregion
+
+            #region Название книги или статьи
+
+            addBook.BookDescription = addBook.BookDescription.Trim();
+
+            #endregion
+
+            #region Описание книги или статьи
+
+            addBook.CaptionOfText = addBook.CaptionOfText.Trim();
+
+            #endregion
+
+            #region Колличество страниц
+
+            addBook.NumberOfPages = addBook.NumberOfPages;
+
+            #endregion
+
+            #region добавить в БД
+
+            await bookContext.AddBookOrArticleAsync(addBook);
+
+            #endregion
+
+            #region Открытие параметров добавленной книги (статьи)
+
+            var newBook = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == addBook.CaptionOfText);
+
+            return RedirectToAction(nameof(DetailsBook), new { bookId = newBook.BooksAndArticlesModelId });
+
+            #endregion
+        }
+        else
+        {
+            return View();
+        }
+    }
+
+    #endregion
+
+    #region Изменить книгу или статью
+
+
 
     #endregion
 }

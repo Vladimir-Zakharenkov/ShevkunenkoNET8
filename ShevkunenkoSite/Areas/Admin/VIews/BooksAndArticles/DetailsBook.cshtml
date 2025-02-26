@@ -27,7 +27,7 @@
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="EditBook"
-               asp-route-textId="@Model.BooksAndArticlesModelId"
+               asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="изменить инфо">
                 Изменить
             </a>
@@ -37,7 +37,7 @@
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="DeleteBook"
-               asp-route-movieId="@Model.BooksAndArticlesModelId"
+               asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="удалить текст">
                 Удалить
             </a>
@@ -116,8 +116,6 @@
 
             </div>
 
-        </div>
-
         @* Колличество страниц *@
         <div>
 
@@ -129,6 +127,8 @@
                 <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
                 <span class="fs-6 text-success">колличество страниц</span>
             </div>
+
+        </div>
 
         </div>
 
@@ -151,7 +151,7 @@
            asp-area="Admin"
            asp-controller="BooksAndArticles"
            asp-action="EditBook"
-           asp-route-textId="@Model.BooksAndArticlesModelId"
+           asp-route-bookId="@Model.BooksAndArticlesModelId"
            title="изменить инфо">
             Изменить
         </a>
@@ -161,7 +161,7 @@
            asp-area="Admin"
            asp-controller="BooksAndArticles"
            asp-action="DeleteBook"
-           asp-route-movieId="@Model.BooksAndArticlesModelId"
+           asp-route-bookId="@Model.BooksAndArticlesModelId"
            title="удалить текст">
             Удалить
         </a>
