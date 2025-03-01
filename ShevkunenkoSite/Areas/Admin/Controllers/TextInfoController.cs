@@ -47,8 +47,9 @@ public class TextInfoController(
         if (textId.HasValue & await textContext.Texts.Where(p => p.TextInfoModelId == textId).AnyAsync())
         {
             var textItem = await textContext.Texts
-                 .AsNoTracking()
-                 .FirstAsync(p => p.TextInfoModelId == textId);
+                .Include(book => book.BooksAndArticlesModel)
+                .AsNoTracking()
+                .FirstAsync(p => p.TextInfoModelId == textId);
 
             using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName);
 
@@ -62,6 +63,9 @@ public class TextInfoController(
                 HtmlFileName = textItem.HtmlFileName,
                 TxtFileSize = textItem.TxtFileSize,
                 HtmlFileSize = textItem.HtmlFileSize,
+                BooksAndArticlesModelId = textItem.BooksAndArticlesModelId,
+                BooksAndArticlesModel = textItem.BooksAndArticlesModel,
+                SequenceNumber = textItem.SequenceNumber,
                 ClearText = clearText.ReadToEnd(),
                 HtmlText = htmlText.ReadToEnd()
             });
@@ -172,7 +176,7 @@ public class TextInfoController(
             }
             else
             {
-               addText.BooksAndArticlesModelId = null;
+                addText.BooksAndArticlesModelId = null;
             }
 
             #endregion

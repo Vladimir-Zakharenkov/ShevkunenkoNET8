@@ -56,6 +56,23 @@
             </span>
         </h2>
 
+        @* Информация о связанной книге статье *@
+        <div class="@(Model.BooksAndArticlesModelId != null ? "d-block" : "d-none")">
+
+            <hr class="w-50 mx-auto" />
+
+            <p class="fs-5 text-center">
+                <span class="text-primary">Страница </span>
+                <span class="text_shadow">«@Model.SequenceNumber»</span>
+                <br class="d-xl-none" />
+                <span class="text-primary"> @(Model.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+                <span class="text_shadow">«@Model.BooksAndArticlesModel?.CaptionOfText»</span>
+            </p>
+
+            <hr class="w-50 mx-auto" />
+
+        </div>
+
         <div class="col-12 col-xxl-10 mx-auto">
 
             @* Описание текста *@

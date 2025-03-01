@@ -1,9 +1,4 @@
 ﻿//Ignore Spelling: Org
-using Microsoft.AspNetCore.Http;
-using ShevkunenkoSite.Models.DataModels;
-using ShevkunenkoSite.Services.Infrastructure;
-using System.Linq;
-
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
