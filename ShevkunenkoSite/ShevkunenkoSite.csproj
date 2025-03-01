@@ -56,6 +56,9 @@
     <Content Update="wwwroot\robots.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\texts\vyhodnye-v-moskve-1.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
     <ItemGroup>

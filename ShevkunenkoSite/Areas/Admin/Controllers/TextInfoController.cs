@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Text;
+using System.Xml;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -6,6 +7,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers;
 [Authorize]
 public class TextInfoController(
     ITextInfoRepository textContext,
+    IBooksAndArticlesRepository bookContext,
     IMovieFileRepository movieContext,
     IWebHostEnvironment hostEnvironment) : Controller
 {
@@ -149,6 +151,53 @@ public class TextInfoController(
 
             #endregion
 
+            #region Связанная книга (статья)
+
+            if (addText.RefForBookOrArticle != null)
+            {
+                _ = addText.RefForBookOrArticle.Trim();
+
+                if (await bookContext.BooksAndArticles.Where(book => book.CaptionOfText.ToLower() == addText.RefForBookOrArticle.ToLower()).AnyAsync())
+                {
+                    var book = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == addText.RefForBookOrArticle);
+
+                    addText.BooksAndArticlesModelId = book.BooksAndArticlesModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("RefForBookOrArticle", $"Книги (статьи) «{addText.RefForBookOrArticle}» не найдено в БД");
+
+                    return View(addText);
+                }
+            }
+            else
+            {
+               addText.BooksAndArticlesModelId = null;
+            }
+
+            #endregion
+
+            #region Номер страницы
+
+            if (addText.BooksAndArticlesModelId != null & addText.SequenceNumber == null)
+            {
+                ModelState.AddModelError("SequenceNumber", $"Если указана книга (статья), нужно указать страницу");
+
+                return View(addText);
+            }
+            else if (await textContext.Texts.Where(text => text.BooksAndArticlesModelId == addText.BooksAndArticlesModelId & text.SequenceNumber == addText.SequenceNumber).AnyAsync())
+            {
+                ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{addText.RefForBookOrArticle}», страница «{addText.SequenceNumber}» уже существует");
+
+                return View(addText);
+            }
+            else
+            {
+                _ = addText.SequenceNumber;
+            }
+
+            #endregion
+
             #region Копировать файлы и добавить в БД
 
             if (addText.TxtFileFormFile != null)
@@ -242,9 +291,14 @@ public class TextInfoController(
                 var path = rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName;
 
                 // полная перезапись файла 
-                using StreamWriter writer = new(path, false);
+                using StreamWriter writer = new(path, false, new UTF8Encoding(true));
 
                 await writer.WriteLineAsync(textItem.ClearText);
+
+                writer.Close();
+
+                // новый размер файла txt
+                textUpdate.TxtFileSize = (int)new System.IO.FileInfo(path).Length;
             }
 
             #endregion
@@ -259,9 +313,14 @@ public class TextInfoController(
                 var path = rootPath + DataConfig.TextsFolderPath + textItem.HtmlFileName;
 
                 // полная перезапись файла 
-                using StreamWriter writer = new(path, false);
+                using StreamWriter writer = new(path, false, new UTF8Encoding(true));
 
                 await writer.WriteLineAsync(textItem.HtmlText);
+
+                writer.Close();
+
+                // новый размер файла html
+                textUpdate.HtmlFileSize = (int)new System.IO.FileInfo(path).Length;
             }
 
             #endregion

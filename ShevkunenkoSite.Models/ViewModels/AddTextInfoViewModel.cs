@@ -11,4 +11,9 @@ public class AddTextInfoViewModel : TextInfoModel
     [DataType(DataType.Upload)]
     [Display(Name = "Файл (html) :")]
     public IFormFile? HtmlFileFormFile { get; set; }
+
+    // связанная книга (статья)
+    [DataType(DataType.Text)]
+    [Display(Name = "Связанная книга (статья) :")]
+    public string? RefForBookOrArticle { get; set; }
 }

@@ -82,8 +82,9 @@
             <div>
 
                 <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                <br class="d-md-none" />
                 <span class="fs-5 text_shadow">@Model.TxtFileName</span>
-                <p class="fs-5 text-primary">(@Model.TxtFileSize байт)</p>
+                <p class="fs-5 text-primary mb-2">(@Model.TxtFileSize байт)</p>
 
                 <textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
                           asp-for="ClearText"
@@ -105,8 +106,9 @@
             <div>
 
                 <label asp-for="HtmlFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                <br class="d-md-none" />
                 <span class="fs-5 text_shadow">@Model.HtmlFileName</span>
-                <p class="fs-5 text-primary">(@Model.HtmlFileSize байт)</p>
+                <p class="fs-5 text-primary mb-2">(@Model.HtmlFileSize байт)</p>
 
                 <textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
                           asp-for="HtmlText"

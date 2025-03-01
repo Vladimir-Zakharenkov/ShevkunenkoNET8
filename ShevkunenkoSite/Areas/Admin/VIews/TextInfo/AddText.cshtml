@@ -101,6 +101,44 @@
 
                 <span asp-validation-for="TextDescription" class="text-danger"></span>
 
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* связанная книга (статья) *@
+            <div>
+
+                <label asp-for="RefForBookOrArticle" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <input id="RefForBookOrArticleInput" class="form-control text-start" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
+
+                <div id="RefForBookOrArticleInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">связанная книга (статья)</span>
+
+                </div>
+
+                <span asp-validation-for="RefForBookOrArticle" class="text-danger"></span>
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* номер страницы книги (статьи) *@
+            <div>
+
+                <label asp-for="SequenceNumber" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <input id="SequenceNumberInput" class="form-control text-center w-50 mx-auto" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+
+                <div id="SequenceNumberInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">номер страницы книги (статьи)</span>
+
+                </div>
+
+                <span asp-validation-for="SequenceNumber" class="text-danger"></span>
+
             </div>
 
             @* сохранить - отменить *@
