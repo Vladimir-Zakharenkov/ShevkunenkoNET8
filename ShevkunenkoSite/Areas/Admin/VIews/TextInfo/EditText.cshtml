@@ -4,6 +4,19 @@
 
 <hr class="liniya" />
 
+@* Информация о связанной книге статье *@
+<div class="@(Model.BooksAndArticlesModelId != null ? "d-block" : "d-none") mb-2">
+
+    <p class="fs-5 text-center">
+        <span class="text-primary">Страница </span>
+        <span class="text_shadow">«@Model.SequenceNumber»</span>
+        <br class="d-xl-none" />
+        <span class="text-primary"> @(Model.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+        <span class="text_shadow">«@Model.BooksAndArticlesModel?.CaptionOfText»</span>
+    </p>
+
+</div>
+
 @* Показ всех ошибок ввода данных *@
 @if (Context.Request.Method == "POST")
 {
@@ -28,6 +41,42 @@
                 <input asp-for="HtmlFileName" type="hidden" />
                 <input asp-for="TxtFileSize" type="hidden" />
                 <input asp-for="HtmlFileSize" type="hidden" />
+
+            </div>
+
+            @* связанная книга (статья) *@
+            <div>
+
+                <label asp-for="RefForBookOrArticle" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <input id="RefForBookOrArticleInput" class="form-control text-start" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
+
+                <div id="RefForBookOrArticleInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">связанная книга (статья)</span>
+
+                </div>
+
+                <span asp-validation-for="RefForBookOrArticle" class="text-danger"></span>
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* номер страницы книги (статьи) *@
+            <div>
+
+                <label asp-for="SequenceNumber" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <input id="SequenceNumberInput" class="form-control text-center w-50 mx-auto" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+
+                <div id="SequenceNumberInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">номер страницы книги (статьи)</span>
+
+                </div>
+
+                <span asp-validation-for="SequenceNumber" class="text-danger"></span>
 
             </div>
 

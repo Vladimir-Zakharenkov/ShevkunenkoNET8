@@ -3,7 +3,8 @@
 [Area("Admin")]
 [Authorize]
 public class BooksAndArticlesController(
-    IBooksAndArticlesRepository bookContext) : Controller
+    IBooksAndArticlesRepository bookContext,
+    ITextInfoRepository textContext) : Controller
 {
     #region Список книг и статей
 
@@ -230,6 +231,13 @@ public class BooksAndArticlesController(
     {
         if (deleteBook != null)
         {
+            if (await textContext.Texts.Where(text => text.BooksAndArticlesModelId == deleteBook.BooksAndArticlesModelId).AnyAsync())
+            {
+                ModelState.AddModelError("SequenceNumber", "Ссылки на книгу в базе текстов сайта");
+
+                return View(deleteBook);
+            }
+
             if (await bookContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == deleteBook.BooksAndArticlesModelId).AnyAsync())
             {
                 await bookContext.DeleteBookOrArticleAsync(deleteBook.BooksAndArticlesModelId);

@@ -5,6 +5,12 @@
 
 <hr class="liniya" />
 
+@* Показ всех ошибок ввода данных *@
+@if (Context.Request.Method == "POST")
+{
+    <div asp-validation-summary="All" class="fs-6 text-danger border border-top-0 border-danger mb-3"></div>
+}
+
 <div class="card w-100 mx-auto p-2">
 
     <div class="col-12 card-body mx-auto mb-2">
@@ -19,6 +25,11 @@
                   asp-route-textid="@Model.BooksAndArticlesModelId" class="mt-2">
 
                 <input asp-for="@Model.BooksAndArticlesModelId" type="hidden" />
+                <input asp-for="@Model.TypeOfText" type="hidden" />
+                <input asp-for="@Model.AuthorOfText" type="hidden" />
+                <input asp-for="@Model.CaptionOfText" type="hidden" />
+                <input asp-for="@Model.BookDescription" type="hidden" />
+                <input asp-for="@Model.NumberOfPages" type="hidden" />
 
                 <div class="card-footer p-2">
 

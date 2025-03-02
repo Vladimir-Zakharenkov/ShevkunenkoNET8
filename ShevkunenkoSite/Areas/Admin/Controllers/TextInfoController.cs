@@ -197,6 +197,15 @@ public class TextInfoController(
             }
             else
             {
+                var book = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == addText.BooksAndArticlesModelId);
+
+                if (addText.SequenceNumber > book.NumberOfPages)
+                {
+                    ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{addText.RefForBookOrArticle}», всего «{book.NumberOfPages}» страниц");
+
+                    return View(addText);
+                }
+
                 _ = addText.SequenceNumber;
             }
 
@@ -247,7 +256,7 @@ public class TextInfoController(
 
         if (textId.HasValue & await textContext.Texts.Where(i => i.TextInfoModelId == textId).AnyAsync())
         {
-            editText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == textId);
+            editText = await textContext.Texts.Include(book => book.BooksAndArticlesModel).FirstAsync(i => i.TextInfoModelId == textId);
 
             using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + editText.TxtFileName);
 
@@ -261,6 +270,10 @@ public class TextInfoController(
                 HtmlFileName = editText.HtmlFileName,
                 TxtFileSize = editText.TxtFileSize,
                 HtmlFileSize = editText.HtmlFileSize,
+                BooksAndArticlesModelId = editText.BooksAndArticlesModelId,
+                BooksAndArticlesModel = editText.BooksAndArticlesModel,
+                SequenceNumber = editText.SequenceNumber,
+                RefForBookOrArticle = editText.BooksAndArticlesModel?.CaptionOfText,
                 ClearText = clearText.ReadToEnd(),
                 HtmlText = htmlText.ReadToEnd()
             });
@@ -278,6 +291,66 @@ public class TextInfoController(
         if (ModelState.IsValid)
         {
             TextInfoModel textUpdate = await textContext.Texts.FirstAsync(txt => txt.TextInfoModelId == textItem.TextInfoModelId);
+
+            #region Связанная книга (статья)
+
+            if (textItem.RefForBookOrArticle != null)
+            {
+                _ = textItem.RefForBookOrArticle.Trim();
+
+                if (await bookContext.BooksAndArticles.Where(book => book.CaptionOfText.ToLower() == textItem.RefForBookOrArticle.ToLower()).AnyAsync())
+                {
+                    var book = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == textItem.RefForBookOrArticle);
+
+                    textUpdate.BooksAndArticlesModelId = book.BooksAndArticlesModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("RefForBookOrArticle", $"Книги (статьи) «{textItem.RefForBookOrArticle}» не найдено в БД");
+
+                    return View(textItem);
+                }
+            }
+            else
+            {
+                textUpdate.BooksAndArticlesModelId = null;
+            }
+
+            #endregion
+
+            #region Номер страницы
+
+            if (textUpdate.BooksAndArticlesModelId == null)
+            {
+                textUpdate.SequenceNumber = null;
+            }
+            else if (textUpdate.BooksAndArticlesModelId != null & textItem.SequenceNumber == null)
+            {
+                ModelState.AddModelError("SequenceNumber", $"Если указана книга (статья), нужно указать страницу");
+
+                return View(textItem);
+            }
+            else if (await textContext.Texts.Where(text => text.BooksAndArticlesModelId == textUpdate.BooksAndArticlesModelId & text.SequenceNumber != textUpdate.SequenceNumber & text.SequenceNumber == textItem.SequenceNumber).AnyAsync())
+            {
+                ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{textItem.RefForBookOrArticle}», страница «{textItem.SequenceNumber}» уже существует");
+
+                return View(textItem);
+            }
+            else
+            {
+                var book = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == textUpdate.BooksAndArticlesModelId);
+
+                if (textItem.SequenceNumber > book.NumberOfPages)
+                {
+                    ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{textItem.RefForBookOrArticle}», всего «{book.NumberOfPages}» страниц");
+
+                    return View(textItem);
+                }
+
+                textUpdate.SequenceNumber = textItem.SequenceNumber;
+            }
+
+            #endregion
 
             #region Описание текста
 
