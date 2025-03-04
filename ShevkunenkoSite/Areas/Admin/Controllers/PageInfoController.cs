@@ -291,7 +291,12 @@ public class PageInfoController(
     #region Добавить страницу сайта в базу данных
 
     [HttpGet]
-    public ViewResult AddPage() => View();
+    public ViewResult AddPage()
+    {
+        EditPageViewModel newText = new();
+
+        return View(newText);
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -750,7 +755,11 @@ public class PageInfoController(
 
             #endregion
 
+            #region Сохранить в базе данных
+
             await pageInfoContext.AddNewPageAsync(addItem.PageItem);
+
+            #endregion
 
             #region Открытие страницы DetailsPage
 

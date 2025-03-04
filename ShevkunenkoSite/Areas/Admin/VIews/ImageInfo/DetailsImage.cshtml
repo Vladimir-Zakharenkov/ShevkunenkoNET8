@@ -1,87 +1,102 @@
 ﻿@model DetailsImageIconViewModel
 
-@{
-    string trStyle = string.Empty;
+@if (Model.IconType == null || Model.IconType == "webimage" || Model.IconType == "image")
+{
+    <h1><span class="fs-3 text_shadow">Параметры картинки</span></h1>
 }
+else if (Model.IconType.Contains("web"))
+{
+    <h1>
+        <span class="fs-3  text-primary">Иконка</span> <span class="fs-4 text_shadow">(@Model.IconType)</span><br />
+        <span class="fs-5 text-primary">файла</span> <span class="fs-5 text_shadow">@Model.ImageItem.WebImageFileName</span>
+    </h1>
+}
+else
+{
+    <h1>
+        <span class="fs-3 text-primary">Иконка</span> <span class="fs-4 text_shadow">(@Model.IconType)</span><br />
+        <span class="fs-5 text-primary">файла</span> <span class="fs-5 text_shadow">@Model.ImageItem.ImageFileName</span>
+    </h1>
+}
+
+<hr class="liniya" />
 
 <div class="row">
 
     <div class="col col-lg-9 col-xl-8 col-xxl-7 d-block mx-auto px-2">
 
-        <hr class="liniya" />
-
-        @if (Model.IconType == null || Model.IconType == "webimage" || Model.IconType == "image")
-        {
-            <h1><span class="fs-3 text_shadow">Параметры картинки</span></h1>
-        }
-        else if (Model.IconType.Contains("web"))
-        {
-            <h1>
-                <span class="fs-3  text-primary">Иконка</span> <span class="fs-4 text_shadow">(@Model.IconType)</span><br />
-                <span class="fs-5 text-primary">файла</span> <span class="fs-5 text_shadow">@Model.ImageItem.WebImageFileName</span>
-            </h1>
-        }
-        else
-        {
-            <h1>
-                <span class="fs-3 text-primary">Иконка</span> <span class="fs-4 text_shadow">(@Model.IconType)</span><br />
-                <span class="fs-5 text-primary">файла</span> <span class="fs-5 text_shadow">@Model.ImageItem.ImageFileName</span>
-            </h1>
-        }
-
-        <div class="card p-2">
+        <div class="card p-2 mt-4">
 
             <div class="card-body mx-0 p-0">
 
                 <ul class="list-group list-group-flush text-center">
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-danger lh-lg">ImageFileModelId&nbsp;:</span><br />
-                        <span id="ImageItemID" class="fs-5 text_shadow">@Model.ImageItem.ImageFileModelId</span><br />
-                        <span id="ImageItemIDHelpBlock" class="fs-6 form-text lh-lg text-success">
+
+                        <span class="fw-bold fs-5 text-primary">ImageFileModelId :</span>
+                        <br />
+                        <span id="ImageItemID" class="fs-5 text_shadow">@Model.ImageItem.ImageFileModelId</span>
+                        <br />
+                        <span id="ImageItemIDHelpBlock" class="fs-6 form-text text-success">
                             идентификатор в базе данных (GUID)
                         </span>
+
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-danger">ImageCaption&nbsp;:</span><br />
-                        <span id="ImageItemCaption" class="fs-5 text_shadow">@Model.ImageItem.ImageCaption</span><br />
-                        <span id="ImageItemCaptionHelpBlock" class="fs-6 form-text lh-lg text-success">
+
+                        <span class="fw-bold fs-5 text-primary">ImageCaption :</span>
+                        <br />
+                        <span id="ImageItemCaption" class="fs-5 text_shadow">@Model.ImageItem.ImageCaption</span>
+                        <br />
+                        <span id="ImageItemCaptionHelpBlock" class="fs-6 form-text text-success">
                             «caption» и «name» для Microdata
                         </span>
+
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-danger">ImageItemDescription&nbsp;:</span><br />
-                        <span id="ImageItemDescription" class="fs-5 text_shadow">@Model.ImageItem.ImageDescription</span><br />
-                        <span id="ImageItemDescriptionHelpBlock" class="fs-6 form-text lh-lg text-success">
+
+                        <span class="fw-bold fs-5 text-primary">ImageItemDescription :</span>
+                        <br />
+                        <span id="ImageItemDescription" class="fs-5 text_shadow">@Model.ImageItem.ImageDescription</span>
+                        <br />
+                        <span id="ImageItemDescriptionHelpBlock" class="fs-6 form-text text-success">
                             «description» для Microdata
                         </span>
+
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-danger">ImageItemAltTitle&nbsp;:</span><br />
-                        <span id="ImageItemAltTitle" class="fs-5 text_shadow">@Model.ImageItem.ImageAltTitle</span><br />
-                        <span id="ImageItemAltTitleHelpBlock" class="fs-6 form-text lh-lg text-success">
+
+                        <span class="fw-bold fs-5 text-primary">ImageItemAltTitle :</span>
+                        <br />
+                        <span id="ImageItemAltTitle" class="fs-5 text_shadow">@Model.ImageItem.ImageAltTitle</span>
+                        <br />
+                        <span id="ImageItemAltTitleHelpBlock" class="fs-6 form-text text-success">
                             «alt» и «title» для тега «img»
                         </span>
+
                     </li>
 
                     <li class="list-group-item">
-                        <span class="fw-bold fs-5 text-danger">SearchFilter&nbsp;:</span><br />
+
+                        <span class="fw-bold fs-5 text-primary">SearchFilter&nbsp;:</span>
+                        <br />
 
                         @if (!string.IsNullOrEmpty(Model.ImageItem.SearchFilter))
                         {
                             <div class="border border-1 border-secondary p-2 fs-5 text_shadow">
                                 @Model.ImageItem.SearchFilter<br />
                             </div>
-                            <span class="fs-6 form-text lh-lg text-success">
+
+                            <span class="fs-6 form-text text-success">
                                 фильтр поиска
                             </span>
                         }
                         else
                         {
-                            <span class="fs-6 form-text lh-lg text-success">
+                            <span class="fs-6 form-text text-success">
                                 фильтр поиска не задан
                             </span>
                         }
@@ -91,76 +106,96 @@
 
             </div>
 
-            <hr class="liniya" />
+            <hr class="w-50 mx-auto" />
 
             @if (Model.FileExists)
             {
-                <vc:view-image image-id="@Model.ImageItem.ImageFileModelId" css-class="m-2 width50percent shadw" icon-type="@Model.IconType" />
+                <vc:view-image image-id="@Model.ImageItem.ImageFileModelId" css-class="mx-auto my-2 shadw" icon-type="@Model.IconType" />
 
-                <p><span class="fw-bold fs-5 text-primary">Каталог: </span><span class="fs-5 text_shadow">@Model.ImageItem.ImagePath</span></p>
+                <p>
+                    <span class="fw-bold fs-5 text-primary">Каталог: </span>
+                    <span class="fs-5 text_shadow">@Model.ImageItem.ImagePath</span>
+                </p>
             }
             else
             {
-                <p class="fw-bold fs-4"><span class="text-danger">Файл</span> <span class="text_shadow">@Model.FileName</span> <span class="text-danger">не найден</span></p>
-                <p><span class="fw-bold fs-5 text-primary">Каталог: </span><span class="fs-5 text_shadow">@Model.ImageItem.ImagePath</span></p>
+                <p class="fw-bold fs-4">
+                    <span class="text-danger">Файл </span>
+                    <span class="text_shadow">@Model.FileName </span>
+                    <span class="text-danger">не найден</span>
+                </p>
+                <p>
+                    <span class="fw-bold fs-5 text-primary">Каталог: </span>
+                    <span class="fs-5 text_shadow">@Model.ImageItem.ImagePath</span>
+                </p>
             }
-
-            <hr class="liniya" />
 
             <div class="card-footer p-2 my-2">
 
-                <a class="btn btn-outline-success p-1 shadw"
+                <a class="btn btn-outline-success p-1 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="ImageInfo"
                    asp-action="EditImage"
                    asp-route-imageId="@Model.ImageItem.ImageFileModelId"
-                   title="Изменить картинку">Изменить</a>
+                   title="Изменить картинку">
+                    Изменить
+                </a>
 
-                <a class="btn btn-outline-danger p-1 mx-2 shadw"
+                <a class="btn btn-outline-danger p-1 px-2 m-2 shadw"
                    asp-area="Admin"
                    asp-controller="ImageInfo"
                    asp-action="DeleteImage"
                    asp-route-imageId="@Model.ImageItem.ImageFileModelId"
-                   title="Удалить картинку">Удалить</a>
+                   title="Удалить картинку">
+                    Удалить
+                </a>
 
                 @if (Model.IconType == null || Model.IconType == "image" || Model.IconType == "webimage")
                 {
-                    <a class="btn btn btn-outline-primary p-1 px-2 shadw"
+                    <a class="btn btn btn-outline-primary p-1 px-3 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="ImageInfo"
                        asp-action="Index"
                        asp-route-iconlist="false"
-                       title="список картинок">Список</a>
+                       title="список картинок">
+                        Список
+                    </a>
 
-                    <a class="btn btn btn-outline-info p-1 ms-2 shadw"
+                    <a class="btn btn btn-outline-info p-1 m-2 shadw"
                        asp-area="Admin"
                        asp-controller="ImageInfo"
                        asp-action="Index"
                        asp-route-iconlist="true"
-                       title="иконки картинок">Картинки</a>
+                       title="иконки картинок">
+                        Картинки
+                    </a>
                 }
                 else
                 {
                     if (Model.IconType.Contains("web"))
                     {
-                        <a class="btn btn btn-outline-info p-1 shadw"
+                        <a class="btn btn btn-outline-info p-1 m-2 shadw"
                            asp-area="Admin"
                            asp-controller="ImageInfo"
                            asp-action="DetailsImage"
                            asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                            asp-route-imageIcon="webimage"
-                           title="картинка Web">Картинка WEB</a>
+                           title="картинка Web">
+                            Картинка WEB
+                        </a>
 
                     }
                     else
                     {
-                        <a class="btn btn btn-outline-info p-1 shadw"
+                        <a class="btn btn btn-outline-info p-1 m-2 shadw"
                            asp-area="Admin"
                            asp-controller="ImageInfo"
                            asp-action="DetailsImage"
                            asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                            asp-route-imageIcon="image"
-                           title="картинка PNG">Картинка PNG</a>
+                           title="картинка PNG">
+                            Картинка PNG
+                        </a>
                     }
                 }
 
@@ -191,15 +226,7 @@
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.ImageFileName))
                                 {
-                                    if (Model.IconType == "image")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "image" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-danger fw-bolder">Picture</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.ImageFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.ImageFileSize</td>
@@ -212,22 +239,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="image"
-                                               title="Информация о картинке PNG">Info</a>
+                                               title="Информация о картинке PNG">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.ImageHDFileName))
                                 {
-                                    if (Model.IconType == "hd")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "hd" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-danger fw-bolder">PictureHD</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.ImageHDFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.ImageHDFileSize</td>
@@ -240,22 +261,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="hd"
-                                               title="Информация о иконке HD PNG">Info</a>
+                                               title="Информация о иконке HD PNG">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.IconFileName))
                                 {
-                                    if (Model.IconType == "icon300")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "icon300" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-danger fw-bolder">Icon300</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.IconFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.IconFileSize</td>
@@ -268,22 +283,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="icon300"
-                                               title="Информация о иконке 300 PNG">Info</a>
+                                               title="Информация о иконке 300 PNG">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.Icon200FileName))
                                 {
-                                    if (Model.IconType == "icon200")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "icon200" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-danger fw-bolder">Icon200</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.Icon200FileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.Icon200FileSize</td>
@@ -296,22 +305,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="icon200"
-                                               title="Информация о иконке 200 PNG">Info</a>
+                                               title="Информация о иконке 200 PNG">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.Icon100FileName))
                                 {
-                                    if (Model.IconType == "icon100")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "icon100" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-danger fw-bolder">Icon100</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.Icon100FileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.Icon100FileSize</td>
@@ -324,22 +327,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="icon100"
-                                               title="Информация о иконке 100 PNG">Info</a>
+                                               title="Информация о иконке 100 PNG">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.WebImageFileName))
                                 {
-                                    if (Model.IconType == "webimage")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "webimage" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-success fw-bolder">WebPicture</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.WebImageFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.WebImageFileSize</td>
@@ -352,22 +349,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="webimage"
-                                               title="Информация картинке WEB">Info</a>
+                                               title="Информация картинке WEB">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.WebImageHDFileName))
                                 {
-                                    if (Model.IconType == "webhd")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "webhd" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-success fw-bolder">WebHD</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.WebImageHDFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.WebImageHDFileSize</td>
@@ -380,22 +371,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="webhd"
-                                               title="Информация о иконке HD WEB">Info</a>
+                                               title="Информация о иконке HD WEB">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.WebIconFileName))
                                 {
-                                    if (Model.IconType == "webicon300")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "webicon300" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-success fw-bolder">WebIcon300</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.WebIconFileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.WebIconFileSize</td>
@@ -408,22 +393,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="webicon300"
-                                               title="Информация о иконке 300 WEB">Info</a>
+                                               title="Информация о иконке 300 WEB">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.WebIcon200FileName))
                                 {
-                                    if (Model.IconType == "webicon200")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "webicon200" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-success fw-bolder">WebIcon200</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.WebIcon200FileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.WebIcon200FileSize</td>
@@ -436,22 +415,16 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="webicon200"
-                                               title="Информация о иконке 200 WEB">Info</a>
+                                               title="Информация о иконке 200 WEB">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }
 
                                 @if (!string.IsNullOrEmpty(Model.ImageItem.WebIcon100FileName))
                                 {
-                                    if (Model.IconType == "webicon100")
-                                    {
-                                        trStyle = "table-primary";
-                                    }
-                                    else
-                                    {
-                                        trStyle = string.Empty;
-                                    }
-                                    <tr class="text-start @trStyle">
+                                    <tr class="text-start @(Model.IconType == "webicon100" ? "table-primary" : "")">
                                         <td scope="col" class="text-start text-success fw-bolder">WebIcon100</td>
                                         <td scope="col" class="text-start text_shadow">@Model.ImageItem.WebIcon100FileName</td>
                                         <td scope="col" class="d-none d-md-table-cell text-start text-primary">@Model.ImageItem.WebIcon100FileSize</td>
@@ -464,7 +437,9 @@
                                                asp-action="DetailsImage"
                                                asp-route-imageId="@Model.ImageItem.ImageFileModelId"
                                                asp-route-imageIcon="webicon100"
-                                               title="Информация о иконке 100 WEB">Info</a>
+                                               title="Информация о иконке 100 WEB">
+                                                Info
+                                            </a>
                                         </td>
                                     </tr>
                                 }

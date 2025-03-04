@@ -28,13 +28,13 @@ public class PageInfoModel
     [Required(ErrorMessage = "Добавте описание")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Описание страницы:")]
+    [Display(Name = "Описание страницы :")]
     public string PageDescription { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Добавте ключевые слова")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [Display(Name = "Ключевые слова:")]
+    [Display(Name = "Ключевые слова :")]
     public string PageKeyWords { get; set; } = string.Empty;
 
     #endregion
@@ -42,30 +42,30 @@ public class PageInfoModel
     #region Адрес страницы
 
     [Required(ErrorMessage = "Отметьте тип страницы")]
-    [Display(Name = "RazorPage:")]
+    [Display(Name = "RazorPage :")]
     public bool PageAsRazorPage { get; set; } = false;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Область:")]
+    [Display(Name = "Область :")]
     [DataType(DataType.Text)]
     public string PageArea { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Контроллер:")]
+    [Display(Name = "Контроллер :")]
     [DataType(DataType.Text)]
     public string Controller { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Действие:")]
+    [Display(Name = "Действие :")]
     [DataType(DataType.Text)]
     public string Action { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Данные:")]
+    [Display(Name = "Данные :")]
     [DataType(DataType.Text)]
     public string RoutData { get; set; } = string.Empty;
 
@@ -76,19 +76,19 @@ public class PageInfoModel
     public string PageFullPathWithData { get; set; } = string.Empty;
 
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Псевдоним адреса страницы:")]
+    [Display(Name = "Псевдоним адреса страницы :")]
     [DataType(DataType.Text)]
     public string PagePathNickName { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Псевдоним адреса страницы:")]
+    [Display(Name = "Псевдоним адреса страницы :")]
     [DataType(DataType.Text)]
     public string PagePathNickNameWithData { get; set; } = string.Empty;
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Адрес страницы:")]
+    [Display(Name = "Адрес страницы :")]
     [DataType(DataType.Text)]
     public string PageLoc { get; set; } = string.Empty;
 
@@ -98,17 +98,17 @@ public class PageInfoModel
 
     [Required(ErrorMessage = "Укажите дату изменения")]
     [DataType(DataType.Date)]
-    [Display(Name = "Дата изменения:")]
+    [Display(Name = "Дата изменения :")]
     public DateTime PageLastmod { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Частота изменения:")]
+    [Display(Name = "Частота изменения :")]
     [DataType(DataType.Text)]
     [MaxLength(7)]
     public string Changefreq { get; set; } = "monthly";
 
     [Required(ErrorMessage = "Выберите значения от 0.1 до 1.0")]
-    [Display(Name = "Приоритет страницы:")]
+    [Display(Name = "Приоритет страницы :")]
     [DataType(DataType.Text)]
     [MaxLength(3)]
     public string Priority { get; set; } = "0.5";
@@ -118,22 +118,22 @@ public class PageInfoModel
     #region BrowserConfig и т.п.
 
     [Required(ErrorMessage = "Необходимо указать файл browserconfig")]
-    [Display(Name = "Файл browserconfig: ")]
+    [Display(Name = "Файл browserconfig :")]
     [DataType(DataType.Text)]
     public string BrowserConfig { get; set; } = "main.xml";
 
     [Required(ErrorMessage = "Укажите каталог иконок browserconfig")]
-    [Display(Name = "Каталог иконок browserconfig: ")]
+    [Display(Name = "Каталог иконок browserconfig :")]
     [DataType(DataType.Text)]
     public string BrowserConfigFolder { get; set; } = "main";
 
     [Required(ErrorMessage = "Необходимо указать файл manifest")]
-    [Display(Name = "Файл manifest: ")]
+    [Display(Name = "Файл manifest :")]
     [DataType(DataType.Text)]
     public string Manifest { get; set; } = "main.json";
 
     [Required(ErrorMessage = "Выберите папку с иконками")]
-    [Display(Name = "Папка с иконками:")]
+    [Display(Name = "Папка с иконками :")]
     [DataType(DataType.Text)]
     public string PageIconPath { get; set; } = "0.5";
 
@@ -142,7 +142,7 @@ public class PageInfoModel
     #region OpenGraph
 
     [Required(ErrorMessage = "Необходимо указать og:type")]
-    [Display(Name = "Open Graph")]
+    [Display(Name = "Open Graph :")]
     [DataType(DataType.Text)]
     public string OgType { get; set; } = "website";
 
@@ -153,7 +153,7 @@ public class PageInfoModel
     // Текст карточки страницы
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Текст карточки:")]
+    [Display(Name = "Текст карточки :")]
     [DataType(DataType.Text)]
     public string PageCardText { get; set; } = string.Empty;
 
@@ -171,17 +171,17 @@ public class PageInfoModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Заголовок страницы (<h1>...</h1>):")]
+    [Display(Name = "Заголовок страницы (<h1>...</h1>) :")]
     [DataType(DataType.Text)]
     public string PageHeading { get; set; } = string.Empty;
 
-    [Display(Name = "Картинка заголовка страницы:")]
+    [Display(Name = "Картинка под заголовком :")]
     public Guid? ImagePageHeadingId { get; set; } = null;
     public ImageFileModel? ImagePageHeading { get; set; }
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Текст страницы (<article>...</article>):")]
+    [Display(Name = "Текст страницы (HTML) :")]
     [DataType(DataType.Text)]
     public string TextOfPage { get; set; } = string.Empty;
 
@@ -190,52 +190,52 @@ public class PageInfoModel
     #region Связанные страницы и видео
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить первые ссылки по GUID:")]
+    [Display(Name = "Ссылки по GUID (1) :")]
     public bool PageLinks { get; set; } = false;
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить вторые ссылки по GUID:")]
+    [Display(Name = "Ссылки по GUID (2) :")]
     public bool PageLinks2 { get; set; } = false;
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить ссылки на видео:")]
+    [Display(Name = "Ссылки на видео :")]
     public bool VideoLinks { get; set; } = false;
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Включить ссылки по фильтрам:")]
+    [Display(Name = "Ссылки на страницы :")]
     public bool PageLinksByFilters { get; set; } = false;
 
     // строка по которой осуществляется поиск текущей страницы
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтр поиска текущей страницы:")]
+    [Display(Name = "Фильтр поиска страницы :")]
     [DataType(DataType.Text)]
     public string PageFilter { get; set; } = string.Empty;
 
     // список фильтров (PageFilter) страниц сайта, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска страниц сайта:")]
+    [Display(Name = "Фильтры поиска страниц :")]
     [DataType(DataType.Text)]
     public string PageFilterOut { get; set; } = string.Empty;
 
     // список фильтров (SearchFilter) видео, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска видео:")]
+    [Display(Name = "Фильтры поиска видео :")]
     [DataType(DataType.Text)]
     public string VideoFilterOut { get; set; } = string.Empty;
 
     // список GUID страниц, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки на страницы по GUID (1):")]
+    [Display(Name = "Ссылки по GUID (1) :")]
     public string RefPages { get; set; } = string.Empty;
 
     // второй список GUID страниц, для формирования ссылок на них
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки на страницы по GUID (2):")]
+    [Display(Name = "Ссылки по GUID (2) :")]
     public string RefPages2 { get; set; } = string.Empty;
 
     #endregion
