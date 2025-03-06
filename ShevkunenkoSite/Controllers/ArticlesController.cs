@@ -1,9 +1,23 @@
 ﻿namespace ShevkunenkoSite.Controllers;
 
-public class ArticlesController : Controller
+public class ArticlesController (
+    IBooksAndArticlesRepository articleContext,
+    ITextInfoRepository textContext) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index(Guid? articleId, int? pageNumber)
     {
-        return View();
+        if (articleId != null 
+            && pageNumber != null
+            && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == articleId).AnyAsync() 
+            && await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync()
+            && pageNumber > 0
+            && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
+        {
+            return View("Article");
+        }
+        else
+        {
+            return View();
+        }
     }
 }

@@ -2,12 +2,16 @@
 
 public class ImageFileModel
 {
-    #region Описание
+    #region Guid картинки
 
     [Key]
     [Display(Name = "Идентификатор картинки :")]
     [Column("ImageFileId")]
     public Guid ImageFileModelId { get; set; }
+
+    #endregion
+
+    #region Описание
 
     [Required(ErrorMessage = "Введите название картинки")]
     [DataType(DataType.Text)]

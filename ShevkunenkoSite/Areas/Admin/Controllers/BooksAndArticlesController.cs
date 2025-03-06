@@ -1,10 +1,14 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
 public class BooksAndArticlesController(
     IBooksAndArticlesRepository bookContext,
-    ITextInfoRepository textContext) : Controller
+    ITextInfoRepository textContext,
+    IImageFileRepository imageContext) : Controller
 {
     #region Список книг и статей
 
@@ -40,6 +44,7 @@ public class BooksAndArticlesController(
         if (bookId.HasValue & await bookContext.BooksAndArticles.Where(b => b.BooksAndArticlesModelId == bookId).AnyAsync())
         {
             var bookItem = await bookContext.BooksAndArticles
+                .Include(inc => inc.LogoOfArticle)
                  .AsNoTracking()
                  .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
@@ -145,7 +150,10 @@ public class BooksAndArticlesController(
         {
             var editBook = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookId);
 
-            return View(editBook);
+            return View(new AddAndEditArticleViewModel
+            {
+                BookOrArticle = editBook
+            });
         }
         else
         {
@@ -155,40 +163,129 @@ public class BooksAndArticlesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditBook(BooksAndArticlesModel bookItem)
+    public async Task<IActionResult> EditBook(AddAndEditArticleViewModel bookItem)
     {
         if (ModelState.IsValid)
         {
             BooksAndArticlesModel bookUpdate = await bookContext.BooksAndArticles
-                .FirstAsync(book => book.BooksAndArticlesModelId == bookItem.BooksAndArticlesModelId);
+                .FirstAsync(book => book.BooksAndArticlesModelId == bookItem.BookOrArticle.BooksAndArticlesModelId);
 
             #region Тип текста
 
-            bookUpdate.TypeOfText = bookItem.TypeOfText.Trim();
+            bookUpdate.TypeOfText = bookItem.BookOrArticle.TypeOfText.Trim();
 
             #endregion
 
             #region Автор книги или статьи
 
-            bookUpdate.AuthorOfText = bookItem.AuthorOfText.Trim();
+            bookUpdate.AuthorOfText = bookItem.BookOrArticle.AuthorOfText.Trim();
+
+            #endregion
+
+            #region Логотип статьи
+
+            if (bookItem.LogoOfArticleFormFile != null)
+            {
+                if (bookUpdate.TypeOfText == "book")
+                {
+                    bookUpdate.LogoOfArticleId = null;
+                }
+                else
+                {
+                    if (await imageContext.ImageFiles.Where(i => i.ImageFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == bookItem.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == bookItem.LogoOfArticleFormFile.FileName);
+
+                        bookUpdate.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("LogoOfArticleFormFile", $"Добавьте картинку «{bookItem.LogoOfArticleFormFile.FileName}» в базу данных");
+
+                        return View(nameof(EditBook), new AddAndEditArticleViewModel
+                        {
+                            BookOrArticle = bookUpdate
+                        });
+                    }
+
+                }
+            }
+            else
+            {
+                bookUpdate.LogoOfArticleId = bookItem.BookOrArticle.LogoOfArticleId;
+            }
 
             #endregion
 
             #region Название книги или статьи
 
-            bookUpdate.BookDescription = bookItem.BookDescription.Trim();
+            bookUpdate.BookDescription = bookItem.BookOrArticle.BookDescription.Trim();
 
             #endregion
 
             #region Описание книги или статьи
 
-            bookUpdate.CaptionOfText = bookItem.CaptionOfText.Trim();
+            bookUpdate.CaptionOfText = bookItem.BookOrArticle.CaptionOfText.Trim();
 
             #endregion
 
             #region Колличество страниц
 
-            bookUpdate.NumberOfPages = bookItem.NumberOfPages;
+            bookUpdate.NumberOfPages = bookItem.BookOrArticle.NumberOfPages;
 
             #endregion
 

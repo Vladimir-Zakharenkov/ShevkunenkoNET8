@@ -26,6 +26,14 @@ public class BooksAndArticlesModel
 
     #endregion
 
+    #region Логотип статьи
+
+    [Display(Name = "Логотип статьи :")]
+    public Guid? LogoOfArticleId { get; set; }
+    public ImageFileModel? LogoOfArticle { get; set; }
+
+    #endregion
+
     #region Автор книги (статьи)
 
     [Required(ErrorMessage = "Введите автора текста", AllowEmptyStrings = true)]

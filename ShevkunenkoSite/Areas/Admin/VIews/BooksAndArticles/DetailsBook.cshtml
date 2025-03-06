@@ -79,6 +79,47 @@
 
             </div>
 
+            @* Логотип статьи*@
+            <div class="@(Model.TypeOfText == "article" ? "" : "d-none")">
+
+                <label asp-for="LogoOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.LogoOfArticleId != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="ImageInfo"
+                       asp-action="DetailsImage"
+                       asp-route-imageid="@Model.LogoOfArticleId"
+                       class="d-block mx-auto maxwidth700px shadw imageref"
+                       title="информация о картинке"
+                       onclick="this.target='_blank'">
+                        <vc:view-image image-id="@Model.LogoOfArticleId" css-class="w-100" icon-type="webimage" />
+                    </a>
+
+                    @if (!string.IsNullOrEmpty(Model.LogoOfArticle?.WebImageFileName))
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.LogoOfArticle.ImagePath/@Model.LogoOfArticle.WebImageFileName
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.LogoOfArticle?.ImagePath/@Model.LogoOfArticle?.ImageFileName
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="form-text">
+                        <span class="fs-6 text-success">логотип для статьи не задан</span>
+                    </p>
+                }
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
             @* Автор книги или статьи *@
             <div>
 
