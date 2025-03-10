@@ -1,1 +1,17 @@
-﻿<h1>Статья</h1>
+﻿@model ArticleViewModel
+
+<article itemscope itemtype="http://schema.org/Article">
+
+    <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
+    <meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText">
+    <meta itemprop="datePublished dateModified" content="1995-02-14">
+    <meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+
+    <a href="http://www.newsru.com/russia/16apr2001/segodnya.html"
+       class="@(Model.BookOrArticle.LogoOfArticleId != null ? "d-block mx-auto maxwidth700px shadw imageref" : "d-none")"
+       title="логотип издания"
+       onclick="this.target='_blank'">
+        <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId" css-class="w-100" icon-type="webimage" />
+    </a>
+
+</article>

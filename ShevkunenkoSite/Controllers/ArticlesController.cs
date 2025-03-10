@@ -13,7 +13,12 @@ public class ArticlesController (
             && pageNumber > 0
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
-            return View("Article");
+            ArticleViewModel bookOrArticle = new()
+            {
+                BookOrArticle = await articleContext.BooksAndArticles.FirstAsync(article => article.BooksAndArticlesModelId == articleId)
+            };
+
+            return View("Article", bookOrArticle);
         }
         else
         {

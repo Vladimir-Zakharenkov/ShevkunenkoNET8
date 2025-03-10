@@ -21,6 +21,7 @@
             <div>
 
                 <input asp-for="BookOrArticle.BooksAndArticlesModelId" type="hidden" />
+                <input asp-for="BookOrArticle.LogoOfArticleId" type="hidden" />
 
             </div>
 
@@ -72,7 +73,7 @@
                        asp-controller="ImageInfo"
                        asp-action="DetailsImage"
                        asp-route-imageid="@Model.BookOrArticle.LogoOfArticleId"
-                       class="d-block mx-auto maxwidth300px shadw imageref"
+                       class="d-block mx-auto maxwidth700px shadw imageref"
                        title="информация о картинке"
                        onclick="this.target='_blank'">
                         <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId" css-class="w-100" icon-type="webimage" />

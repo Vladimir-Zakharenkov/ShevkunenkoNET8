@@ -1,4 +1,4 @@
-﻿@model BooksAndArticlesModel
+﻿@model AddAndEditArticleViewModel
 
 <h1 class="fs-3 text_shadow">Добавить книгу (статью)</h1>
 
@@ -19,7 +19,7 @@
             @* скрытые поля формы *@
             <div>
 
-                <input asp-for="BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
+                <input asp-for="@Model.BookOrArticle.BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
 
             </div>
 
@@ -27,16 +27,16 @@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
-                    <label asp-for="TypeOfText" class="col-form-label text-primary fs-5"></label>
+                    <label asp-for="@Model.BookOrArticle.TypeOfText" class="col-form-label text-primary fs-5"></label>
                 </div>
 
                 <div class="col-auto" aria-describedby="TypesOfTextInputHelpBlock">
 
-                    <select id="TypesOfText" asp-for="TypeOfText" class="form-select">
+                    <select id="TypesOfText" asp-for="@Model.BookOrArticle.TypeOfText" class="form-select">
                         @{
-                            for (int i = 0; i < Model.TypesOfText.Count(); i++)
+                            for (int i = 0; i < @Model.BookOrArticle.TypesOfText.Count(); i++)
                             {
-                                <option value="@Model.TypesOfText[i]">@Model.TypesOfText[i]</option>
+                                <option value="@Model.BookOrArticle.TypesOfText[i]">@Model.BookOrArticle.TypesOfText[i]</option>
                             }
                         }
                     </select>
@@ -53,22 +53,50 @@
 
                 @if (Context.Request.Method == "POST")
                 {
-                    <span asp-validation-for="TypesOfText" class="text-danger"></span>
+                    <span asp-validation-for="@Model.BookOrArticle.TypesOfText" class="text-danger"></span>
                 }
 
                 <hr class="w-50 mx-auto" />
 
             </div>
 
+            @* Логотип статьи *@
+            <div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-auto">
+                        <label asp-for="LogoOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                    </div>
+
+                    <div class="col-auto text-start">
+                        <input id="LogoOfArticleFormFileInput" asp-for="LogoOfArticleFormFile" class="form-control" aria-describedby="LogoOfArticleFormFileInputHelpBlock" />
+                    </div>
+
+                </div>
+
+                <div id="LogoOfArticleFormFileInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">выбрать файл логотипа</span>
+
+                </div>
+
+                <span asp-validation-for="LogoOfArticleFormFile" class="text-danger"></span>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+
             @* автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
-                    <label asp-for="AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                    <label asp-for="@Model.BookOrArticle.AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
                 </div>
 
                 <div class="col-auto text-start">
-                    <input id="AuthorOfTextInput" asp-for="AuthorOfText" class="form-control" aria-describedby="AuthorOfTextInputHelpBlock" />
+                    <input id="AuthorOfTextInput" asp-for="@Model.BookOrArticle.AuthorOfText" class="form-control" aria-describedby="AuthorOfTextInputHelpBlock" />
                 </div>
 
                 <div id="AuthorOfTextInputHelpBlock" class="form-text">
@@ -81,7 +109,7 @@
 
                 @if (Context.Request.Method == "POST")
                 {
-                    <span asp-validation-for="AuthorOfText" class="text-danger"></span>
+                    <span asp-validation-for="@Model.BookOrArticle.AuthorOfText" class="text-danger"></span>
                 }
 
                 <hr class="w-50 mx-auto" />
@@ -92,11 +120,11 @@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
-                    <label asp-for="CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                    <label asp-for="@Model.BookOrArticle.CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
                 </div>
 
                 <div class="col-auto text-start">
-                    <input id="CaptionOfTextInput" asp-for="CaptionOfText" class="form-control" aria-describedby="CaptionOfTextInputHelpBlock" />
+                    <input id="CaptionOfTextInput" asp-for="@Model.BookOrArticle.CaptionOfText" class="form-control" aria-describedby="CaptionOfTextInputHelpBlock" />
                 </div>
 
                 <div id="CaptionOfTextInputHelpBlock" class="form-text">
@@ -109,7 +137,7 @@
 
                 @if (Context.Request.Method == "POST")
                 {
-                    <span asp-validation-for="CaptionOfText" class="text-danger"></span>
+                    <span asp-validation-for="@Model.BookOrArticle.CaptionOfText" class="text-danger"></span>
                 }
 
                 <hr class="w-50 mx-auto" />
@@ -119,10 +147,10 @@
             @* описание текста *@
             <div>
 
-                <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+                <label asp-for="@Model.BookOrArticle.BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
 
                 <textarea id="BookDescriptionInput" class="form-control fordetails"
-                          asp-for="BookDescription"
+                          asp-for="@Model.BookOrArticle.BookDescription"
                           rows="3"
                           aria-describedby="BookDescriptionInputHelpBlock">
                 </textarea>
@@ -135,7 +163,7 @@
 
                 </div>
 
-                <span asp-validation-for="BookDescription" class="text-danger"></span>
+                <span asp-validation-for="@Model.BookOrArticle.BookDescription" class="text-danger"></span>
 
                 <hr class="w-50 mx-auto" />
 
@@ -145,11 +173,11 @@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
-                    <label asp-for="NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
+                    <label asp-for="@Model.BookOrArticle.NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
                 </div>
 
                 <div class="col-auto text-start">
-                    <input id="NumberOfPagesInput" asp-for="NumberOfPages" class="form-control text-center" aria-describedby="NumberOfPagesInputHelpBlock" />
+                    <input id="NumberOfPagesInput" asp-for="@Model.BookOrArticle.NumberOfPages" class="form-control text-center" aria-describedby="NumberOfPagesInputHelpBlock" />
                 </div>
 
                 <div id="NumberOfPagesInputHelpBlock" class="form-text">
@@ -162,7 +190,7 @@
 
                 @if (Context.Request.Method == "POST")
                 {
-                    <span asp-validation-for="NumberOfPages" class="text-danger"></span>
+                    <span asp-validation-for="@Model.BookOrArticle.NumberOfPages" class="text-danger"></span>
                 }
 
             </div>

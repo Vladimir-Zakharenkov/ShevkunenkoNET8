@@ -20,8 +20,9 @@ public class BooksAndArticlesModel
     [NotMapped]
     public string[] TypesOfText =
         [
-                "book",
-                "article"
+            "web",
+            "book",
+            "article"
         ];
 
     #endregion
@@ -66,6 +67,15 @@ public class BooksAndArticlesModel
 
     [Display(Name = "Количество страниц :")]
     public int? NumberOfPages { get; set; }
+
+    #endregion
+
+    #region Дата публикации
+
+    [Required(ErrorMessage = "Укажите дату публикации")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Дата публикации статьи (книги) :")]
+    public DateTime MovieDateCreated { get; set; } = DateTime.Today;
 
     #endregion
 }

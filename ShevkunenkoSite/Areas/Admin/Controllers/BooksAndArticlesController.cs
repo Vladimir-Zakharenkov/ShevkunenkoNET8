@@ -63,71 +63,159 @@ public class BooksAndArticlesController(
     [HttpGet]
     public ViewResult AddBook()
     {
-        BooksAndArticlesModel newBook = new();
+        AddAndEditArticleViewModel newBook = new();
 
         return View(newBook);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddBook(BooksAndArticlesModel addBook)
+    public async Task<IActionResult> AddBook(AddAndEditArticleViewModel addBook)
     {
         if (ModelState.IsValid)
         {
             #region Тип текста
 
-            if (addBook.TypeOfText != null)
+            if (addBook.BookOrArticle.TypeOfText != null)
             {
-                addBook.TypeOfText = addBook.TypeOfText.Trim();
+                addBook.BookOrArticle.TypeOfText = addBook.BookOrArticle.TypeOfText.Trim();
             }
             else
             {
-                addBook.TypeOfText = string.Empty;
+                addBook.BookOrArticle.TypeOfText = string.Empty;
             }
 
             #endregion
 
+            #region Логотип статьи
 
-            #region Автор книги или статьи
-
-            if (addBook.AuthorOfText != null)
+            if (addBook.LogoOfArticleFormFile != null)
             {
-                addBook.AuthorOfText = addBook.AuthorOfText.Trim();
+                if (addBook.BookOrArticle.TypeOfText == "book")
+                {
+                    addBook.BookOrArticle.LogoOfArticleId = null;
+                }
+                else
+                {
+                    if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                    {
+                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("LogoOfArticleFormFile", $"Добавьте картинку «{addBook.LogoOfArticleFormFile.FileName}» в базу данных");
+
+                        return View(nameof(AddBook), new AddAndEditArticleViewModel
+                        {
+                            BookOrArticle = addBook.BookOrArticle
+                        });
+                    }
+
+                }
             }
             else
             {
-                addBook.AuthorOfText = string.Empty;
+                _ = addBook.BookOrArticle.LogoOfArticleId;
+            }
+
+            #endregion
+
+            #region Автор книги или статьи
+
+            if (addBook.BookOrArticle.AuthorOfText != null)
+            {
+                addBook.BookOrArticle.AuthorOfText = addBook.BookOrArticle.AuthorOfText.Trim();
+            }
+            else
+            {
+                addBook.BookOrArticle.AuthorOfText = string.Empty;
             }
 
             #endregion
 
             #region Название книги или статьи
 
-            addBook.BookDescription = addBook.BookDescription.Trim();
+            addBook.BookOrArticle.BookDescription = addBook.BookOrArticle.BookDescription.Trim();
 
             #endregion
 
             #region Описание книги или статьи
 
-            addBook.CaptionOfText = addBook.CaptionOfText.Trim();
+            addBook.BookOrArticle.CaptionOfText = addBook.BookOrArticle.CaptionOfText.Trim();
 
             #endregion
 
             #region Колличество страниц
 
-            addBook.NumberOfPages = addBook.NumberOfPages;
+            addBook.BookOrArticle.NumberOfPages = addBook.BookOrArticle.NumberOfPages;
 
             #endregion
 
             #region добавить в БД
 
-            await bookContext.AddBookOrArticleAsync(addBook);
+            await bookContext.AddBookOrArticleAsync(addBook.BookOrArticle);
 
             #endregion
 
             #region Открытие параметров добавленной книги (статьи)
 
-            var newBook = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == addBook.CaptionOfText);
+            var newBook = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == addBook.BookOrArticle.CaptionOfText);
 
             return RedirectToAction(nameof(DetailsBook), new { bookId = newBook.BooksAndArticlesModelId });
 

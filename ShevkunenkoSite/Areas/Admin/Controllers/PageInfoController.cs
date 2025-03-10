@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using NuGet.Configuration;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -732,6 +734,7 @@ public class PageInfoController(
             addItem.PageItem.PageLastmod = DateTime.Now;
             addItem.PageItem.Changefreq = addItem.PageItem.Changefreq.Trim();
             addItem.PageItem.Priority = addItem.PageItem.Priority.Trim();
+            addItem.PageItem.OgType = addItem.PageItem.OgType.Trim();
 
             #endregion
 
@@ -1330,6 +1333,7 @@ public class PageInfoController(
             pageUpdate.PageLastmod = DateTime.Now;
             pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
             pageUpdate.Priority = editPage.PageItem.Priority.Trim();
+            pageUpdate.OgType = editPage.PageItem.OgType.Trim();
 
             #endregion
 

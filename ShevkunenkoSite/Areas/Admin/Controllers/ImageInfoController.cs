@@ -1,8 +1,12 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using System.Configuration;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
-public class ImageInfoController(IImageFileRepository imageContext) : Controller
+public class ImageInfoController(
+    IImageFileRepository imageContext,
+    IBooksAndArticlesRepository bookContext) : Controller
 {
     public ImageFileModel? ImageItem { get; set; }
 
@@ -6073,6 +6077,13 @@ public class ImageInfoController(IImageFileRepository imageContext) : Controller
     {
         if (deleteImage != null)
         {
+            if (await bookContext.BooksAndArticles.Where(book => book.LogoOfArticleId == deleteImage.ImageFileModelId).AnyAsync())
+            {
+                ModelState.AddModelError("", "Ссылки на картинку в базе текстов сайта");
+
+                return View(deleteImage);
+            }
+
             if (await imageContext.ImageFiles.Where(i => i.ImageFileModelId == deleteImage.ImageFileModelId).AnyAsync())
             {
                 await imageContext.DeleteImageAsync(deleteImage.ImageFileModelId);

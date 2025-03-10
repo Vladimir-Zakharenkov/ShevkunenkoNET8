@@ -1,16 +1,24 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
-public class HeadMain(IPageInfoRepository pageInfoContext, IIconFileRepository iconFileContext) : ViewComponent
+public class HeadMain(
+    IPageInfoRepository pageInfoContext,
+    IIconFileRepository iconFileContext) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        List<IconFileModel> iconList = await iconFileContext.IconFiles.Where(icon => icon.IconPath == pageInfoModel.PageIconPath).AsNoTracking().ToListAsync();
+        List<IconFileModel> iconList = await iconFileContext.IconFiles
+            .Where(icon => icon.IconPath == pageInfoModel.PageIconPath)
+            .AsNoTracking()
+            .ToListAsync();
 
         if (iconList.Count == 0)
         {
-            iconList = await iconFileContext.IconFiles.Where(icon => icon.IconPath == "main/").AsNoTracking().ToListAsync();
+            iconList = await iconFileContext.IconFiles
+                .Where(icon => icon.IconPath == "main/")
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         return View(new HeadViewModel
