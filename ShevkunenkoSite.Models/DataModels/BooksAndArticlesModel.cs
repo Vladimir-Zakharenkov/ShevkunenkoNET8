@@ -58,7 +58,7 @@ public class BooksAndArticlesModel
     [Required(ErrorMessage = "Добавте описание")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Описание книги (статьи):")]
+    [Display(Name = "Описание книги (статьи) :")]
     public string BookDescription { get; set; } = string.Empty;
 
     #endregion
@@ -74,8 +74,18 @@ public class BooksAndArticlesModel
 
     [Required(ErrorMessage = "Укажите дату публикации")]
     [DataType(DataType.Date)]
-    [Display(Name = "Дата публикации статьи (книги) :")]
-    public DateTime MovieDateCreated { get; set; } = DateTime.Today;
+    [Display(Name = "Дата публикации :")]
+    public DateTime DateOfPublication { get; set; } = DateTime.Today;
+
+    #endregion
+
+    #region Теги по содержанию книги (статьи)
+
+    [Required(ErrorMessage = "Добавте теги")]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Теги по содержанию книги (статьи) :")]
+    public string TagsForBook { get; set; } = string.Empty;
 
     #endregion
 }

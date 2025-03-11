@@ -161,9 +161,12 @@ public class PageInfoModel
     public Guid BackgroundFileModelId { get; set; }
     public BackgroundFileModel? BackgroundFileModel { get; set; }
 
-    // Картинка страницы
+    #endregion
+
+    #region Картинка страницы
+
     public Guid ImageFileModelId { get; set; }
-    public ImageFileModel? ImageFileModel { get; set; }
+    public ImageFileModel ImageFileModel { get; set; } = new();
 
     #endregion
 
@@ -249,5 +252,5 @@ public class PageInfoModel
     #endregion
 
     // навигационное свойство
-    public MovieFileModel? MovieFile { get; set; }
+    public MovieFileModel MovieFile { get; set; } = new();
 }

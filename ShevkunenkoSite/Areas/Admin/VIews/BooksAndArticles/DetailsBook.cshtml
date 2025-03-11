@@ -153,7 +153,7 @@
             </div>
 
             @* Описание книги или статьи *@
-            <div>
+            <div class="mx-auto maxwidth700px">
 
                 <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
 
@@ -183,6 +183,22 @@
                 <div class="form-text">
                     <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
                     <span class="fs-6 text-success">колличество страниц</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Дата публикации *@
+            <div>
+
+                <label asp-for="DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <p class="fs-4 text-center text_shadow">@String.Format("{0:D}", Model.DateOfPublication); </p>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «DateOfPublication» - </span>
+                    <span class="fs-6 text-success">дата издания книги (статьи)</span>
                 </div>
 
             </div>

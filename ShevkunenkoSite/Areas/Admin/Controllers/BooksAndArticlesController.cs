@@ -78,7 +78,7 @@ public class BooksAndArticlesController(
 
             if (addBook.BookOrArticle.TypeOfText != null)
             {
-                addBook.BookOrArticle.TypeOfText = addBook.BookOrArticle.TypeOfText.Trim();
+                _ = addBook.BookOrArticle.TypeOfText.Trim();
             }
             else
             {
@@ -180,7 +180,7 @@ public class BooksAndArticlesController(
 
             if (addBook.BookOrArticle.AuthorOfText != null)
             {
-                addBook.BookOrArticle.AuthorOfText = addBook.BookOrArticle.AuthorOfText.Trim();
+                _ = addBook.BookOrArticle.AuthorOfText.Trim();
             }
             else
             {
@@ -191,7 +191,7 @@ public class BooksAndArticlesController(
 
             #region Название книги или статьи
 
-            addBook.BookOrArticle.BookDescription = addBook.BookOrArticle.BookDescription.Trim();
+            _ = addBook.BookOrArticle.BookDescription.Trim();
 
             #endregion
 
@@ -203,11 +203,17 @@ public class BooksAndArticlesController(
 
             #region Колличество страниц
 
-            addBook.BookOrArticle.NumberOfPages = addBook.BookOrArticle.NumberOfPages;
+            _ = addBook.BookOrArticle.NumberOfPages;
 
             #endregion
 
-            #region добавить в БД
+            #region Дата публикации книги (статьи)
+
+            _ = addBook.BookOrArticle.DateOfPublication;
+
+            #endregion
+
+            #region Добавить в БД
 
             await bookContext.AddBookOrArticleAsync(addBook.BookOrArticle);
 
@@ -374,6 +380,12 @@ public class BooksAndArticlesController(
             #region Колличество страниц
 
             bookUpdate.NumberOfPages = bookItem.BookOrArticle.NumberOfPages;
+
+            #endregion
+
+            #region Дата публикации книги (статьи)
+
+            bookUpdate.DateOfPublication = bookItem.BookOrArticle.DateOfPublication;
 
             #endregion
 

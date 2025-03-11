@@ -87,7 +87,6 @@
 
             </div>
 
-
             @* автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
@@ -145,11 +144,11 @@
             </div>
 
             @* описание текста *@
-            <div>
+            <div class="row g-2 justify-content-center">
 
                 <label asp-for="@Model.BookOrArticle.BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
 
-                <textarea id="BookDescriptionInput" class="form-control fordetails"
+                <textarea id="BookDescriptionInput" class="form-control fordetails maxwidth700px"
                           asp-for="@Model.BookOrArticle.BookDescription"
                           rows="3"
                           aria-describedby="BookDescriptionInputHelpBlock">
@@ -193,10 +192,38 @@
                     <span asp-validation-for="@Model.BookOrArticle.NumberOfPages" class="text-danger"></span>
                 }
 
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* дата публикации книги (статьи) *@
+            <div class="row g-2 justify-content-center mb-xl-2">
+
+                <div class="col-auto">
+                    <label asp-for="@Model.BookOrArticle.DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto">
+                    <input id="DateOfPublicationInput" asp-for="@Model.BookOrArticle.DateOfPublication" class="form-control text-center" aria-describedby="DateOfPublicationInputHelpBlock" />
+                </div>
+
+                <div id="DateOfPublicationInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">дата публикации - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="@Model.BookOrArticle.DateOfPublication" class="text-danger"></span>
+                }
+
             </div>
 
             @* сохранить - отменить *@
-            <div class="card-footer p-0 pb-2 mt-4">
+            <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
 
                 <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
                         title="Сохранить">

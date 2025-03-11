@@ -230,6 +230,34 @@
                     <span asp-validation-for="BookOrArticle.NumberOfPages" class="text-danger"></span>
                 }
 
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* дата публикации книги (статьи) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="BookOrArticle.DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto text-start">
+                    <input id="CaptionOfTextInput" asp-for="BookOrArticle.DateOfPublication" class="form-control" aria-describedby="CaptionOfTextInputHelpBlock" />
+                </div>
+
+                <div id="CaptionOfTextInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">дата публикации книги (статьи) - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">обязательное поле</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.DateOfPublication" class="text-danger"></span>
+                }
+
             </div>
 
             @* сохранить - отменить *@

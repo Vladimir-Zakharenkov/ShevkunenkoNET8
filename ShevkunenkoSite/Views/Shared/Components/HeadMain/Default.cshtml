@@ -1,4 +1,6 @@
-﻿<head>
+﻿@model HeadViewModel
+
+<head>
 
     <meta charset="UTF-8">
     <title>@Model.PageInfo.PageTitle</title>
@@ -73,10 +75,13 @@
 
     @if (Model.PageInfo.OgType == "article")
     {
-        <meta property="article:published_time" content="1995-02-14">
-        <meta property="article:tag" content="Шевкуненко">
-        <meta property="article:tag" content="Москва">
-        <meta property="article:tag" content="убийство">
+        if (Model.BookOrArticle != null)
+        {
+            <meta property="article:published_time" content="@Model.BookOrArticle.DateOfPublication.ToString("dd-MM-yyyy")">
+            <meta property="article:tag" content="Шевкуненко">
+            <meta property="article:tag" content="Москва">
+            <meta property="article:tag" content="убийство">
+        }
     }
 
     <meta property="og:locale" content="ru_RU" />
@@ -220,7 +225,7 @@
             <meta property="ya:ovs:person" content="@Model.PageInfo.MovieFile.MovieActor10" />
             <meta property="ya:ovs:person:role" content="actor" />
         }
-        @if (Model.PageInfo.MovieFile.MoviePosterId != null)
+        @if (Model.PageInfo.MovieFile.MoviePoster != null)
         {
             <meta property="ya:ovs:poster" content="https://@Context.Request.Host@Model.PageInfo.MovieFile.MoviePoster.ImagePath/@Model.PageInfo.MovieFile.MoviePoster.WebImageFileName" />
         }
