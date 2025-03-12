@@ -5,24 +5,25 @@
 namespace ShevkunenkoSite.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class _220220252308 : Migration
+    public partial class _110320252253 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "TxtFileSize",
+            migrationBuilder.AddColumn<string>(
+                name: "Publisher",
                 table: "BooksAndArticles",
-                newName: "NumberOfPages");
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "NumberOfPages",
-                table: "BooksAndArticles",
-                newName: "TxtFileSize");
+            migrationBuilder.DropColumn(
+                name: "Publisher",
+                table: "BooksAndArticles");
         }
     }
 }

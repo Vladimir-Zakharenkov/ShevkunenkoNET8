@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20250202213252_03-02-2025-00-31")]
-    partial class _030220250031
+    [Migration("20250311195506_11-03-2025-22-53")]
+    partial class _110320252253
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,53 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasKey("BackgroundFileModelId");
 
                     b.ToTable("BackgroundFile");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
+                {
+                    b.Property<Guid>("BooksAndArticlesModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BooksArticlesId");
+
+                    b.Property<string>("AuthorOfText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BookDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CaptionOfText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfPublication")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LogoOfArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("NumberOfPages")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TagsForBook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeOfText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BooksAndArticlesModelId");
+
+                    b.HasIndex("LogoOfArticleId");
+
+                    b.ToTable("BooksAndArticles");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.IconFileModel", b =>
@@ -385,10 +432,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HeadingOfArticle1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IconType1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -631,10 +674,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<Guid?>("TextInfoModelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TextOfArticle1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TopicGuidList")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -831,9 +870,18 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TextInfoId");
 
+                    b.Property<Guid?>("BooksAndArticlesModelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("HtmlFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HtmlFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SequenceNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("TextDescription")
                         .IsRequired()
@@ -843,7 +891,12 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TxtFileSize")
+                        .HasColumnType("int");
+
                     b.HasKey("TextInfoModelId");
+
+                    b.HasIndex("BooksAndArticlesModelId");
 
                     b.ToTable("TextFile");
                 });
@@ -879,6 +932,15 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasKey("TopicMovieModelId");
 
                     b.ToTable("TopicMovie");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
+                {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "LogoOfArticle")
+                        .WithMany()
+                        .HasForeignKey("LogoOfArticleId");
+
+                    b.Navigation("LogoOfArticle");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.MovieFileModel", b =>
@@ -951,9 +1013,19 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("ImagePageHeading");
                 });
 
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
+                {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BooksAndArticlesModel")
+                        .WithMany()
+                        .HasForeignKey("BooksAndArticlesModelId");
+
+                    b.Navigation("BooksAndArticlesModel");
+                });
+
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.Navigation("MovieFile");
+                    b.Navigation("MovieFile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

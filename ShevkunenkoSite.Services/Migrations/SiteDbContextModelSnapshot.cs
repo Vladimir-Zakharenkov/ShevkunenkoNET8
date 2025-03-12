@@ -97,6 +97,10 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int?>("NumberOfPages")
                         .HasColumnType("int");
 
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TagsForBook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -27,9 +27,19 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Логотип статьи
+    #region Издатель
 
-    [Display(Name = "Логотип статьи :")]
+    [Required(ErrorMessage = "Введите издателя текста", AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Издатель текста :")]
+    public string Publisher { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Логотип издания
+
+    [Display(Name = "Логотип издания :")]
     public Guid? LogoOfArticleId { get; set; }
     public ImageFileModel? LogoOfArticle { get; set; }
 
@@ -84,7 +94,7 @@ public class BooksAndArticlesModel
     [Required(ErrorMessage = "Добавте теги")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
-    [Display(Name = "Теги по содержанию книги (статьи) :")]
+    [Display(Name = "Теги по содержанию :")]
     public string TagsForBook { get; set; } = string.Empty;
 
     #endregion

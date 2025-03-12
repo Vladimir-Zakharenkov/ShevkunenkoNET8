@@ -87,6 +87,12 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Издатель книги или статьи
+
+            _ = addBook.BookOrArticle.Publisher.Trim();
+
+            #endregion
+
             #region Логотип статьи
 
             if (addBook.LogoOfArticleFormFile != null)
@@ -213,6 +219,12 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Теги по содержанию книги (статьи)
+
+            _ = addBook.BookOrArticle.TagsForBook.Trim();
+
+            #endregion
+
             #region Добавить в БД
 
             await bookContext.AddBookOrArticleAsync(addBook.BookOrArticle);
@@ -267,6 +279,12 @@ public class BooksAndArticlesController(
             #region Тип текста
 
             bookUpdate.TypeOfText = bookItem.BookOrArticle.TypeOfText.Trim();
+
+            #endregion
+
+            #region Издатель книги или статьи
+
+            bookUpdate.Publisher = bookItem.BookOrArticle.Publisher.Trim();
 
             #endregion
 
@@ -386,6 +404,12 @@ public class BooksAndArticlesController(
             #region Дата публикации книги (статьи)
 
             bookUpdate.DateOfPublication = bookItem.BookOrArticle.DateOfPublication;
+
+            #endregion
+
+            #region Теги по содержанию книги (статьи)
+
+            bookUpdate.TagsForBook = bookItem.BookOrArticle.TagsForBook.Trim();
 
             #endregion
 

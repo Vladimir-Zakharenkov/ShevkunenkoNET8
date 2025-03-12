@@ -79,6 +79,22 @@
 
             </div>
 
+            @* Издатель книги или статьи *@
+            <div>
+
+                <label asp-for="Publisher" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <p class="fs-4 text-center text_shadow">@Model.Publisher</p>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «Publisher» - </span>
+                    <span class="fs-6 text-success">издатель текста</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
             @* Логотип статьи*@
             <div class="@(Model.TypeOfText == "article" ? "" : "d-none")">
 
@@ -199,6 +215,29 @@
                 <div class="form-text">
                     <span class="d-none d-sm-inline-block fs-6 text-success">тег «DateOfPublication» - </span>
                     <span class="fs-6 text-success">дата издания книги (статьи)</span>
+                </div>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Теги по содержанию текста *@
+            <div>
+
+                <label asp-for="TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <div class="maxwidthcontent mx-auto justify-content-lg-start">
+
+                    @foreach (var tag in Model.TagsForBook.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <p class="fs-5 text-start text_shadow"># @tag</p>
+                    }
+
+                </div>
+
+                <div class="form-text">
+                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TagsForBook» - </span>
+                    <span class="fs-6 text-success">теги по тексту</span>
                 </div>
 
             </div>

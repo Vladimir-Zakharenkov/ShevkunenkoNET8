@@ -60,6 +60,32 @@
 
             </div>
 
+            @* Издатель книги (статьи) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-auto">
+                    <label asp-for="BookOrArticle.Publisher" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-auto text-start">
+                    <input id="PublisherInput" asp-for="BookOrArticle.Publisher" class="form-control" aria-describedby="PublisherInputHelpBlock" />
+                </div>
+
+                <div id="PublisherInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">издатель книги (статьи)</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.Publisher" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
             @* Логотип статьи *@
             <div>
 
@@ -219,6 +245,29 @@
                 {
                     <span asp-validation-for="@Model.BookOrArticle.DateOfPublication" class="text-danger"></span>
                 }
+
+            </div>
+
+            @* теги по содержанию текста *@
+            <div>
+
+                <label asp-for="BookOrArticle.TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
+
+                <textarea id="TagsForBookInput" class="form-control fordetails mx-auto maxwidth700px"
+                          asp-for="BookOrArticle.TagsForBook"
+                          rows="3"
+                          aria-describedby="TagsForBookInputHelpBlock">
+                </textarea>
+
+                <div id="TagsForBookInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">теги по тексту - </span>
+                    <br class="d-md-none" />
+                    <span class="fs-6 text-danger">вводить через запятую</span>
+
+                </div>
+
+                <span asp-validation-for="BookOrArticle.TagsForBook" class="text-danger"></span>
 
             </div>
 
