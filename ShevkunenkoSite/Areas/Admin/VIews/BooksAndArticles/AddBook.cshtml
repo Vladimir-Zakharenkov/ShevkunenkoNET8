@@ -113,6 +113,33 @@
 
             </div>
 
+            @* Скан статьи *@
+            <div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-auto">
+                        <label asp-for="ScanOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                    </div>
+
+                    <div class="col-auto text-start">
+                        <input id="ScanOfArticleFormFileInput" asp-for="ScanOfArticleFormFile" class="form-control" aria-describedby="ScanOfArticleFormFileInputHelpBlock" />
+                    </div>
+
+                </div>
+
+                <div id="ScanOfArticleFormFileInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">выбрать файл скана</span>
+
+                </div>
+
+                <span asp-validation-for="ScanOfArticleFormFile" class="text-danger"></span>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
             @* автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 

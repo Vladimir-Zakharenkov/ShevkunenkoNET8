@@ -40,8 +40,18 @@ public class BooksAndArticlesModel
     #region Логотип издания
 
     [Display(Name = "Логотип издания :")]
+    [DataType(DataType.Upload)]
     public Guid? LogoOfArticleId { get; set; }
     public ImageFileModel? LogoOfArticle { get; set; }
+
+    #endregion
+
+    #region Скан статьи
+
+    [Display(Name = "Скан статьи :")]
+    [DataType(DataType.Upload)]
+    public Guid? ScanOfArticleId { get; set; }
+    public ImageFileModel? ScanOfArticle { get; set; }
 
     #endregion
 

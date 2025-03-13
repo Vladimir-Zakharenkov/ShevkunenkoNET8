@@ -4,22 +4,7 @@
 
     <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
     <meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText">
-    <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-        <meta itemprop="name" content="Сегодня">
-        <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-            <meta itemprop="streetAddress" content="Ленинградское шоссе, 5А">
-            <meta itemprop="postalCode" content="125080">
-            <meta itemprop="addressLocality" content="Москва, Россия">
-        </span>
-        <meta itemprop="telephone" content="+74957534102">
-        <span itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-            <meta itemprop="caption" content="газета Сегодня">
-            <link itemprop="contentUrl thumbnailUrl url" href="https://shevkunenko.ru/img/pressa/segodnya-logo.png">
-            <meta itemprop="width" content="186">
-            <meta itemprop="height" content="39">
-        </span>
-    </span>
-
+    <meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
     <meta itemprop="datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-dd")">
     <meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
     <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
@@ -28,7 +13,6 @@
         <meta itemprop="width" content="600">
         <meta itemprop="height" content="187">
     </span>
-
 
     <a href="http://www.newsru.com/russia/16apr2001/segodnya.html"
        class="@(Model.BookOrArticle.LogoOfArticleId != null ? "d-block mx-auto maxwidth700px shadw imageref" : "d-none")"

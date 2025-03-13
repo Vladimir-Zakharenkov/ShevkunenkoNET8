@@ -22,6 +22,7 @@
 
                 <input asp-for="BookOrArticle.BooksAndArticlesModelId" type="hidden" />
                 <input asp-for="BookOrArticle.LogoOfArticleId" type="hidden" />
+                <input asp-for="BookOrArticle.ScanOfArticleId" type="hidden" />
 
             </div>
 
@@ -113,7 +114,7 @@
                     }
                     else
                     {
-                        <p class="text_shadow my-2 fluid-font-size">
+                        <p class="text_shadow mt-2 fluid-font-size">
                             @Model.BookOrArticle.LogoOfArticle?.ImagePath/@Model.BookOrArticle.LogoOfArticle?.ImageFileName
                         </p>
                     }
@@ -125,9 +126,7 @@
                     </p>
                 }
 
-                <hr class="w-75 mx-auto" />
-
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mt-3">
 
                     <div class="col-auto">
                         <label asp-for="LogoOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -146,6 +145,69 @@
                 </div>
 
                 <span asp-validation-for="LogoOfArticleFormFile" class="text-danger"></span>
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Скан статьи *@
+            <div>
+
+                <label asp-for="BookOrArticle.ScanOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.BookOrArticle.ScanOfArticleId != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="ImageInfo"
+                       asp-action="DetailsImage"
+                       asp-route-imageid="@Model.BookOrArticle.ScanOfArticleId"
+                       class="d-block mx-auto maxwidth700px shadw imageref"
+                       title="информация о картинке"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.BookOrArticle.ScanOfArticleId" css-class="w-100" icon-type="webimage" />
+
+                    </a>
+
+                    @if (!string.IsNullOrEmpty(Model.BookOrArticle.ScanOfArticle?.WebImageFileName))
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.BookOrArticle.ScanOfArticle?.ImagePath/@Model.BookOrArticle.ScanOfArticle?.ImageFileName
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="form-text">
+                        <span class="fs-6 text-success">скан для статьи не задан</span>
+                    </p>
+                }
+
+                <div class="row justify-content-center mt-3">
+
+                    <div class="col-auto">
+                        <label asp-for="ScanOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                    </div>
+
+                    <div class="col-auto text-start">
+                        <input id="ScanOfArticleFormFileInput" asp-for="ScanOfArticleFormFile" class="form-control" aria-describedby="ScanOfArticleFormFileInputHelpBlock" />
+                    </div>
+
+                </div>
+
+                <div id="ScanOfArticleFormFileInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">выбрать файл скана</span>
+
+                </div>
+
+                <span asp-validation-for="ScanOfArticleFormFile" class="text-danger"></span>
 
                 <hr class="w-75 mx-auto" />
 

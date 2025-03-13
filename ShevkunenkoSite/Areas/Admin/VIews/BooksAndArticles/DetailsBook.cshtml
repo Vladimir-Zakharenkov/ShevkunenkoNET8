@@ -136,6 +136,49 @@
 
             </div>
 
+            @* Скан статьи*@
+            <div class="@(Model.TypeOfText == "article" ? "" : "d-none")">
+
+                <label asp-for="ScanOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.ScanOfArticleId != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="ImageInfo"
+                       asp-action="DetailsImage"
+                       asp-route-imageid="@Model.ScanOfArticleId"
+                       class="d-block mx-auto maxwidth700px shadw imageref"
+                       title="информация о картинке"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.ScanOfArticleId" css-class="w-100" icon-type="webimage" />
+
+                    </a>
+
+                    @if (!string.IsNullOrEmpty(Model.ScanOfArticle?.WebImageFileName))
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.ScanOfArticle.ImagePath/@Model.ScanOfArticle.WebImageFileName
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text_shadow my-2 fluid-font-size">
+                            @Model.ScanOfArticle?.ImagePath/@Model.ScanOfArticle?.ImageFileName
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="form-text">
+                        <span class="fs-6 text-success">скан для статьи не задан</span>
+                    </p>
+                }
+
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
             @* Автор книги или статьи *@
             <div>
 
