@@ -2,18 +2,22 @@
 
 <html dir="ltr" lang="ru" itemscope itemtype="http://schema.org/WebPage" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# book: http://ogp.me/ns/book# video: http://ogp.me/ns/video# article: https://ogp.me/ns/article# ya: http://webmaster.yandex.ru/vocabularies/">
 
+@* meta теги заголовка сайта *@
 <vc:head-main />
 
 <body>
 
     <div class="container-fluid container-fluid-1920">
 
+        @* реклама сверху *@
         <vc:reklama-top />
 
+        @* меню вверху сайта *@
         <vc:menu />
 
         <div class="row text-center bg-light">
 
+            @* фотопленка слева *@
             <vc:background-foto left="true" />
 
             <main itemprop="mainContentOfPage" class="col-12 col-sm-9 pb-3 text-center mx-auto shadw">
@@ -32,12 +36,14 @@
 
             </main>
 
+            @* фотопленка справа *@
             <vc:background-foto left="false" />
 
         </div>
 
         <vc:counters />
 
+        @* реклама снизу *@
         <vc:reklama-bottom />
 
     </div>

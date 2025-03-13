@@ -7,11 +7,33 @@
     <meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
     <meta itemprop="datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-dd")">
     <meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+
+    @* выбор картинки для статьи *@
     <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
-        <meta itemprop="caption" content="газета &laquo;Сегодня&raquo; от 14.02.1995">
-        <link itemprop="contentUrl thumbnailUrl url" href="https://shevkunenko.ru/img/pressa/Segodniya_1995_N28_s1_2.jpg">
-        <meta itemprop="width" content="600">
-        <meta itemprop="height" content="187">
+        @if (Model.BookOrArticle.ScanOfArticle != null)
+        {
+            <meta itemprop="caption" content="@Model.BookOrArticle.ScanOfArticle.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebIconFileName">
+            <meta itemprop="width" content="@Model.BookOrArticle.ScanOfArticle.WebImageWidth">
+            <meta itemprop="height" content="@Model.BookOrArticle.ScanOfArticle.WebImageHeight">
+        }
+        else if (Model.BookOrArticle.LogoOfArticle != null)
+        {
+            <meta itemprop="caption" content="@Model.BookOrArticle.LogoOfArticle.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.LogoOfArticle.ImagePath/@Model.BookOrArticle.LogoOfArticle.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.BookOrArticle.LogoOfArticle.ImagePath/@Model.BookOrArticle.LogoOfArticle.WebIconFileName">
+            <meta itemprop="width" content="@Model.BookOrArticle.LogoOfArticle.WebImageWidth">
+            <meta itemprop="height" content="@Model.BookOrArticle.LogoOfArticle.WebImageHeight">
+        }
+        else
+        {
+            <meta itemprop="caption" content="@Model.PageInfo.ImageFileModel.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebIconFileName">
+            <meta itemprop="width" content="@Model.PageInfo.ImageFileModel.WebImageWidth">
+            <meta itemprop="height" content="@Model.PageInfo.ImageFileModel.WebImageHeight">
+        }
     </span>
 
     <a href="http://www.newsru.com/russia/16apr2001/segodnya.html"
