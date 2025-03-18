@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20250311153231_11-03-2025-18-31")]
-    partial class _110320251831
+    [Migration("20250317185043_17-03-2025-21-49")]
+    partial class _170320252149
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,13 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int?>("NumberOfPages")
                         .HasColumnType("int");
 
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ScanOfArticleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TagsForBook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,9 +115,14 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UrlOfArticle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BooksAndArticlesModelId");
 
                     b.HasIndex("LogoOfArticleId");
+
+                    b.HasIndex("ScanOfArticleId");
 
                     b.ToTable("BooksAndArticles");
                 });
@@ -936,7 +948,13 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithMany()
                         .HasForeignKey("LogoOfArticleId");
 
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ScanOfArticle")
+                        .WithMany()
+                        .HasForeignKey("ScanOfArticleId");
+
                     b.Navigation("LogoOfArticle");
+
+                    b.Navigation("ScanOfArticle");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.MovieFileModel", b =>
@@ -1020,8 +1038,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.Navigation("MovieFile")
-                        .IsRequired();
+                    b.Navigation("MovieFile");
                 });
 #pragma warning restore 612, 618
         }

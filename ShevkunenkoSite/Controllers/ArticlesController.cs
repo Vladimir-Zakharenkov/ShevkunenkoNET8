@@ -3,32 +3,50 @@
 public class ArticlesController(
     IBooksAndArticlesRepository articleContext,
     ITextInfoRepository textContext,
-    IPageInfoRepository pageContext) : Controller
+    IPageInfoRepository pageContext,
+    IWebHostEnvironment hostEnvironment) : Controller
 {
-    public async Task<IActionResult> Index(Guid? articleId, int? pageNumber)
+    private readonly string rootPath = hostEnvironment.WebRootPath;
+
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public async Task<IActionResult> Article(Guid? articleId, int? pageNumber, bool? scan)
     {
         if (articleId != null
-            && pageNumber != null
             && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == articleId).AnyAsync()
             && await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync()
+            && pageNumber != null
             && pageNumber > 0
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
+            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber);
+
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.HtmlFileName);
+
             ArticleViewModel bookOrArticle = new()
             {
                 BookOrArticle = await articleContext.BooksAndArticles
-                    .Include(logo => logo.LogoOfArticle)
-                    .Include(scan => scan.ScanOfArticle)
-                    .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
+                        .Include(logo => logo.LogoOfArticle)
+                        .Include(scan => scan.ScanOfArticle)
+                        .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
 
-                PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext)
+                PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
+
+                HtmlText = htmlText.ReadToEnd(),
+
+                PageNumber = pageNumber,
+
+                Scan = scan
             };
 
             return View("Article", bookOrArticle);
         }
         else
         {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

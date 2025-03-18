@@ -5,7 +5,7 @@
 namespace ShevkunenkoSite.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class _110320251831 : Migration
+    public partial class _170320252149 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

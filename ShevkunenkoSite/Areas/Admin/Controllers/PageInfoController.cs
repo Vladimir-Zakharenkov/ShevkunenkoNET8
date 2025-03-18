@@ -1,6 +1,4 @@
-﻿using NuGet.Configuration;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -294,85 +292,86 @@ public class PageInfoController(
 
     [HttpGet]
     public ViewResult AddPage()
-    {
-        EditPageViewModel newText = new();
 
-        return View(newText);
+    {
+        AddPageViewModel newPage = new();
+
+        return View(newPage);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddPage(EditPageViewModel addItem)
+    public async Task<IActionResult> AddPage(AddPageViewModel addPage)
     {
         if (ModelState.IsValid)
         {
             #region Добавить картинку для страницы
 
-            if (addItem.ImageFileFormFile != null)
+            if (addPage.ImageFileFormFile != null)
             {
-                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addItem.ImageFileFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName);
 
-                    addItem.PageItem.ImageFileModelId = imageFile.ImageFileModelId;
+                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
                 }
                 else
                 {
-                    ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{addItem.ImageFileFormFile.FileName}» в базу данных");
+                    ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{addPage.ImageFileFormFile.FileName}» в базу данных");
 
                     return View();
                 }
@@ -388,178 +387,178 @@ public class PageInfoController(
 
             #region Текст карточки страницы
 
-            addItem.PageItem.PageCardText = addItem.PageItem.PageCardText.Trim().ToUpper();
+            addPage.PageCardText = addPage.PageCardText.Trim().ToUpper();
 
             #endregion
 
             #region Добавить фон для страницы
 
-            if (addItem.BackgroundFormFile != null)
+            if (addPage.BackgroundFormFile != null)
             {
-                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName);
 
-                    addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName);
 
-                    addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName);
 
-                    addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName).AnyAsync())
+                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
                 {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addItem.BackgroundFormFile.FileName);
+                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName);
 
-                    addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
                 else
                 {
                     var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
 
-                    addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
                 }
             }
             else
             {
                 var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka-right.webp");
 
-                addItem.PageItem.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
             }
 
             #endregion
 
             #region Заголовок страницы (тег <head>)
 
-            addItem.PageItem.PageTitle = addItem.PageItem.PageTitle.Trim();
-            addItem.PageItem.PageDescription = addItem.PageItem.PageDescription.Trim();
-            addItem.PageItem.PageKeyWords = addItem.PageItem.PageKeyWords.Trim();
+            addPage.PageTitle = addPage.PageTitle.Trim();
+            addPage.PageDescription = addPage.PageDescription.Trim();
+            addPage.PageKeyWords = addPage.PageKeyWords.Trim();
 
-            if (addItem.PageItem.OgType == "website")
+            if (addPage.OgType == "website")
             {
-                addItem.PageItem.PageIconPath = "main/";
-                addItem.PageItem.BrowserConfig = "main.xml";
-                addItem.PageItem.BrowserConfigFolder = "/main";
-                addItem.PageItem.Manifest = "main.json";
+                addPage.PageIconPath = "main/";
+                addPage.BrowserConfig = "main.xml";
+                addPage.BrowserConfigFolder = "/main";
+                addPage.Manifest = "main.json";
             }
-            else if (addItem.PageItem.OgType == "movie")
+            else if (addPage.OgType == "movie")
             {
-                addItem.PageItem.PageIconPath = "movie/";
-                addItem.PageItem.BrowserConfig = "movie.xml";
-                addItem.PageItem.BrowserConfigFolder = "/movie";
-                addItem.PageItem.Manifest = "movie.json";
+                addPage.PageIconPath = "movie/";
+                addPage.BrowserConfig = "movie.xml";
+                addPage.BrowserConfigFolder = "/movie";
+                addPage.Manifest = "movie.json";
             }
             else
             {
-                addItem.PageItem.PageIconPath = "main/";
-                addItem.PageItem.BrowserConfig = "main.xml";
-                addItem.PageItem.BrowserConfigFolder = "/main";
-                addItem.PageItem.Manifest = "main.json";
+                addPage.PageIconPath = "main/";
+                addPage.BrowserConfig = "main.xml";
+                addPage.BrowserConfigFolder = "/main";
+                addPage.Manifest = "main.json";
             }
 
-            if (addItem.PageItem.PageArea == "admin")
+            if (addPage.PageArea == "admin")
             {
-                addItem.PageItem.PageIconPath = "admin/";
-                addItem.PageItem.BrowserConfig = "admin.xml";
-                addItem.PageItem.BrowserConfigFolder = "/admin";
-                addItem.PageItem.Manifest = "admin.json";
+                addPage.PageIconPath = "admin/";
+                addPage.BrowserConfig = "admin.xml";
+                addPage.BrowserConfigFolder = "/admin";
+                addPage.Manifest = "admin.json";
             }
 
             #endregion
 
             #region Оформление заголовка страницы
 
-            addItem.PageItem.PageHeading = addItem.PageItem.PageHeading.Trim();
+            addPage.PageHeading = addPage.PageHeading.Trim();
 
             #endregion
 
             #region Текст страницы
 
-            addItem.PageItem.TextOfPage = addItem.PageItem.TextOfPage;
+            addPage.TextOfPage = addPage.TextOfPage;
 
             #endregion
 
             #region Добавить картинку для  заголовка страницы
 
-            if (addItem.ImagePageHeadingFormFile != null)
+            if (addPage.ImagePageHeadingFormFile != null)
             {
-                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addItem.ImagePageHeadingFormFile.FileName).AnyAsync())
+                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addPage.ImagePageHeadingFormFile.FileName).AnyAsync())
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addItem.ImagePageHeadingFormFile.FileName);
+                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addPage.ImagePageHeadingFormFile.FileName);
 
-                    addItem.PageItem.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    addPage.ImagePageHeadingId = imageFile.ImageFileModelId;
                 }
                 else
                 {
-                    ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{addItem.ImagePageHeadingFormFile.FileName}» в базу данных");
+                    ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{addPage.ImagePageHeadingFormFile.FileName}» в базу данных");
 
                     return View();
                 }
             }
             else
             {
-                addItem.PageItem.ImagePageHeading = null;
+                addPage.ImagePageHeading = null;
             }
 
             #endregion
@@ -568,32 +567,32 @@ public class PageInfoController(
 
             #region Область
 
-            if (string.IsNullOrWhiteSpace(addItem.PageItem.PageArea) || string.IsNullOrEmpty(addItem.PageItem.PageArea))
+            if (string.IsNullOrWhiteSpace(addPage.PageArea) || string.IsNullOrEmpty(addPage.PageArea))
             {
-                addItem.PageItem.PageArea = string.Empty;
+                addPage.PageArea = string.Empty;
             }
             else
             {
-                addItem.PageItem.PageArea = "/" + addItem.PageItem.PageArea.Trim().Trim('/').ToLower();
+                addPage.PageArea = "/" + addPage.PageArea.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region MVC или RazorPage
 
-            addItem.PageItem.PageAsRazorPage = addItem.PageItem.PageAsRazorPage;
+            addPage.PageAsRazorPage = addPage.PageAsRazorPage;
 
             #endregion
 
             #region Контроллер
 
-            if (addItem.PageItem.PageAsRazorPage)
+            if (addPage.PageAsRazorPage)
             {
-                addItem.PageItem.Controller = string.Empty;
+                addPage.Controller = string.Empty;
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(addItem.PageItem.Controller) || string.IsNullOrEmpty(addItem.PageItem.Controller))
+                if (string.IsNullOrWhiteSpace(addPage.Controller) || string.IsNullOrEmpty(addPage.Controller))
                 {
                     ModelState.AddModelError("PageItem.Controller", "Введите название контроллера");
 
@@ -601,7 +600,7 @@ public class PageInfoController(
                 }
                 else
                 {
-                    addItem.PageItem.Controller = "/" + addItem.PageItem.Controller.Trim().Trim('/').ToLower();
+                    addPage.Controller = "/" + addPage.Controller.Trim().Trim('/').ToLower();
                 }
             }
 
@@ -609,13 +608,13 @@ public class PageInfoController(
 
             #region Действие
 
-            if (addItem.PageItem.PageAsRazorPage)
+            if (addPage.PageAsRazorPage)
             {
-                addItem.PageItem.Action = string.Empty;
+                addPage.Action = string.Empty;
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(addItem.PageItem.Action) || string.IsNullOrEmpty(addItem.PageItem.Action))
+                if (string.IsNullOrWhiteSpace(addPage.Action) || string.IsNullOrEmpty(addPage.Action))
                 {
                     ModelState.AddModelError("PageItem.Action", "Введите название метода");
 
@@ -623,7 +622,7 @@ public class PageInfoController(
                 }
                 else
                 {
-                    addItem.PageItem.Action = "/" + addItem.PageItem.Action.Trim().Trim('/').ToLower();
+                    addPage.Action = "/" + addPage.Action.Trim().Trim('/').ToLower();
                 }
             }
 
@@ -631,56 +630,56 @@ public class PageInfoController(
 
             #region Адрес без Области (для RazorPage)
 
-            if (addItem.PageItem.PageAsRazorPage)
+            if (addPage.PageAsRazorPage)
             {
-                if (string.IsNullOrWhiteSpace(addItem.PageItem.PageLoc) || string.IsNullOrEmpty(addItem.PageItem.PageLoc))
+                if (string.IsNullOrWhiteSpace(addPage.PageLoc) || string.IsNullOrEmpty(addPage.PageLoc))
                 {
                     ModelState.AddModelError("PageItem.PageLoc", "Введите адрес страницы без области");
 
                     return View();
                 }
-                else if (addItem.PageItem.PageLoc == "/")
+                else if (addPage.PageLoc == "/")
                 {
-                    addItem.PageItem.PageLoc = "/";
+                    addPage.PageLoc = "/";
                 }
                 else
                 {
-                    addItem.PageItem.PageLoc = "/" + addItem.PageItem.PageLoc.Trim().Trim('/').TrimStart('?').ToLower();
+                    addPage.PageLoc = "/" + addPage.PageLoc.Trim().Trim('/').TrimStart('?').ToLower();
                 }
             }
             else
             {
-                addItem.PageItem.PageLoc = addItem.PageItem.Action;
+                addPage.PageLoc = addPage.Action;
             }
 
             #endregion
 
             #region Данные (RoutData)
 
-            if (string.IsNullOrWhiteSpace(addItem.PageItem.RoutData) || string.IsNullOrEmpty(addItem.PageItem.RoutData))
+            if (string.IsNullOrWhiteSpace(addPage.RoutData) || string.IsNullOrEmpty(addPage.RoutData))
             {
-                addItem.PageItem.RoutData = string.Empty;
+                addPage.RoutData = string.Empty;
             }
             else
             {
-                addItem.PageItem.RoutData = "?" + addItem.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
+                addPage.RoutData = "?" + addPage.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
             }
 
             #endregion
 
             #region Псевдоним страницы
 
-            if (string.IsNullOrWhiteSpace(addItem.PageItem.PagePathNickName) || string.IsNullOrEmpty(addItem.PageItem.PagePathNickName))
+            if (string.IsNullOrWhiteSpace(addPage.PagePathNickName) || string.IsNullOrEmpty(addPage.PagePathNickName))
             {
-                addItem.PageItem.PagePathNickName = string.Empty;
+                addPage.PagePathNickName = string.Empty;
             }
-            else if (addItem.PageItem.PagePathNickName == "/")
+            else if (addPage.PagePathNickName == "/")
             {
-                addItem.PageItem.PagePathNickName = "/";
+                addPage.PagePathNickName = "/";
             }
             else
             {
-                addItem.PageItem.PagePathNickName = "/" + addItem.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
+                addPage.PagePathNickName = "/" + addPage.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
             #endregion
@@ -689,32 +688,32 @@ public class PageInfoController(
 
             string checkPageFullPathWithData = string.Empty;
 
-            if (addItem.PageItem.PageAsRazorPage)
+            if (addPage.PageAsRazorPage)
             {
-                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData;
+                checkPageFullPathWithData = addPage.PageArea + addPage.PageLoc + addPage.RoutData;
 
                 if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
                 {
-                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.PageLoc + addItem.PageItem.RoutData}» уже существует");
+                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addPage.PageArea + addPage.PageLoc + addPage.RoutData}» уже существует");
 
                     return View();
                 }
             }
             else
             {
-                checkPageFullPathWithData = addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData;
+                checkPageFullPathWithData = addPage.PageArea + addPage.Controller + addPage.Action + addPage.RoutData;
 
                 if (await pageInfoContext.PagesInfo.Where(p => p.PageFullPathWithData == checkPageFullPathWithData).AnyAsync())
                 {
-                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addItem.PageItem.PageArea + addItem.PageItem.Controller + addItem.PageItem.Action + addItem.PageItem.RoutData}» уже существует");
+                    ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addPage.PageArea + addPage.Controller + addPage.Action + addPage.RoutData}» уже существует");
 
                     return View();
                 }
             }
 
-            if (!string.IsNullOrEmpty(addItem.PageItem.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addItem.PageItem.PagePathNickName).AnyAsync())
+            if (!string.IsNullOrEmpty(addPage.PagePathNickName) && await pageInfoContext.PagesInfo.Where(p => p.PagePathNickName == addPage.PagePathNickName).AnyAsync())
             {
-                ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addItem.PageItem.PagePathNickName}» уже существует");
+                ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addPage.PagePathNickName}» уже существует");
 
                 return View();
             }
@@ -725,42 +724,42 @@ public class PageInfoController(
 
             #region Фильтр поиска текущей страницы
 
-            addItem.PageItem.PageFilter = addItem.PageItem.PageFilter.Trim();
+            addPage.PageFilter = addPage.PageFilter.Trim();
 
             #endregion
 
             #region Данные для Sitemap
 
-            addItem.PageItem.PageLastmod = DateTime.Now;
-            addItem.PageItem.Changefreq = addItem.PageItem.Changefreq.Trim();
-            addItem.PageItem.Priority = addItem.PageItem.Priority.Trim();
-            addItem.PageItem.OgType = addItem.PageItem.OgType.Trim();
+            addPage.PageLastmod = DateTime.Now;
+            addPage.Changefreq = addPage.Changefreq.Trim();
+            addPage.Priority = addPage.Priority.Trim();
+            addPage.OgType = addPage.OgType.Trim();
 
             #endregion
 
             #region Группы связанных ссылок
 
             // связанные видео
-            addItem.PageItem.VideoLinks = addItem.PageItem.VideoLinks;
-            addItem.PageItem.VideoFilterOut = addItem.PageItem.VideoFilterOut.Trim();
+            addPage.VideoLinks = addPage.VideoLinks;
+            addPage.VideoFilterOut = addPage.VideoFilterOut.Trim();
 
             // связанные страницы по фильтрам
-            addItem.PageItem.PageLinksByFilters = addItem.PageItem.PageLinksByFilters;
-            addItem.PageItem.PageFilterOut = addItem.PageItem.PageFilterOut.Trim();
+            addPage.PageLinksByFilters = addPage.PageLinksByFilters;
+            addPage.PageFilterOut = addPage.PageFilterOut.Trim();
 
             // связанные страницы по GUID (1)
-            addItem.PageItem.PageLinks = addItem.PageItem.PageLinks;
-            addItem.PageItem.RefPages = addItem.PageItem.RefPages.ToLower().Trim();
+            addPage.PageLinks = addPage.PageLinks;
+            addPage.RefPages = addPage.RefPages.ToLower().Trim();
 
             // связанные страницы по GUID (2)
-            addItem.PageItem.PageLinks2 = addItem.PageItem.PageLinks2;
-            addItem.PageItem.RefPages2 = addItem.PageItem.RefPages2.ToLower().Trim();
+            addPage.PageLinks2 = addPage.PageLinks2;
+            addPage.RefPages2 = addPage.RefPages2.ToLower().Trim();
 
             #endregion
 
             #region Сохранить в базе данных
 
-            await pageInfoContext.AddNewPageAsync(addItem.PageItem);
+            await pageInfoContext.AddNewPageAsync(addPage);
 
             #endregion
 
@@ -1409,18 +1408,6 @@ public class PageInfoController(
             return RedirectToAction(nameof(Index));
         }
     }
-
-    #endregion
-
-    #region Секция для тестов
-
-    //public async Task<IActionResult> ChangeIconPath()
-    //{
-    //    foreach (var item in pageInfoContext.PagesInfo)
-    //    {
-
-    //    }
-    //}
 
     #endregion
 }

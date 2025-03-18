@@ -179,6 +179,34 @@
 
             </div>
 
+            @* Ссылка на статью или издателя *@
+            <div>
+
+                <label asp-for="UrlOfArticle" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.UrlOfArticle != null)
+                {
+                    <p class="fs-4 text-center">
+                        <a class="text-black text_shadow" href="@Model.UrlOfArticle" onClick="this.target='_blank'">@Model.UrlOfArticle</a>
+                    </p>
+
+                    <div class="form-text">
+                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
+                        <span class="fs-6 text-success">ссылка на статью или издателя</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-text">
+                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
+                        <span class="fs-6 text-success">ссылка не задана</span>
+                    </div>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
             @* Автор книги или статьи *@
             <div>
 

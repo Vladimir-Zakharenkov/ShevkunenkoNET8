@@ -5,7 +5,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 @import url("https://fonts.googleapis.com/css2?family=Philosopher&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Philosopher&display=swap");
 :root,
 [data-bs-theme=light] {
   --bs-blue: #0d6efd;
@@ -11896,15 +11895,40 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-body {
-  font-family: "Philosopher", sans-serif;
+@media screen {
+  html {
+    width: 100%;
+    height: 100%;
+  }
 }
-
-.container-fluid-1920 {
-  max-width: 1920px;
-  min-width: 320px;
+@media print {
+  html {
+    margin-top: 3cm;
+  }
 }
-
+@media screen {
+  body {
+    font-family: "Philosopher", sans-serif;
+  }
+}
+@media print {
+  body {
+    font-family: Times, "Times New Roman", serif;
+    font-size: 14pt;
+  }
+}
+@media screen {
+  .container-fluid-1920 {
+    max-width: 1920px;
+    min-width: 320px;
+  }
+}
+@media print {
+  .container-fluid-1920 {
+    width: 100%;
+    height: 100%;
+  }
+}
 /* тег hr */
 .liniya {
   width: 96%;
@@ -11928,6 +11952,7 @@ body {
   background-size: 100% auto;
   background-repeat: repeat-y;
   background-position: center;
+  background-position: top;
 }
 
 .ten {
@@ -12045,15 +12070,16 @@ body {
   box-shadow: 0 0 30px hsla(219deg, 60%, 45%, 0.6), 0 0 100px hsla(339deg, 60%, 45%, 0.5) inset;
 }
 
-body {
-  font-family: "Philosopher", sans-serif;
+@media print {
+  h1, .h1, h2, .h2, p {
+    color: #000; /* Черный цвет текста */
+  }
 }
-
 .text_shadow {
   text-shadow: hsla(350deg, 90%, 40%, 0.6) 1px 2px 2px !important;
 }
 
-.text-justify {
+.text-justify, .justify {
   text-align: justify;
 }
 
@@ -12076,10 +12102,6 @@ p {
   text-indent: 1.5rem;
 }
 
-.justify {
-  text-align: justify;
-}
-
 @media (max-width: 1199px) {
   .fontr {
     font-size: 1.1rem;
@@ -12090,10 +12112,16 @@ p {
     font-size: 1.3rem;
   }
 }
-.fluid-font-size {
-  font-size: calc( 0.0025 * 100vw + 14.8px );
+@media screen {
+  .fluid-font-size {
+    font-size: calc( 0.0025 * 100vw + 14.8px );
+  }
 }
-
+@media print {
+  .fluid-font-size {
+    font-size: 20pt;
+  }
+}
 /* перенос слов в тексте */
 body {
   word-wrap: break-word;
@@ -12134,12 +12162,29 @@ body {
   border-left: 1px ridge hsl(0deg, 70%, 100%);
 }
 
-.shadw:after, .shadw:before {
+.shadw:after {
   content: "";
   position: absolute;
   z-index: -2;
 }
 
+@media print {
+  .shadw {
+    background: none;
+    box-shadow: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: none;
+    border-left: none;
+  }
+}
+@media print {
+  .shadw:after, .shadw:before {
+    content: none;
+    position: relative;
+    z-index: auto;
+  }
+}
 .lay1 {
   position: relative;
   background: hsl(0deg, 50%, 99%);
@@ -12165,39 +12210,6 @@ body {
 .adp90_img {
   width: 90%;
   border-radius: 1rem;
-}
-
-.width70percent {
-  width: 70%;
-}
-
-.width50percent {
-  max-width: 50%;
-}
-
-.width30percent {
-  width: 30%;
-  min-width: 180px;
-}
-
-.maxwidth40px {
-  max-width: 40px;
-}
-
-.minwidth50px {
-  min-width: 50px;
-}
-
-.maxwidth300px {
-  max-width: 300px;
-}
-
-.maxwidth700px {
-  max-width: 700px;
-}
-
-.maxwidth900px {
-  max-width: 900px;
 }
 
 .imageref {
@@ -12796,12 +12808,44 @@ li#yandex-search * {
   text-indent: 1.5rem;
 }
 
+@media screen {
+  .article_page {
+    padding: 1rem 1rem 2rem 1rem;
+    max-width: 700px;
+  }
+}
+@media print {
+  .article_page {
+    padding: 0;
+  }
+}
+.top_page {
+  min-height: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid hsl(0deg, 60%, 45%);
+}
+
+.footer_page {
+  min-height: 3rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid hsl(0deg, 60%, 45%);
+}
+
+.nomstr::before {
+  margin-right: 4px;
+  content: "страница ";
+}
+
 .height400 {
   height: 400px;
 }
 
 .height600 {
   height: 600px;
+}
+
+.width12percent {
+  max-width: 12%;
 }
 
 .maxwidthcontent {
@@ -12816,6 +12860,43 @@ li#yandex-search * {
   max-width: 50%;
 }
 
+.width70percent {
+  width: 70%;
+}
+
+.width50percent {
+  max-width: 50%;
+}
+
+.width30percent {
+  width: 30%;
+  min-width: 180px;
+}
+
+.maxwidth40px {
+  max-width: 40px;
+}
+
+.minwidth50px {
+  min-width: 50px;
+}
+
+.maxwidth300px {
+  max-width: 300px;
+}
+
+.maxwidth600px {
+  max-width: 600px;
+}
+
+.maxwidth700px {
+  max-width: 700px;
+}
+
 .maxwidth800px {
   max-width: 800px;
+}
+
+.maxwidth900px {
+  max-width: 900px;
 }

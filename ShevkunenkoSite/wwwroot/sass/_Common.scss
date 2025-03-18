@@ -1,12 +1,45 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Philosopher&display=swap');
+﻿@charset "utf-8";
 
-body {
-    font-family: 'Philosopher', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Philosopher&display=swap');
+
+@media screen {
+    html {
+        width: 100%;
+        height: 100%;
+    }
 }
 
-.container-fluid-1920 {
-    max-width: 1920px;
-    min-width: 320px;
+@media print {
+    html {
+        margin-top: 3cm;
+    }
+}
+
+@media screen {
+    body {
+        font-family: 'Philosopher', sans-serif;
+    }
+}
+
+@media print {
+    body {
+        font-family: Times, 'Times New Roman', serif;
+        font-size: 14pt;
+    }
+}
+
+@media screen {
+    .container-fluid-1920 {
+        max-width: 1920px;
+        min-width: 320px;
+    }
+}
+
+@media print {
+    .container-fluid-1920 {
+        width:100%;
+        height:100%;
+    }
 }
 
 /* тег hr */
@@ -32,6 +65,7 @@ body {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center;
+    background-position: top;
 }
 
 .ten {

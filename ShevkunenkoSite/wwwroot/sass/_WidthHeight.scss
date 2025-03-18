@@ -6,6 +6,10 @@
     height: 600px;
 }
 
+.width12percent {
+   max-width: 12%;
+}
+
 .maxwidthcontent {
     max-width: max-content;
 }
@@ -18,6 +22,43 @@
     max-width: 50%;
 }
 
+.width70percent {
+    width: 70%;
+}
+
+.width50percent {
+    max-width: 50%;
+}
+
+.width30percent {
+    width: 30%;
+    min-width: 180px;
+}
+
+.maxwidth40px {
+    max-width: 40px;
+}
+
+.minwidth50px {
+    min-width: 50px;
+}
+
+.maxwidth300px {
+    max-width: 300px;
+}
+
+.maxwidth600px {
+    max-width: 600px;
+}
+
+.maxwidth700px {
+    max-width: 700px;
+}
+
 .maxwidth800px {
     max-width: 800px;
+}
+
+.maxwidth900px {
+    max-width: 900px;
 }

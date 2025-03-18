@@ -4,45 +4,31 @@ namespace ShevkunenkoSite.Models.DataModels;
 
 public class PageInfoModel
 {
-    [Display(Name = "PageInfoId:")]
-    [Column("PageInfoId")]
-    public Guid PageInfoModelId { get; set; }
+    #region Список областей (Area)
 
     [NotMapped]
     public string[] AreaItems =
     [
-        "",
+        string.Empty,
         "Admin",
         "Movies",
         "Rybakov"
     ];
 
-    #region Описание
+    #endregion
 
-    [Required(ErrorMessage = "Добавьте заголовок страницы")]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.Text)]
-    [Display(Name = "Заголовок страницы :")]
-    public string PageTitle { get; set; } = string.Empty;
+    #region Идентификатор страницы в базе данных
 
-    [Required(ErrorMessage = "Добавте описание")]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.MultilineText)]
-    [Display(Name = "Описание страницы :")]
-    public string PageDescription { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Добавте ключевые слова")]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.Text)]
-    [Display(Name = "Ключевые слова :")]
-    public string PageKeyWords { get; set; } = string.Empty;
+    [Display(Name = "PageInfoId:")]
+    [Column("PageInfoId")]
+    public Guid PageInfoModelId { get; set; }
 
     #endregion
 
     #region Адрес страницы
 
-    [Required(ErrorMessage = "Отметьте тип страницы")]
-    [Display(Name = "RazorPage :")]
+    [Required(ErrorMessage = "Выберите тип MVC или RazorPage")]
+    [Display(Name = "Тип MVC или RazorPage :")]
     public bool PageAsRazorPage { get; set; } = false;
 
     [Required(AllowEmptyStrings = true)]
@@ -91,6 +77,28 @@ public class PageInfoModel
     [Display(Name = "Адрес страницы :")]
     [DataType(DataType.Text)]
     public string PageLoc { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Описание
+
+    [Required(ErrorMessage = "Добавьте заголовок страницы")]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Заголовок страницы :")]
+    public string PageTitle { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Добавте описание")]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.MultilineText)]
+    [Display(Name = "Описание страницы :")]
+    public string PageDescription { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Добавте ключевые слова")]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Ключевые слова :")]
+    public string PageKeyWords { get; set; } = string.Empty;
 
     #endregion
 
@@ -166,7 +174,7 @@ public class PageInfoModel
     #region Картинка страницы
 
     public Guid ImageFileModelId { get; set; }
-    public ImageFileModel ImageFileModel { get; set; } = new();
+    public ImageFileModel? ImageFileModel { get; set; }
 
     #endregion
 
@@ -252,5 +260,5 @@ public class PageInfoModel
     #endregion
 
     // навигационное свойство
-    public MovieFileModel MovieFile { get; set; } = new();
+    public MovieFileModel? MovieFile { get; set; }
 }

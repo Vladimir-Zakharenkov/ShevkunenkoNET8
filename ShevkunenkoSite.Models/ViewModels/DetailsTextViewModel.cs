@@ -2,15 +2,29 @@
 
 public class DetailsTextViewModel : TextInfoModel
 {
+    #region Текст без разметки
+
     public string? ClearText { get; set; }
+
+    #endregion
+
+    #region Текст с разметкой
 
     public string? HtmlText { get; set; }
 
-    // связанная книга (статья)
+    #endregion
+
+    #region Связанная книга (статья)
+
     [DataType(DataType.Text)]
     [Display(Name = "Связанная книга (статья) :")]
     public string? RefForBookOrArticle { get; set; }
 
-    // сообщение о наличии ссылки в базе данных фильмов (при попытке удалить текст)
+    #endregion
+
+    #region Сообщение о наличии ссылки в базе данных фильмов (при попытке удалить текст)
+
     public string? RefInMovies { get; set; }
+
+    #endregion
 }

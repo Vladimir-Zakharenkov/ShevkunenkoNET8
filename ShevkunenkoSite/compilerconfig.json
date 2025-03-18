@@ -2,9 +2,5 @@
   {
     "outputFile": "wwwroot/css/style.css",
     "inputFile": "wwwroot/sass/Style.scss"
-  },
-  {
-    "outputFile": "wwwroot/css/print.css",
-    "inputFile": "wwwroot/sass/_PrintStyle.scss"
   }
 ]

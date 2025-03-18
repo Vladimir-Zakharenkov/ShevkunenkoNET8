@@ -11,10 +11,29 @@ $shadow-top-left: hsla(0,70%,100%,1);
     border-left: 1px ridge $shadow-top-left;
 }
 
-.shadw:after, .shadw:before {
+.shadw:after {
     content: "";
     position: absolute;
     z-index: -2;
+}
+
+@media print {
+    .shadw {
+        background: none;
+        box-shadow: none;
+        border-right: none;
+        border-bottom: none;
+        border-top: none;
+        border-left: none;
+    }
+}
+
+@media print {
+    .shadw:after, .shadw:before {
+        content: none;
+        position: relative;
+        z-index: auto;
+    }
 }
 
 .lay1 {

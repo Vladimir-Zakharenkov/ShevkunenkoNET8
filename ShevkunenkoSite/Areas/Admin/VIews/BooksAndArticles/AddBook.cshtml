@@ -140,6 +140,32 @@
 
             </div>
 
+            @* Ссылка на статью (издателя) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-12">
+                    <label asp-for="BookOrArticle.UrlOfArticle" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-12 text-start maxwidth700px">
+                    <input id="UrlOfArticleInput" asp-for="BookOrArticle.UrlOfArticle" class="form-control" aria-describedby="UrlOfArticleInputHelpBlock" />
+                </div>
+
+                <div id="UrlOfArticleInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">ссылка на статью</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.UrlOfArticle" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
             @* автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 

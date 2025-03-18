@@ -1,14 +1,14 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Philosopher&display=swap');
-
-body {
-    font-family: 'Philosopher', sans-serif;
+﻿@media print{
+    h1, h2, p {
+        color: #000; /* Черный цвет текста */
+    }
 }
 
 .text_shadow {
     text-shadow: hsla(350,90%,40%,.6) 1px 2px 2px !important;
 }
 
-.text-justify {
+.text-justify, .justify {
     text-align: justify;
 }
 
@@ -31,10 +31,6 @@ p {
     text-indent: 1.5rem;
 }
 
-.justify {
-    text-align: justify;
-}
-
 @media (max-width: 1199px) {
     .fontr {
         font-size: 1.1rem;
@@ -55,6 +51,14 @@ p {
     @return calc( #{$k} * 100vw + #{$b} );
 }
 
-.fluid-font-size {
-    font-size: calcFluidFontSize(16, 18, 480, 1280);
+@media screen {
+    .fluid-font-size {
+        font-size: calcFluidFontSize(16, 18, 480, 1280);
+    }
+}
+
+@media print {
+    .fluid-font-size {
+        font-size: 20pt;
+    }
 }

@@ -1,7 +1,9 @@
 ﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
 [ViewComponent]
-public class BackgroundFoto(IPageInfoRepository pageInfoContext, IMovieFileRepository movieFileContext) : ViewComponent
+public class BackgroundFoto(
+    IPageInfoRepository pageInfoContext, 
+    IMovieFileRepository movieFileContext) : ViewComponent
 {
     private Guid pageIdGuid;
     private Guid movieIdGuid;

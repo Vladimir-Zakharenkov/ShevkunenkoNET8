@@ -99,6 +99,13 @@ public class BooksAndArticlesModel
 
     #endregion
 
+    #region Ссылка на статью или издателя
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Ссылка на статью :")]
+    public Uri? UrlOfArticle { get; set; }
+    #endregion
+
     #region Теги по содержанию книги (статьи)
 
     [Required(ErrorMessage = "Добавте теги")]

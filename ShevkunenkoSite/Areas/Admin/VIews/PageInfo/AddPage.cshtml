@@ -1,4 +1,4 @@
-﻿@model EditPageViewModel
+﻿@model AddPageViewModel
 
 <h1 class="fs-3 text_shadow">Добавить страницу</h1>
 
@@ -14,11 +14,16 @@
 
                 <form method="post" enctype="multipart/form-data">
 
-                    <input asp-for="PageItem.PageInfoModelId" type="hidden" value="@Guid.Empty" />
-                    <input asp-for="PageItem.PageIconPath" type="hidden" value="main.xml" />
-                    <input asp-for="PageItem.BrowserConfig" type="hidden" value="main.xml" />
-                    <input asp-for="PageItem.BrowserConfigFolder" type="hidden" value="/main" />
-                    <input asp-for="PageItem.Manifest" type="hidden" value="main.xml" />
+                    @* скрытые  поля *@
+                    <div>
+
+                        <input asp-for="PageInfoModelId" type="hidden" value="@Guid.Empty" />
+                        <input asp-for="PageIconPath" type="hidden" value="main.xml" />
+                        <input asp-for="BrowserConfig" type="hidden" value="main.xml" />
+                        <input asp-for="BrowserConfigFolder" type="hidden" value="/main" />
+                        <input asp-for="Manifest" type="hidden" value="main.xml" />
+
+                    </div>
 
                     @* все ошибки ввода данных *@
                     @if (Context.Request.Method == "POST")
@@ -29,27 +34,35 @@
                     @* MVC или RazorPage *@
                     <div class="justify-content-center" aria-describedby="PageAsRazorPageInputHelpBlock">
 
-                        <div class="form-check form-check-inline">
-                            <input asp-for="PageItem.PageAsRazorPage" class="form-check-input" type="radio" id="inlineRadio1" value="false" checked>
-                            <label asp-for="PageItem.PageAsRazorPage" class="form-check-label fs-5">MVC Page</label>
+                        <label asp-for="PageAsRazorPage" class="col-12 col-form-label text-primary fs-5 fw-bold"></label>
+
+                        <div class="form-check-inline">
+
+                            <input class="form-check-input d-inline-block mt-2 me-2" asp-for="PageAsRazorPage" type="radio" id="inlineRadio1" value="false" checked>
+
+                            <label class="form-check-label fs-5 d-inline-block align-top" asp-for="PageAsRazorPage">MVC Page</label>
+
                         </div>
 
                         <br class="d-md-none" />
 
-                        <div class="form-check form-check-inline">
-                            <input asp-for="PageItem.PageAsRazorPage" class="form-check-input" type="radio" id="inlineRadio2" value="true">
-                            <label asp-for="PageItem.PageAsRazorPage" class="form-check-label fs-5">Razor Page</label>
+                        <div class="form-check-inline">
+
+                            <input class="form-check-input d-inline-block mt-2 me-2" asp-for="PageAsRazorPage" type="radio" id="inlineRadio2" value="true">
+
+                            <label class="form-check-label fs-5 d-inline-block align-top" asp-for="PageAsRazorPage">Razor Page</label>
+
                         </div>
 
-                        <div class="col-12 justify-content-center">
+                        <div id="PageAsRazorPageInputHelpBlock" class="form-text">
 
-                            <span id="PageAsRazorPageInputHelpBlock" class="fs-6 text-success">
-                                тип страницы
+                            <span class="fs-6 text-success">
+                                тип фреймворка
                             </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageAsRazorPage" class="text-danger"></span>
+                        <span asp-validation-for="PageAsRazorPage" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -58,9 +71,17 @@
                     @* Картинка для страницы *@
                     <div>
 
-                        <label asp-for="ImageFileFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="ImageFileFormFile"></label>
 
-                        <input id="ImageFormFileInput" asp-for="ImageFileFormFile" class="form-control mt-2 w-50 mx-auto" aria-describedby="ImageFormFileInputHelpBlock" />
+                        <input id="ImageFormFileInput" class="form-control mt-2 w-50 mx-auto" asp-for="ImageFileFormFile" aria-describedby="ImageFormFileInputHelpBlock" />
+
+                        <div id="PmageFormFileInputHelpBlock" class="form-text">
+
+                            <span class="fs-6 text-success">
+                                картинка страницы
+                            </span>
+
+                        </div>
 
                         <span asp-validation-for="ImageFileFormFile" class="text-danger"></span>
 
@@ -71,9 +92,17 @@
                     @* Картинка для фона *@
                     <div>
 
-                        <label asp-for="BackgroundFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="BackgroundFormFile"></label>
 
                         <input id="BackgroundFormFileInput" class="form-control mt-2 w-50 mx-auto" asp-for="BackgroundFormFile" aria-describedby="BackgroundFormFileInputHelpBlock" />
+
+                        <div id="BackgroundFormFileInputHelpBlock" class="form-text">
+
+                            <span class="fs-6 text-success">
+                                фон страницы
+                            </span>
+
+                        </div>
 
                         <span asp-validation-for="BackgroundFormFile" class="text-danger"></span>
 
@@ -84,24 +113,22 @@
                     @* Выбор области Area *@
                     <div class="row g-2 justify-content-center">
 
-                        <div class="col-auto">
-                            <label asp-for="PageItem.PageArea" class="col-form-label text-primary fs-5 fw-bold"></label>
-                        </div>
+                        <label asp-for="PageArea" class="form-label text-primary fs-5 fw-bold"></label>
 
                         <div class="col-auto" aria-describedby="PageAreaInputHelpBlock">
 
-                            <select id="AreaInput" asp-for="PageItem.PageArea" class="form-select">
+                            <select id="AreaInput" asp-for="PageArea" class="form-select">
                                 @{
-                                    for (int i = 0; i < Model.PageItem.AreaItems.Count(); i++)
+                                    for (int i = 0; i < Model.AreaItems.Count(); i++)
                                     {
-                                        <option value="@Model.PageItem.AreaItems[i]">@Model.PageItem.AreaItems[i]</option>
+                                        <option value="@Model.AreaItems[i]">@Model.AreaItems[i]</option>
                                     }
                                 }
                             </select>
 
                         </div>
 
-                        <div class="col-12 justify-content-center" id="PageAreaInputHelpBlock">
+                        <div id="PageAreaInputHelpBlock" class="form-text">
 
                             <span class="fs-6 text-success">
                                 область «Area»
@@ -109,7 +136,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageArea" class="text-danger"></span>
+                        <span asp-validation-for="PageArea" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -118,9 +145,9 @@
                     @* Выбор контроллера *@
                     <div>
 
-                        <label asp-for="PageItem.Controller" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label asp-for="Controller" class="form-label text-primary fs-5 fw-bold"></label>
 
-                        <input id="ControllerInput" asp-for="PageItem.Controller" class="form-control text-center" aria-describedby="ControllerInputHelpBlock" />
+                        <input id="ControllerInput" class="text-center col-11 col-lg-6" asp-for="Controller" aria-describedby="ControllerInputHelpBlock" />
 
                         <div id="ControllerInputHelpBlock" class="form-text">
 
@@ -130,7 +157,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.Controller" class="text-danger"></span>
+                        <span asp-validation-for="Controller" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -139,9 +166,9 @@
                     @* Выбор действия *@
                     <div>
 
-                        <label asp-for="PageItem.Action" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="Action"></label>
 
-                        <input id="ActionInput" asp-for="PageItem.Action" class="form-control text-center" aria-describedby="ActionInputHelpBlock" />
+                        <input id="ActionInput" class="text-center col-11 col-lg-6" asp-for="Action" aria-describedby="ActionInputHelpBlock" />
 
                         <div id="ActionInputHelpBlock" class="form-text">
 
@@ -151,7 +178,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.Action" class="text-danger"></span>
+                        <span asp-validation-for="Action" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -160,9 +187,9 @@
                     @* Данные адреса *@
                     <div>
 
-                        <label asp-for="PageItem.RoutData" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="RoutData"></label>
 
-                        <input id="RoutDataInput" asp-for="PageItem.RoutData" class="form-control text-center" aria-describedby="RoutDataInputHelpBlock" />
+                        <input id="RoutDataInput" class="col-11 text-start" asp-for="RoutData" aria-describedby="RoutDataInputHelpBlock" />
 
                         <div id="ActionInputHelpBlock" class="form-text">
 
@@ -172,7 +199,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.RoutData" class="text-danger"></span>
+                        <span asp-validation-for="RoutData" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -181,17 +208,19 @@
                     @* Адрес для RazorPage *@
                     <div>
 
-                        <label asp-for="PageItem.PageLoc" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageLoc"></label>
 
-                        <input id="PageLocInput" asp-for="PageItem.PageLoc" class="form-control text-center" aria-describedby="PageLocInputHelpBlock" />
+                        <input id="PageLocInput" class="form-control text-center" asp-for="PageLoc" aria-describedby="PageLocInputHelpBlock" />
 
                         <div id="PageLocInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-danger">указывать только для RazorPage</span>
+                            <span class="fs-6 text-danger">
+                                указывать только для RazorPage
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageLoc" class="text-danger"></span>
+                        <span asp-validation-for="PageLoc" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -200,116 +229,110 @@
                     @* Псевдоним адреса *@
                     <div>
 
-                        <label asp-for="PageItem.PagePathNickName" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PagePathNickName"></label>
 
-                        <input id="PagePathNickNameInput" asp-for="PageItem.PagePathNickName" class="form-control text-center" aria-describedby="PagePathNickNameInputHelpBlock" />
+                        <input id="PagePathNickNameInput" class="form-control text-start" asp-for="PagePathNickName" aria-describedby="PagePathNickNameInputHelpBlock" />
 
                         <div id="PagePathNickNameInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">альтернативный адрес страницы</span>
+                            <span class="fs-6 text-success">
+                                альтернативный адрес страницы
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PagePathNickName" class="text-danger"></span>
+                        <span asp-validation-for="PagePathNickName" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
-                    @* Тэг «title» *@
+                    @* Тег «title» *@
                     <div>
 
-                        <label asp-for="PageItem.PageTitle" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageTitle"></label>
 
-                        <input id="PageTitleInput" asp-for="PageItem.PageTitle" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
+                        <input id="PageTitleInput" class="form-control text-start" asp-for="PageTitle" aria-describedby="PageTitleInputHelpBlock" />
 
                         <div id="PageTitleInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">тэг «title» - </span>
+                            <span class="fs-6 text-success">тег «title» - </span>
                             <span class="fs-6 text-danger">обязательное поле</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageTitle" class="text-danger"></span>
+                        <span asp-validation-for="PageTitle" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
-                    @* Тэг «description» *@
+                    @* Тег «description» *@
                     <div>
 
-                        <label asp-for="PageItem.PageDescription" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageDescription"></label>
 
                         <textarea id="PageDescriptionInput" class="form-control fordetails"
-                                  asp-for="PageItem.PageDescription"
+                                  asp-for="PageDescription"
                                   rows="7"
                                   aria-describedby="PageDescriptionInputHelpBlock">
-
-                        <p class="fordetails">
-                            PageDescription
-                         </p>
 
                         </textarea>
 
                         <div id="PageDescriptionInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">тэг «description» - </span>
+                            <span class="fs-6 text-success">тег «description» - </span>
                             <span class="fs-6 text-danger">обязательное поле</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageDescription" class="text-danger"></span>
+                        <span asp-validation-for="PageDescription" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
-                    @* Тэг «keywords» *@
+                    @* Тег «keywords» *@
                     <div>
 
-                        <label asp-for="PageItem.PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label asp-for="PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
 
                         <textarea id="PageKeyWordsInput" class="form-control fordetails"
-                                  asp-for="PageItem.PageKeyWords"
+                                  asp-for="PageKeyWords"
                                   rows="7"
                                   aria-describedby="PageKeyWordsInputHelpBlock">
 
-                        <p class="fordetails">
-                            PageKeyWords
-                        </p>
-
-                    </textarea>
+                        </textarea>
 
                         <div id="PageKeyWordsInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">тэг «keywords» - </span>
+                            <span class="fs-6 text-success">тег «keywords» - </span>
                             <span class="fs-6 text-danger">обязательное поле</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
+                        <span asp-validation-for="PageKeyWords" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
-                    @* Текст заголовка страницы в тэге <h1> ... </h1> *@
+                    @* Текст заголовка страницы в теге <h1> ... </h1> *@
                     <div>
 
-                        <label asp-for="PageItem.PageHeading" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageHeading"></label>
 
-                        <input id="PageHeadingInput" class="form-control fs-6 mx-auto w-75" asp-for="PageItem.PageHeading" aria-describedby="PageHeadingInputHelpBlock" />
+                        <input id="PageHeadingInput" class="form-control fs-6 mx-auto w-75" asp-for="PageHeading" aria-describedby="PageHeadingInputHelpBlock" />
 
                         <div id="PageHeadingInputHelpBlock" class="form-text">
 
                             <span class="fs-6 text-success">текст заголовка страницы</span>
                             <br class="d-md-none" />
-                            <span class="fs-6 text-danger"> в тэге &lt;h1&gt;... &lt;/h1&gt;</span>
+                            <span class="fs-6 text-danger"> в теге &lt;h1&gt;... &lt;/h1&gt;</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageHeading" class="text-danger"></span>
+                        <span asp-validation-for="PageHeading" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -318,13 +341,15 @@
                     @* Картинка заголовка страницы *@
                     <div>
 
-                        <label asp-for="ImagePageHeadingFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="ImagePageHeadingFormFile"></label>
 
                         <input id="ImagePageHeadingFormFileInput" class="form-control mt-2 w-50 mx-auto" asp-for="ImagePageHeadingFormFile" aria-describedby="ImagePageHeadingFormFileInputHelpBlock" />
 
                         <div id="ImagePageHeadingInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">картинка под заголовком страницы</span>
+                            <span class="fs-6 text-success">
+                                картинка под заголовком страницы
+                            </span>
 
                         </div>
 
@@ -334,13 +359,13 @@
 
                     </div>
 
-                    @* Текст страницы в тэге <article> ... </article> *@
+                    @* Текст страницы в теге <article> ... </article> *@
                     <div>
 
-                        <label asp-for="PageItem.TextOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label asp-for="TextOfPage" class="form-label text-primary fs-5 fw-bold"></label>
 
                         <textarea id="TextOfPageInput" class="form-control text-start fordetails px-3"
-                                  asp-for="PageItem.TextOfPage"
+                                  asp-for="TextOfPage"
                                   rows="15"
                                   aria-describedby="TextOfPageInputHelpBlock">
                         </textarea>
@@ -353,7 +378,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.TextOfPage" class="text-danger"></span>
+                        <span asp-validation-for="TextOfPage" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -362,17 +387,19 @@
                     @* Текст карточки страницы *@
                     <div>
 
-                        <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageCardText"></label>
 
-                        <input id="PageCardTextInput" class="form-control mx-auto w-50" asp-for="PageItem.PageCardText" aria-describedby="PageCardTextInputHelpBlock" />
+                        <input id="PageCardTextInput" class="col-11" asp-for="PageCardText" aria-describedby="PageCardTextInputHelpBlock" />
 
                         <div id="PageCardTextInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">текст для карточки страницы</span>
+                            <span class="fs-6 text-success">
+                                текст для карточки страницы
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageCardText" class="text-danger"></span>
+                        <span asp-validation-for="PageCardText" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -381,54 +408,46 @@
                     @* Выбор  og:type *@
                     <div>
 
-                        <div class="row g-2 justify-content-center">
+                        <label class="col-form-label text-primary fs-5 fw-bold" asp-for="OgType"></label>
 
-                            <div class="col-auto">
-                                <label asp-for="PageItem.OgType" class="col-form-label text-primary fs-5 fw-bold"></label>
-                            </div>
+                        <select id="OgTypeInput" class="col-8 col-md-4 mb-2" asp-for="OgType" aria-describedby="OgTypeInputHelpBlock">
 
-                            <div class="col-auto">
-                                <select id="OgTypeInput" asp-for="PageItem.OgType" class="form-select">
-                                    <option value="website" selected>website</option>
-                                    <option value="movie">movie</option>
-                                    <option value="article">article</option>
-                                    <option value="book">book</option>
-                                </select>
-                            </div>
+                            <option value="website" selected>website</option>
+                            <option value="movie">movie</option>
+                            <option value="article">article</option>
+                            <option value="book">book</option>
 
-                            <div id="OgTypeInputHelpBlock" class="form-text">
+                        </select>
 
-                                <span class="fs-6 text-success">тэг «og:type» - </span>
-                                <span class="fs-6 text-danger">обязательное поле</span>
+                        <div id="OgTypeInputHelpBlock" class="form-text">
 
-                            </div>
+                            <span class="fs-6 text-success">тэг «og:type» - </span>
+                            <span class="fs-6 text-danger">обязательное поле</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.OgType" class="text-danger"></span>
+                        <span asp-validation-for="OgType" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
                     @* Частота изменения страницы *@
-                    <div class="row g-2 justify-content-center">
+                    <div>
 
-                        <div class="col-auto">
-                            <label class="col-form-label text-primary fs-5 fw-bold" asp-for="PageItem.Changefreq"></label>
-                        </div>
+                        <label class="col-form-label text-primary fs-5 fw-bold" asp-for="Changefreq"></label>
 
-                        <div class="col-auto">
-                            <select id="ChangefreqInput" class="form-select" asp-for="PageItem.Changefreq">
-                                <option value="always">always</option>
-                                <option value="hourly">hourly</option>
-                                <option value="daily">daily</option>
-                                <option value="weekly">weekly</option>
-                                <option value="monthly" selected>monthly</option>
-                                <option value="yearly">yearly</option>
-                                <option value="never">never</option>
-                            </select>
-                        </div>
+                        <select id="ChangefreqInput" class="col-8 col-md-4 mb-2" asp-for="Changefreq" aria-describedby="ChangefreqInputHelpBlock">
+
+                            <option value="always">always</option>
+                            <option value="hourly">hourly</option>
+                            <option value="daily">daily</option>
+                            <option value="weekly">weekly</option>
+                            <option value="monthly" selected>monthly</option>
+                            <option value="yearly">yearly</option>
+                            <option value="never">never</option>
+
+                        </select>
 
                         <div id="ChangefreqInputHelpBlock" class="form-text">
 
@@ -438,34 +457,32 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.Changefreq" class="text-danger"></span>
+                        <span asp-validation-for="Changefreq" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
                     @* Приоритет страницы *@
-                    <div class="row g-2 justify-content-center">
+                    <div>
 
-                        <div class="col-auto">
-                            <label asp-for="PageItem.Priority" class="col-form-label text-primary fs-5 fw-bold"></label>
-                        </div>
+                        <label asp-for="Priority" class="col-form-label text-primary fs-5 fw-bold"></label>
 
-                        <div class="col-auto">
-                            <select id="PriorityInput" asp-for="PageItem.Priority" class="form-select">
-                                <option value="0.0">0.0</option>
-                                <option value="0.1">0.1</option>
-                                <option value="0.2">0.2</option>
-                                <option value="0.3">0.3</option>
-                                <option value="0.4">0.4</option>
-                                <option value="0.5" selected>0.5</option>
-                                <option value="0.6">0.6</option>
-                                <option value="0.7">0.7</option>
-                                <option value="0.8">0.8</option>
-                                <option value="0.9">0.9</option>
-                                <option value="1.0">1.0</option>
-                            </select>
-                        </div>
+                        <select id="PriorityInput" class="col-2 mb-2" asp-for="Priority" aria-describedby="PrioritylInputHelpBlock">
+
+                            <option value="0.0">0.0</option>
+                            <option value="0.1">0.1</option>
+                            <option value="0.2">0.2</option>
+                            <option value="0.3">0.3</option>
+                            <option value="0.4">0.4</option>
+                            <option value="0.5" selected>0.5</option>
+                            <option value="0.6">0.6</option>
+                            <option value="0.7">0.7</option>
+                            <option value="0.8">0.8</option>
+                            <option value="0.9">0.9</option>
+                            <option value="1.0">1.0</option>
+
+                        </select>
 
                         <div id="PrioritylInputHelpBlock" class="form-text">
 
@@ -475,7 +492,7 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.Priority" class="text-danger"></span>
+                        <span asp-validation-for="Priority" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -484,9 +501,9 @@
                     @* Фильтры поиска страницы *@
                     <div>
 
-                        <label asp-for="PageItem.PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label asp-for="PageFilter" class="form-label text-primary fs-5 fw-bold"></label>
 
-                        <input id="PageFilterInput" asp-for="PageItem.PageFilter" class="form-control text-center" aria-describedby="PageFilterInputHelpBlock" />
+                        <input id="PageFilterInput" asp-for="PageFilter" class="form-control text-start" aria-describedby="PageFilterInputHelpBlock" />
 
                         <div id="PageFilterInputHelpBlock" class="form-text">
 
@@ -494,38 +511,70 @@
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageFilter" class="text-danger"></span>
+                        <span asp-validation-for="PageFilter" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
+                    @*  Порядок сортировки страницы *@
+                    <div class="row g-2 justify-content-center mb-2">
+
+                        <div class="col-auto">
+                            <label asp-for="SortOfPage" class="form-label text-primary fs-5"></label>
+                        </div>
+
+                        <div class="col-auto">
+                            <input id="SortOfPageInput" asp-for="SortOfPage" value="1" class="form-control text-center" aria-describedby="SortOfPageInputHelpBlock" />
+                        </div>
+
+                        <div id="SortOfPageInputHelpBlock" class="form-text">
+                            <span class="fs-6 text-success">порядок сортировки - </span>
+                            <br class="d-inline-block d-md-none" />
+                            <span class="fs-6 text-danger">обязательное поле</span>
+                        </div>
+
+                        @if (Context.Request.Method == "POST")
+                        {
+                            <span asp-validation-for="SortOfPage" class="text-danger"></span>
+                        }
+
+                    </div>
+
                     @* Включить ссылки на видео по фильтрам *@
-                    <div class="row g-2">
+                    <div class="row g-1 justify-content-center">
 
-                        <label asp-for="PageItem.VideoLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="VideoLinks"></label>
 
-                        <div class="col-6 form-check">
-                            <input id="VideoLinksTrue" class="form-check-input float-none me-2" asp-for="PageItem.VideoLinks" type="radio" value="true">
-                            <label class="form-check-label d-inline-block" for="VideoLinksTrue">
+                        <div class="col-auto me-3">
+
+                            <input id="VideoLinksTrue" class="form-check-input float-none me-2" asp-for="VideoLinks" type="radio" value="true">
+
+                            <label class="form-check-label" for="VideoLinksTrue">
                                 <span class="text-success">включить</span>
                             </label>
+
                         </div>
 
-                        <div class="col-6 form-check">
-                            <input id="VideoLinksFalse" class="form-check-input float-none me-2" asp-for="PageItem.VideoLinks" type="radio" value="false" checked>
-                            <label class="form-check-label d-inline-block" for="VideoLinksFalse">
+                        <div class="col-auto">
+
+                            <input id="VideoLinksFalse" class="form-check-input float-none me-2" asp-for="VideoLinks" type="radio" value="false" checked>
+
+                            <label class="form-check-label" for="VideoLinksFalse">
                                 <span class="text-danger">выключить</span>
                             </label>
-                        </div>
-
-                        <div id="VideoLinksInputHelpBlock" class="form-text">
-
-                            <span class="fs-6 text-success">Ссылки на видео по фильтрам</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.VideoLinks" class="text-danger"></span>
+                        <div id="VideoLinksInputHelpBlock" class="form-text mt-3">
+
+                            <span class="fs-6 text-success">
+                                Ссылки на видео по фильтрам
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="VideoLinks" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -534,52 +583,62 @@
                     @* Фильтры поиска связанных видео *@
                     <div>
 
-                        <label asp-for="PageItem.VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label asp-for="VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
 
                         <textarea id="VideoFilterOutInput" class="form-control fordetails"
-                                  asp-for="PageItem.VideoFilterOut"
+                                  asp-for="VideoFilterOut"
                                   rows="5"
                                   aria-describedby="VideoFilterOutInputHelpBlock">
                         </textarea>
 
                         <div id="VideoFilterOutInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">фильтры поиска видео</span>
+                            <span class="fs-6 text-success">
+                                фильтры поиска видео
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.VideoFilterOut" class="text-danger"></span>
+                        <span asp-validation-for="VideoFilterOut" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
                     @* Включить ссылки на страницы по фильтрам *@
-                    <div class="row g-2">
+                    <div class="row g-1 justify-content-center">
 
-                        <label asp-for="PageItem.PageLinksByFilters" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageLinksByFilters"></label>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksByFiltersTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="true">
-                            <label class="form-check-label d-inline-block" for="PageLinksByFiltersTrue">
+                        <div class="col-auto me-3">
+
+                            <input id="PageLinksByFiltersTrue" class="form-check-input float-none me-2" asp-for="PageLinksByFilters" type="radio" value="true">
+
+                            <label class="form-check-label" for="PageLinksByFiltersTrue">
                                 <span class="text-success">включить</span>
                             </label>
+
                         </div>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksByFiltersFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinksByFilters" type="radio" value="false" checked>
-                            <label class="form-check-label d-inline-block" for="PageLinksByFiltersFalse">
+                        <div class="col-auto">
+
+                            <input id="PageLinksByFiltersFalse" class="form-check-input float-none me-2" asp-for="PageLinksByFilters" type="radio" value="false" checked>
+
+                            <label class="form-check-label" for="PageLinksByFiltersFalse">
                                 <span class="text-danger">выключить</span>
                             </label>
-                        </div>
-
-                        <div id="PageLinksByFiltersInputHelpBlock" class="form-text">
-
-                            <span class="fs-6 text-success">Ссылки на страницы по фильтрам</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageLinksByFilters" class="text-danger"></span>
+                        <div id="PageLinksByFiltersInputHelpBlock" class="form-text mt-3">
+
+                            <span class="fs-6 text-success">
+                                ссылки на страницы по фильтрам
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="PageLinksByFilters" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -588,52 +647,62 @@
                     @* Фильтры поиска связанных страниц *@
                     <div>
 
-                        <label asp-for="PageItem.PageFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageFilterOut"></label>
 
                         <textarea id="PageFilterOutInput" class="form-control fordetails"
-                                  asp-for="PageItem.PageFilterOut"
+                                  asp-for="PageFilterOut"
                                   rows="5"
                                   aria-describedby="PageFilterOutInputHelpBlock">
                         </textarea>
 
                         <div id="PageFilterOutInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">фильтры поиска страниц</span>
+                            <span class="fs-6 text-success">
+                                фильтры поиска страниц
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageFilterOut" class="text-danger"></span>
+                        <span asp-validation-for="PageFilterOut" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
                     @* Включить ссылки на страницы по GUID (1) *@
-                    <div class="row g-2">
+                    <div class="row g-1 justify-content-center">
 
-                        <label asp-for="PageItem.PageLinks" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageLinks"></label>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksTrue" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks" type="radio" value="true">
-                            <label class="form-check-label d-inline-block" for="PageLinksTrue">
+                        <div class="col-auto me-3">
+
+                            <input id="PageLinksTrue" class="form-check-input float-none me-2" asp-for="PageLinks" type="radio" value="true">
+
+                            <label class="form-check-label" for="PageLinksTrue">
                                 <span class="text-success">Включить</span>
                             </label>
+
                         </div>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksFalse" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks" type="radio" value="false" checked>
-                            <label class="form-check-label d-inline-block" for="PageLinksFalse">
+                        <div class="col-auto">
+
+                            <input id="PageLinksFalse" class="form-check-input float-none me-2" asp-for="PageLinks" type="radio" value="false" checked>
+
+                            <label class="form-check-label" for="PageLinksFalse">
                                 <span class="text-danger">Выключить</span>
                             </label>
-                        </div>
-
-                        <div id="PageLinksInputHelpBlock" class="form-text">
-
-                            <span class="fs-6 text-success">ссылки на страницы по GUID (1)</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageLinks" class="text-danger"></span>
+                        <div id="PageLinksInputHelpBlock" class="form-text mt-3">
+
+                            <span class="fs-6 text-success">
+                                ссылки на страницы по GUID (1)
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="PageLinks" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -642,52 +711,62 @@
                     @* Список GUID связанных страниц (1) *@
                     <div>
 
-                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageItem.RefPages"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="RefPages"></label>
 
                         <textarea id="RefPagesInput" class="form-control fordetails"
-                                  asp-for="PageItem.RefPages"
+                                  asp-for="RefPages"
                                   rows="5"
                                   aria-describedby="RefPagesInputHelpBlock">
                         </textarea>
 
                         <div id="RefPagesInputHelpBlock" class="form-text">
 
-                            <span class="fs-6 text-success">список GUID (1) связанных страниц</span>
+                            <span class="fs-6 text-success">
+                                список GUID (1) связанных страниц
+                            </span>
 
                         </div>
 
-                        <span class="text-danger" asp-validation-for="PageItem.RefPages"></span>
+                        <span class="text-danger" asp-validation-for="RefPages"></span>
 
                         <hr class="w-50 mx-auto" />
 
                     </div>
 
                     @* Включить ссылки на страницы по GUID (2) *@
-                    <div class="row g-2">
+                    <div class="row g-1 justify-content-center">
 
-                        <label asp-for="PageItem.PageLinks2" class="col-12 form-label text-primary fs-5 fw-bold"></label>
+                        <label class="col-12 form-label text-primary fs-5 fw-bold" asp-for="PageLinks2"></label>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksTrue2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="true">
-                            <label class="form-check-label d-inline-block" for="PageLinksTrue2">
+                        <div class="col-auto me-3">
+
+                            <input id="PageLinksTrue2" class="form-check-input float-none me-2" asp-for="PageLinks2" type="radio" value="true">
+
+                            <label class="form-check-labelk" for="PageLinksTrue2">
                                 <span class="text-success">Включить</span>
                             </label>
+
                         </div>
 
-                        <div class="col-6 form-check">
-                            <input id="PageLinksFalse2" class="form-check-input float-none me-2" asp-for="PageItem.PageLinks2" type="radio" value="false" checked>
-                            <label class="form-check-label d-inline-block" for="PageLinksFalse2">
+                        <div class="col-auto">
+
+                            <input id="PageLinksFalse2" class="form-check-input float-none me-2" asp-for="PageLinks2" type="radio" value="false" checked>
+
+                            <label class="form-check-label" for="PageLinksFalse2">
                                 <span class="text-danger">Выключить</span>
                             </label>
-                        </div>
-
-                        <div id="PageLinksInputHelpBlock2" class="form-text">
-
-                            <span class="fs-6 text-success">ссылки на страницы по GUID (2)</span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.PageLinks2" class="text-danger"></span>
+                        <div id="PageLinksInputHelpBlock2" class="form-text mt-3">
+
+                            <span class="fs-6 text-success">
+                                ссылки на страницы по GUID (2)
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="PageLinks2" class="text-danger"></span>
 
                         <hr class="w-50 mx-auto" />
 
@@ -696,35 +775,43 @@
                     @* Список GUID связанных страниц (2) *@
                     <div>
 
-                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PageItem.RefPages2"></label>
+                        <label class="form-label text-primary fs-5 fw-bold" asp-for="RefPages2"></label>
 
                         <textarea id="RefPagesInput2" class="form-control fordetails"
-                                  asp-for="PageItem.RefPages2"
+                                  asp-for="RefPages2"
                                   rows="5"
                                   aria-describedby="RefPagesInputHelpBlock2">
                         </textarea>
 
                         <div id="RefPagesInputHelpBlock2" class="form-text">
 
-                            <span class="fs-6 text-success">список GUID (2) связанных страниц</span>
+                            <span class="fs-6 text-success">
+                                список GUID (2) связанных страниц
+                            </span>
 
                         </div>
 
-                        <span asp-validation-for="PageItem.RefPages2" class="text-danger"></span>
+                        <span asp-validation-for="RefPages2" class="text-danger"></span>
 
                     </div>
 
                     @* Сохранить - Отменить*@
                     <div class="card-footer p-0 mt-4">
 
-                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="Сохранить">Сохранить</button>
+                        <button type="submit" class="btn btn-outline-success m-2 text-center shadw" title="Сохранить">
+
+                            Сохранить
+
+                        </button>
 
                         <a class="btn btn-outline-danger m-2 shadw"
                            asp-area="Admin"
                            asp-controller="PageInfo"
                            asp-action="Index"
                            title="Отменить">
+
                             Отменить
+
                         </a>
 
                     </div>

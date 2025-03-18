@@ -112,6 +112,9 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UrlOfArticle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BooksAndArticlesModelId");
 
                     b.HasIndex("LogoOfArticleId");
@@ -1032,8 +1035,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.Navigation("MovieFile")
-                        .IsRequired();
+                    b.Navigation("MovieFile");
                 });
 #pragma warning restore 612, 618
         }

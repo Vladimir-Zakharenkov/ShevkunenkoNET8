@@ -5,24 +5,23 @@
 namespace ShevkunenkoSite.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class _110320252253 : Migration
+    public partial class _130320252210 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Publisher",
+                name: "UrlOfArticle",
                 table: "BooksAndArticles",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Publisher",
+                name: "UrlOfArticle",
                 table: "BooksAndArticles");
         }
     }

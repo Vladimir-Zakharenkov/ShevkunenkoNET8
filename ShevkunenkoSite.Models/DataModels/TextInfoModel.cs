@@ -2,16 +2,22 @@
 
 public class TextInfoModel
 {
-    // идентификатор текста
+    #region Идентификатор текста
+
     [Display(Name = "TextInfoId:")]
     [Column("TextInfoId")]
     public Guid TextInfoModelId { get; set; }
 
-    // описание текста
+    #endregion
+
+    #region Описание текста
+
     [Required(ErrorMessage = "Добавьте описание текста")]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Описание текста :")]
     public string TextDescription { get; set; } = string.Empty;
+
+    #endregion
 
     #region Файл TXT
 
@@ -39,6 +45,7 @@ public class TextInfoModel
 
     #region Связанные книга или статья
 
+    // идентификатор книги (статьи)
     [Display(Name = "Страница книги (статьи) :")]
     public Guid? BooksAndArticlesModelId { get; set; }
     public BooksAndArticlesModel? BooksAndArticlesModel { get; set; }

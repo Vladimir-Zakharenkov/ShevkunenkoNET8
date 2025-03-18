@@ -1,6 +1,6 @@
 ﻿@model ArticleViewModel
 
-<article itemscope itemtype="http://schema.org/Article">
+<article class="mx-auto fluid-font-size" itemscope itemtype="http://schema.org/Article">
 
     <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
     <meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText">
@@ -28,7 +28,7 @@
         }
         else
         {
-            <meta itemprop="caption" content="@Model.PageInfo.ImageFileModel.ImageCaption">
+            <meta itemprop="caption" content="@Model.PageInfo.ImageFileModel!.ImageCaption">
             <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebImageFileName">
             <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebIconFileName">
             <meta itemprop="width" content="@Model.PageInfo.ImageFileModel.WebImageWidth">
@@ -36,13 +36,198 @@
         }
     </span>
 
-    <a href="http://www.newsru.com/russia/16apr2001/segodnya.html"
-       class="@(Model.BookOrArticle.LogoOfArticleId != null ? "d-block mx-auto maxwidth700px shadw imageref" : "d-none")"
-       title="логотип издания"
-       onclick="this.target='_blank'">
+    @* логотип статьи *@
+    @if (Model.BookOrArticle.UrlOfArticle != null)
+    {
+        <a href="@Model.BookOrArticle.UrlOfArticle"
+           class="@(Model.BookOrArticle.LogoOfArticleId != null ? "d-block maxwidth700px mx-auto shadw imageref" : "d-none")"
+           title="логотип издания"
+           onclick="this.target='_blank'">
 
-        <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId" css-class="w-100" icon-type="webimage" />
+            <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId"
+                           css-class="w-100"
+                           icon-type="webimage" />
 
-    </a>
+        </a>
+    }
+    else
+    {
+        <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId"
+                       css-class="w-100 mx-auto maxwidth700px shadw @(Model.BookOrArticle.LogoOfArticleId != null ? "d-block" : "d-none")"
+                       icon-type="webimage" />
+    }
+
+
+    @* заголовок статьи *@
+    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block mt-5 mb-3 mx-auto maxwidth600px")">
+
+        <h1 class="lh-1">
+            <span class="fs-3 text-primary d-inline-block mb-2">
+                @Model.BookOrArticle.AuthorOfText
+            </span>
+            <br />
+            <span class="fs-2 text_shadow">
+                @Model.BookOrArticle.CaptionOfText
+            </span>
+        </h1>
+
+    </header>
+
+    @* статья *@
+    <div class="@(Model.Scan == true ? "article_page mx-auto paragraph shadw mt-4" : "article_page mx-auto paragraph shadw")" itemprop="articleBody text">
+
+        @* инфо вверху страницы *@
+        <div class="@(Model.Scan == true ? "d-none" : "mb-4 top_page d-print-none")">
+
+            @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+            {
+                <a class=""
+                   asp-area=""
+                   asp-controller="Articles"
+                   asp-action="Article"
+                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-pageNumber="1"
+                   asp-route-scan="true"
+                   title="скан статьи">
+
+                    <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                   css-class="float-start me-2 maxwidth40px shadw imageref"
+                                   icon-type="" />
+
+                </a>
+            }
+
+
+            @if (Model.Scan != true)
+            {
+                <a class=" d-print-none"
+                   href="javascript:window.print(); void 0;"
+                   title="распечатать страницу">
+
+                    <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                   css-class="float-start maxwidth40px shadw imageref  d-print-none"
+                                   icon-type="" />
+
+                </a>
+
+                <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
+            }
+
+        </div>
+
+        @* текст статьи *@
+        @if (Model.Scan == true)
+        {
+            <a href="@Model.BookOrArticle.ScanOfArticle!.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName"
+               class=""
+               title="скан статьи"
+               onclick="this.target='_blank'">
+
+                <vc:view-image image-id="@Model.BookOrArticle.ScanOfArticleId"
+                               css-class="adp90_img imageref"
+                               icon-type="" />
+
+            </a>
+        }
+        else
+        {
+            @Html.Raw(Model.HtmlText)
+        }
+
+        @* инфо внизу страницы *@
+        <footer class="@(Model.Scan == true ? "d-none" : "mt-3 footer_page")">
+
+            @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+            {
+                <a class="d-print-none"
+                   asp-area=""
+                   asp-controller="Articles"
+                   asp-action="Article"
+                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-pageNumber="1"
+                   asp-route-scan="true"
+                   title="скан статьи">
+
+                    <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                   css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
+                                   icon-type="" />
+
+                </a>
+            }
+
+            @if (Model.Scan != true)
+            {
+                <a class="d-print-none"
+                   href="javascript:window.print(); void 0;"
+                   title="распечатать страницу">
+
+                    <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                   css-class="float-start maxwidth40px shadw imageref d-print-none"
+                                   icon-type="" />
+
+                </a>
+
+                <p class="float-end text-primary mt-2 mt-lg-1 fluid-font-size nomstr">@Model.PageNumber</p>
+            }
+
+        </footer>
+
+    </div>
+
+    @* навигация по статье *@
+    <div class="maxwidth700px mt-4 mb-0 mx-auto d-print-none">
+
+        @if (Model.PageNumber > 1 && Model.Scan != true)
+        {
+            <a class="btn btn-outline-primary py-1 float-start shadw"
+               asp-area=""
+               asp-controller="Articles"
+               asp-action="Article"
+               asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+               asp-route-pageNumber="@(Model.PageNumber - 1)"
+               asp-route-scan="false"
+               title="предыдущая странице"
+               itemprop="url">
+
+                <span class="nomstr fluid-font-size">@(Model.PageNumber - 1)</span>
+
+            </a>
+        }
+
+        @if (Model.Scan == true)
+        {
+            <a class="btn btn-outline-primary py-1 mx-auto shadw"
+               asp-area=""
+               asp-controller="Articles"
+               asp-action="Article"
+               asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+               asp-route-pageNumber="1"
+               asp-route-scan="false"
+               title="текст статьи"
+               itemprop="url">
+
+                <span>текст статьи</span>
+
+            </a>
+        }
+
+        @if (Model.PageNumber < Model.BookOrArticle.NumberOfPages && Model.Scan != true)
+        {
+            <a class="btn btn-outline-primary py-1 float-end shadw d-print-none"
+               asp-area=""
+               asp-controller="Articles"
+               asp-action="Article"
+               asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+               asp-route-pageNumber="@(Model.PageNumber + 1)"
+               asp-route-scan="false"
+               title="следующая странице"
+               itemprop="url">
+
+                <span class="nomstr fluid-font-size">@(Model.PageNumber + 1)</span>
+
+            </a>
+        }
+
+    </div>
 
 </article>

@@ -268,6 +268,12 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Ссылка на статью или издателя
+
+            _ = addBook.BookOrArticle.UrlOfArticle;
+
+            #endregion
+
             #region Автор книги или статьи
 
             if (addBook.BookOrArticle.AuthorOfText != null)
@@ -554,6 +560,12 @@ public class BooksAndArticlesController(
             {
                 bookUpdate.ScanOfArticleId = bookItem.BookOrArticle.ScanOfArticleId;
             }
+
+            #endregion
+
+            #region Ссылка на статью или издателя
+
+            bookUpdate.UrlOfArticle = bookItem.BookOrArticle.UrlOfArticle;
 
             #endregion
 
