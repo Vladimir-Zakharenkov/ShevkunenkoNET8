@@ -11903,7 +11903,7 @@ textarea.form-control-lg {
 }
 @media print {
   html {
-    margin-top: 3cm;
+    margin-left: 1cm;
   }
 }
 @media screen {
@@ -11948,13 +11948,19 @@ textarea.form-control-lg {
   text-decoration: none;
 }
 
-.fotoplenka {
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  background-position: center;
-  background-position: top;
+@media screen {
+  .fotoplenka {
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center;
+    background-position: top;
+  }
 }
-
+@media print {
+  .fotoplenka {
+    display: none;
+  }
+}
 .ten {
   box-shadow: 0.5rem 0.4rem 0.4rem hsla(0deg, 0%, 0%, 0.6);
 }
@@ -12071,14 +12077,21 @@ textarea.form-control-lg {
 }
 
 @media print {
-  h1, .h1, h2, .h2, p {
-    color: #000; /* Черный цвет текста */
+  .h1_print {
+    color: #000 !important;
+    font-size: 20pt !important;
   }
 }
-.text_shadow {
-  text-shadow: hsla(350deg, 90%, 40%, 0.6) 1px 2px 2px !important;
+@media screen {
+  .text_shadow {
+    text-shadow: hsla(350deg, 90%, 40%, 0.6) 1px 2px 2px !important;
+  }
 }
-
+@media print {
+  .text_shadow {
+    text-shadow: #000 0 0 0 0 !important;
+  }
+}
 .text-justify, .justify {
   text-align: justify;
 }
@@ -12097,6 +12110,11 @@ p {
   margin-bottom: 0;
 }
 
+@media print {
+  p {
+    color: #000; /* Черный цвет текста */
+  }
+}
 .paragraph {
   text-align: justify;
   text-indent: 1.5rem;
@@ -12119,7 +12137,7 @@ p {
 }
 @media print {
   .fluid-font-size {
-    font-size: 20pt;
+    font-size: 12pt;
   }
 }
 /* перенос слов в тексте */

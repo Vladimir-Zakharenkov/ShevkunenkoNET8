@@ -45,7 +45,7 @@
            onclick="this.target='_blank'">
 
             <vc:view-image image-id="@Model.BookOrArticle.LogoOfArticleId"
-                           css-class="w-100"
+                           css-class="w-100 d-print"
                            icon-type="webimage" />
 
         </a>
@@ -59,14 +59,14 @@
 
 
     @* заголовок статьи *@
-    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block mt-5 mb-3 mx-auto maxwidth600px")">
+    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block mt-3 mb-3 mx-auto maxwidth600px")">
 
         <h1 class="lh-1">
-            <span class="fs-3 text-primary d-inline-block mb-2">
+            <span class="fs-3 text-primary d-inline-block mb-2 h1_print">
                 @Model.BookOrArticle.AuthorOfText
             </span>
             <br />
-            <span class="fs-2 text_shadow">
+            <span class="fs-2 text_shadow h1_print">
                 @Model.BookOrArticle.CaptionOfText
             </span>
         </h1>
