@@ -5,7 +5,8 @@
 public class BooksAndArticlesController(
     IBooksAndArticlesRepository bookContext,
     ITextInfoRepository textContext,
-    IImageFileRepository imageContext) : Controller
+    IImageFileRepository imageContext,
+    IMovieFileRepository movieContext) : Controller
 {
     #region Список книг и статей
 
@@ -43,6 +44,7 @@ public class BooksAndArticlesController(
             var bookItem = await bookContext.BooksAndArticles
                 .Include(inc => inc.LogoOfArticle)
                 .Include(inc2 => inc2.ScanOfArticle)
+                .Include(inc3 => inc3.VideoForBookOrArticle)
                 .AsNoTracking()
                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
@@ -68,6 +70,9 @@ public class BooksAndArticlesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     public async Task<IActionResult> AddBook(AddAndEditArticleViewModel addBook)
     {
         if (ModelState.IsValid)
@@ -274,6 +279,33 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Видео связанное с книгой (статьёй)
+
+            if (addBook.VideoForBookOrArticleFormFile != null)
+            {
+                if (await movieContext.MovieFiles.Where(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName).AnyAsync())
+                {
+                    var movieForItem = await movieContext.MovieFiles.FirstAsync(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName);
+
+                    addBook.BookOrArticle.VideoForBookOrArticleId = movieForItem.MovieFileModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("VideoForBookOrArticleFormFile", $"Файл видео «{addBook.VideoForBookOrArticleFormFile.FileName}» не найден в базе данных");
+
+                    return View(nameof(AddBook), new AddAndEditArticleViewModel
+                    {
+                        BookOrArticle = addBook.BookOrArticle
+                    });
+                }
+            }
+            else
+            {
+                addBook.BookOrArticle.VideoForBookOrArticleId = null;
+            }
+
+            #endregion
+
             #region Автор книги или статьи
 
             if (addBook.BookOrArticle.AuthorOfText != null)
@@ -333,7 +365,10 @@ public class BooksAndArticlesController(
         }
         else
         {
-            return View();
+            return View(nameof(AddBook), new AddAndEditArticleViewModel
+            {
+                BookOrArticle = addBook.BookOrArticle
+            });
         }
     }
 
@@ -346,7 +381,11 @@ public class BooksAndArticlesController(
     {
         if (bookId.HasValue & await bookContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == bookId).AnyAsync())
         {
-            var editBook = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookId);
+            var editBook = await bookContext.BooksAndArticles
+                .Include(inc => inc.LogoOfArticle)
+                .Include(inc2 => inc2.ScanOfArticle)
+                .Include(inc3 => inc3.VideoForBookOrArticle)
+                .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
             return View(new AddAndEditArticleViewModel
             {
@@ -361,12 +400,16 @@ public class BooksAndArticlesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
+
     public async Task<IActionResult> EditBook(AddAndEditArticleViewModel bookItem)
     {
         if (ModelState.IsValid)
         {
             BooksAndArticlesModel bookUpdate = await bookContext.BooksAndArticles
-                .FirstAsync(book => book.BooksAndArticlesModelId == bookItem.BookOrArticle.BooksAndArticlesModelId);
+                .FirstAsync(b => b.BooksAndArticlesModelId == bookItem.BookOrArticle.BooksAndArticlesModelId);
 
             #region Тип текста
 
@@ -462,7 +505,7 @@ public class BooksAndArticlesController(
 
                         return View(nameof(EditBook), new AddAndEditArticleViewModel
                         {
-                            BookOrArticle = bookUpdate
+                            BookOrArticle = bookItem.BookOrArticle
                         });
                     }
 
@@ -551,7 +594,7 @@ public class BooksAndArticlesController(
 
                         return View(nameof(EditBook), new AddAndEditArticleViewModel
                         {
-                            BookOrArticle = bookUpdate
+                            BookOrArticle = bookItem.BookOrArticle
                         });
                     }
                 }
@@ -566,6 +609,33 @@ public class BooksAndArticlesController(
             #region Ссылка на статью или издателя
 
             bookUpdate.UrlOfArticle = bookItem.BookOrArticle.UrlOfArticle;
+
+            #endregion
+
+            #region Видео связанное с книгой (статьёй)
+
+            if (bookItem.VideoForBookOrArticleFormFile != null)
+            {
+                if (await movieContext.MovieFiles.Where(movie => movie.MovieFileName == bookItem.VideoForBookOrArticleFormFile.FileName).AnyAsync())
+                {
+                    var movieForItem = await movieContext.MovieFiles.FirstAsync(movie => movie.MovieFileName == bookItem.VideoForBookOrArticleFormFile.FileName);
+
+                    bookUpdate.VideoForBookOrArticleId = movieForItem.MovieFileModelId;
+                }
+                else
+                {
+                    ModelState.AddModelError("VideoForBookOrArticleFormFile", $"Файл видео «{bookItem.VideoForBookOrArticleFormFile.FileName}» не найден в базе данных");
+
+                    return View(nameof(AddBook), new AddAndEditArticleViewModel
+                    {
+                        BookOrArticle = bookItem.BookOrArticle
+                    });
+                }
+            }
+            else
+            {
+                _ = bookUpdate.VideoForBookOrArticleId;
+            }
 
             #endregion
 
@@ -609,7 +679,10 @@ public class BooksAndArticlesController(
         }
         else
         {
-            return View(bookItem);
+            return View(nameof(EditBook), new AddAndEditArticleViewModel
+            {
+                BookOrArticle = bookItem.BookOrArticle
+            });
         }
     }
 

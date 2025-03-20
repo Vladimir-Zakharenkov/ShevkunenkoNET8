@@ -16,7 +16,7 @@
 
         <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
 
-            @* скрытые поля формы *@
+            @* Скрытые поля формы *@
             <div>
 
                 <input asp-for="@Model.BookOrArticle.BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
@@ -89,7 +89,7 @@
             @* Логотип статьи *@
             <div>
 
-                <div class="row justify-content-center">
+                <div class="row g-2 justify-content-center">
 
                     <div class="col-auto">
                         <label asp-for="LogoOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -109,14 +109,14 @@
 
                 <span asp-validation-for="LogoOfArticleFormFile" class="text-danger"></span>
 
-                <hr class="w-75 mx-auto" />
+                <hr class="w-50 mx-auto" />
 
             </div>
 
             @* Скан статьи *@
             <div>
 
-                <div class="row justify-content-center">
+                <div class="row g-2 justify-content-center">
 
                     <div class="col-auto">
                         <label asp-for="ScanOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
@@ -136,7 +136,7 @@
 
                 <span asp-validation-for="ScanOfArticleFormFile" class="text-danger"></span>
 
-                <hr class="w-75 mx-auto" />
+                <hr class="w-50 mx-auto" />
 
             </div>
 
@@ -166,7 +166,34 @@
 
             </div>
 
-            @* автор книги (статьи) *@
+            @* Видео связанное с книгой (статьёй) *@
+            <div>
+
+                <div class="row g-2 justify-content-center">
+
+                    <div class="col-auto">
+                        <label asp-for="VideoForBookOrArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                    </div>
+
+                    <div class="col-auto text-start">
+                        <input id="VideoForBookOrArticleFormFileInput" asp-for="VideoForBookOrArticleFormFile" class="form-control" aria-describedby="VideoForBookOrArticleFormFileInputHelpBlock" />
+                    </div>
+
+                </div>
+
+                <div id="VideoForBookOrArticleFormFileInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">выбрать файл видео</span>
+
+                </div>
+
+                <span asp-validation-for="VideoForBookOrArticleFormFile" class="text-danger"></span>
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -194,7 +221,7 @@
 
             </div>
 
-            @* заголовок книги (статьи) *@
+            @* Заголовок книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -222,7 +249,7 @@
 
             </div>
 
-            @* описание текста *@
+            @* Описание текста *@
             <div class="row g-2 justify-content-center">
 
                 <label asp-for="@Model.BookOrArticle.BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
@@ -247,7 +274,7 @@
 
             </div>
 
-            @* колличество страниц *@
+            @* Колличество страниц *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -275,7 +302,7 @@
 
             </div>
 
-            @* дата публикации книги (статьи) *@
+            @* Дата публикации книги (статьи) *@
             <div class="row g-2 justify-content-center mb-xl-2">
 
                 <div class="col-auto">
@@ -301,7 +328,7 @@
 
             </div>
 
-            @* теги по содержанию текста *@
+            @* Теги по содержанию текста *@
             <div>
 
                 <label asp-for="BookOrArticle.TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
@@ -324,7 +351,7 @@
 
             </div>
 
-            @* сохранить - отменить *@
+            @* Сохранить - Отменить *@
             <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
 
                 <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"

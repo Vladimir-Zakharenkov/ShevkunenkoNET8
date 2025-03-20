@@ -203,7 +203,41 @@
                     </div>
                 }
 
-                <hr class="w-50 mx-auto" />
+                <hr class="w-75 mx-auto" />
+
+            </div>
+
+            @* Видео связанное с книгой (статьёй)*@
+            <div>
+
+                <label asp-for="VideoForBookOrArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.VideoForBookOrArticle != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="MovieInfo"
+                       asp-action="DetailsMovie"
+                       asp-route-movieid="@Model.VideoForBookOrArticle.MovieFileModelId"
+                       class="d-block mx-auto maxwidth300px shadw imageref"
+                       title="информация о фильме"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.VideoForBookOrArticle.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+
+                    </a>
+
+                    <div class="form-text">
+                        <span class="fs-6 text-success">видео к статье</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-text">
+                        <span class="fs-6 text-success">видео не задано</span>
+                    </div>
+                }
+
+                <hr class="w-75 mx-auto" />
 
             </div>
 

@@ -115,11 +115,16 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<string>("UrlOfArticle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("VideoForBookOrArticleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("BooksAndArticlesModelId");
 
                     b.HasIndex("LogoOfArticleId");
 
                     b.HasIndex("ScanOfArticleId");
+
+                    b.HasIndex("VideoForBookOrArticleId");
 
                     b.ToTable("BooksAndArticles");
                 });
@@ -949,9 +954,15 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithMany()
                         .HasForeignKey("ScanOfArticleId");
 
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.MovieFileModel", "VideoForBookOrArticle")
+                        .WithMany()
+                        .HasForeignKey("VideoForBookOrArticleId");
+
                     b.Navigation("LogoOfArticle");
 
                     b.Navigation("ScanOfArticle");
+
+                    b.Navigation("VideoForBookOrArticle");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.MovieFileModel", b =>

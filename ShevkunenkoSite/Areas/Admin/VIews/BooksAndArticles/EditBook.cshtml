@@ -17,12 +17,13 @@
 
         <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
 
-            @* скрытые поля формы *@
+            @* Скрытые поля формы *@
             <div>
 
                 <input asp-for="BookOrArticle.BooksAndArticlesModelId" type="hidden" />
                 <input asp-for="BookOrArticle.LogoOfArticleId" type="hidden" />
                 <input asp-for="BookOrArticle.ScanOfArticleId" type="hidden" />
+                <input asp-for="BookOrArticle.VideoForBookOrArticleId" type="hidden" />
 
             </div>
 
@@ -63,7 +64,7 @@
 
             </div>
 
-            @* издатель книги (статьи) *@
+            @* Издатель книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -239,7 +240,63 @@
 
             </div>
 
-            @* автор книги (статьи) *@
+            @* Видео связанное с книгой (статьёй) *@
+            <div>
+
+                <label asp-for="BookOrArticle.VideoForBookOrArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                @if (Model.BookOrArticle.VideoForBookOrArticle != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="MovieInfo"
+                       asp-action="DetailsMovie"
+                       asp-route-movieid="@Model.BookOrArticle.VideoForBookOrArticle.MovieFileModelId"
+                       class="d-block mx-auto maxwidth300px shadw imageref"
+                       title="информация о фильме"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.BookOrArticle.VideoForBookOrArticle.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+
+                    </a>
+
+                    <div class="form-text">
+                        <span class="fs-6 text-success">видео к книге (статье)</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-text">
+                        <span class="fs-6 text-success">видео не задано</span>
+                    </div>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+                <div class="row g-2 justify-content-center">
+
+                    <div class="col-auto">
+                        <label asp-for="VideoForBookOrArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                    </div>
+
+                    <div class="col-auto text-start">
+                        <input id="VideoForBookOrArticleFormFileInput" asp-for="VideoForBookOrArticleFormFile" class="form-control" aria-describedby="VideoForBookOrArticleFormFileInputHelpBlock" />
+                    </div>
+
+                </div>
+
+                <div id="VideoForBookOrArticleFormFileInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">выбрать файл видео</span>
+
+                </div>
+
+                <span asp-validation-for="VideoForBookOrArticleFormFile" class="text-danger"></span>
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Автор книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -267,7 +324,7 @@
 
             </div>
 
-            @* заголовок книги (статьи) *@
+            @* Заголовок книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-12">
@@ -295,7 +352,7 @@
 
             </div>
 
-            @* описание текста *@
+            @* Описание текста *@
             <div>
 
                 <label asp-for="BookOrArticle.BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
@@ -320,7 +377,7 @@
 
             </div>
 
-            @* колличество страниц *@
+            @* Колличество страниц *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -348,7 +405,7 @@
 
             </div>
 
-            @* дата публикации книги (статьи) *@
+            @* Дата публикации книги (статьи) *@
             <div class="row g-2 justify-content-center">
 
                 <div class="col-auto">
@@ -376,7 +433,7 @@
 
             </div>
 
-            @* теги по содержанию текста *@
+            @* Теги по содержанию текста *@
             <div>
 
                 <label asp-for="BookOrArticle.TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
@@ -399,7 +456,7 @@
 
             </div>
 
-            @* сохранить - отменить *@
+            @* Сохранить - Отменить *@
             <div class="card-footer p-0 pb-2 mt-4">
 
                 <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"

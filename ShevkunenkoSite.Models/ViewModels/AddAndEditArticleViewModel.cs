@@ -12,4 +12,7 @@ public class AddAndEditArticleViewModel
     [Display(Name = "Выбрать скан :")]
     public IFormFile? ScanOfArticleFormFile { get; set; }
 
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать видео :")]
+    public IFormFile? VideoForBookOrArticleFormFile { get; set; }
 }

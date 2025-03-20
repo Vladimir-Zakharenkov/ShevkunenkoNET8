@@ -49,7 +49,6 @@ public class BooksAndArticlesModel
     #region Скан статьи
 
     [Display(Name = "Скан статьи :")]
-    [DataType(DataType.Upload)]
     public Guid? ScanOfArticleId { get; set; }
     public ImageFileModel? ScanOfArticle { get; set; }
 
@@ -113,6 +112,14 @@ public class BooksAndArticlesModel
     [DataType(DataType.Text)]
     [Display(Name = "Теги по содержанию :")]
     public string TagsForBook { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Видео связанное с книгой (статьёй)
+
+    [Display(Name = "Видео для книги (статьи) :")]
+    public Guid? VideoForBookOrArticleId { get; set; }
+    public MovieFileModel? VideoForBookOrArticle { get; set; }
 
     #endregion
 }
