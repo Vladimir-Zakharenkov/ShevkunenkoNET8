@@ -1,0 +1,26 @@
+﻿@model ImageFileModel[]
+
+@if (Model.Length > 0)
+{
+    <div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
+
+        @foreach (var item in Model)
+        {
+            <a href="@item.ImagePath/@item.WebImageFileName"
+               class=""
+               title="скан статьи"
+               onclick="this.target='_blank'">
+
+                <vc:view-image image-id="@item.ImageFileModelId"
+                               css-class="my-2 w-100 shadw imageref"
+                               icon-type="webicon200" />
+
+            </a>
+        }
+
+    </div>
+}
+else
+{
+    <div class="col-2 d-none d-md-block"></div>
+}

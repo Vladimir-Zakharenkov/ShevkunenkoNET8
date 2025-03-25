@@ -28,6 +28,7 @@
         <vc:movie-frames image-filter="@Model.MovieFile.MovieCaption," left-side="true" one-frame="false" />
     }
 
+
     @* Видео *@
     <div class="col-sm-12 col-md w-100 mb-3">
 
@@ -203,7 +204,6 @@
                 {
                     <iframe class="video-adaptiv" src="@Model.VideoRef" allowfullscreen></iframe>
                 }
-
 
             </div>
 
@@ -446,6 +446,7 @@
         <vc:movie-frames image-filter="@Model.MovieFile.MovieCaption," left-side="false" one-frame="false" />
     }
 
+
 </div>
 
 @* Полная версия фильма *@
@@ -491,6 +492,7 @@ else
 {
 }
 
+
 @* Фотокарусель *@
 @if (Model.MovieFile.Carousel)
 {
@@ -501,6 +503,7 @@ else
 
 }
 
+
 @* Ссылки под видео 1 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter1))
 {
@@ -510,6 +513,7 @@ else
 {
 }
 
+
 @* Ссылки под видео 2 *@
 @if (!string.IsNullOrEmpty(Model.MovieFile.SearchFilter2))
 {
@@ -518,6 +522,7 @@ else
 else
 {
 }
+
 
 @* Скрипты для фотокарусели *@
 @section Scripts {

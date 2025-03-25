@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using System.IO;
+
+namespace ShevkunenkoSite.Controllers;
 
 public class ArticlesController(
     IBooksAndArticlesRepository articleContext,
@@ -22,7 +24,17 @@ public class ArticlesController(
             && pageNumber > 0
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber).AnyAsync())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber);
+
+            if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.HtmlFileName))
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.HtmlFileName);
 
@@ -31,6 +43,7 @@ public class ArticlesController(
                 BookOrArticle = await articleContext.BooksAndArticles
                         .Include(logo => logo.LogoOfArticle)
                         .Include(scan => scan.ScanOfArticle)
+                        .Include(movie => movie.VideoForBookOrArticle)
                         .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
 
                 PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),

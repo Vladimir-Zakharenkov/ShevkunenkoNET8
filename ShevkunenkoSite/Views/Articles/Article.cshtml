@@ -59,7 +59,7 @@
 
 
     @* заголовок статьи *@
-    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block mt-3 mb-3 mx-auto maxwidth600px")">
+    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block my-3 mx-auto maxwidth600px")">
 
         <h1 class="lh-1">
             <span class="fs-3 text-primary d-inline-block mb-2 h1_print">
@@ -73,109 +73,156 @@
 
     </header>
 
-    @* статья *@
-    <div class="@(Model.Scan == true ? "article_page mx-auto paragraph shadw mt-4" : "article_page mx-auto paragraph shadw")" itemprop="articleBody text">
+    <div class="row">
 
-        @* инфо вверху страницы *@
-        <div class="@(Model.Scan == true ? "d-none" : "mb-4 top_page d-print-none")">
+        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="true" one-frame="false" />
 
-            @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
-            {
-                <a class=""
-                   asp-area=""
-                   asp-controller="Articles"
-                   asp-action="Article"
-                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
-                   asp-route-pageNumber="1"
-                   asp-route-scan="true"
-                   title="скан статьи">
+        @* статья *@
+        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4" : "")" itemprop="articleBody text">
 
-                    <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
-                                   css-class="float-start me-2 maxwidth40px shadw imageref"
-                                   icon-type="" />
+            @* инфо вверху страницы *@
+            <div class="@(Model.Scan == true ? "d-none" : "mb-4 top_page d-print-none")">
 
-                </a>
-            }
+                @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+                {
+                    <a class=""
+                       asp-area=""
+                       asp-controller="Articles"
+                       asp-action="Article"
+                       asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                       asp-route-pageNumber="1"
+                       asp-route-scan="true"
+                       title="скан статьи">
 
+                        <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                       css-class="float-start me-2 maxwidth40px shadw imageref"
+                                       icon-type="webicon100" />
 
-            @if (Model.Scan != true)
-            {
-                <a class=" d-print-none"
-                   href="javascript:window.print(); void 0;"
-                   title="распечатать страницу">
+                    </a>
+                }
 
-                    <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
-                                   css-class="float-start maxwidth40px shadw imageref  d-print-none"
-                                   icon-type="" />
+                @if (Model.BookOrArticle.VideoForBookOrArticle != null && Model.Scan != true)
+                {
+                    <a class=""
+                       asp-area=""
+                       asp-controller="AllVideo"
+                       asp-action="Movie"
+                       asp-route-movieId="@Model.BookOrArticle.VideoForBookOrArticleId"
+                       asp-route-pageOfSeries="true"
+                       asp-route-videohosting="@Model.BookOrArticle.VideoForBookOrArticle.MovieVkVideo"
+                       title="видео к статье">
 
-                </a>
+                        <vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
+                                       css-class="float-start me-2 maxwidth40px shadw imageref"
+                                       icon-type="webicon100" />
 
-                <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
-            }
+                    </a>
+                }
+
+                @if (Model.Scan != true)
+                {
+                    <a class=" d-print-none"
+                       href="javascript:window.print(); void 0;"
+                       title="распечатать страницу">
+
+                        <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                       css-class="float-start maxwidth40px shadw imageref  d-print-none"
+                                       icon-type="webicon100" />
+
+                    </a>
+
+                    <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
+                }
+
+            </div>
+
+            @* текст статьи *@
+            <div style="min-height:940px">
+
+                @if (Model.Scan == true)
+                {
+                    <a href="@Model.BookOrArticle.ScanOfArticle!.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName"
+                       class=""
+                       title="скан статьи"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.BookOrArticle.ScanOfArticleId"
+                                       css-class="adp90_img imageref"
+                                       icon-type="" />
+
+                    </a>
+                }
+                else
+                {
+                    @Html.Raw(Model.HtmlText)
+                }
+
+            </div>
+
+            @* инфо внизу страницы *@
+            <footer class="@(Model.Scan == true ? "d-none" : "mt-3 footer_page")">
+
+                @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+                {
+                    <a class="d-print-none"
+                       asp-area=""
+                       asp-controller="Articles"
+                       asp-action="Article"
+                       asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                       asp-route-pageNumber="1"
+                       asp-route-scan="true"
+                       title="скан статьи">
+
+                        <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                       css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
+                                       icon-type="webicon100" />
+
+                    </a>
+                }
+
+                @if (Model.BookOrArticle.VideoForBookOrArticle != null && Model.Scan != true)
+                {
+                    <a class="d-print-none"
+                       asp-area=""
+                       asp-controller="AllVideo"
+                       asp-action="Movie"
+                       asp-route-movieId="@Model.BookOrArticle.VideoForBookOrArticleId"
+                       asp-route-pageOfSeries="true"
+                       asp-route-videohosting="@Model.BookOrArticle.VideoForBookOrArticle.MovieVkVideo"
+                       title="видео к статье">
+
+                        <vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
+                                       css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
+                                       icon-type="webicon100" />
+
+                    </a>
+                }
+
+                @if (Model.Scan != true)
+                {
+                    <a class="d-print-none"
+                       href="javascript:window.print(); void 0;"
+                       title="распечатать страницу">
+
+                        <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                       css-class="float-start maxwidth40px shadw imageref d-print-none"
+                                       icon-type="webicon100" />
+
+                    </a>
+
+                    <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
+                }
+
+            </footer>
 
         </div>
 
-        @* текст статьи *@
-        @if (Model.Scan == true)
-        {
-            <a href="@Model.BookOrArticle.ScanOfArticle!.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName"
-               class=""
-               title="скан статьи"
-               onclick="this.target='_blank'">
-
-                <vc:view-image image-id="@Model.BookOrArticle.ScanOfArticleId"
-                               css-class="adp90_img imageref"
-                               icon-type="" />
-
-            </a>
-        }
-        else
-        {
-            @Html.Raw(Model.HtmlText)
-        }
-
-        @* инфо внизу страницы *@
-        <footer class="@(Model.Scan == true ? "d-none" : "mt-3 footer_page")">
-
-            @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
-            {
-                <a class="d-print-none"
-                   asp-area=""
-                   asp-controller="Articles"
-                   asp-action="Article"
-                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
-                   asp-route-pageNumber="1"
-                   asp-route-scan="true"
-                   title="скан статьи">
-
-                    <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
-                                   css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
-                                   icon-type="" />
-
-                </a>
-            }
-
-            @if (Model.Scan != true)
-            {
-                <a class="d-print-none"
-                   href="javascript:window.print(); void 0;"
-                   title="распечатать страницу">
-
-                    <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
-                                   css-class="float-start maxwidth40px shadw imageref d-print-none"
-                                   icon-type="" />
-
-                </a>
-
-                <p class="float-end text-primary mt-2 mt-lg-1 fluid-font-size nomstr">@Model.PageNumber</p>
-            }
-
-        </footer>
+        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="false" one-frame="false" />
 
     </div>
 
     @* навигация по статье *@
-    <div class="maxwidth700px mt-4 mb-0 mx-auto d-print-none">
+    <div class="col col-md-8 maxwidth700px mt-4 mb-0 mx-auto clearfix d-print-none">
 
         @if (Model.PageNumber > 1 && Model.Scan != true)
         {

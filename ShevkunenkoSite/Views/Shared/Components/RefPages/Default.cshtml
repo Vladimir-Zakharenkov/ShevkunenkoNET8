@@ -1,121 +1,128 @@
 ﻿@model RefPagesViewModel
 
 @* Ссылки на связанные страницы по GUID (1) *@
-@if (Model.LinksToPagesByGuid.Count > 0)
-{
-    @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
-    @if (Model.LinksToPagesByGuid.Count < 4)
+<div>
+
+    @if (Model.LinksToPagesByGuid.Count > 0)
     {
-        <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-            <hr class="liniya" />
-
-            @foreach (var item in Model.LinksToPagesByGuid)
-            {
-                <vc:card-of-page page="@item" />
-            }
-
-        </div>
-    }
-    @* Стандартный размер картинки ссылки *@
-    else
-    {
-        <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-            <hr class="liniya" />
-
-            @foreach (var item in Model.LinksToPagesByGuid)
-            {
-                <vc:card-of-page page="@item" />
-            }
-
-        </div>
-    }
-}
-<!---->
-@* Ссылки на связанные страницы по GUID (2) *@
-@if (Model.LinksToPagesByGuid2.Count > 0)
-{
-    @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
-    @if (Model.LinksToPagesByGuid2.Count < 3)
-    {
-        <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-            <hr class="liniya" />
-
-            @foreach (var item in Model.LinksToPagesByGuid2)
-            {
-                <vc:card-of-page page="@item" />
-            }
-
-        </div>
-    }
-    @* Стандартный размер картинки ссылки *@
-    else
-    {
-        <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-            <hr class="liniya" />
-
-            @foreach (var item in Model.LinksToPagesByGuid2)
-            {
-                <vc:card-of-page page="@item" />
-            }
-
-        </div>
-    }
-}
-<!---->
-@* Ссылки на связанные страницы по фильтру *@
-@if (Model.ListsOfFilterOut.Count > 0)
-{
-    foreach (var listOfFilterOut in Model.ListsOfFilterOut)
-    {
-        if (listOfFilterOut.Count > 0)
+        @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
+        @if (Model.LinksToPagesByGuid.Count < 4)
         {
-            if (listOfFilterOut.Count < 4)
+            <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                <hr class="liniya" />
+
+                @foreach (var item in Model.LinksToPagesByGuid)
+                {
+                    <vc:card-of-page page="@item" />
+                }
+
+            </div>
+        }
+        @* Стандартный размер картинки ссылки *@
+        else
+        {
+            <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                <hr class="liniya" />
+
+                @foreach (var item in Model.LinksToPagesByGuid)
+                {
+                    <vc:card-of-page page="@item" />
+                }
+
+            </div>
+        }
+    }
+
+</div>
+
+@*Ссылки на связанные страницы по GUID (2) *@
+<div>
+    @if (Model.LinksToPagesByGuid2.Count > 0)
+    {
+        @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
+        @if (Model.LinksToPagesByGuid2.Count < 3)
+        {
+            <div class="row row-cols-2 row-cols-lg-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                <hr class="liniya" />
+
+                @foreach (var item in Model.LinksToPagesByGuid2)
+                {
+                    <vc:card-of-page page="@item" />
+                }
+
+            </div>
+        }
+        @* Стандартный размер картинки ссылки *@
+        else
+        {
+            <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+
+                <hr class="liniya" />
+
+                @foreach (var item in Model.LinksToPagesByGuid2)
+                {
+                    <vc:card-of-page page="@item" />
+                }
+
+            </div>
+        }
+    }
+</div>
+
+@* Ссылки на связанные страницы по фильтру *@
+<div class="d-print-none mt-3">
+
+    <hr class="liniya" />
+
+    @if (Model.ListsOfFilterOut.Count > 0)
+    {
+        foreach (var listOfFilterOut in Model.ListsOfFilterOut)
+        {
+            if (listOfFilterOut.Count > 0)
             {
-                <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+                if (listOfFilterOut.Count < 4)
+                {
+                    <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
 
-                    <hr class="liniya" />
+                        @foreach (var item in listOfFilterOut)
+                        {
+                            <vc:card-of-page page="@item" />
+                        }
 
-                    @foreach (var item in listOfFilterOut)
-                    {
-                        <vc:card-of-page page="@item" />
-                    }
+                    </div>
+                }
+                else if (listOfFilterOut.Count % 4 == 0 || listOfFilterOut.Count == 7)
+                {
+                    <div class="row row-cols-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
 
-                </div>
-            }
-            else if (listOfFilterOut.Count % 4 == 0 || listOfFilterOut.Count == 7)
-            {
-                <div class="row row-cols-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
+                        @foreach (var item in listOfFilterOut)
+                        {
+                            <vc:card-of-page page="@item" />
+                        }
 
-                    <hr class="liniya" />
+                    </div>
+                }
+                else
+                {
+                    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
 
-                    @foreach (var item in listOfFilterOut)
-                    {
-                        <vc:card-of-page page="@item" />
-                    }
+                        @foreach (var item in listOfFilterOut)
+                        {
+                            <vc:card-of-page page="@item" />
+                        }
 
-                </div>
-            }
-            else
-            {
-                <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
-
-                    <hr class="liniya" />
-
-                    @foreach (var item in listOfFilterOut)
-                    {
-                        <vc:card-of-page page="@item" />
-                    }
-
-                </div>
+                    </div>
+                }
             }
         }
     }
-}
-<!---->
+
+
+</div>
+
 @* Ссылки на связанные видео *@
 @if (Model.ListOfVideoLinksViewModel.Count > 0)
 {

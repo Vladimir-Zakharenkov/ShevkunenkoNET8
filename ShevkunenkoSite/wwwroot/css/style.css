@@ -12828,7 +12828,7 @@ li#yandex-search * {
 
 @media screen {
   .article_page {
-    padding: 1rem 1rem 2rem 1rem;
+    padding: 1rem 2rem 2rem 2rem;
     max-width: 700px;
   }
 }
@@ -12860,6 +12860,15 @@ li#yandex-search * {
 
 .height600 {
   height: 600px;
+}
+
+.height850 {
+  position: relative;
+  height: 850px;
+}
+
+.height1000 {
+  height: 1000px;
 }
 
 .width12percent {

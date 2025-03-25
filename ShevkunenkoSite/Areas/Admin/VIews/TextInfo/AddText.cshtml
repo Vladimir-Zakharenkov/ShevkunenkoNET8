@@ -125,11 +125,15 @@
             </div>
 
             @* номер страницы книги (статьи) *@
-            <div>
+            <div class="row justify-content-center">
 
-                <label asp-for="SequenceNumber" class="col-form-label text-primary fs-5 me-2"></label>
+                <div class="col-auto">
+                    <label class="form-label text-primary fs-5 me-2" asp-for="SequenceNumber"></label>
+                </div>
 
-                <input id="SequenceNumberInput" class="form-control text-center w-50 mx-auto" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+                <div class="col-auto">
+                    <input id="SequenceNumberInput" class="form-control text-center w-55" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+                </div>
 
                 <div id="SequenceNumberInputHelpBlock" class="form-text">
 

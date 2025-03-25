@@ -2,66 +2,60 @@
 
 public class MovieFrames(IImageFileRepository imageFileContext) : ViewComponent
 {
-    ImageFileModel[] imageItems = [];
-
-    private readonly int frameAroundMovie = 10;
+    private readonly int framesAroundMovie = 4;
 
     public async Task<IViewComponentResult> InvokeAsync(string? imageFilter, bool leftSide, bool oneFrame)
     {
-        if (!string.IsNullOrEmpty(imageFilter))
+        if (!string.IsNullOrEmpty(imageFilter)
+            && await imageFileContext.ImageFiles.Where(img => img.SearchFilter.ToLower().Contains(imageFilter.ToLower())).AnyAsync())
         {
-            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).AnyAsync())
-            {
-                imageItems = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(imageFilter)).OrderBy(img => img.WebImageFileName).ToArrayAsync();
+            var imageItems = await imageFileContext.ImageFiles
+                .Where(img => img.SearchFilter.ToLower().Contains(imageFilter.ToLower()))
+                .OrderBy(order => order.WebImageFileName)
+                .ToArrayAsync();
 
-                if (imageItems.Length > frameAroundMovie)
-                {
-                    imageItems = imageItems.Take(frameAroundMovie).ToArray();
-                }
-            }
-            else
-            {
-                return View(imageItems);
-            }
-        }
-        else
-        {
-            return View(imageItems);
-        }
-
-        if (oneFrame)
-        {
-            Random r = new();
-
-            ImageFileModel imageItem = imageItems[r.Next(0, imageItems.Length)];
-
-            return View("OneFrame", imageItem);
-        }
-        else
-        {
-            if (imageItems.Length == 1)
-            {
-                return View(imageItems);
-            }
-            else if (imageItems.Length > 1)
+            if (imageItems.Length > 1)
             {
                 if (leftSide)
                 {
-                    int arrayLength = imageItems.Length / 2;
-
-                    return View(imageItems.Take(arrayLength).ToArray());
+                    imageItems = [.. imageItems.Take((int)imageItems.Length / 2)];
                 }
                 else
                 {
-                    int arrayLength = imageItems.Length / 2;
-
-                    return View(imageItems.Skip(arrayLength).ToArray());
+                    imageItems = [.. imageItems.Skip((int)imageItems.Length / 2)];
                 }
             }
+
+            // по одному кадру слева и справа (случайная выборка)
+            if (oneFrame)
+            {
+                Random r = new();
+
+                ImageFileModel imageItem = imageItems[r.Next(0, imageItems.Length)];
+
+                return View("OneFrame", imageItem);
+            }
+            // кадры для страниц статей
+            else if (HttpContext.Request.QueryString.ToString().Contains("articleid", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return View("PhotoArounArticle", imageItems);
+            }
+            // кадры для страниц видео
             else
             {
+                if (imageItems.Length > framesAroundMovie)
+                {
+                    imageItems = [.. imageItems.Take(framesAroundMovie)];
+                }
+
                 return View(imageItems);
             }
+        }
+        else
+        {
+            ImageFileModel[] imageItems = [];
+
+            return View(imageItems);
         }
     }
 }
