@@ -1,4 +1,6 @@
-﻿.bookpages {
+﻿@import "../lib/bootstrap/scss/mixins";
+
+.bookpages {
     display: block;
     clear: both;
     background-color: hsla(0,40%,96%,0.8);
