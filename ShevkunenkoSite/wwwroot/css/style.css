@@ -12871,6 +12871,16 @@ li#yandex-search * {
   height: 1000px;
 }
 
+@media screen {
+  .minheight900 {
+    min-height: 900px;
+  }
+}
+@media print {
+  .minheight900 {
+    min-height: 10px;
+  }
+}
 .width12percent {
   max-width: 12%;
 }
