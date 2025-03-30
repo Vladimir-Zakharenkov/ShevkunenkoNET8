@@ -12,7 +12,7 @@
     }
 </div>
 
-@* Сообщение о количестве текстов *@
+@* Количество текстов *@
 <div>
 
     @if (Model.PagingInfo.TotalItems == 0)
@@ -70,6 +70,31 @@
 
 </div>
 
+@* Страницы *@
+<div>
+
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 text-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
+        </div>
+    }
+
+</div>
+
 @* Таблица данных *@
 <div class="row">
 
@@ -102,7 +127,7 @@
 
                             <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.TxtFileName</td>
 
-                           <td scope="col" class="text-center text_shadow d-none d-md-table-cell">@text.TxtFileSize</td>
+                            <td scope="col" class="text-center text_shadow d-none d-md-table-cell">@text.TxtFileSize</td>
 
                             <td scope="col" title="информация">
                                 <a class="btn btn-outline-primary py-1 px-1 shadw"
@@ -147,5 +172,30 @@
         </div>
 
     </div>
+
+</div>
+
+@* Страницы *@
+<div>
+
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 text-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
+        </div>
+    }
 
 </div>

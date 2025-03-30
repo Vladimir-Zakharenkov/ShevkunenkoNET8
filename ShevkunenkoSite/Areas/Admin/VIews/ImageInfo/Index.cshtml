@@ -1,42 +1,41 @@
 ﻿@model ImageListViewModel
 
-@* Строка поиска *@
-<div class="row">
-
+@* Значение строки поиска *@
+<div>
     @if (!String.IsNullOrEmpty(Model.ImageSearchString))
     {
-        <p class="fs-5 text-primary mb-0">Поиск по строке: <span class="text-black text_shadow">@Model.ImageSearchString</span></p>
+        <div class="row mb-0">
+            <p class="col-12 fs-5 text-primary">
+                Поиск по строке: <span class="text-black text_shadow">@Model.ImageSearchString</span>
+            </p>
+        </div>
     }
-
 </div>
 
 @* Количество картинок *@
-@if (Model.AllImages.Count() == 0)
-{
-    <div class="row">
+<div>
 
-        <div class="col text-center p-2">
-
-            <p class="fs-5 text_shadow mb-0">В базе данных нет картинок</p>
-
-        </div>
-
-    </div>
-}
-else
-{
-    <div class="row">
-
-        <div class="col-12 text-center mb-0">
-
-            <p class="fs-5 text-primary mb-0">Количество изображений:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+    @if (Model.AllImages.Count() == 0)
+    {
+        <div class="row">
+            <div class="col text-center p-2">
+                <p class="fs-5 text_shadow mb-0">В базе данных нет картинок</p>
+            </div>
 
         </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12 text-center mb-0">
+                <p class="fs-5 text-primary mb-0">Количество изображений:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+            </div>
+        </div>
+    }
 
-    </div>
-}
+    <hr class="liniya" />
 
-<hr class="liniya" />
+</div>
 
 @* Добавить картинку - Иконки - Поиск картинок *@
 <div class="row row-cols-2 row-cols-md-3 justify-content-center px-2">
@@ -76,33 +75,34 @@ else
 
     </div>
 
+    <hr class="liniya" />
+
 </div>
 
-<hr class="liniya" />
-
 @* Страницы *@
-@if (Model.PagingInfo.TotalPages > 1)
-{
-    <div class="row p-2 m-2">
+<div>
 
-        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-             page-model="@Model.PagingInfo"
-             image-search="@Model"
-             page-action="Index"
-             page-classes-enabled="true"
-             page-class="btn"
-             page-class-normal="btn-outline-dark"
-             page-class-selected="btn-danger"
-             data-toggle="buttons"
-             role="group"
-             aria-label="картинки сайта">
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 image-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
         </div>
+    }
 
-    </div>
-}
-else
-{
-}
+</div>
 
 @* Таблица данных *@
 <div class="row">
@@ -258,25 +258,26 @@ else
 </div>
 
 @* Страницы *@
-@if (Model.PagingInfo.TotalPages > 1)
-{
-    <div class="row p-2 m-2">
+<div>
 
-        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-             page-model="@Model.PagingInfo"
-             image-search="@Model"
-             page-action="Index"
-             page-classes-enabled="true"
-             page-class="btn"
-             page-class-normal="btn-outline-dark"
-             page-class-selected="btn-danger"
-             data-toggle="buttons"
-             role="group"
-             aria-label="картинки сайта">
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 image-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
         </div>
+    }
 
-    </div>
-}
-else
-{
-}
+</div>

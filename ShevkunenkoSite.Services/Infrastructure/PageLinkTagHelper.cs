@@ -17,6 +17,8 @@ public class PageLinkTagHelper(IUrlHelperFactory helperFactory) : TagHelper
 
     public TopicMovieViewModel TopicSearch { get; set; } = new();
 
+    public TextInfoViewModel TextSearch { get; set; } = new();
+
     public string? PageAction { get; set; }
 
     public bool PageClassesEnabled { get; set; } = false;
@@ -54,7 +56,8 @@ public class PageLinkTagHelper(IUrlHelperFactory helperFactory) : TagHelper
                         movieDirectorSearchString = MovieSearch.MovieDirectorSearchString ?? string.Empty,
                         movieMusicBySearchString = MovieSearch.MovieMusicBySearchString ?? string.Empty,
                         movieActorSearchString = MovieSearch.MovieActorSearchString ?? string.Empty,
-                        topicMovieSearchString = TopicSearch.TopicMovieSearchString ?? string.Empty
+                        topicMovieSearchString = TopicSearch.TopicMovieSearchString ?? string.Empty,
+                        textSearchString = TextSearch.TextSearchString ?? string.Empty
                     });
 
                 if (PageClassesEnabled)
