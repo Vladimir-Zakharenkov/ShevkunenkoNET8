@@ -85,14 +85,16 @@ public class RefPages(
                         {
                             var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i] + ',')).ToListAsync();
 
-                            if (listOfFilterOut.Count > 9)
-                            {
-                                listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
-                            }
-                            else
-                            {
-                                listOfFilterOut.Sort((page1, page2) => page1.PageCardText.CompareTo(page2.PageCardText));
-                            }
+                            listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
+
+                            //if (listOfFilterOut.Count > 1)
+                            //{
+                            //    listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
+                            //}
+                            //else
+                            //{
+                            //    listOfFilterOut.Sort((page1, page2) => page1.PageCardText.CompareTo(page2.PageCardText));
+                            //}
 
                             listsOfFilterOut.Add(listOfFilterOut);
                         }
