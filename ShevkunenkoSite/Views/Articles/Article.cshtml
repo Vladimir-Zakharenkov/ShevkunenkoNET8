@@ -78,7 +78,7 @@
         <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="true" one-frame="false" />
 
         @* статья *@
-        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4" : "")" itemprop="articleBody text">
+        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")" itemprop="articleBody text">
 
             @* инфо вверху страницы *@
             <div class="@(Model.Scan == true ? "d-none" : "mb-4 top_page d-print-none")">
