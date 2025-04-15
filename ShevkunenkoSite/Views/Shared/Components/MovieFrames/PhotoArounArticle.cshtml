@@ -6,9 +6,9 @@
 
         @foreach (var item in Model)
         {
-            <a href="@item.ImagePath/@item.WebImageFileName"
+            <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
                class=""
-               title="скан статьи"
+               title="@item.ImageAltTitle"
                onclick="this.target='_blank'">
 
                 <vc:view-image image-id="@item.ImageFileModelId"

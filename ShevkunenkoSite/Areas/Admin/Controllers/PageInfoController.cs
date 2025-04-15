@@ -292,7 +292,6 @@ public class PageInfoController(
 
     [HttpGet]
     public ViewResult AddPage()
-
     {
         AddPageViewModel newPage = new();
 
@@ -567,7 +566,7 @@ public class PageInfoController(
 
             #region Область
 
-            if (string.IsNullOrWhiteSpace(addPage.PageArea) || string.IsNullOrEmpty(addPage.PageArea))
+            if (string.IsNullOrEmpty(addPage.PageArea.Trim()) || addPage.PageArea == "Root")
             {
                 addPage.PageArea = string.Empty;
             }
@@ -1257,7 +1256,7 @@ public class PageInfoController(
 
             pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
 
-            if (string.IsNullOrEmpty(editPage.PageItem.PageArea))
+            if (string.IsNullOrEmpty(editPage.PageItem.PageArea.Trim()) || editPage.PageItem.PageArea == "Root")
             {
                 pageUpdate.PageArea = string.Empty;
             }

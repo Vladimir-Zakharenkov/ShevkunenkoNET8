@@ -118,12 +118,24 @@
                         <div class="col-auto" aria-describedby="PageAreaInputHelpBlock">
 
                             <select id="AreaInput" asp-for="PageArea" class="form-select">
-                                @{
-                                    for (int i = 0; i < Model.AreaItems.Count(); i++)
+
+                                @* @for (int i = 0; i < Model.AreaItems.Count(); i++)
                                     {
-                                        <option value="@Model.AreaItems[i]">@Model.AreaItems[i]</option>
-                                    }
-                                }
+                                        if (Model.AreaItems[i] == "Root")
+                                        {
+                                            <option value="@Model.AreaItems[i]" selected>@Model.AreaItems[i]</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Model.AreaItems[i]">@Model.AreaItems[i]</option>
+                                        }
+                                    } *@
+
+                                <option value="Root" selected>Root</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Movies">Movies</option>
+                                <option value="Rybakov">Rybakov</option>
+
                             </select>
 
                         </div>

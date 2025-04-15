@@ -9,7 +9,7 @@ public class PageInfoModel
     [NotMapped]
     public string[] AreaItems =
     [
-        string.Empty,
+        "Root",
         "Admin",
         "Movies",
         "Rybakov"
@@ -35,7 +35,7 @@ public class PageInfoModel
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Область :")]
     [DataType(DataType.Text)]
-    public string PageArea { get; set; } = string.Empty;
+    public string PageArea { get; set; } = "Root";
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
