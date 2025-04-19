@@ -17,11 +17,33 @@ public class ArticlesController(
     {
         if (articleId != null
             && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == articleId).AnyAsync()
-            && await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync()
             && pageNumber != null
             && pageNumber > 0
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
+            // Если есть только скан
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync() & scan == true)
+            {
+                ArticleViewModel scanForArticle = new()
+                {
+                    BookOrArticle = await articleContext.BooksAndArticles
+                       .Include(logo => logo.LogoOfArticle)
+                       .Include(scan => scan.ScanOfArticle)
+                       .Include(movie => movie.VideoForBookOrArticle)
+                       .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
+
+                    PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
+
+                    HtmlText = null,
+
+                    PageNumber = null,
+
+                    Scan = true
+                };
+
+                return View("Article", scanForArticle);
+            }
+
             if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber).AnyAsync())
             {
                 return RedirectToAction(nameof(Index));

@@ -59,7 +59,7 @@
 
 
     @* заголовок статьи *@
-    <header itemprop="headline" class="@(Model.Scan == true ? "d-none" : "d-block my-3 mx-auto maxwidth600px")">
+    <header itemprop="headline" class="d-block my-3 mx-auto maxwidth600px">
 
         <h1 class="lh-1">
             <span class="fs-3 text-primary d-inline-block mb-1 h1_print">
@@ -243,7 +243,7 @@
 
         @if (Model.Scan == true)
         {
-            <a class="btn btn-outline-primary py-1 mx-auto shadw"
+            <a class="@(Model.HtmlText == null ? "d-none" : "btn btn-outline-primary py-1 mx-auto shadw")"
                asp-area=""
                asp-controller="Articles"
                asp-action="Article"
