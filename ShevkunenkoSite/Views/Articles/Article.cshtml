@@ -2,10 +2,11 @@
 
 <article class="mx-auto fluid-font-size" itemscope itemtype="http://schema.org/Article">
 
-    <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
-    <meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText">
+    <meta itemprop="url" href="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString" />
+    <meta itemprop="name" content="@Model.BookOrArticle.AuthorOfText" />
+    <meta itemprop="url" content="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString">
     <meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
-    <meta itemprop="datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-dd")">
+    <meta itemprop="datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
     <meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
 
     @* выбор картинки для статьи *@
@@ -62,11 +63,16 @@
     <header itemprop="headline" class="d-block my-3 mx-auto maxwidth600px">
 
         <h1 class="lh-1">
-            <span class="fs-3 text-primary d-inline-block mb-1 h1_print">
-                @Model.BookOrArticle.AuthorOfText
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                <span itemprop="name" class="fs-3 text-primary d-inline-block mb-1 h1_print">
+                    @Model.BookOrArticle.AuthorOfText
+                </span>
+                <span itemprop="url" class="d-none">
+                    https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+                </span>
             </span>
             <br />
-            <span class="fs-2 text_shadow h1_print">
+            <span itemprop="headline" class="fs-2 text_shadow h1_print">
                 @Model.BookOrArticle.CaptionOfText
             </span>
         </h1>
