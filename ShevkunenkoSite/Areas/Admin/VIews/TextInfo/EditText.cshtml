@@ -23,169 +23,281 @@
     <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
 }
 
+<div class="row">
 
-<div class="col card p-2">
+    <div class="col col-xl-9 col-xxl-8 d-block mx-auto">
 
-    <div class="col-12 card-body mx-auto">
+        <div class="card p-2">
 
-        <form method="post" enctype="multipart/form-data"
-              asp-area="Admin"
-              asp-controller="TextInfo"
-              asp-action="EditText">
+            <form method="post" enctype="multipart/form-data"
+                  class="card-body mx-0 p-0"
+                  asp-area="Admin"
+                  asp-controller="TextInfo"
+                  asp-action="EditText">
 
-            @* скрытые поля формы *@
-            <div>
+                @* скрытые поля формы *@
+                <div>
 
-                <input asp-for="TextInfoModelId" type="hidden" />
-                <input asp-for="TxtFileName" type="hidden" />
-                <input asp-for="HtmlFileName" type="hidden" />
-                <input asp-for="TxtFileSize" type="hidden" />
-                <input asp-for="HtmlFileSize" type="hidden" />
-
-            </div>
-
-            @* связанная книга (статья) *@
-            <div>
-
-                <label asp-for="RefForBookOrArticle" class="col-form-label text-primary fs-5 me-2"></label>
-
-                <input id="RefForBookOrArticleInput" class="form-control text-start" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
-
-                <div id="RefForBookOrArticleInputHelpBlock" class="form-text">
-
-                    <span class="fs-6 text-success">связанная книга (статья)</span>
+                    <input asp-for="TextInfoModelId" type="hidden" />
+                    <input asp-for="TxtFileName" type="hidden" />
+                    <input asp-for="HtmlFileName" type="hidden" />
+                    <input asp-for="TxtFileSize" type="hidden" />
+                    <input asp-for="HtmlFileSize" type="hidden" />
 
                 </div>
 
-                <span asp-validation-for="RefForBookOrArticle" class="text-danger"></span>
+                @* связанная книга (статья) *@
+                <div>
 
-                <hr class="w-50 mx-auto" />
+                    <label class="col-form-label text-primary fs-5 me-2" asp-for="RefForBookOrArticle"></label>
 
-            </div>
+                    <input id="RefForBookOrArticleInput" class="form-control text-center w-75 mx-auto" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
 
-            @* номер страницы книги (статьи) *@
-            <div>
+                    <div id="RefForBookOrArticleInputHelpBlock" class="form-text">
 
-                <label asp-for="SequenceNumber" class="col-form-label text-primary fs-5 me-2"></label>
+                        <span class="fs-6 text-success">связанная книга (статья)</span>
 
-                <input id="SequenceNumberInput" class="form-control text-center w-50 mx-auto" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+                    </div>
 
-                <div id="SequenceNumberInputHelpBlock" class="form-text">
+                    <span asp-validation-for="RefForBookOrArticle" class="text-danger"></span>
 
-                    <span class="fs-6 text-success">номер страницы книги (статьи)</span>
-
-                </div>
-
-                <span asp-validation-for="SequenceNumber" class="text-danger"></span>
-
-            </div>
-
-            @* Тег «TextDescription» *@
-            <div>
-
-                <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
-
-                <textarea id="TextDescriptionInput" class="form-control fordetails"
-                          asp-for="TextDescription"
-                          rows="2"
-                          aria-describedby="TextDescriptionInputHelpBlock">
-                </textarea>
-
-                <div id="TextDescriptionInputHelpBlock" class="form-text">
-
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
-                    <span class="fs-6 text-danger">обязательное поле</span>
+                    <hr class="w-50 mx-auto" />
 
                 </div>
 
-                <span asp-validation-for="TextDescription" class="text-danger"></span>
+                @* номер страницы книги (статьи) *@
+                <div>
 
-            </div>
+                    <label asp-for="SequenceNumber" class="col-form-label text-primary fs-5 me-2"></label>
 
-            <hr class="liniya" />
+                    <input id="SequenceNumberInput" class="form-control text-center w-25 mx-auto" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
 
-            @* Файл TXT *@
-            <div>
+                    <div id="SequenceNumberInputHelpBlock" class="form-text">
 
-                <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
-                <span class="fs-5 text_shadow">@Model.TxtFileName</span>
-                <p class="fs-5 text-primary">(@Model.TxtFileSize байт)</p>
+                        <span class="fs-6 text-success">номер страницы книги (статьи)</span>
 
-                <textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
-                          asp-for="ClearText"
-                          rows="10"
-                          aria-describedby="ClearTextInputHelpBlock">
-                 </textarea>
+                    </div>
 
-                <div id="ClearTextInputHelpBlock" class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
-                    <span class="fs-6 text-success">текст без разметки</span>
+                    <span asp-validation-for="SequenceNumber" class="text-danger"></span>
+
+                    <hr class="w-50 mx-auto" />
+
                 </div>
 
-                <span asp-validation-for="ClearText" class="text-danger"></span>
+                @* Тег «TextDescription» *@
+                <div>
 
-                <hr class="liniya" />
+                    <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
 
-            </div>
+                    <textarea id="TextDescriptionInput" class="form-control fordetails maxwidth80percent mx-auto"
+                              asp-for="TextDescription"
+                              rows="2"
+                              aria-describedby="TextDescriptionInputHelpBlock">
+                        </textarea>
 
-            @* Файл HTML *@
-            <div>
+                    <div id="TextDescriptionInputHelpBlock" class="form-text">
 
-                <label asp-for="HtmlFileName" class="col-form-label text-primary fs-5 me-2"></label>
-                <span class="fs-5 text_shadow">@Model.HtmlFileName</span>
-                <p class="fs-5 text-primary">(@Model.HtmlFileSize байт)</p>
+                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
+                        <span class="fs-6 text-danger">обязательное поле</span>
 
-                <textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
-                          asp-for="HtmlText"
-                          rows="10"
-                          aria-describedby="HtmlTextInputHelpBlock">
-                 </textarea>
+                    </div>
 
-                <div id="HtmlTextInputHelpBlock" class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
-                    <span class="fs-6 text-success">текст с разметкой</span>
+                    <span asp-validation-for="TextDescription" class="text-danger"></span>
+
+                    <hr class="liniya" />
+
                 </div>
 
-                <span asp-validation-for="HtmlText" class="text-danger"></span>
+                @* Каталог текста *@
+                <div>
 
-                <hr class="liniya" />
+                    <p class="mb-3">
+                        <span class="fs-5 text-primary fw-bold">Текущий каталог: </span>
+                        <br class="d-sm-none" />
+                        <span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.FolderForText</span>
+                    </p>
 
-                <div class="bookpages lay1">
+                    <label class="form-label text-primary fs-5 fw-bold" asp-for="FolderForText"></label>
 
-                    <div class="descr lay1 overflow-y-scroll height400">
+                    <br class="d-sm-none" />
 
-                        @Html.Raw(Model.HtmlText)
+                    <select class="w-50" asp-for="FolderForText"
+                            asp-items="Model.TextDirectories"
+                            aria-describedby="TextPathInputHelpBlock">
 
+                        <option selected value="@Model.FolderForText">@Model.FolderForText</option>
+
+                    </select>
+
+                    <div id="FolderForTextInputHelpBlock" class="fs-6 form-text text-success mb-3">
+                        выбрать каталог текста
+                        <br class="d-sm-none" />
+                        (в каталоге «texts»)
+                    </div>
+
+                    <hr class="w-50 mx-auto" />
+
+                    @* Новый каталог для текста *@
+                    <div class="row g-2 justify-content-center">
+
+                        <div class="col-auto">
+                            <label asp-for="NewFolderForText" class="form-label text-primary fs-5 fw-bold"></label>
+                        </div>
+                        <div class="col-auto">
+                            <input id="NewFolderForTextInput" asp-for="NewFolderForText" class="form-control text-center" aria-describedby="NewFolderForTextInputHelpBlock" />
+                        </div>
+                        <div id="NewFolderForTextInputHelpBlock" class="fs-6 form-text text-success">
+                            <span>добавить новый каталог </span>
+                            <br class="d-sm-none" />
+                            <span>(в каталог «texts»)</span>
+                        </div>
+
+                        <span asp-validation-for="NewFolderForText" class="text-danger"></span>
+
+                    </div>
+
+                    <hr class="liniya" />
+
+                </div>
+
+                @* Файл TXT *@
+                <div>
+
+                    <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                    <br class="d-sm-none" />
+                    <span class="fs-5 text_shadow">@Model.TxtFileName</span>
+                    <p class="fs-5 text-primary">(@Model.TxtFileSize байт)</p>
+
+                    <textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2 maxwidth90percent mx-auto"
+                              asp-for="ClearText"
+                              rows="10"
+                              aria-describedby="ClearTextInputHelpBlock">
+                        </textarea>
+
+                    <div id="ClearTextInputHelpBlock" class="form-text">
+                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
+                        <span class="fs-6 text-success">текст без разметки</span>
+                    </div>
+
+                    <span asp-validation-for="ClearText" class="text-danger"></span>
+
+                    <hr class="w-50 mx-auto" />
+
+                    @* выбрать файл txt *@
+                    <div class="row g-2 justify-content-center">
+
+                        <div class="col-auto">
+                            <label asp-for="TxtFileFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                        </div>
+
+                        <div class="col-auto text-start">
+                            <input id="TxtFileFormFile" asp-for="TxtFileFormFile" class="form-control" aria-describedby="TxtFileFormFileInputHelpBlock" />
+                        </div>
+
+                        <div id="TxtFileFormFileInputHelpBlock" class="form-text mt-2">
+
+                            <span class="fs-6 text-success">выбрать новый файл (txt)</span>
+
+                        </div>
+
+                        @if (Context.Request.Method == "POST")
+                        {
+                            <span asp-validation-for="TxtFileFormFile" class="text-danger"></span>
+                        }
+
+                    </div>
+
+                    <hr class="liniya" />
+
+                </div>
+
+                @* Файл HTML *@
+                <div>
+
+                    <label asp-for="HtmlFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                    <br class="d-sm-none" />
+                    <span class="fs-5 text_shadow">@Model.HtmlFileName</span>
+                    <p class="fs-5 text-primary">(@Model.HtmlFileSize байт)</p>
+
+                    <textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2 maxwidth90percent mx-auto"
+                              asp-for="HtmlText"
+                              rows="10"
+                              aria-describedby="HtmlTextInputHelpBlock">
+                     </textarea>
+
+                    <div id="HtmlTextInputHelpBlock" class="form-text">
+                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
+                        <span class="fs-6 text-success">текст с разметкой</span>
+                    </div>
+
+                    <span asp-validation-for="HtmlText" class="text-danger"></span>
+
+                    <hr class="w-50 mx-auto" />
+
+                    @* выбрать файл html *@
+                    <div class="row g-2 justify-content-center">
+
+                        <div class="col-auto">
+                            <label asp-for="HtmlFileFormFile" class="col-form-label text-primary fs-5 me-2"></label>
+                        </div>
+
+                        <div class="col-auto text-start">
+                            <input id="HtmlFileFormFile" asp-for="HtmlFileFormFile" class="form-control" aria-describedby="HtmlFileFormFileInputHelpBlock" />
+                        </div>
+
+                        <div id="HtmlFileFormFileInputHelpBlock" class="form-text mt-2">
+
+                            <span class="fs-6 text-success">выбрать новый файл (html)</span>
+
+                        </div>
+
+                        @if (Context.Request.Method == "POST")
+                        {
+                            <span asp-validation-for="HtmlFileFormFile" class="text-danger"></span>
+                        }
+
+                        <hr class="liniya" />
+
+                    </div>
+
+                    <div class="bookpages lay1 maxwidth90percent mx-auto">
+
+                        <div class="descr lay1 overflow-y-scroll height400">
+
+                            @Html.Raw(Model.HtmlText)
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-text mt-3">
+                        <span class="fs-6 text-success">вид текста на сайте</span>
                     </div>
 
                 </div>
 
-                <div class="form-text mt-3">
-                    <span class="fs-6 text-success">вид текста на сайте</span>
+                @* Сохранить - Отменить *@
+                <div class="card-footer p-0 pb-2 mt-4">
+
+                    <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
+                            title="Сохранить">
+                        Сохранить
+                    </button>
+
+                    <a class="btn btn-outline-danger mt-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="DetailsText"
+                       asp-route-textId="@Model.TextInfoModelId"
+                       title="Отменить">
+                        Отменить
+                    </a>
+
                 </div>
 
-            </div>
+            </form>
 
-            @* Сохранить - Отменить *@
-            <div class="card-footer p-0 pb-2 mt-4">
-
-                <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
-                        title="Сохранить">
-                    Сохранить
-                </button>
-
-                <a class="btn btn-outline-danger mt-2 shadw"
-                   asp-area="Admin"
-                   asp-controller="TextInfo"
-                   asp-action="DetailsText"
-                   asp-route-textId="@Model.TextInfoModelId"
-                   title="Отменить">
-                    Отменить
-                </a>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 

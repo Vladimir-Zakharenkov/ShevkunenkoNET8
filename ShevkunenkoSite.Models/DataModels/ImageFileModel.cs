@@ -40,7 +40,7 @@ public class ImageFileModel
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Фильтр поиска: ")]
+    [Display(Name = "Фильтры поиска: ")]
     public string SearchFilter { get; set; } = string.Empty;
 
     #endregion

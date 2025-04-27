@@ -2,7 +2,6 @@
 
 @{
     string sitePath = "https://" + Context.Request.Host;
-    string? fullCss = Model.CssClass + " img-fluid img-thumbnail";
 }
 
 <span itemscope itemtype="http://schema.org/ImageObject">
@@ -13,7 +12,7 @@
 
     <meta itemprop="description" content="@Model.ImageItem.ImageDescription" />
 
-    @if (Model.IconType == "webimage" || Model.IconType == string.Empty)
+    @if (Model.IconType == "webimage")
     {
         if (!string.IsNullOrEmpty(Model.ImageItem.WebImageFileName))
         {
@@ -31,7 +30,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebImageWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebImageHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebImageFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -54,7 +53,7 @@
             <meta itemprop="width" content="@Model.ImageItem.ImageWidth" />
             <meta itemprop="height" content="@Model.ImageItem.ImageHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -63,9 +62,9 @@
         }
         else
         {
-            <vc:view-image image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
-                           css-class="@Model.CssClass"
-                           icon-type="@Model.IconType" />
+            <vc:view-image image-id="@DataConfig.NoImage"
+                           css-class=@Model.CssClass
+                           icon-type=@Model.IconType />
         }
     }
     else if (Model.IconType == "image")
@@ -86,7 +85,7 @@
             <meta itemprop="width" content="@Model.ImageItem.ImageWidth" />
             <meta itemprop="height" content="@Model.ImageItem.ImageHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -109,7 +108,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebImageWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebImageHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebImageFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -119,7 +118,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -142,7 +141,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIconWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebIconHeight" />
 
-            <img class=@fullCss
+            <img class="maxwidth300px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIconFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -165,7 +164,7 @@
             <meta itemprop="width" content="@Model.ImageItem.IconWidth" />
             <meta itemprop="height" content="@Model.ImageItem.IconHeight" />
 
-            <img class=@fullCss
+            <img class="maxwidth300px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -175,7 +174,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -198,7 +197,7 @@
             <meta itemprop="width" content="@Model.ImageItem.IconWidth" />
             <meta itemprop="height" content="@Model.ImageItem.IconHeight" />
 
-            <img class=@fullCss
+            <img class="maxwidth300px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.IconFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -221,7 +220,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIconWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebIconHeight" />
 
-            <img class=@fullCss
+            <img class="maxwidth300px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIconFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -231,7 +230,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -254,7 +253,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIcon200Width" />
             <meta itemprop="height" content="@Model.ImageItem.WebIcon200Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth200px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIcon200FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -277,7 +276,7 @@
             <meta itemprop="width" content="@Model.ImageItem.Icon200Width" />
             <meta itemprop="height" content="@Model.ImageItem.Icon200Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth200px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.Icon200FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -287,7 +286,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -310,7 +309,7 @@
             <meta itemprop="width" content="@Model.ImageItem.Icon200Width" />
             <meta itemprop="height" content="@Model.ImageItem.Icon200Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth200px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.Icon200FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -333,7 +332,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIcon200Width" />
             <meta itemprop="height" content="@Model.ImageItem.WebIcon200Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth200px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIcon200FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -343,7 +342,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -359,7 +358,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIcon100Width" />
             <meta itemprop="height" content="@Model.ImageItem.WebIcon100Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth100px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIcon100FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -375,7 +374,7 @@
             <meta itemprop="width" content="@Model.ImageItem.Icon100Width" />
             <meta itemprop="height" content="@Model.ImageItem.Icon100Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth100px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.Icon100FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -385,7 +384,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -401,7 +400,7 @@
             <meta itemprop="width" content="@Model.ImageItem.Icon100Width" />
             <meta itemprop="height" content="@Model.ImageItem.Icon100Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth100px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.Icon100FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -417,7 +416,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIcon100Width" />
             <meta itemprop="height" content="@Model.ImageItem.WebIcon100Height" />
 
-            <img class=@fullCss
+            <img class="maxwidth100px @Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIcon100FileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -427,7 +426,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -450,7 +449,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebImageHDWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebImageHDHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebImageHDFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -473,7 +472,7 @@
             <meta itemprop="width" content="@Model.ImageItem.ImageHDWidth" />
             <meta itemprop="height" content="@Model.ImageItem.ImageHDHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageHDFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -483,7 +482,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -506,7 +505,7 @@
             <meta itemprop="width" content="@Model.ImageItem.ImageHDWidth" />
             <meta itemprop="height" content="@Model.ImageItem.ImageHDHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.ImageHDFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -529,7 +528,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebImageHDWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebImageHDHeight" />
 
-            <img class=@fullCss
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebImageHDFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"
@@ -539,7 +538,7 @@
         else
         {
             <vc:view-image 
-                image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+                image-id="@DataConfig.NoImage"
                 css-class="@Model.CssClass"
                 icon-type="@Model.IconType" />
         }
@@ -547,7 +546,7 @@
     else
     {
         <vc:view-image 
-            image-id="29F51581-8F24-4EDC-1F48-08DAE2B985EA"
+            image-id="@DataConfig.NoImage"
             css-class="@Model.CssClass"
             icon-type="@Model.IconType" />
     }

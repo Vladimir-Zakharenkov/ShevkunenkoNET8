@@ -50,9 +50,9 @@ public class TextInfoController(
                 .AsNoTracking()
                 .FirstAsync(p => p.TextInfoModelId == textId);
 
-            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.TxtFileName);
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textItem.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.HtmlFileName);
 
             return View(new DetailsTextViewModel
             {
@@ -103,6 +103,26 @@ public class TextInfoController(
             }
 
             addText.TextDescription = addText.TextDescription.Trim();
+
+            #endregion
+
+            #region Каталог текста
+
+            if (addText.FolderForText != "texts")
+            {
+                addText.FolderForText += '/';
+            }
+            else
+            {
+                addText.FolderForText = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(addText.NewTextFolder))
+            {
+                addText.FolderForText = addText.NewTextFolder.Trim().Trim('/') + '/';
+            }
+
+            string path = Path.GetFullPath(Path.Join(System.IO.Directory.GetCurrentDirectory(), "wwwroot/texts", addText.FolderForText)).Replace('\\', '/');
 
             #endregion
 
@@ -210,18 +230,34 @@ public class TextInfoController(
 
             #endregion
 
+            #region Создание нового каталога
+
+            if (System.IO.Directory.Exists(path) & addText.NewTextFolder != string.Empty)
+            {
+                ModelState.AddModelError("NewTextFolder", $"Каталог «{addText.NewTextFolder.Trim('/')}» уже существует");
+
+                return View(new AddTextInfoViewModel());
+            }
+
+            if (!System.IO.Directory.Exists(path))
+            {
+                _ = System.IO.Directory.CreateDirectory(path);
+            }
+
+            #endregion
+
             #region Копировать файлы и добавить в БД
 
             if (addText.TxtFileFormFile != null)
             {
-                using FileStream txtStream = new(rootPath + DataConfig.TextsFolderPath + addText.TxtFileFormFile.FileName, FileMode.Create);
+                using FileStream txtStream = new(rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.TxtFileFormFile.FileName, FileMode.Create);
 
                 await addText.TxtFileFormFile.CopyToAsync(txtStream);
             }
 
             if (addText.HtmlFileFormFile != null)
             {
-                using FileStream htmlStream = new(rootPath + DataConfig.TextsFolderPath + addText.HtmlFileFormFile.FileName, FileMode.Create);
+                using FileStream htmlStream = new(rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.HtmlFileFormFile.FileName, FileMode.Create);
 
                 await addText.HtmlFileFormFile.CopyToAsync(htmlStream);
             }
@@ -257,9 +293,9 @@ public class TextInfoController(
         {
             editText = await textContext.Texts.Include(book => book.BooksAndArticlesModel).FirstAsync(i => i.TextInfoModelId == textId);
 
-            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + editText.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + editText.FolderForText + editText.TxtFileName);
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + editText.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + editText.FolderForText + editText.HtmlFileName);
 
             return View(new DetailsTextViewModel
             {

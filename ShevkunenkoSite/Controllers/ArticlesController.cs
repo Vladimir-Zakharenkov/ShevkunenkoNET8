@@ -13,12 +13,17 @@ public class ArticlesController(
         return View();
     }
 
+    public IActionResult Books()
+    {
+        return View();
+    }
+
     public async Task<IActionResult> Article(Guid? articleId, int? pageNumber, bool? scan)
     {
         if (articleId != null
             && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == articleId).AnyAsync()
             && pageNumber != null
-            && pageNumber > 0
+            && pageNumber > -1
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
             // Если есть только скан
@@ -44,19 +49,27 @@ public class ArticlesController(
                 return View("Article", scanForArticle);
             }
 
+            // Если для статьи или книги отсутствует текст
             if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber).AnyAsync())
             {
-                return RedirectToAction(nameof(Index));
+                if (articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).TypeOfText == "book")
+                {
+                    return RedirectToAction(nameof(Books));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber);
 
-            if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.HtmlFileName))
+            if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName))
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName);
 
             ArticleViewModel bookOrArticle = new()
             {

@@ -4,19 +4,22 @@ public class EditImageViewModel
 {
     public ImageFileModel EditImage { get; set; } = new();
 
-    public List<SelectListItem> ImageDirectories { get; set; } = new(Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\images", "*", SearchOption.AllDirectories)
+    public List<SelectListItem> ImageDirectories { get; set; } = new([.. Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\wwwroot\\images", "*", SearchOption.AllDirectories)
         .Select(a => new SelectListItem
         {
-            Value = a[(Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\images")[0].IndexOf("images") + 7)..].Replace('\\', '/'),
-            Text = a[(Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\images")[0].IndexOf("images") + 7)..].Replace('\\', '/')
-        })
-        .ToList());
+            Value = a[(Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\wwwroot\\images")[0].IndexOf("images") + 7)..].Replace('\\', '/'),
+            Text = a[(Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\wwwroot\\images")[0].IndexOf("images") + 7)..].Replace('\\', '/')
+        })]);
+
+    #region Задать новый каталог
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Новый каталог :")]
     public string NewImagePath { get; set; } = string.Empty;
+
+    #endregion
 
     [DataType(DataType.Upload)]
     [Display(Name = "Картинка :")]

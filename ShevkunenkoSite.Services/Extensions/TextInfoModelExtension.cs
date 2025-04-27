@@ -11,7 +11,7 @@ public static class TextInfoModelExtension
 
         foreach (var foundText in textInfoModel)
         {
-            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + foundText.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + foundText.FolderForText + foundText.TxtFileName);
 
             var clearString = clearText.ReadToEnd();
 

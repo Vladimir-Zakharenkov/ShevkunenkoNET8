@@ -43,6 +43,15 @@ public class TextInfoModel
 
     #endregion
 
+    #region Папка для текста
+
+    [DataType(DataType.Text)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Папка :")]
+    public string FolderForText { get; set; } = string.Empty;
+
+    #endregion
+
     #region Связанные книга или статья
 
     // идентификатор книги (статьи)

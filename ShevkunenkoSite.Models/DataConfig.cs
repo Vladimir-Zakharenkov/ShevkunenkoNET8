@@ -12,6 +12,9 @@ public class DataConfig
     public static string ManifestPath { get; set; } = null!;
     public static string Test { get; set; } = string.Empty;
 
+    // GUID картинки NoImage
+    public static string NoImage { get; set; } = null!;
+
     // каталог с каталогами иконок для страниц
     public static string IconFoldersPath { get; set; } = null!;
 

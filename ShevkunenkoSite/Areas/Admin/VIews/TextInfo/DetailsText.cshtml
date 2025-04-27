@@ -4,192 +4,212 @@
 
 <hr class="liniya" />
 
-@* Информация о тексте *@
-<div class="card w-100 mx-auto p-2">
+<div class="row">
 
-    <div class="col-12 card-body mx-auto mb-2">
+    <div class="col col-xl-9 col-xxl-8 d-block mx-auto">
 
-        @* Список, изменить, удалить *@
-        <div class="card-footer p-0 my-2">
+        @* Информация о тексте *@
+        <div class="card mt-4">
 
-            @* Список текстов сайта *@
-            <a class="btn btn-outline-primary py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="Index"
-               title="список текстов">
-                Список
-            </a>
+            <div class="card-body mx-auto mb-2">
 
-            @* Изменить текст *@
-            <a class="btn btn-outline-success py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="EditText"
-               asp-route-textId="@Model.TextInfoModelId"
-               title="изменить текст">
-                Изменить
-            </a>
+                @* Список, изменить, удалить *@
+                <div class="card-footer p-0 my-2">
 
-            @* Удалить текст *@
-            <a class="btn btn-outline-danger py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="DeleteText"
-               asp-route-textId="@Model.TextInfoModelId"
-               title="удалить текст">
-                Удалить
-            </a>
+                    @* Список текстов сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="Index"
+                       title="список текстов">
+                        Список
+                    </a>
 
-        </div>
+                    @* Изменить текст *@
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="EditText"
+                       asp-route-textId="@Model.TextInfoModelId"
+                       title="изменить текст">
+                        Изменить
+                    </a>
 
-        @* Идентификатор в базе данных *@
-        <h2 class="lh-1">
-            <span class="fs-5 text-primary">
-                TextInfoModelId :<br />
-            </span>
-            <span class="fs-5 text_shadow">
-                @Model.TextInfoModelId<br />
-            </span>
-            <span class="fs-6 form-text text-success px-2">
-                идентификатор в базе данных (GUID)
-            </span>
-        </h2>
+                    @* Удалить текст *@
+                    <a class="btn btn-outline-danger py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="DeleteText"
+                       asp-route-textId="@Model.TextInfoModelId"
+                       title="удалить текст">
+                        Удалить
+                    </a>
 
-        @* Информация о связанной книге статье *@
-        <div class="@(Model.BooksAndArticlesModelId != null ? "d-block" : "d-none")">
-
-            <hr class="w-50 mx-auto" />
-
-            <p class="fs-5 text-center">
-                <span class="text-primary">Страница </span>
-                <span class="text_shadow">«@Model.SequenceNumber»</span>
-                <br class="d-xl-none" />
-                <span class="text-primary"> @(Model.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
-                <span class="text_shadow">«@Model.BooksAndArticlesModel?.CaptionOfText»</span>
-            </p>
-
-            <hr class="w-50 mx-auto" />
-
-        </div>
-
-        <div class="col-12 col-xxl-10 mx-auto">
-
-            @* Описание текста *@
-            <div>
-
-                <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
-                <textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
-                          asp-for="TextDescription"
-                          readonly
-                          rows="2"
-                          aria-describedby="TextDescriptionInputHelpBlock">
-                 </textarea>
-
-                <div id="TextDescriptionInputHelpBlock" class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
-                    <span class="fs-6 text-success">описание текста</span>
                 </div>
 
-                <hr class="liniya" />
+                @* Идентификатор в базе данных *@
+                <h2 class="lh-1">
+                    <span class="fs-5 text-primary">
+                        TextInfoModelId :<br />
+                    </span>
+                    <span class="fs-5 text_shadow">
+                        @Model.TextInfoModelId<br />
+                    </span>
+                    <span class="fs-6 form-text text-success px-2">
+                        идентификатор в базе данных (GUID)
+                    </span>
+                </h2>
 
-            </div>
+                @* Информация о связанной книге статье *@
+                <div class="@(Model.BooksAndArticlesModelId != null ? "d-block" : "d-none")">
 
-            @* Файл TXT *@
-            <div>
+                    <hr class="w-50 mx-auto" />
 
-                <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
-                <br class="d-md-none" />
-                <span class="fs-5 text_shadow">@Model.TxtFileName</span>
-                <p class="fs-5 text-primary mb-2">(@Model.TxtFileSize байт)</p>
+                    <p class="fs-5 text-center">
+                        <span class="text-primary">Страница </span>
+                        <span class="text_shadow">«@Model.SequenceNumber»</span>
+                        <br class="d-xl-none" />
+                        <span class="text-primary"> @(Model.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+                        <span class="text_shadow">«@Model.BooksAndArticlesModel?.CaptionOfText»</span>
+                    </p>
 
-                <textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
-                          asp-for="ClearText"
-                          readonly
-                          rows="10"
-                          aria-describedby="ClearTextInputHelpBlock">
-                 </textarea>
+                    <hr class="w-50 mx-auto" />
 
-                <div id="ClearTextInputHelpBlock" class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
-                    <span class="fs-6 text-success">текст без разметки</span>
                 </div>
 
-                <hr class="liniya" />
+                @* Информация о файлах TXT и HTML *@
+                <div class="col-12 col-xxl-10 mx-auto">
 
-            </div>
+                    @* Каталог текста *@
+                    <div>
 
-            @* Файл HTML *@
-            <div>
+                        <label asp-for="FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
 
-                <label asp-for="HtmlFileName" class="col-form-label text-primary fs-5 me-2"></label>
-                <br class="d-md-none" />
-                <span class="fs-5 text_shadow">@Model.HtmlFileName</span>
-                <p class="fs-5 text-primary mb-2">(@Model.HtmlFileSize байт)</p>
+                        <p class="text_shadow text-indent-0 text-center fs-5">@DataConfig.TextsFolderPath@Model.FolderForText</p>
 
-                <textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
-                          asp-for="HtmlText"
-                          readonly
-                          rows="10"
-                          aria-describedby="HtmlTextInputHelpBlock">
+                        <hr class="liniya" />
+
+                    </div>
+
+                    @* Описание текста *@
+                    <div>
+
+                        <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+                        <textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
+                                  asp-for="TextDescription"
+                                  readonly
+                                  rows="4"
+                                  aria-describedby="TextDescriptionInputHelpBlock">
                  </textarea>
 
-                <div id="HtmlTextInputHelpBlock" class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
-                    <span class="fs-6 text-success">текст с разметкой</span>
-                </div>
+                        <div id="TextDescriptionInputHelpBlock" class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
+                            <span class="fs-6 text-success">описание текста</span>
+                        </div>
 
-                <hr class="liniya" />
+                        <hr class="liniya" />
 
-                <div class="bookpages lay1">
+                    </div>
 
-                    <div class="descr lay1 overflow-y-scroll height400">
+                    @* Файл TXT *@
+                    <div>
 
-                        @Html.Raw(Model.HtmlText)
+                        <label asp-for="TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                        <br class="d-md-none" />
+                        <span class="fs-5 text_shadow">@Model.TxtFileName</span>
+                        <p class="fs-5 text-primary mb-2">(@Model.TxtFileSize байт)</p>
+
+                        <textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
+                                  asp-for="ClearText"
+                                  readonly
+                                  rows="10"
+                                  aria-describedby="ClearTextInputHelpBlock">
+                 </textarea>
+
+                        <div id="ClearTextInputHelpBlock" class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
+                            <span class="fs-6 text-success">текст без разметки</span>
+                        </div>
+
+                        <hr class="liniya" />
+
+                    </div>
+
+                    @* Файл HTML *@
+                    <div>
+
+                        <label asp-for="HtmlFileName" class="col-form-label text-primary fs-5 me-2"></label>
+                        <br class="d-md-none" />
+                        <span class="fs-5 text_shadow">@Model.HtmlFileName</span>
+                        <p class="fs-5 text-primary mb-2">(@Model.HtmlFileSize байт)</p>
+
+                        <textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
+                                  asp-for="HtmlText"
+                                  readonly
+                                  rows="10"
+                                  aria-describedby="HtmlTextInputHelpBlock">
+                 </textarea>
+
+                        <div id="HtmlTextInputHelpBlock" class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
+                            <span class="fs-6 text-success">текст с разметкой</span>
+                        </div>
+
+                        <hr class="liniya" />
+
+                        <div class="bookpages lay1">
+
+                            <div class="descr lay1 overflow-y-scroll height400">
+
+                                @Html.Raw(Model.HtmlText)
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-text mt-3">
+                            <span class="fs-6 text-success">вид текста на сайте</span>
+                        </div>
 
                     </div>
 
                 </div>
 
-                <div class="form-text mt-3">
-                    <span class="fs-6 text-success">вид текста на сайте</span>
+                @* Список, изменить, удалить *@
+                <div class="card-footer p-0 my-4">
+
+                    @* Список текстов сайта *@
+                    <a class="btn btn-outline-primary py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="Index"
+                       title="список текстов">
+                        Список
+                    </a>
+
+                    @* Изменить текст *@
+                    <a class="btn btn-outline-success py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="EditText"
+                       asp-route-textId="@Model.TextInfoModelId"
+                       title="изменить текст">
+                        Изменить
+                    </a>
+
+                    @* Удалить текст *@
+                    <a class="btn btn-outline-danger py-1 m-2 shadw"
+                       asp-area="Admin"
+                       asp-controller="TextInfo"
+                       asp-action="DeleteText"
+                       asp-route-textId="@Model.TextInfoModelId"
+                       title="удалить текст">
+                        Удалить
+                    </a>
+
                 </div>
 
             </div>
-
-        </div>
-
-        @* Список, изменить, удалить *@
-        <div class="card-footer p-0 my-2">
-
-            @* Список текстов сайта *@
-            <a class="btn btn-outline-primary py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="Index"
-               title="список текстов">
-                Список
-            </a>
-
-            @* Изменить текст *@
-            <a class="btn btn-outline-success py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="EditText"
-               asp-route-textId="@Model.TextInfoModelId"
-               title="изменить текст">
-                Изменить
-            </a>
-
-            @* Удалить текст *@
-            <a class="btn btn-outline-danger py-1 m-2 shadw"
-               asp-area="Admin"
-               asp-controller="TextInfo"
-               asp-action="DeleteText"
-               asp-route-textId="@Model.TextInfoModelId"
-               title="удалить текст">
-                Удалить
-            </a>
 
         </div>
 

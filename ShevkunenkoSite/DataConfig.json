@@ -1,6 +1,7 @@
 {
   "ProjectData": {
     "IconsFolder": "/images/pageicons/",
+    "NoImage": "29F51581-8F24-4EDC-1F48-08DAE2B985EA",
     "BrowserconfigIconsFolder": "/images/browserconfig",
     "ImageForMsapplication": "ms-icon-144x144.png",
     "IconItem": "icon-96.webp",
