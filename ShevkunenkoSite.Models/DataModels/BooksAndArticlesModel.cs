@@ -69,7 +69,7 @@ public class BooksAndArticlesModel
     #region Название книги (статьи)
 
     [DataType(DataType.Text)]
-    [Display(Name = "Название (заголовок) :")]
+    [Display(Name = "Заголовок :")]
     public string CaptionOfText { get; set; } = string.Empty;
 
     #endregion

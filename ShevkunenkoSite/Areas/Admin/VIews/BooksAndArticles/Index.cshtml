@@ -70,6 +70,31 @@
 
 </div>
 
+@* Страницы *@
+<div>
+
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 book-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
+        </div>
+    }
+
+</div>
+
 @* Таблица данных *@
 <div class="row">
 
@@ -141,5 +166,30 @@
         </div>
 
     </div>
+
+</div>
+
+@* Страницы *@
+<div>
+
+    @if (Model.PagingInfo.TotalPages > 1)
+    {
+        <div class="row p-2 m-2">
+
+            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
+                 page-model="@Model.PagingInfo"
+                 book-search="@Model"
+                 page-action="Index"
+                 page-classes-enabled="true"
+                 page-class="btn"
+                 page-class-normal="btn-outline-dark"
+                 page-class-selected="btn-danger"
+                 data-toggle="buttons"
+                 role="group"
+                 aria-label="картинки сайта">
+            </div>
+
+        </div>
+    }
 
 </div>

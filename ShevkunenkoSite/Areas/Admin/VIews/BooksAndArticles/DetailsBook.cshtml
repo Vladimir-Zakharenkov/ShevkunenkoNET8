@@ -3,15 +3,29 @@
 <h1 class="@(Model.TypeOfText.Contains("book") ? "fs-3 text_shadow" : "d-none")">Информация о книге</h1>
 <h1 class="@(Model.TypeOfText.Contains("article") ? "fs-3 text_shadow" : "d-none")">Информация о статье</h1>
 
+<hr class="w-25 mx-auto" />
+
+@* Id статьи или книги *@
+<p class="fs-5 mb-3">
+    <span class="text-primary">BooksAndArticlesModelId:</span><br />
+    <span class="text_shadow">
+        @Model.BooksAndArticlesModelId
+    </span>
+    <br />
+    <span class="fs-6 form-text text-success">
+        идентификатор в базе данных (GUID)
+    </span>
+</p>
+
 <hr class="liniya" />
 
 @* Информация о книге или статье *@
-<div class="card w-100 mx-auto p-2">
+<div class="card col col-lg-10 col-xl-9 col-xxl-8 mx-auto p-2">
 
-    <div class="col-12 card-body mx-auto mb-2">
+    <div class="card-body">
 
         @* Список, изменить, удалить *@
-        <div class="card-footer p-0 my-2">
+        <div class="card-footer">
 
             @* Список текстов сайта *@
             <a class="btn btn-outline-primary py-1 m-2 shadw"
@@ -28,7 +42,7 @@
                asp-controller="BooksAndArticles"
                asp-action="EditBook"
                asp-route-bookId="@Model.BooksAndArticlesModelId"
-               title="изменить инфо">
+               title="изменить данные">
                 Изменить
             </a>
 
@@ -44,344 +58,534 @@
 
         </div>
 
-        @* Идентификатор в базе данных *@
-        <h2 class="lh-1">
-            <span class="fs-5 text-primary d-inline-block mb-2">
-                BooksAndArticlesModelId :
-            </span>
-            <br class="d-lg-none" />
-            <span class="fs-5 text_shadow">
-                @Model.BooksAndArticlesModelId
-            </span>
-            <br />
-            <span class="fs-6 form-text text-success px-2">
-                идентификатор GUID
-            </span>
-        </h2>
+        @* Данные по группам *@
+        <div class="accordion" id="accordionEditArticle">
 
-        <hr class="w-75 mx-auto" />
+            @* Страница книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
 
-        <div class="col-12 col-xxl-10 mx-auto">
+                @* заголовок группы «страница книги (статьи)» *@
+                <h2 class="accordion-header" id="headingPageForBookOrArticle">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageForBookOrArticle" aria-expanded="true" aria-controls="PageForBookOrArticle">
+                        <span class="form-label fs-5">Страница текста :</span>
+                    </button>
+                </h2>
+
+                <div id="PageForBookOrArticle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForBookOrArticle" data-bs-parent="#accordionEditArticle">
+
+                    <p class="fs-5 text_shadow">текущая страница:</p>
+
+                    @if (Model.PageInfoModel != null)
+                    {
+                        <p class="fs-5 mb-2 text-danger">«@Model.PageInfoModel.PageFullPathWithData»</p>
+
+                        <div class="maxwidth300px mx-auto">
+
+                            <vc:card-of-page page=Model.PageInfoModel />
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="fs-6 mb-2 text-danger">страница не задана</p>
+                    }
+
+                    <div id="PageForBookOrArticleInputHelpBlock" class="form-text">
+
+                        <span class="fs-6 text-success">адрес страницы текста</span>
+
+                    </div>
+
+                </div>
+
+            </div>
 
             @* Тип текста *@
-            <div>
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="TypeOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «тип текста» *@
+                <h2 class="accordion-header" id="headingTextType">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#TextType" aria-expanded="true" aria-controls="TextType">
+                        <span class="form-label fs-5">Тип текста :</span>
+                    </button>
+                </h2>
 
-                <p class="fs-4 text-center text_shadow">@Model.TypeOfText</p>
+                <div id="TextType" class="accordion-collapse collapse" aria-labelledby="headingTextType" data-bs-parent="#accordionEditArticle">
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TypeOfText» - </span>
-                    <span class="fs-6 text-success">тип текста</span>
-                </div>
+                    <div class="accordion-body accordion-body-nointend text-center">
 
-                <hr class="w-75 mx-auto" />
+                        <label asp-for="TypeOfText" class="col-form-label text-primary fs-5 me-2"></label>
 
-            </div>
+                        <p class="fs-4 text-center text_shadow">@Model.TypeOfText</p>
 
-            @* Издатель книги или статьи *@
-            <div>
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «TypeOfText» - </span>
+                            <span class="fs-6 text-success">тип текста</span>
+                        </div>
 
-                <label asp-for="Publisher" class="col-form-label text-primary fs-5 me-2"></label>
-
-                <p class="fs-4 text-center text_shadow">@Model.Publisher</p>
-
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «Publisher» - </span>
-                    <span class="fs-6 text-success">издатель текста</span>
-                </div>
-
-                <hr class="w-75 mx-auto" />
-
-            </div>
-
-            @* Логотип статьи*@
-            <div class="@(Model.TypeOfText == "article" ? "" : "d-none")">
-
-                <label asp-for="LogoOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
-
-                @if (Model.LogoOfArticleId != null)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="ImageInfo"
-                       asp-action="DetailsImage"
-                       asp-route-imageid="@Model.LogoOfArticleId"
-                       class="d-block mx-auto maxwidth700px shadw imageref"
-                       title="информация о картинке"
-                       onclick="this.target='_blank'">
-                        <vc:view-image image-id="@Model.LogoOfArticleId" css-class="w-100" icon-type="webimage" />
-                    </a>
-
-                    @if (!string.IsNullOrEmpty(Model.LogoOfArticle?.WebImageFileName))
-                    {
-                        <p class="text_shadow my-2 fluid-font-size">
-                            @Model.LogoOfArticle.ImagePath/@Model.LogoOfArticle.WebImageFileName
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="text_shadow my-2 fluid-font-size">
-                            @Model.LogoOfArticle?.ImagePath/@Model.LogoOfArticle?.ImageFileName
-                        </p>
-                    }
-                }
-                else
-                {
-                    <p class="form-text">
-                        <span class="fs-6 text-success">логотип для статьи не задан</span>
-                    </p>
-                }
-
-                <hr class="w-75 mx-auto" />
-
-            </div>
-
-            @* Скан статьи*@
-            <div class="@(Model.TypeOfText == "article" ? "" : "d-none")">
-
-                <label asp-for="ScanOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
-
-                @if (Model.ScanOfArticleId != null)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="ImageInfo"
-                       asp-action="DetailsImage"
-                       asp-route-imageid="@Model.ScanOfArticleId"
-                       class="d-block mx-auto maxwidth700px shadw imageref"
-                       title="информация о картинке"
-                       onclick="this.target='_blank'">
-
-                        <vc:view-image image-id="@Model.ScanOfArticleId" css-class="w-100" icon-type="webimage" />
-
-                    </a>
-
-                    @if (!string.IsNullOrEmpty(Model.ScanOfArticle?.WebImageFileName))
-                    {
-                        <p class="text_shadow my-2 fluid-font-size">
-                            @Model.ScanOfArticle.ImagePath/@Model.ScanOfArticle.WebImageFileName
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="text_shadow my-2 fluid-font-size">
-                            @Model.ScanOfArticle?.ImagePath/@Model.ScanOfArticle?.ImageFileName
-                        </p>
-                    }
-                }
-                else
-                {
-                    <p class="form-text">
-                        <span class="fs-6 text-success">скан для статьи не задан</span>
-                    </p>
-                }
-
-                <hr class="w-75 mx-auto" />
-
-            </div>
-
-            @* Ссылка на статью или издателя *@
-            <div>
-
-                <label asp-for="UrlOfArticle" class="col-form-label text-primary fs-5 me-2"></label>
-
-                @if (Model.UrlOfArticle != null)
-                {
-                    <p class="fs-4 text-center">
-                        <a class="text-black text_shadow" href="@Model.UrlOfArticle" onClick="this.target='_blank'">@Model.UrlOfArticle</a>
-                    </p>
-
-                    <div class="form-text">
-                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
-                        <span class="fs-6 text-success">ссылка на статью или издателя</span>
                     </div>
-                }
-                else
-                {
-                    <div class="form-text">
-                        <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
-                        <span class="fs-6 text-success">ссылка не задана</span>
-                    </div>
-                }
 
-                <hr class="w-75 mx-auto" />
-
-            </div>
-
-            @* Видео связанное с книгой (статьёй)*@
-            <div>
-
-                <label asp-for="VideoForBookOrArticleId" class="col-form-label text-primary fs-5 me-2"></label>
-
-                @if (Model.VideoForBookOrArticle != null)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="MovieInfo"
-                       asp-action="DetailsMovie"
-                       asp-route-movieid="@Model.VideoForBookOrArticle.MovieFileModelId"
-                       class="d-block mx-auto maxwidth300px shadw imageref"
-                       title="информация о фильме"
-                       onclick="this.target='_blank'">
-
-                        <vc:view-image image-id="@Model.VideoForBookOrArticle.ImageFileModelId" css-class="w-100" icon-type="webimage" />
-
-                    </a>
-
-                    <div class="form-text">
-                        <span class="fs-6 text-success">видео к статье</span>
-                    </div>
-                }
-                else
-                {
-                    <div class="form-text">
-                        <span class="fs-6 text-success">видео не задано</span>
-                    </div>
-                }
-
-                <hr class="w-75 mx-auto" />
-
-            </div>
-
-            @* Автор книги или статьи *@
-            <div>
-
-                <label asp-for="AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
-
-                <p class="fs-4 text-center text_shadow">@Model.AuthorOfText</p>
-
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «AuthorOfText» - </span>
-                    <span class="fs-6 text-success">автор текста</span>
                 </div>
 
-                <hr class="w-75 mx-auto" />
+            </div>
+
+            @* Издатель книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «издатель книги (статьи)» *@
+                <h2 class="accordion-header" id="headingPublisher">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Publisher" aria-expanded="true" aria-controls="Publisher">
+                        <span class="form-label fs-5">Издатель текста :</span>
+                    </button>
+                </h2>
+
+                <div id="Publisher" class="accordion-collapse collapse" aria-labelledby="headingPublisher" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="Publisher" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        <p class="fs-4 text-center text_shadow">@Model.Publisher</p>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «Publisher» - </span>
+                            <span class="fs-6 text-success">издатель текста</span>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            @* Название книги или статьи *@
-            <div>
+            @* Логотип книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «логотип книги (статьи)» *@
+                <h2 class="accordion-header" id="headingLogo">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Logo" aria-expanded="true" aria-controls="Logo">
+                        <span class="form-label fs-5">Логотип текста :</span>
+                    </button>
+                </h2>
 
-                <p class="fs-4 text-center text_shadow">@Model.CaptionOfText</p>
+                <div id="Logo" class="accordion-collapse collapse" aria-labelledby="headingLogo" data-bs-parent="#accordionEditArticle">
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfText» - </span>
-                    <span class="fs-6 text-success">название книги (статьи)</span>
+                    @* Логотип книги (статьи) *@
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="LogoOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.LogoOfArticleId != null)
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="ImageInfo"
+                               asp-action="DetailsImage"
+                               asp-route-imageid="@Model.LogoOfArticleId"
+                               class="d-block"
+                               title="информация о картинке"
+                               onclick="this.target='_blank'">
+                                <vc:view-image image-id="@Model.LogoOfArticleId" css-class="w-100 maxwidth700px shadw imageref" icon-type="webimage" />
+                            </a>
+
+                            @if (!string.IsNullOrEmpty(Model.LogoOfArticle?.WebImageFileName))
+                            {
+                                <p class="text_shadow my-2 fluid-font-size">
+                                    @Model.LogoOfArticle.ImagePath/@Model.LogoOfArticle.WebImageFileName
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text_shadow mt-2 fluid-font-size">
+                                    @Model.LogoOfArticle?.ImagePath/@Model.LogoOfArticle?.ImageFileName
+                                </p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="form-text">
+                                <span class="fs-6 text-success">логотип для статьи не задан</span>
+                            </p>
+                        }
+
+                    </div>
+
                 </div>
-
-                <hr class="w-75 mx-auto" />
 
             </div>
 
-            @* Описание книги или статьи *@
-            <div class="mx-auto maxwidth700px">
+            @* Скан книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «скан книги (статьи)» *@
+                <h2 class="accordion-header" id="headingScan">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Scan" aria-expanded="true" aria-controls="Scan">
+                        <span class="form-label fs-5">Скан текста :</span>
+                    </button>
+                </h2>
 
-                <textarea class="form-control fordetails fs-5 text_shadow"
-                          asp-for="BookDescription"
-                          readonly
-                          rows="2"
-                          aria-describedby="TextDescriptionInputHelpBlock">
-                 </textarea>
+                <div id="Scan" class="accordion-collapse collapse" aria-labelledby="headingScan" data-bs-parent="#accordionEditArticle">
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «BookDescription» - </span>
-                    <span class="fs-6 text-success">описание книги (статьи)</span>
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="ScanOfArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.ScanOfArticleId != null)
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="ImageInfo"
+                               asp-action="DetailsImage"
+                               asp-route-imageid="@Model.ScanOfArticleId"
+                               class="d-block"
+                               title="скан текста"
+                               onclick="this.target='_blank'">
+                                <vc:view-image image-id="@Model.ScanOfArticleId" css-class="w-100 maxwidth700px shadw imageref" icon-type="webimage" />
+                            </a>
+
+                            @if (Model.ScanOfArticle != null)
+                            {
+                                @if (!string.IsNullOrEmpty(Model.ScanOfArticle.WebImageFileName))
+                                {
+                                    <p class="text_shadow my-2 fluid-font-size">
+                                        @Model.ScanOfArticle.ImagePath/@Model.ScanOfArticle.WebImageFileName
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="text_shadow mt-2 fluid-font-size">
+                                        @Model.ScanOfArticle.ImagePath/@Model.ScanOfArticle.ImageFileName
+                                    </p>
+                                }
+                            }
+                            else
+                            {
+                                <p class="form-text">
+                                    <span class="fs-6 text-success">скан для статьи не задан</span>
+                                </p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="form-text">
+                                <span class="fs-6 text-success">скан для статьи не задан</span>
+                            </p>
+                        }
+
+                    </div>
+
                 </div>
 
-                <hr class="w-75 mx-auto" />
+            </div>
+
+            @* Ссылка на статью (издателя) *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «ссылка на статью (издателя)» *@
+                <h2 class="accordion-header" id="headingUrlOfArticle">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#UrlOfArticle" aria-expanded="true" aria-controls="UrlOfArticle">
+                        <span class="form-label fs-5">Ссылка на текст :</span>
+                    </button>
+                </h2>
+
+                <div id="UrlOfArticle" class="accordion-collapse collapse" aria-labelledby="headingUrlOfArticle" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="UrlOfArticle" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.UrlOfArticle != null)
+                        {
+                            <p class="fs-4 text-center">
+                                <a class="text-black text_shadow" href="@Model.UrlOfArticle" onClick="this.target='_blank'">@Model.UrlOfArticle</a>
+                            </p>
+
+                            <div class="form-text">
+                                <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
+                                <span class="fs-6 text-success">ссылка на статью </span>
+                                <br class="d-sm-none" />
+                                <span class="fs-6 text-success">или издателя</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-text">
+                                <span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
+                                <span class="fs-6 text-success">ссылка не задана</span>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @*  Видео связанное с книгой (статьёй) *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «видео связанное с книгой (статьёй)» *@
+                <h2 class="accordion-header" id="headingVideoForBookOrArticle">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#VideoForBookOrArticle" aria-expanded="true" aria-controls="VideoForBookOrArticle">
+                        <span class="form-label fs-5">Видео для текста :</span>
+                    </button>
+                </h2>
+
+                <div id="VideoForBookOrArticle" class="accordion-collapse collapse" aria-labelledby="headingVideoForBookOrArticle" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+                        <label asp-for="VideoForBookOrArticleId" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.VideoForBookOrArticle != null)
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="MovieInfo"
+                               asp-action="DetailsMovie"
+                               asp-route-movieid="@Model.VideoForBookOrArticle.MovieFileModelId"
+                               class="d-block mx-auto maxwidth300px shadw imageref"
+                               title="информация о фильме"
+                               onclick="this.target='_blank'">
+
+                                <vc:view-image image-id="@Model.VideoForBookOrArticle.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+
+                            </a>
+
+                            <div class="form-text">
+                                <span class="fs-6 text-success">видео к статье</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-text">
+                                <span class="fs-6 text-success">видео не задано</span>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Автор книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «автор книги (статьи)» *@
+                <h2 class="accordion-header" id="headingAuthor">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Author" aria-expanded="true" aria-controls="Author">
+                        <span class="form-label fs-5">Автор текста :</span>
+                    </button>
+                </h2>
+
+                <div id="Author" class="accordion-collapse collapse" aria-labelledby="headingAuthor" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label class="col-form-label text-primary fs-5 me-2" asp-for="AuthorOfText"></label>
+
+                        <p class="fs-4 text-center text_shadow">@Model.AuthorOfText</p>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «AuthorOfText» - </span>
+                            <span class="fs-6 text-success">автор текста</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Заголовок книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «заголовок книги (статьи)» *@
+                <h2 class="accordion-header" id="headingCaptionOfText">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#CaptionOfText" aria-expanded="true" aria-controls="CaptionOfText">
+                        <span class="form-label fs-5">Заголовок текста :</span>
+                    </button>
+                </h2>
+
+                <div id="CaptionOfText" class="accordion-collapse collapse" aria-labelledby="headingCaptionOfText" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        <p class="fs-4 text-center text_shadow">@Model.CaptionOfText</p>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfText» - </span>
+                            <span class="fs-6 text-success">название книги (статьи)</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Описание текста *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «описание текста» *@
+                <h2 class="accordion-header" id="headingBookDescription">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#BookDescription" aria-expanded="true" aria-controls="BookDescription">
+                        <span class="form-label fs-5">Описание текста :</span>
+                    </button>
+                </h2>
+
+                <div id="BookDescription" class="accordion-collapse collapse" aria-labelledby="headingBookDescription" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        <textarea class="form-control fordetails fs-5 text_shadow"
+                                  asp-for="BookDescription"
+                                  readonly
+                                  rows="2"
+                                  aria-describedby="TextDescriptionInputHelpBlock">
+                         </textarea>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «BookDescription» - </span>
+                            <span class="fs-6 text-success">описание книги (статьи)</span>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
             @* Колличество страниц *@
-            <div>
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «колличество страниц» *@
+                <h2 class="accordion-header" id="headingNumberOfPages">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#NumberOfPages" aria-expanded="true" aria-controls="NumberOfPages">
+                        <span class="form-label fs-5">Кол-во страниц :</span>
+                    </button>
+                </h2>
 
-                <p class="fs-4 text-center text_shadow">@Model.NumberOfPages</p>
+                <div id="NumberOfPages" class="accordion-collapse collapse" aria-labelledby="headingNumberOfPages" data-bs-parent="#accordionEditArticle">
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
-                    <span class="fs-6 text-success">колличество страниц</span>
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        <p class="fs-4 text-center text_shadow">@Model.NumberOfPages</p>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
+                            <span class="fs-6 text-success">колличество страниц</span>
+                        </div>
+
+                    </div>
+
                 </div>
-
-                <hr class="w-75 mx-auto" />
 
             </div>
 
-            @* Дата публикации *@
-            <div>
+            @* Дата публикации книги (статьи) *@
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «дата публикации книги (статьи)» *@
+                <h2 class="accordion-header" id="headingDateOfPublication">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#DateOfPublication" aria-expanded="true" aria-controls="DateOfPublication">
+                        <span class="form-label fs-5">Дата публикации :</span>
+                    </button>
+                </h2>
 
-                <p class="fs-4 text-center text_shadow">@String.Format("{0:D}", Model.DateOfPublication); </p>
+                <div id="DateOfPublication" class="accordion-collapse collapse" aria-labelledby="headingDateOfPublication" data-bs-parent="#accordionEditArticle">
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «DateOfPublication» - </span>
-                    <span class="fs-6 text-success">дата издания книги (статьи)</span>
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        <p class="fs-4 text-center text_shadow">@String.Format("{0:D}", Model.DateOfPublication); </p>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «DateOfPublication» - </span>
+                            <span class="fs-6 text-success">дата издания книги (статьи)</span>
+                        </div>
+
+                    </div>
+
                 </div>
-
-                <hr class="w-75 mx-auto" />
 
             </div>
 
             @* Теги по содержанию текста *@
-            <div>
+            <div class="accordion-item mb-3 shadw">
 
-                <label asp-for="TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
+                @* Заголовок группы «теги по содержанию текста» *@
+                <h2 class="accordion-header" id="headingTagsForBook">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#TagsForBook" aria-expanded="true" aria-controls="BookDescription">
+                        <span class="form-label fs-5">Теги по тексту :</span>
+                    </button>
+                </h2>
 
-                <div class="maxwidthcontent mx-auto justify-content-lg-start">
+                <div id="TagsForBook" class="accordion-collapse collapse" aria-labelledby="headingTagsForBook" data-bs-parent="#accordionEditArticle">
 
-                    @foreach (var tag in Model.TagsForBook.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        <p class="fs-5 text-start text_shadow"># @tag</p>
-                    }
+                    <div class="accordion-body accordion-body-nointend text-center">
 
-                </div>
+                        <label asp-for="TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
 
-                <div class="form-text">
-                    <span class="d-none d-sm-inline-block fs-6 text-success">тег «TagsForBook» - </span>
-                    <span class="fs-6 text-success">теги по тексту</span>
+                        <div class="maxwidthcontent mx-auto justify-content-lg-start">
+
+                            @foreach (var tag in Model.TagsForBook.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <p class="fs-5 text-start text_shadow"># @tag</p>
+                            }
+
+                        </div>
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «TagsForBook» - </span>
+                            <span class="fs-6 text-success">теги по тексту</span>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+        @* Список, изменить, удалить *@
+        <div class="card-footer">
 
-    @* Список, изменить, удалить *@
-    <div class="card-footer p-0 my-2">
+            @* Список текстов сайта *@
+            <a class="btn btn-outline-primary py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="Index"
+               title="список книг и статей">
+                Список
+            </a>
 
-        @* Список текстов сайта *@
-        <a class="btn btn-outline-primary py-1 m-2 shadw"
-           asp-area="Admin"
-           asp-controller="BooksAndArticles"
-           asp-action="Index"
-           title="список книг и статей">
-            Список
-        </a>
+            @* Изменить текст *@
+            <a class="btn btn-outline-success py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="EditBook"
+               asp-route-bookId="@Model.BooksAndArticlesModelId"
+               title="изменить данные">
+                Изменить
+            </a>
 
-        @* Изменить текст *@
-        <a class="btn btn-outline-success py-1 m-2 shadw"
-           asp-area="Admin"
-           asp-controller="BooksAndArticles"
-           asp-action="EditBook"
-           asp-route-bookId="@Model.BooksAndArticlesModelId"
-           title="изменить инфо">
-            Изменить
-        </a>
+            @* Удалить текст *@
+            <a class="btn btn-outline-danger py-1 m-2 shadw"
+               asp-area="Admin"
+               asp-controller="BooksAndArticles"
+               asp-action="DeleteBook"
+               asp-route-bookId="@Model.BooksAndArticlesModelId"
+               title="удалить текст">
+                Удалить
+            </a>
 
-        @* Удалить текст *@
-        <a class="btn btn-outline-danger py-1 m-2 shadw"
-           asp-area="Admin"
-           asp-controller="BooksAndArticles"
-           asp-action="DeleteBook"
-           asp-route-bookId="@Model.BooksAndArticlesModelId"
-           title="удалить текст">
-            Удалить
-        </a>
+        </div>
 
     </div>
 

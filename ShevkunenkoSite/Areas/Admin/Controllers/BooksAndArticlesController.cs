@@ -46,7 +46,7 @@ public class BooksAndArticlesController(
                 .Include(inc => inc.LogoOfArticle)
                 .Include(inc2 => inc2.ScanOfArticle)
                 .Include(inc3 => inc3.VideoForBookOrArticle)
-                .AsNoTracking()
+                .Include(inc4 => inc4.PageInfoModel).ThenInclude(inc5 => inc5!.ImageFileModel)
                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
             return View(bookItem);
