@@ -1,12 +1,12 @@
 ﻿.cardborder a, .borderforitem {
-    border: 2px ridge transparent;
+    border: 3px ridge transparent;
     transition: all .6s ease-in-out;
     color: black;
 }
 
 .cardborder a:hover, .borderforitem:hover {
-    border: 2px ridge rgba(194, 10, 41, 0.9);
-    opacity: .9;
+    border: 3px ridge rgba(194, 10, 41, 0.9);
+    opacity: .8;
     transition: all .6s ease-in-out;
     color: rgba(194, 10, 41, 0.9);
 }

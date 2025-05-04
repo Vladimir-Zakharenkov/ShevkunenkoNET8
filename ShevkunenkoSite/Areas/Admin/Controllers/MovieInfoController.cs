@@ -1,4 +1,5 @@
-﻿//Ignore Spelling: Org
+﻿
+//Ignore Spelling: Org
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]

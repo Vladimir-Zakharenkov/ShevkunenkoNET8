@@ -4,6 +4,10 @@ public class AddAndEditArticleViewModel
 {
     public BooksAndArticlesModel BookOrArticle { get; set; } = new();
 
+    [DataType(DataType.Text)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    public string PageForBookOrArticle { get; set; } = string.Empty;
+
     [DataType(DataType.Upload)]
     [Display(Name = "Выбрать логотип :")]
     public IFormFile? LogoOfArticleFormFile { get; set; }

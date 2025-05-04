@@ -141,7 +141,7 @@
             <meta itemprop="width" content="@Model.ImageItem.WebIconWidth" />
             <meta itemprop="height" content="@Model.ImageItem.WebIconHeight" />
 
-            <img class="maxwidth300px @Model.CssClass"
+            <img class="@Model.CssClass"
                  src="@Model.ImageItem.ImagePath/@Model.ImageItem.WebIconFileName"
                  asp-append-version="true"
                  alt="@Model.ImageItem.ImageAltTitle"

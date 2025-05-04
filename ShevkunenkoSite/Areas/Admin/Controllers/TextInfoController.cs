@@ -58,6 +58,7 @@ public class TextInfoController(
             {
                 TextInfoModelId = textItem.TextInfoModelId,
                 TextDescription = textItem.TextDescription,
+                FolderForText = textItem.FolderForText,
                 TxtFileName = textItem.TxtFileName,
                 HtmlFileName = textItem.HtmlFileName,
                 TxtFileSize = textItem.TxtFileSize,
@@ -103,26 +104,6 @@ public class TextInfoController(
             }
 
             addText.TextDescription = addText.TextDescription.Trim();
-
-            #endregion
-
-            #region Каталог текста
-
-            if (addText.FolderForText != "texts")
-            {
-                addText.FolderForText += '/';
-            }
-            else
-            {
-                addText.FolderForText = string.Empty;
-            }
-
-            if (!string.IsNullOrEmpty(addText.NewTextFolder))
-            {
-                addText.FolderForText = addText.NewTextFolder.Trim().Trim('/') + '/';
-            }
-
-            string path = Path.GetFullPath(Path.Join(System.IO.Directory.GetCurrentDirectory(), "wwwroot/texts", addText.FolderForText)).Replace('\\', '/');
 
             #endregion
 
@@ -230,6 +211,26 @@ public class TextInfoController(
 
             #endregion
 
+            #region Каталог текста
+
+            if (addText.FolderForText != "texts")
+            {
+                addText.FolderForText += '/';
+            }
+            else
+            {
+                addText.FolderForText = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(addText.NewTextFolder))
+            {
+                addText.FolderForText = addText.NewTextFolder.Trim().Trim('/') + '/';
+            }
+
+            string path = Path.GetFullPath(Path.Join(System.IO.Directory.GetCurrentDirectory(), "wwwroot/texts", addText.FolderForText)).Replace('\\', '/');
+
+            #endregion
+
             #region Создание нового каталога
 
             if (System.IO.Directory.Exists(path) & addText.NewTextFolder != string.Empty)
@@ -303,6 +304,7 @@ public class TextInfoController(
                 TextDescription = editText.TextDescription,
                 TxtFileName = editText.TxtFileName,
                 HtmlFileName = editText.HtmlFileName,
+                FolderForText = editText.FolderForText,
                 TxtFileSize = editText.TxtFileSize,
                 HtmlFileSize = editText.HtmlFileSize,
                 BooksAndArticlesModelId = editText.BooksAndArticlesModelId,
@@ -327,11 +329,17 @@ public class TextInfoController(
         {
             TextInfoModel textUpdate = await textContext.Texts.FirstAsync(txt => txt.TextInfoModelId == textItem.TextInfoModelId);
 
+            string oldPath = textUpdate.FolderForText;
+
             #region Связанная книга (статья)
 
-            if (textItem.RefForBookOrArticle != null)
+            if (string.IsNullOrEmpty(textItem.RefForBookOrArticle))
             {
-                _ = textItem.RefForBookOrArticle.Trim();
+                textUpdate.BooksAndArticlesModelId = null;
+            }
+            else if (textItem.RefForBookOrArticle != textUpdate.BooksAndArticlesModel?.CaptionOfText)
+            {
+                _ = textItem.RefForBookOrArticle!.Trim();
 
                 if (await bookContext.BooksAndArticles.Where(book => book.CaptionOfText.ToLower() == textItem.RefForBookOrArticle.ToLower()).AnyAsync())
                 {
@@ -346,9 +354,10 @@ public class TextInfoController(
                     return View(textItem);
                 }
             }
+
             else
             {
-                textUpdate.BooksAndArticlesModelId = null;
+                textUpdate.BooksAndArticlesModelId = textItem.BooksAndArticlesModelId;
             }
 
             #endregion
@@ -365,7 +374,11 @@ public class TextInfoController(
 
                 return View(textItem);
             }
-            else if (await textContext.Texts.Where(text => text.BooksAndArticlesModelId == textUpdate.BooksAndArticlesModelId & text.SequenceNumber != textUpdate.SequenceNumber & text.SequenceNumber == textItem.SequenceNumber).AnyAsync())
+            else if (await textContext.Texts.Where(text =>
+                text.BooksAndArticlesModelId == textUpdate.BooksAndArticlesModelId
+                & text.SequenceNumber != textUpdate.SequenceNumber
+                & text.SequenceNumber == textItem.SequenceNumber)
+                .AnyAsync())
             {
                 ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{textItem.RefForBookOrArticle}», страница «{textItem.SequenceNumber}» уже существует");
 
@@ -393,24 +406,67 @@ public class TextInfoController(
 
             #endregion
 
+            #region Каталог текста
+
+            if (!string.IsNullOrEmpty(textItem.FolderForText))
+            {
+                textUpdate.FolderForText = textItem.FolderForText + '/';
+            }
+            else
+            {
+                textUpdate.FolderForText = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(textItem.NewFolderForText))
+            {
+                textUpdate.FolderForText = textItem.NewFolderForText.Trim().Trim('/') + '/';
+            }
+
+            string path = Path.GetFullPath(Path.Join(System.IO.Directory.GetCurrentDirectory(), "wwwroot/texts", textUpdate.FolderForText)).Replace('\\', '/');
+
+            #endregion
+
+            #region Создание нового каталога
+
+            if (!string.IsNullOrEmpty(textItem.NewFolderForText) & System.IO.Directory.Exists(path))
+            {
+                ModelState.AddModelError("NewTextFolder", $"Каталог «{textItem.NewFolderForText.Trim('/')}» уже существует");
+
+                return View(new DetailsTextViewModel());
+            }
+
+            if (!System.IO.Directory.Exists(path))
+            {
+                _ = System.IO.Directory.CreateDirectory(path);
+            }
+
+            #endregion
+
             #region Текст без разметки (txt)
 
-            if (!string.IsNullOrEmpty(textItem.ClearText))
+            if (textItem.TxtFileFormFile == null && !string.IsNullOrEmpty(textItem.ClearText))
             {
                 _ = textItem.ClearText.Trim();
 
                 // путь к файлу 
-                var path = rootPath + DataConfig.TextsFolderPath + textItem.TxtFileName;
+                var pathForCopyTxt = rootPath + DataConfig.TextsFolderPath + textUpdate.FolderForText + textItem.TxtFileName;
 
                 // полная перезапись файла 
-                using StreamWriter writer = new(path, false, new UTF8Encoding(true));
+                using StreamWriter writer = new(pathForCopyTxt, false, new UTF8Encoding(true));
 
                 await writer.WriteLineAsync(textItem.ClearText);
 
                 writer.Close();
 
+                if (textUpdate.FolderForText != oldPath)
+                {
+                    var pathForDeleteTxt = rootPath + DataConfig.TextsFolderPath + oldPath + textItem.TxtFileName;
+
+                    System.IO.File.Delete(pathForDeleteTxt);
+                }
+
                 // новый размер файла txt
-                textUpdate.TxtFileSize = (int)new System.IO.FileInfo(path).Length;
+                textUpdate.TxtFileSize = (int)new FileInfo(pathForCopyTxt).Length;
             }
 
             #endregion
@@ -422,17 +478,24 @@ public class TextInfoController(
                 _ = textItem.HtmlText.Trim();
 
                 // путь к файлу 
-                var path = rootPath + DataConfig.TextsFolderPath + textItem.HtmlFileName;
+                var pathForCopyHtml = rootPath + DataConfig.TextsFolderPath + textUpdate.FolderForText + textItem.HtmlFileName;
 
                 // полная перезапись файла 
-                using StreamWriter writer = new(path, false, new UTF8Encoding(true));
+                using StreamWriter writer = new(pathForCopyHtml, false, new UTF8Encoding(true));
 
                 await writer.WriteLineAsync(textItem.HtmlText);
 
                 writer.Close();
 
+                if (textUpdate.FolderForText != oldPath)
+                {
+                    var pathForDeleteHtml = rootPath + DataConfig.TextsFolderPath + oldPath + textItem.HtmlFileName;
+
+                    System.IO.File.Delete(pathForDeleteHtml);
+                }
+
                 // новый размер файла html
-                textUpdate.HtmlFileSize = (int)new System.IO.FileInfo(path).Length;
+                textUpdate.HtmlFileSize = (int)new FileInfo(pathForCopyHtml).Length;
             }
 
             #endregion

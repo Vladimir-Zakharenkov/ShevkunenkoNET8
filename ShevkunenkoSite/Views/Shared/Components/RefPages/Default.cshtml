@@ -5,9 +5,9 @@
 
     @if (Model.LinksToPagesByGuid.Count > 0)
     {
-        @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
         @if (Model.LinksToPagesByGuid.Count < 4)
         {
+            @* Если ссылок меньше 3 - укрупняем картинку ссылки *@
             <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
                 <hr class="liniya" />
@@ -19,9 +19,9 @@
 
             </div>
         }
-        @* Стандартный размер картинки ссылки *@
         else
         {
+            @* Стандартный размер картинки ссылки *@
             <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-3">
 
                 <hr class="liniya" />

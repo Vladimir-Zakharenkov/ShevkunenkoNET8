@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Models.DataModels;
+﻿
+
+namespace ShevkunenkoSite.Models.DataModels;
 
 public class BooksAndArticlesModel
 {
@@ -77,7 +79,7 @@ public class BooksAndArticlesModel
     [Required(ErrorMessage = "Добавте описание")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
-    [Display(Name = "Описание книги (статьи) :")]
+    [Display(Name = "Описание текста :")]
     public string BookDescription { get; set; } = string.Empty;
 
     #endregion
@@ -117,9 +119,16 @@ public class BooksAndArticlesModel
 
     #region Видео связанное с книгой (статьёй)
 
-    [Display(Name = "Видео для книги (статьи) :")]
+    [Display(Name = "Видео для текста :")]
     public Guid? VideoForBookOrArticleId { get; set; }
     public MovieFileModel? VideoForBookOrArticle { get; set; }
+
+    #endregion
+
+    #region Страница книги (оглавление) или статьи (первая страница)
+
+    public Guid? PageInfoModelId { get; set; }
+    public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
 }

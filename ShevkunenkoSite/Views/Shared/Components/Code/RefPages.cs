@@ -8,21 +8,31 @@ public class RefPages(
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
+        // Список списков страниц по текстовым фильтрам
         List<List<PageInfoModel>> listsOfFilterOut = [];
 
+        // 1-ый список по GUID страниц
         List<PageInfoModel> linksToPagesByGuid = [];
 
+        // 2-ый список по GUID страниц
         List<PageInfoModel> linksToPagesByGuid2 = [];
 
+        // Список фильмов по текстовым фильтрам
         List<VideoLinksViewModel> listOfVideoLinksViewModel = [];
 
         VideoLinksViewModel videoLinksViewModel = new();
 
-        if (pageInfoModel.PageLinks == false & pageInfoModel.PageLinks2 == false & pageInfoModel.PageLinksByFilters == false & pageInfoModel.VideoLinks == false)
+        if (pageInfoModel.PageLinks == false
+            & pageInfoModel.PageLinks2 == false
+            & pageInfoModel.PageLinksByFilters == false
+            & pageInfoModel.VideoLinks == false)
         {
             return View("Empty");
         }
-        else if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & string.IsNullOrEmpty(pageInfoModel.RefPages) & string.IsNullOrEmpty(pageInfoModel.RefPages2) & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
+        else if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut)
+            & string.IsNullOrEmpty(pageInfoModel.RefPages)
+            & string.IsNullOrEmpty(pageInfoModel.RefPages2)
+            & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
         {
             return View("Empty");
         }
@@ -46,7 +56,7 @@ public class RefPages(
                         }
                     }
 
-                    _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+                    _ = linksToPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
                 }
             }
 
@@ -68,11 +78,11 @@ public class RefPages(
                         }
                     }
 
-                    _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+                    _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.SortOfPage);
                 }
             }
 
-            // ссылки на связанные страницы по фильтру
+            // ссылки на связанные страницы по текстовому фильтру
             if (!string.IsNullOrEmpty(pageInfoModel.PageFilterOut) & pageInfoModel.PageLinksByFilters == true)
             {
                 string[] pageFilterOut = pageInfoModel.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -85,16 +95,9 @@ public class RefPages(
                         {
                             var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i] + ',')).ToListAsync();
 
-                            listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
+                            _ = listOfFilterOut.Distinct();
 
-                            //if (listOfFilterOut.Count > 1)
-                            //{
-                            //    listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
-                            //}
-                            //else
-                            //{
-                            //    listOfFilterOut.Sort((page1, page2) => page1.PageCardText.CompareTo(page2.PageCardText));
-                            //}
+                            listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
 
                             listsOfFilterOut.Add(listOfFilterOut);
                         }
