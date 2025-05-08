@@ -2,8 +2,7 @@
 
 <article class="mx-auto fluid-font-size" itemscope itemtype="http://schema.org/Article">
 
-    <meta itemprop="url" href="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString" />
-    <meta itemprop="name" content="@Model.BookOrArticle.AuthorOfText" />
+    <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText" />
     <meta itemprop="url" content="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString">
     <meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
     <meta itemprop="datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">

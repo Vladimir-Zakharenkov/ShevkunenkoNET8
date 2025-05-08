@@ -326,6 +326,12 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Подзаголовок книги или статьи
+
+            _ = addBook.BookOrArticle.TheSubtitle.Trim();
+
+            #endregion
+
             #region Описание книги или статьи
 
             addBook.BookOrArticle.CaptionOfText = addBook.BookOrArticle.CaptionOfText.Trim();
@@ -683,9 +689,15 @@ public class BooksAndArticlesController(
 
             #endregion
 
-            #region Название книги или статьи
+            #region Заголовок книги или статьи
 
             bookUpdate.BookDescription = bookItem.BookOrArticle.BookDescription.Trim();
+
+            #endregion
+
+            #region Подзаголовок книги или статьи
+
+            bookUpdate.TheSubtitle = bookItem.BookOrArticle.TheSubtitle.Trim();
 
             #endregion
 

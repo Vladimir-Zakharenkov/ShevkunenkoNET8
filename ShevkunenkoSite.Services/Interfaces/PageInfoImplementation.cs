@@ -6,7 +6,8 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
         .Include(i => i.ImageFileModel)
         .Include(b => b.BackgroundFileModel)
         .Include(m => m.MovieFile).ThenInclude(mi => mi!.ImageFileModel)
-        .Include(m => m.MovieFile).ThenInclude(mi => mi!.MoviePoster);
+        .Include(m => m.MovieFile).ThenInclude(mi => mi!.MoviePoster)
+        .Include(a => a.BooksAndArticles).ThenInclude(l => l!.LogoOfArticle);
 
     #region Определить страницу в базе данных по запросу
 

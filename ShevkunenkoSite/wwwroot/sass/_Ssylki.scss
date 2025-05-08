@@ -40,3 +40,19 @@ a:active, .dropdown:active {
     color: darkred;
     border-color: darkred !important;
 }
+
+.ref-to-page{
+    display: inline-block;
+    color:black;
+    text-align: center;
+    width: 2.3rem;
+    height: 1.5rem;
+    margin: .2rem .1rem .2rem 0;
+    font-size: 1rem
+}
+
+.ref-to-page:hover {
+    color: hsla(0,50%,100%,1);
+    background-color: hsla(0,90%,40%,1);
+    transition: all 1s ease
+}

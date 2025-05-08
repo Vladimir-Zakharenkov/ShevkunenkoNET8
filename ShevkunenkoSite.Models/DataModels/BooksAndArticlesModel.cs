@@ -74,6 +74,15 @@ public class BooksAndArticlesModel
 
     #endregion
 
+    #region Подзаголовок книги (статьи)
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Подзаголовок :")]
+    public string TheSubtitle { get; set; } = string.Empty;
+
+    #endregion
+
     #region Описание книги (статьи)
 
     [Required(ErrorMessage = "Добавте описание")]

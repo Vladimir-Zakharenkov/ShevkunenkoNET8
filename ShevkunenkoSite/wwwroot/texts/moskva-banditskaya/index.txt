@@ -1,4 +1,4 @@
-<article class="kniga" itemscope itemtype="http://schema.org/Book">
+﻿<article class="kniga" itemscope itemtype="http://schema.org/Book">
 
     <meta itemprop="author" content="Николай Модестов">
     <meta itemprop="name" content="Москва бандитская">
@@ -1149,3 +1149,6 @@
     </div>
 
 </article>
+
+
+

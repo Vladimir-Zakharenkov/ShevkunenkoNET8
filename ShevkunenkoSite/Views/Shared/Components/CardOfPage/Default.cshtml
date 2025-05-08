@@ -8,7 +8,6 @@
 
     <div class="card shadw rounded-3 cardborder" title="@Model.PageTitle">
 
-        @* Если тип страницы movie *@
         @if (Model.OgType == "movie" && Model.MovieFile != null && Model.MovieFile.ImageFileModel != null)
         {
             <span itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
@@ -22,7 +21,7 @@
                 <meta itemprop="isFamilyFriendly" content="@Model.MovieFile.MovieIsFamilyFriendly.ToString()" />
                 <link itemprop="thumbnail" href="@sitePath@Model.MovieFile.ImageFileModel.ImagePath/@Model.MovieFile.ImageFileModel.ImageFileName" />
                 <link itemprop="thumbnailUrl" href="@sitePath@Model.MovieFile.ImageFileModel.ImagePath/@Model.MovieFile.ImageFileModel.ImageFileName" />
-                <meta itemprop="uploadDate" content="@Model.MovieFile.MovieUploadDate.ToString("yyyy-MM-dd")" />
+                <meta itemprop="uploadDate" content="@Model.MovieFile.MovieUploadDate.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
                 <meta itemprop="height" content="@Model.MovieFile.MovieHeight" />
                 <meta itemprop="width" content="@Model.MovieFile.MovieWidth" />
 
@@ -46,8 +45,8 @@
                     <meta itemprop="videoQuality" content="full HD" />
                 }
                 <meta itemprop="contentSize" content="@Model.MovieFile.MovieFileSize.ToString().Substring(0, Model.MovieFile.MovieFileSize.ToString().Length - 3)" />
-                <meta itemprop="dateReleased" content="@Model.MovieFile.MovieDatePublished.ToString("yyyy-MM-dd")" />
-                <meta itemprop="dateCreated" content="@Model.MovieFile.MovieDateCreated.ToString("yyyy-MM-dd")" />
+                <meta itemprop="dateReleased" content="@Model.MovieFile.MovieDatePublished.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
+                <meta itemprop="dateCreated" content="@Model.MovieFile.MovieDateCreated.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
                 <meta itemprop="inLanguage" content="@Model.MovieFile.MovieInLanguage1" />
                 @if (!string.IsNullOrEmpty(Model.MovieFile.MovieInLanguage2))
                 {
@@ -136,6 +135,45 @@
                 <meta itemprop="playerType" content="@Model.MovieFile.MovieMimeType" />
                 <meta itemprop="availablePlatform" content="Desktop" />
                 <meta itemprop="availablePlatform" content="Mobile" />
+
+            </span>
+        }
+
+
+        @if (Model.OgType == "article" && Model.BooksAndArticles != null)
+        {
+            <span itemscope itemtype="https://schema.org/Article">
+
+                <meta itemprop="author" content="@Model.BooksAndArticles.AuthorOfText" />
+                <meta itemprop="name" content="@Model.BooksAndArticles.CaptionOfText" />
+                <meta itemprop="publisher" content="@Model.BooksAndArticles.Publisher" />
+                <meta itemprop="datePublished dateModified" content="@Model.BooksAndArticles.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
+                <meta itemprop="description" content="@Model.BooksAndArticles.BookDescription" />
+
+                @if (Model.BooksAndArticles.LogoOfArticle != null)
+                {
+                    <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                        <meta itemprop="caption" content="@Model.BooksAndArticles.LogoOfArticle.ImageCaption" />
+                        <link itemprop="contentUrl thumbnailUrl url" href="href=@sitePath@Model.BooksAndArticles.LogoOfArticle.ImagePath/@Model.BooksAndArticles.LogoOfArticle.WebImageFileName" />
+                        <meta itemprop="width" content="@Model.BooksAndArticles.LogoOfArticle.WebImageWidth" />
+                        <meta itemprop="height" content="@Model.BooksAndArticles.LogoOfArticle.WebImageHeight" />
+                    </span>
+                }
+
+            </span>
+        }
+
+
+        @if (Model.OgType == "book" && Model.BooksAndArticles != null)
+        {
+            <span itemscope itemtype="http://schema.org/Book">
+
+                <meta itemprop="author" content="@Model.BooksAndArticles.AuthorOfText">
+                <meta itemprop="name" content="@Model.BooksAndArticles.CaptionOfText">
+                <meta itemprop="publisher" content="@Model.BooksAndArticles.Publisher">
+                <meta itemprop="datePublished" content="@Model.BooksAndArticles.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+                <meta itemprop="numberOfPages" content="@Model.BooksAndArticles.NumberOfPages">
+                <meta itemprop="description" content="@Model.BooksAndArticles.BookDescription">
 
             </span>
         }

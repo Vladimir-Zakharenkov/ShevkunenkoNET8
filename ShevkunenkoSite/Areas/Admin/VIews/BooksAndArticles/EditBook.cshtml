@@ -521,6 +521,41 @@
 
                 </div>
 
+                @* Подзаголовок книги (статьи) *@
+                <div class="accordion-item mb-3 shadw">
+
+                    @* Заголовок группы «подзаголовок книги (статьи)» *@
+                    <h2 class="accordion-header" id="headingTheSubtitle">
+                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#TheSubtitle" aria-expanded="true" aria-controls="TheSubtitle">
+                            <span class="form-label fs-5">Подзаголовок текста :</span>
+                        </button>
+                    </h2>
+
+                    <div id="TheSubtitle" class="accordion-collapse collapse" aria-labelledby="headingTheSubtitle" data-bs-parent="#accordionEditArticle">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <label class="col-form-label text-primary fs-5" asp-for="BookOrArticle.TheSubtitle" fs-5 me-2"></label>
+
+                            <input id="TheSubtitleInput" class="form-control w-75 mx-auto text-center" asp-for="BookOrArticle.TheSubtitle" aria-describedby="TheSubtitleInputHelpBlock" />
+
+                            <div id="TheSubtitleInputHelpBlock" class="form-text">
+
+                                <span class="fs-6 text-success">подзаголовок книги (статьи)</span>
+
+                            </div>
+
+                            @if (Context.Request.Method == "POST")
+                            {
+                                <span asp-validation-for="BookOrArticle.TheSubtitle" class="text-danger"></span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
                 @* Описание текста *@
                 <div class="accordion-item mb-3 shadw">
 

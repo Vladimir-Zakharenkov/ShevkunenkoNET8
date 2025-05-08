@@ -1,0 +1,340 @@
+﻿@model ArticleViewModel
+
+<div class="mx-auto fluid-font-size" itemscope itemtype="https://schema.org/Book">
+
+    <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText" />
+    <meta itemprop="headline" content="@Model.BookOrArticle.CaptionOfText" />
+    <meta itemprop="url" content="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString">
+    <meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
+    <meta itemprop="dateModified datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+    <meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+
+    @* выбор картинки для статьи *@
+    <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+        @if (Model.BookOrArticle.ScanOfArticle != null)
+        {
+            <meta itemprop="caption" content="@Model.BookOrArticle.ScanOfArticle.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebIconFileName">
+            <meta itemprop="width" content="@Model.BookOrArticle.ScanOfArticle.WebImageWidth">
+            <meta itemprop="height" content="@Model.BookOrArticle.ScanOfArticle.WebImageHeight">
+        }
+        else if (Model.BookOrArticle.LogoOfArticle != null)
+        {
+            <meta itemprop="caption" content="@Model.BookOrArticle.LogoOfArticle.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.LogoOfArticle.ImagePath/@Model.BookOrArticle.LogoOfArticle.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.BookOrArticle.LogoOfArticle.ImagePath/@Model.BookOrArticle.LogoOfArticle.WebIconFileName">
+            <meta itemprop="width" content="@Model.BookOrArticle.LogoOfArticle.WebImageWidth">
+            <meta itemprop="height" content="@Model.BookOrArticle.LogoOfArticle.WebImageHeight">
+        }
+        else
+        {
+            <meta itemprop="caption" content="@Model.PageInfo.ImageFileModel!.ImageCaption">
+            <link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebImageFileName">
+            <link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.PageInfo.ImageFileModel.ImagePath/@Model.PageInfo.ImageFileModel.WebIconFileName">
+            <meta itemprop="width" content="@Model.PageInfo.ImageFileModel.WebImageWidth">
+            <meta itemprop="height" content="@Model.PageInfo.ImageFileModel.WebImageHeight">
+        }
+    </span>
+
+    @* заголовок книги *@
+    <header itemprop="headline" class="d-block my-3 mx-auto maxwidth700px">
+
+        <h1 class="lay1 p-2 lh-1 times-new-roman">
+            <span class="fs-2 fw-bold d-inline-block mb-1 h1_print" itemprop="name">
+                @Model.BookOrArticle.AuthorOfText
+            </span>
+            <span itemprop="url" class="d-none">
+                https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+            </span>
+            <br />
+            <span class="fs-2 fw-bold">
+                «@Model.BookOrArticle.CaptionOfText»
+            </span>
+            @if (!string.IsNullOrEmpty(Model.BookOrArticle.TheSubtitle))
+            {
+                <br />
+                <span class="fs-5 text_shadow">
+                    @Model.BookOrArticle.TheSubtitle
+                </span>
+            }
+        </h1>
+
+    </header>
+
+    <div class="row">
+
+        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="true" one-frame="false" />
+
+        @* статья *@
+        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")" itemprop="articleBody text">
+
+            @* инфо вверху страницы *@
+            @if (Model.PageNumber != 0)
+            {
+                <div class="@(Model.Scan == true ? "d-none" : "mb-4 top_page d-print-none")">
+
+                    @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+                    {
+                        <a class=""
+                           asp-area=""
+                           asp-controller="Articles"
+                           asp-action="Article"
+                           asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                           asp-route-pageNumber="1"
+                           asp-route-scan="true"
+                           title="скан статьи">
+
+                            <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                           css-class="float-start me-2 maxwidth40px shadw imageref"
+                                           icon-type="webicon100" />
+
+                        </a>
+                    }
+
+                    @if (Model.BookOrArticle.VideoForBookOrArticle != null && Model.Scan != true)
+                    {
+                        <a class=""
+                           asp-area=""
+                           asp-controller="AllVideo"
+                           asp-action="Movie"
+                           asp-route-movieId="@Model.BookOrArticle.VideoForBookOrArticleId"
+                           asp-route-pageOfSeries="true"
+                           asp-route-videohosting="@Model.BookOrArticle.VideoForBookOrArticle.MovieVkVideo"
+                           title="видео к статье">
+
+                            <vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
+                                           css-class="float-start me-2 maxwidth40px shadw imageref"
+                                           icon-type="webicon100" />
+
+                        </a>
+                    }
+
+                    @if (Model.Scan != true)
+                    {
+                        <a class=" d-print-none"
+                           href="javascript:window.print(); void 0;"
+                           title="распечатать страницу">
+
+                            <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                           css-class="float-start maxwidth40px shadw imageref  d-print-none"
+                                           icon-type="webicon100" />
+
+                        </a>
+
+                        <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
+                    }
+
+                </div>
+            }
+            else
+            {
+            }
+
+            @* текст статьи *@
+            <div class="minheight900">
+
+                @if (Model.Scan == true)
+                {
+                    <a href="@Model.BookOrArticle.ScanOfArticle!.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName"
+                       class=""
+                       title="скан статьи"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.BookOrArticle.ScanOfArticleId"
+                                       css-class="adp90_img imageref"
+                                       icon-type="" />
+
+                    </a>
+                }
+                else
+                {
+                    @Html.Raw(Model.HtmlText)
+                }
+
+            </div>
+
+            @* инфо внизу страницы *@
+            @if (Model.PageNumber != 0)
+            {
+                <footer class="@(Model.Scan == true ? "d-none" : "mt-3 footer_page")">
+
+                    @if (Model.BookOrArticle.ScanOfArticleId != null && Model.Scan != true)
+                    {
+                        <a class="d-print-none"
+                           asp-area=""
+                           asp-controller="Articles"
+                           asp-action="Article"
+                           asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                           asp-route-pageNumber="1"
+                           asp-route-scan="true"
+                           title="скан статьи">
+
+                            <vc:view-image image-id="123d2197-2305-41d5-5539-08dd63f54213"
+                                           css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
+                                           icon-type="webicon100" />
+
+                        </a>
+                    }
+
+                    @if (Model.BookOrArticle.VideoForBookOrArticle != null && Model.Scan != true)
+                    {
+                        <a class="d-print-none"
+                           asp-area=""
+                           asp-controller="AllVideo"
+                           asp-action="Movie"
+                           asp-route-movieId="@Model.BookOrArticle.VideoForBookOrArticleId"
+                           asp-route-pageOfSeries="true"
+                           asp-route-videohosting="@Model.BookOrArticle.VideoForBookOrArticle.MovieVkVideo"
+                           title="видео к статье">
+
+                            <vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
+                                           css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
+                                           icon-type="webicon100" />
+
+                        </a>
+                    }
+
+                    @if (Model.Scan != true)
+                    {
+                        <a class="d-print-none"
+                           href="javascript:window.print(); void 0;"
+                           title="распечатать страницу">
+
+                            <vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
+                                           css-class="float-start maxwidth40px shadw imageref d-print-none"
+                                           icon-type="webicon100" />
+
+                        </a>
+
+                        <p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">@Model.PageNumber</p>
+                    }
+
+
+                </footer>
+            }
+            else
+            {
+            }
+
+        </div>
+
+        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="false" one-frame="false" />
+
+    </div>
+
+    @* навигация по статье *@
+    @if (Model.PageNumber != 0)
+    {
+        <div class="col col-md-8 maxwidth700px mt-4 mb-0 mx-auto clearfix d-print-none">
+
+            @if (Model.PageNumber > 1 && Model.Scan != true)
+            {
+                <a class="btn btn-outline-primary py-1 float-start shadw"
+                   asp-area=""
+                   asp-controller="Articles"
+                   asp-action="Article"
+                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-pageNumber="@(Model.PageNumber - 1)"
+                   asp-route-scan="false"
+                   title="предыдущая странице"
+                   itemprop="url">
+
+                    <span class="nomstr fluid-font-size">@(Model.PageNumber - 1)</span>
+
+                </a>
+            }
+
+            @if (Model.Scan == true)
+            {
+                <a class="@(Model.HtmlText == null ? "d-none" : "btn btn-outline-primary py-1 mx-auto shadw")"
+                   asp-area=""
+                   asp-controller="Articles"
+                   asp-action="Article"
+                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-pageNumber="1"
+                   asp-route-scan="false"
+                   title="текст статьи"
+                   itemprop="url">
+
+                    <span>текст статьи</span>
+
+                </a>
+            }
+
+            @if (Model.PageNumber < Model.BookOrArticle.NumberOfPages && Model.Scan != true)
+            {
+                <a class="btn btn-outline-primary py-1 float-end shadw d-print-none"
+                   asp-area=""
+                   asp-controller="Articles"
+                   asp-action="Article"
+                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-pageNumber="@(Model.PageNumber + 1)"
+                   asp-route-scan="false"
+                   title="следующая странице"
+                   itemprop="url">
+
+                    <span class="nomstr fluid-font-size">@(Model.PageNumber + 1)</span>
+
+                </a>
+            }
+
+        </div>
+    }
+
+
+
+    <div class="accordion maxwidth700px mx-auto" id="accordionForBook">
+
+        @* страницы книги *@
+        <div class="accordion-item my-3 shadw">
+
+            @* заголовок группы «страницы книги» *@
+            <h2 class="accordion-header" id="headingPagesOfBook">
+                <button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PagesOfBook" aria-expanded="true" aria-controls="PagesOfBook">
+                    <span class="d-inline-block w-100 fs-5 text-center">Страницы книги :</span>
+                </button>
+            </h2>
+
+            <div id="PagesOfBook" class="accordion-collapse collapse p-2 py-3" aria-labelledby="headingPagesOfBook" data-bs-parent="#accordionForBook">
+
+                @for (int i = 0; i < Model.BookOrArticle.NumberOfPages; i++)
+                {
+                    <a asp-controller="Books"
+                       asp-action="Book"
+                       asp-route-bookid="@Model.BookOrArticle.BooksAndArticlesModelId"
+                       asp-route-pagenumber="@(i+1)"
+                       asp-route-scan="false"
+                       class="ref-to-page shadw text @(Model.PageNumber == (i+1) ? "text-danger" : "")"
+                       title="страница @(i + 1)"
+                       itemprop="url">
+                        @(i + 1)
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+        @* скачать книгу *@
+        <div class="accordion-item shadw">
+
+            @* заголовок группы «скачать книгу» *@
+            <h2 class="accordion-header" id="headingLoadBook">
+                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LoadBook" aria-expanded="true" aria-controls="LoadBook">
+                    <span class="form-label fs-5">Скачать книгу :</span>
+                </button>
+            </h2>
+
+            <div id="LoadBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingLoadBook" data-bs-parent="#accordionForBook">
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

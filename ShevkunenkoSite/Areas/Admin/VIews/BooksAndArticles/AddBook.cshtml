@@ -10,6 +10,7 @@
     <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
 }
 
+
 <div class="col card p-2">
 
     <div class="col-12 card-body mx-auto">
@@ -243,6 +244,32 @@
                 @if (Context.Request.Method == "POST")
                 {
                     <span asp-validation-for="@Model.BookOrArticle.CaptionOfText" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Подзаголовок книги (статьи) *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-12">
+                    <label asp-for="@Model.BookOrArticle.TheSubtitle" class="col-form-label text-primary fs-5 me-2"></label>
+                </div>
+
+                <div class="col-12 text-start maxwidth700px">
+                    <input id="TheSubtitleInput" asp-for="@Model.BookOrArticle.TheSubtitle" class="form-control" aria-describedby="TheSubtitleInputHelpBlock" />
+                </div>
+
+                <div id="TheSubtitleInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">подзаголовок книги (статьи)</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="@Model.BookOrArticle.TheSubtitle" class="text-danger"></span>
                 }
 
                 <hr class="w-50 mx-auto" />

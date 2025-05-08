@@ -1,6 +1,6 @@
 ﻿namespace ShevkunenkoSite.Controllers;
 
-public class ArticlesController(
+public class BooksController(
     IBooksAndArticlesRepository articleContext,
     ITextInfoRepository textContext,
     IPageInfoRepository pageContext,
@@ -10,16 +10,16 @@ public class ArticlesController(
 
     public IActionResult Index() => View();
 
-    public async Task<IActionResult> Article(Guid? articleId, int? pageNumber, bool? scan)
+    public async Task<IActionResult> Book(Guid? bookId, int? pageNumber, bool? scan)
     {
-        if (articleId != null
-            && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == articleId).AnyAsync()
+        if (bookId != null
+            && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == bookId).AnyAsync()
             && pageNumber != null
             && pageNumber > -1
-            && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
+            && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == bookId).NumberOfPages)
         {
             // Если есть только скан
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync() & scan == true)
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookId).AnyAsync() & scan == true)
             {
                 ArticleViewModel scanForArticle = new()
                 {
@@ -27,7 +27,7 @@ public class ArticlesController(
                        .Include(logo => logo.LogoOfArticle)
                        .Include(scan => scan.ScanOfArticle)
                        .Include(movie => movie.VideoForBookOrArticle)
-                       .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
+                       .FirstAsync(article => article.BooksAndArticlesModelId == bookId),
 
                     PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
 
@@ -38,16 +38,16 @@ public class ArticlesController(
                     Scan = true
                 };
 
-                return View("Article", scanForArticle);
+                return View("Book", scanForArticle);
             }
 
             // Если для статьи или книги отсутствует текст
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber).AnyAsync())
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookId & text.SequenceNumber == pageNumber).AnyAsync())
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber);
+            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == bookId & text.SequenceNumber == pageNumber);
 
             if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName))
             {
@@ -62,7 +62,7 @@ public class ArticlesController(
                         .Include(logo => logo.LogoOfArticle)
                         .Include(scan => scan.ScanOfArticle)
                         .Include(movie => movie.VideoForBookOrArticle)
-                        .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
+                        .FirstAsync(article => article.BooksAndArticlesModelId == bookId),
 
                 PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
 
@@ -73,11 +73,12 @@ public class ArticlesController(
                 Scan = scan
             };
 
-            return View("Article", bookOrArticle);
+            return View("Book", bookOrArticle);
         }
         else
         {
             return RedirectToAction(nameof(Index));
         }
     }
+
 }

@@ -73,7 +73,6 @@
     @* Тип содержимого страницы *@
     <meta property="og:type" content="@Model.PageInfo.OgType" />
 
-    @* Данные для статьи *@
     @if (Model.PageInfo.OgType == "article")
     {
         if (Model.BookOrArticle != null)
@@ -93,11 +92,16 @@
             }
         }
     }
-    @* Данные для книги *@
     else if (Model.PageInfo.OgType == "book")
     {
         if (Model.BookOrArticle != null)
         {
+            <meta itemprop="book:author" content="@Model.BookOrArticle.AuthorOfText" />
+            <meta itemprop="book:headline" content="@Model.BookOrArticle.CaptionOfText" />
+            <meta itemprop="book:publisher" content="@Model.BookOrArticle.Publisher" />
+            <meta itemprop="book:published_time" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
+            <meta itemprop="book:modified_time" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
+            <meta itemprop="book:description" content="@Model.BookOrArticle.BookDescription" />
             <meta property="book:release_date" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
 
             @foreach (var tag in Model.BookOrArticle.TagsForBook.Split(',', StringSplitOptions.RemoveEmptyEntries))
@@ -106,7 +110,6 @@
             }
         }
     }
-    @* Данные для видео *@
     else if (Model.PageInfo.OgType == "movie" && Model.PageInfo.MovieFile != null)
     {
         <link rel="stylesheet" href="https://vjs.zencdn.net/8.16.1/video-js.css" />
