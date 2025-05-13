@@ -38,27 +38,45 @@
     </span>
 
     @* заголовок книги *@
-    <header itemprop="headline" class="d-block my-3 mx-auto maxwidth700px">
+    <header itemprop="headline" class="d-block col col-md-8 my-3 mx-auto maxwidth700px">
 
-        <h1 class="lay1 p-2 lh-1 times-new-roman">
-            <span class="fs-2 fw-bold d-inline-block mb-1 h1_print" itemprop="name">
-                @Model.BookOrArticle.AuthorOfText
-            </span>
-            <span itemprop="url" class="d-none">
-                https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
-            </span>
-            <br />
-            <span class="fs-2 fw-bold">
-                «@Model.BookOrArticle.CaptionOfText»
-            </span>
-            @if (!string.IsNullOrEmpty(Model.BookOrArticle.TheSubtitle))
-            {
-                <br />
-                <span class="fs-5 text_shadow">
-                    @Model.BookOrArticle.TheSubtitle
+        @if (Context.Request.QueryString.ToString().Contains("pagenumber=0"))
+        {
+            <h1 class="lay1 p-2 lh-1 times-new-roman">
+                <span class="fs-2 fw-bold d-inline-block mb-1 h1_print" itemprop="name">
+                    @Model.BookOrArticle.AuthorOfText
                 </span>
-            }
-        </h1>
+                <span itemprop="url" class="d-none">
+                    https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+                </span>
+                <br />
+                <span class="fs-2 fw-bold">
+                    «@Model.BookOrArticle.CaptionOfText»
+                </span>
+                @if (!string.IsNullOrEmpty(Model.BookOrArticle.TheSubtitle))
+                {
+                    <br />
+                    <span class="fs-5 text_shadow">
+                        @Model.BookOrArticle.TheSubtitle
+                    </span>
+                }
+            </h1>
+        }
+        else
+        {
+            <h1 class="fs-4 fw-bold px-0 py-2 lh-1 lay1 times-new-roman text_shadow">
+                <span class="d-inline-block h1_print" itemprop="name">
+                    @Model.BookOrArticle.AuthorOfText
+                </span>
+                <span itemprop="url" class="d-none">
+                    https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+                </span>
+                <br class="d-lg-none" />
+                <span>
+                    «@Model.BookOrArticle.CaptionOfText»
+                </span>
+            </h1>
+        }
 
     </header>
 
@@ -67,7 +85,7 @@
         <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="true" one-frame="false" />
 
         @* статья *@
-        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")" itemprop="articleBody text">
+        <div class="col col-md-8 article_page mx-auto paragraph shadw @(Context.Request.QueryString.ToString().Contains("pagenumber=0") ? "px-0 px-sm-2 px-md-3" : "") @(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")" itemprop="articleBody text">
 
             @* инфо вверху страницы *@
             @if (Model.PageNumber != 0)
@@ -131,8 +149,9 @@
             {
             }
 
+
             @* текст статьи *@
-            <div class="minheight900">
+            <div class="minheight900 times-new-roman">
 
                 @if (Model.Scan == true)
                 {
@@ -151,6 +170,7 @@
                 {
                     @Html.Raw(Model.HtmlText)
                 }
+
 
             </div>
 
@@ -232,9 +252,9 @@
             {
                 <a class="btn btn-outline-primary py-1 float-start shadw"
                    asp-area=""
-                   asp-controller="Articles"
-                   asp-action="Article"
-                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-controller="Books"
+                   asp-action="Book"
+                   asp-route-bookId="@Model.BookOrArticle.BooksAndArticlesModelId"
                    asp-route-pageNumber="@(Model.PageNumber - 1)"
                    asp-route-scan="false"
                    title="предыдущая странице"
@@ -249,9 +269,9 @@
             {
                 <a class="@(Model.HtmlText == null ? "d-none" : "btn btn-outline-primary py-1 mx-auto shadw")"
                    asp-area=""
-                   asp-controller="Articles"
-                   asp-action="Article"
-                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-controller="Books"
+                   asp-action="Book"
+                   asp-route-bookId="@Model.BookOrArticle.BooksAndArticlesModelId"
                    asp-route-pageNumber="1"
                    asp-route-scan="false"
                    title="текст статьи"
@@ -266,9 +286,9 @@
             {
                 <a class="btn btn-outline-primary py-1 float-end shadw d-print-none"
                    asp-area=""
-                   asp-controller="Articles"
-                   asp-action="Article"
-                   asp-route-articleId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-controller="Books"
+                   asp-action="Book"
+                   asp-route-bookId="@Model.BookOrArticle.BooksAndArticlesModelId"
                    asp-route-pageNumber="@(Model.PageNumber + 1)"
                    asp-route-scan="false"
                    title="следующая странице"
@@ -281,19 +301,27 @@
 
         </div>
     }
+    else
+    {
+
+    }
 
 
-
-    <div class="accordion maxwidth700px mx-auto" id="accordionForBook">
+    @* раскрывающиеся поля *@
+    <div class="accordion maxwidth700px mx-auto d-print-none" id="accordionForBook">
 
         @* страницы книги *@
         <div class="accordion-item my-3 shadw">
 
             @* заголовок группы «страницы книги» *@
             <h2 class="accordion-header" id="headingPagesOfBook">
+
                 <button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PagesOfBook" aria-expanded="true" aria-controls="PagesOfBook">
+
                     <span class="d-inline-block w-100 fs-5 text-center">Страницы книги :</span>
+
                 </button>
+
             </h2>
 
             <div id="PagesOfBook" class="accordion-collapse collapse p-2 py-3" aria-labelledby="headingPagesOfBook" data-bs-parent="#accordionForBook">
@@ -305,10 +333,12 @@
                        asp-route-bookid="@Model.BookOrArticle.BooksAndArticlesModelId"
                        asp-route-pagenumber="@(i+1)"
                        asp-route-scan="false"
-                       class="ref-to-page shadw text @(Model.PageNumber == (i+1) ? "text-danger" : "")"
+                       class="ref-to-page shadw @(Model.PageNumber == (i+1) ? "text-primary border border-danger" : "")"
                        title="страница @(i + 1)"
                        itemprop="url">
+
                         @(i + 1)
+
                     </a>
                 }
 
@@ -321,14 +351,93 @@
 
             @* заголовок группы «скачать книгу» *@
             <h2 class="accordion-header" id="headingLoadBook">
-                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LoadBook" aria-expanded="true" aria-controls="LoadBook">
-                    <span class="form-label fs-5">Скачать книгу :</span>
+
+                <button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LoadBook" aria-expanded="true" aria-controls="LoadBook">
+
+                    <span class="d-none d-sm-block me-2">Скачать книгу :</span>
+
+                    @* иконка word *@
+                    <vc:view-image image-id="562a0cbc-54fb-4059-1187-08dd8ec59a70"
+                                   css-class="maxwidth40px p-0 me-2"
+                                   icon-type="webicon100" />
+
+                    @* иконка pdf *@
+                    <vc:view-image image-id="63b93d4a-6f6f-43f9-1188-08dd8ec59a70"
+                                   css-class="maxwidth40px p-0 me-2"
+                                   icon-type="webicon100" />
+
+                    @* иконка аудиокниги *@
+                    <vc:view-image image-id="84c9851e-7b45-4bd1-1189-08dd8ec59a70"
+                                   css-class="maxwidth40px p-0"
+                                   icon-type="webicon100" />
+
                 </button>
+
             </h2>
 
-            <div id="LoadBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingLoadBook" data-bs-parent="#accordionForBook">
+            <div id="LoadBook" class="accordion-collapse collapse p-2" aria-labelledby="headingLoadBook" data-bs-parent="#accordionForBook">
 
-                <hr class="w-50 mx-auto" />
+                <div class="accordion-body accordion-body-nointend">
+
+                    <div class="row row-cols-3 g-1 g-sm-2 justify-content-center">
+
+                        @* текст в формате word *@
+                        @if (Model.BookOrArticle.RefToWordDoc != null)
+                        {
+                            <a href="@Model.BookOrArticle.RefToWordDoc"
+                               title="скачать в формате word"
+                               onClick="this.target='_blank'">
+
+                                <vc:view-image image-id="562a0cbc-54fb-4059-1187-08dd8ec59a70"
+                                               css-class="col shadw imageref"
+                                               icon-type="webicon300" />
+
+                            </a>
+                        }
+                        else
+                        {
+                        }
+
+
+                        @* текст в формате pdf *@
+                        @if (Model.BookOrArticle.RefToPdf != null)
+                        {
+                            <a href="@Model.BookOrArticle.RefToPdf"
+                               title="скачать в формате pdf"
+                               onClick="this.target='_blank'">
+
+                                <vc:view-image image-id="63b93d4a-6f6f-43f9-1188-08dd8ec59a70"
+                                               css-class="col shadw imageref"
+                                               icon-type="webicon300" />
+
+                            </a>
+                        }
+                        else
+                        {
+                        }
+
+
+                        @* аудиокнига *@
+                        @if (Model.BookOrArticle.RefToAudio != null)
+                        {
+                            <a href="@Model.BookOrArticle.RefToAudio"
+                               title="скачать аудиокнигу"
+                               onClick="this.target='_blank'">
+
+                                <vc:view-image image-id="84c9851e-7b45-4bd1-1189-08dd8ec59a70"
+                                               css-class="col shadw imageref"
+                                               icon-type="webicon300" />
+
+                            </a>
+                        }
+                        else
+                        {
+                        }
+
+
+                    </div>
+
+                </div>
 
             </div>
 

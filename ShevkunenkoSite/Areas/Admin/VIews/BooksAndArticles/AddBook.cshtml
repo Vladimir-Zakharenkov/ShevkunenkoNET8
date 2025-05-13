@@ -376,6 +376,84 @@
 
                 <span asp-validation-for="BookOrArticle.TagsForBook" class="text-danger"></span>
 
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Ссылка на скачивание в формате word *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-12">
+                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToWordDoc"></label>
+                </div>
+
+                <div class="col-12 text-start maxwidth700px">
+                    <input id="RefToWordDocInput" class="form-control" asp-for="BookOrArticle.RefToWordDoc" aria-describedby="RefToWordDocInputHelpBlock" />
+                </div>
+
+                <div id="RefToWordDocInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">ссылка на текст в формате word</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.RefToWordDoc" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Ссылка на скачивание в формате pdf *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-12">
+                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToPdf"></label>
+                </div>
+
+                <div class="col-12 text-start maxwidth700px">
+                    <input id="RefToPdfInput" class="form-control" asp-for="BookOrArticle.RefToPdf" aria-describedby="RefToPdfInputHelpBlock" />
+                </div>
+
+                <div id="RefToPdfInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">ссылка на текст в формате pdf</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.RefToPdf" class="text-danger"></span>
+                }
+
+                <hr class="w-50 mx-auto" />
+
+            </div>
+
+            @* Ссылка на скачивание аудиокниги *@
+            <div class="row g-2 justify-content-center">
+
+                <div class="col-12">
+                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToAudio"></label>
+                </div>
+
+                <div class="col-12 text-start maxwidth700px">
+                    <input id="RefToAudioInput" class="form-control" asp-for="BookOrArticle.RefToAudio" aria-describedby="RefToAudioInputHelpBlock" />
+                </div>
+
+                <div id="RefToAudioInputHelpBlock" class="form-text">
+
+                    <span class="fs-6 text-success">ссылка на аудиокнигу</span>
+
+                </div>
+
+                @if (Context.Request.Method == "POST")
+                {
+                    <span asp-validation-for="BookOrArticle.RefToAudio" class="text-danger"></span>
+                }
+
             </div>
 
             @* Сохранить - Отменить *@

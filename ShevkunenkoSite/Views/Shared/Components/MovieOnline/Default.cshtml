@@ -229,28 +229,62 @@
 
     <div class="row row-cols-6 gx-md-2 gx-lg-3 gx-xl-4 justify-content-center">
 
-        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieYouTube">
-            <vc:image-view file-name="youtube.png" css-class="col-12 shadw imageref @Model.YoutubeImageBorder" is-icon="true" />
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')"
+           asp-page="@Model.PageInfo.PageLoc"
+           asp-route-videohosting="@Model.PageInfo.MovieFile.MovieYouTube">
+
+            <vc:image-view file-name="youtube.png"
+                           css-class="col-12 shadw imageref @Model.YoutubeImageBorder"
+                           is-icon="true" />
+
         </a>
 
-        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieVkVideo">
-            <vc:image-view file-name="vk-video.png" css-class="col-12 shadw imageref @Model.VkImageBorder" is-icon="true" />
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')"
+           asp-page="@Model.PageInfo.PageLoc"
+           asp-route-videohosting="@Model.PageInfo.MovieFile.MovieVkVideo">
+
+            <vc:image-view file-name="vk-video.png"
+                           css-class="col-12 shadw imageref @Model.VkImageBorder"
+                           is-icon="true" />
+
         </a>
 
-        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieMailRuVideo">
-            <vc:image-view file-name="mailru.png" css-class="col-12 shadw imageref @Model.MailruImageBorder" is-icon="true" />
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')"
+           asp-page="@Model.PageInfo.PageLoc"
+           asp-route-videohosting="@Model.PageInfo.MovieFile.MovieMailRuVideo">
+
+            <vc:image-view file-name="mailru.png"
+                           css-class="col-12 shadw imageref @Model.MailruImageBorder"
+                           is-icon="true" />
+
         </a>
 
-        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieOkVideo">
-            <vc:image-view file-name="odnoklassniki.png" css-class="col-12 shadw imageref @Model.OkImageBorder" is-icon="true" />
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')"
+           asp-page="@Model.PageInfo.PageLoc"
+           asp-route-videohosting="@Model.PageInfo.MovieFile.MovieOkVideo">
+
+            <vc:image-view file-name="odnoklassniki.png"
+                           css-class="col-12 shadw imageref @Model.OkImageBorder"
+                           is-icon="true" />
+
         </a>
 
-        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')" asp-page="@Model.PageInfo.PageLoc" asp-route-videohosting="@Model.PageInfo.MovieFile.MovieContentUrl">
-            <vc:image-view file-name="asuscomm.png" css-class="col-12 shadw imageref @Model.SergeyshefBorder" is-icon="true" />
+        <a asp-area="@Model.PageInfo.PageArea.TrimStart('/')"
+           asp-page="@Model.PageInfo.PageLoc"
+           asp-route-videohosting="@Model.PageInfo.MovieFile.MovieContentUrl">
+
+            <vc:image-view file-name="asuscomm.png"
+                           css-class="col-12 shadw imageref @Model.SergeyshefBorder"
+                           is-icon="true" />
+
         </a>
 
-        <a onClick="this.target='_blank'" href="@Model.PageInfo.MovieFile.MovieYandexDiskVideo">
-            <vc:image-view file-name="yandex-disk.png" css-class="col-12 shadw imageref" is-icon="true" />
+        <a href="@Model.PageInfo.MovieFile.MovieYandexDiskVideo" onClick="this.target='_blank'">
+
+            <vc:image-view file-name="yandex-disk.png"
+                           css-class="col-12 shadw imageref"
+                           is-icon="true" />
+
         </a>
 
     </div>

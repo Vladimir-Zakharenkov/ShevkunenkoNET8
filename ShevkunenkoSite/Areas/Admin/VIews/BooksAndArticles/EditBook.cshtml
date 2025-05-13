@@ -728,6 +728,111 @@
 
                 </div>
 
+                @*  Ссылка на текст в формате word *@
+                <div class="accordion-item mb-3 shadw">
+
+                    @* Заголовок группы «ссылка на текст в формате word» *@
+                    <h2 class="accordion-header" id="headingLoadText">
+                        <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LoadText" aria-expanded="true" aria-controls="LoadText">
+                            <span class="form-label fs-5">Скачать текст :</span>
+                        </button>
+                    </h2>
+
+                    <div id="LoadText" class="accordion-collapse collapse" aria-labelledby="headingLoadText" data-bs-parent="#accordionEditArticle">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <label asp-for="BookOrArticle.RefToWordDoc" class="col-form-label text-primary fs-5 pb-0"></label>
+
+                            @if (Model.BookOrArticle.RefToWordDoc != null)
+                            {
+                                <div class="col-12 fs-5 text-center pb-3">
+                                    <a class="text-black text_shadow" href="@Model.BookOrArticle.RefToWordDoc" title="скачать в формате word" onClick="this.target='_blank'">@Model.BookOrArticle.RefToWordDoc</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-text mb-3">
+                                    <span class="fs-6 text-danger">ссылка не задана</span>
+                                </div>
+                            }
+
+                            <input id="RefToWordDocInput" class="form-control text-center" asp-for="BookOrArticle.RefToWordDoc" aria-describedby="RefToWordDocInputHelpBlock" />
+
+                            <div id="RefToWordDocInputHelpBlock" class="form-text">
+                                <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToWordDoc» - </span>
+                                <span class="fs-6 text-success">ссылка на текст в формате word</span>
+                            </div>
+
+                            @if (Context.Request.Method == "POST")
+                            {
+                                <span asp-validation-for="BookOrArticle.RefToWordDoc" class="text-danger"></span>
+                            }
+
+                            <hr class="w-50 mx-auto" />
+
+                            <label asp-for="BookOrArticle.RefToPdf" class="col-form-label text-primary fs-5 pb-0"></label>
+
+                            @if (Model.BookOrArticle.RefToPdf != null)
+                            {
+                                <div class="col-12 fs-5 text-center pb-3">
+                                    <a class="text-black text_shadow" href="@Model.BookOrArticle.RefToPdf" title="скачать в формате pdf" onClick="this.target='_blank'">@Model.BookOrArticle.RefToPdf</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-text mb-3">
+                                    <span class="fs-6 text-danger">ссылка не задана</span>
+                                </div>
+                            }
+
+                            <input id="RefToPdfInput" class="form-control text-center" asp-for="BookOrArticle.RefToPdf" aria-describedby="RefToPdfInputHelpBlock" />
+
+                            <div id="RefToPdfInputHelpBlock" class="form-text">
+                                <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToPdf» - </span>
+                                <span class="fs-6 text-success">ссылка на текст в формате pdf</span>
+                            </div>
+
+                            @if (Context.Request.Method == "POST")
+                            {
+                                <span asp-validation-for="BookOrArticle.RefToPdf" class="text-danger"></span>
+                            }
+
+                            <hr class="w-50 mx-auto" />
+
+                            <label asp-for="BookOrArticle.RefToAudio" class="col-form-label text-primary fs-5 pb-0"></label>
+
+                            @if (Model.BookOrArticle.RefToAudio != null)
+                            {
+                                <div class="col-12 fs-5 text-center pb-3">
+                                    <a class="text-black text_shadow" href="@Model.BookOrArticle.RefToAudio" title="скачать аудиокнигу" onClick="this.target='_blank'">@Model.BookOrArticle.RefToAudio</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-text mb-3">
+                                    <span class="fs-6 text-danger">ссылка не задана</span>
+                                </div>
+                            }
+
+                            <input id="RefToAudioInput" class="form-control text-center" asp-for="BookOrArticle.RefToAudio" aria-describedby="RefToAudioInputHelpBlock" />
+
+                            <div id="RefToPdfInputHelpBlock" class="form-text">
+                                <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToAudio» - </span>
+                                <span class="fs-6 text-success">ссылка аудиокнигу</span>
+                            </div>
+
+                            @if (Context.Request.Method == "POST")
+                            {
+                                <span asp-validation-for="BookOrArticle.RefToAudio" class="text-danger"></span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
             @* Сохранить - Отменить *@

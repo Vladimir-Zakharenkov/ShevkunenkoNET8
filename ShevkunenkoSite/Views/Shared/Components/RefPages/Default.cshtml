@@ -75,51 +75,31 @@
 @* Ссылки на связанные страницы по фильтру *@
 <div class="d-print-none mt-3">
 
-    <hr class="liniya" />
-
-    @if (Model.ListsOfFilterOut.Count > 0)
+    @if (Model.DictionaryOfPages.Count > 0)
     {
-        foreach (var listOfFilterOut in Model.ListsOfFilterOut)
+        foreach (var (caption, listOfPages) in Model.DictionaryOfPages)
         {
-            if (listOfFilterOut.Count > 0)
+            if (listOfPages.Count > 0)
             {
-                if (listOfFilterOut.Count < 4)
-                {
-                    <div class="row row-cols-3 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
+                <h2 class="text_shadow mt-4">@caption</h2>
 
-                        @foreach (var item in listOfFilterOut)
-                        {
-                            <vc:card-of-page page="@item" />
-                        }
+                <hr class="liniya w-75" />
 
-                    </div>
-                }
-                else if (listOfFilterOut.Count % 4 == 0 || listOfFilterOut.Count == 7)
-                {
-                    <div class="row row-cols-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
+                <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1 
+                                @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
-                        @foreach (var item in listOfFilterOut)
-                        {
-                            <vc:card-of-page page="@item" />
-                        }
+                    @foreach (var item in listOfPages)
+                    {
+                        <vc:card-of-page page="@item" />
+                    }
 
-                    </div>
-                }
-                else
-                {
-                    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-5 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1">
-
-                        @foreach (var item in listOfFilterOut)
-                        {
-                            <vc:card-of-page page="@item" />
-                        }
-
-                    </div>
-                }
+                </div>
             }
+
         }
     }
-
 
 </div>
 

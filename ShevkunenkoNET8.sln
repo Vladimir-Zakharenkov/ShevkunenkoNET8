@@ -248,6 +248,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C# 13", "C# 13", "{2232B0C1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 10 - Коллекции", "Глава 10 - Коллекции", "{4B8C2613-A4B0-4E00-8216-2639A43ABEF9}"
 	ProjectSection(SolutionItems) = preProject
+		Page05 - Словарь Dictinary.txt = Page05 - Словарь Dictinary.txt
 		Metanit.com\C# 13\Глава 10 - Коллекции\Page07 - Интерфейсы IEnumerable и IEnumerator.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page07 - Интерфейсы IEnumerable и IEnumerator.txt
 		Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt = Metanit.com\C# 13\Глава 10 - Коллекции\Page08 - Итераторы и оператор yield.txt
 	EndProjectSection
@@ -417,6 +418,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page03", "Metanit.com\C# 13\Глава 22 - Работа с файловой системой\Page03\Page03.csproj", "{19EC0004-1113-413B-B9AF-41D43C665ADE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page05", "Metanit.com\C# 13\Глава 10 - Коллекции\Page05\Page05\Page05.csproj", "{79F6003A-F352-40FE-ACE8-0B5766E8209F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -559,6 +562,10 @@ Global
 		{19EC0004-1113-413B-B9AF-41D43C665ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19EC0004-1113-413B-B9AF-41D43C665ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19EC0004-1113-413B-B9AF-41D43C665ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -611,6 +618,7 @@ Global
 		{A7BA2253-DD4A-41E3-B12D-819262814248} = {2232B0C1-252D-4176-ABFE-47FB87FD140B}
 		{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B} = {A7BA2253-DD4A-41E3-B12D-819262814248}
 		{19EC0004-1113-413B-B9AF-41D43C665ADE} = {A7BA2253-DD4A-41E3-B12D-819262814248}
+		{79F6003A-F352-40FE-ACE8-0B5766E8209F} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

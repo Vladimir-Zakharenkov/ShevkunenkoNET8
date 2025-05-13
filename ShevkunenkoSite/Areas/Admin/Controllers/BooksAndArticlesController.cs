@@ -356,6 +356,16 @@ public class BooksAndArticlesController(
 
             #endregion
 
+            #region Ссылки на скачивание текста и аудиокниги
+
+            _ = addBook.BookOrArticle.RefToWordDoc;
+
+            _ = addBook.BookOrArticle.RefToPdf;
+
+            _ = addBook.BookOrArticle.RefToAudio;
+
+            #endregion
+
             #region Добавить в БД
 
             await bookContext.AddBookOrArticleAsync(addBook.BookOrArticle);
@@ -722,6 +732,16 @@ public class BooksAndArticlesController(
             #region Теги по содержанию книги (статьи)
 
             bookUpdate.TagsForBook = bookItem.BookOrArticle.TagsForBook.Trim();
+
+            #endregion
+
+            #region Ссылка на текст и аудиокнигу
+
+            bookUpdate.RefToWordDoc = bookItem.BookOrArticle.RefToWordDoc;
+
+            bookUpdate.RefToPdf = bookItem.BookOrArticle.RefToPdf;
+
+            bookUpdate.RefToAudio = bookItem.BookOrArticle.RefToAudio;
 
             #endregion
 

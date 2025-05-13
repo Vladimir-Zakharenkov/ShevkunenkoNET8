@@ -587,6 +587,85 @@
 
             </div>
 
+            @* Ссылки для скачивания текстов *@
+            <div class="accordion-item mb-3 shadw">
+
+                @* Заголовок группы «ссылки для скачивания текстов» *@
+                <h2 class="accordion-header" id="headingLoadText">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LoadText" aria-expanded="true" aria-controls="LoadText">
+                        <span class="form-label fs-5">Скачать текст :</span>
+                    </button>
+                </h2>
+
+                <div id="LoadText" class="accordion-collapse collapse" aria-labelledby="headingLoadText" data-bs-parent="#accordionEditArticle">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <label asp-for="RefToWordDoc" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.RefToWordDoc != null)
+                        {
+                            <p class="fs-5 text-center text_shadow">
+                                <a class="text-black text_shadow" href="@Model.RefToWordDoc" title="скачать в формате word" onClick="this.target='_blank'">@Model.RefToWordDoc</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fs-4 text-center text_shadow">ссылка не задана</p>
+                        }
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToWordDoc» - </span>
+                            <span class="fs-6 text-success">скачать в формате word</span>
+                        </div>
+
+                        <hr class="w-50 mx-auto" />
+
+                        <label asp-for="RefToPdf" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.RefToPdf != null)
+                        {
+                            <p class="fs-5 text-center text_shadow">
+                                <a class="text-black text_shadow" href="@Model.RefToPdf" title="скачать в формате pdf" onClick="this.target='_blank'">@Model.RefToPdf</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fs-4 text-center text_shadow">ссылка не задана</p>
+                        }
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToPdf» - </span>
+                            <span class="fs-6 text-success">скачать в формате pdf</span>
+                        </div>
+
+                        <hr class="w-50 mx-auto" />
+
+                        <label asp-for="RefToAudio" class="col-form-label text-primary fs-5 me-2"></label>
+
+                        @if (Model.RefToAudio != null)
+                        {
+                            <p class="fs-5 text-center text_shadow">
+                                <a class="text-black text_shadow" href="@Model.RefToAudio" title="скачать аудиокнига" onClick="this.target='_blank'">@Model.RefToAudio</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="fs-4 text-center text_shadow">ссылка не задана</p>
+                        }
+
+                        <div class="form-text">
+                            <span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToAudio» - </span>
+                            <span class="fs-6 text-success">скачать аудиокнигу</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
         </div>
 
         @* Список, изменить, удалить *@

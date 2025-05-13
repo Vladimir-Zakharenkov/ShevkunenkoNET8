@@ -1,5 +1,8 @@
 ﻿
 
+
+// Ignore Spelling: Pdf
+
 namespace ShevkunenkoSite.Models.DataModels;
 
 public class BooksAndArticlesModel
@@ -138,6 +141,30 @@ public class BooksAndArticlesModel
 
     public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
+
+    #endregion
+
+    #region Ссылка на документ Word
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Документ Word : ")]
+    public Uri? RefToWordDoc { get; set; }
+
+    #endregion
+
+    #region Ссылка на документ PDF
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Документ PDF : ")]
+    public Uri? RefToPdf { get; set; }
+
+    #endregion
+
+    #region Ссылка на аудиокнигу
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Аудиокнига : ")]
+    public Uri? RefToAudio { get; set; }
 
     #endregion
 }

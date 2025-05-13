@@ -8,8 +8,8 @@ public class RefPages(
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
-        // Список списков страниц по текстовым фильтрам
-        List<List<PageInfoModel>> listsOfFilterOut = [];
+        // Словарь страниц по текстовому фильтрам
+        Dictionary<string, List<PageInfoModel>> dictionaryOfPages = [];
 
         // 1-ый список по GUID страниц
         List<PageInfoModel> linksToPagesByGuid = [];
@@ -99,11 +99,10 @@ public class RefPages(
 
                             listOfFilterOut.Sort((page1, page2) => page1.SortOfPage.CompareTo(page2.SortOfPage));
 
-                            listsOfFilterOut.Add(listOfFilterOut);
+                            dictionaryOfPages[pageFilterOut[i]] = listOfFilterOut;
                         }
                     }
                 }
-                _ = listsOfFilterOut.Distinct();
             }
 
             // ссылки на связанные видео по текстовому фильтру VideoFilterOut
@@ -135,7 +134,7 @@ public class RefPages(
             }
         }
 
-        if (listsOfFilterOut.Count < 1 & linksToPagesByGuid.Count < 1 & listOfVideoLinksViewModel.Count < 1 & linksToPagesByGuid2.Count < 1)
+        if (dictionaryOfPages.Count < 1 & linksToPagesByGuid.Count < 1 & listOfVideoLinksViewModel.Count < 1 & linksToPagesByGuid2.Count < 1)
         {
             return View("Empty");
         }
@@ -143,9 +142,9 @@ public class RefPages(
         {
             return View(new RefPagesViewModel
             {
+                DictionaryOfPages = dictionaryOfPages,
                 LinksToPagesByGuid = linksToPagesByGuid,
                 LinksToPagesByGuid2 = linksToPagesByGuid2,
-                ListsOfFilterOut = listsOfFilterOut,
                 ListOfVideoLinksViewModel = listOfVideoLinksViewModel
             });
         }

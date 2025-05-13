@@ -41,18 +41,33 @@ a:active, .dropdown:active {
     border-color: darkred !important;
 }
 
-.ref-to-page{
+.ref-to-page {
     display: inline-block;
-    color:black;
+    color: black;
     text-align: center;
     width: 2.3rem;
     height: 1.5rem;
     margin: .2rem .1rem .2rem 0;
-    font-size: 1rem
+    font-size: 1rem;
+    background-image: url(/images/admin/audio.webp);
 }
 
 .ref-to-page:hover {
     color: hsla(0,50%,100%,1);
     background-color: hsla(0,90%,40%,1);
-    transition: all 1s ease
+    transition: all 1s ease;
+}
+
+.ref-to-audio {
+    display: inline-block;
+    width: 2.3rem;
+    height: 1.5rem;
+    background-image: url(/images/admin/audio.webp);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    transition: all 1s ease;
+}
+
+.ref-to-audio:hover {
+    background-image: url(/images/admin/audio-r.webp);
 }
