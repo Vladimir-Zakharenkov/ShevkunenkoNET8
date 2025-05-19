@@ -42,7 +42,7 @@
 
         @if (Context.Request.QueryString.ToString().Contains("pagenumber=0"))
         {
-            <h1 class="lay1 p-2 lh-1 times-new-roman">
+            <h1 class="lay1 p-2 lh-1 +times-new-roman">
                 <span class="fs-2 fw-bold d-inline-block mb-1 h1_print" itemprop="name">
                     @Model.BookOrArticle.AuthorOfText
                 </span>
@@ -64,7 +64,7 @@
         }
         else
         {
-            <h1 class="fs-4 fw-bold px-0 py-2 lh-1 lay1 times-new-roman text_shadow">
+            <h1 class="fs-4 fw-bold px-0 pb-2 pt-1 lh-1 lay1 times-new-roman text_shadow">
                 <span class="d-inline-block h1_print" itemprop="name">
                     @Model.BookOrArticle.AuthorOfText
                 </span>
