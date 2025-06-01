@@ -61,7 +61,7 @@ public class TextInfoModel
 
     // номер страницы книги (статьи)
     [Display(Name = "Номер страницы :")]
-    [Range(0,3000)]
+    [Range(0, 3000)]
     public int? SequenceNumber { get; set; }
 
     #endregion

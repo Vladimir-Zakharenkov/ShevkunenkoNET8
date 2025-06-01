@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -128,6 +129,12 @@ public class TextInfoController(
                 addText.TxtFileName = addText.TxtFileFormFile.FileName;
                 addText.TxtFileSize = (int)addText.TxtFileFormFile.Length;
             }
+            else
+            {
+                ModelState.AddModelError("TxtFileFormFile", "Вы не выбрали файл");
+
+                return View(addText);
+            }
 
             #endregion
 
@@ -151,6 +158,12 @@ public class TextInfoController(
 
                 addText.HtmlFileName = addText.HtmlFileFormFile.FileName;
                 addText.HtmlFileSize = (int)addText.HtmlFileFormFile.Length;
+            }
+            else
+            {
+                ModelState.AddModelError("HtmlFileFormFile", "Вы не выбрали файл");
+
+                return View(addText);
             }
 
             #endregion
@@ -277,7 +290,7 @@ public class TextInfoController(
         }
         else
         {
-            return View();
+            return View(addText);
         }
     }
 
