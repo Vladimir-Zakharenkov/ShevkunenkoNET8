@@ -143,11 +143,11 @@
 
                     <label asp-for="TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
 
-                    <textarea id="TextDescriptionInput" class="form-control fordetails"
+                    <textarea id="TextDescriptionInput" class="form-control mx-auto fordetails maxwidth600px"
                               asp-for="TextDescription"
                               rows="2"
                               aria-describedby="TextDescriptionInputHelpBlock">
-                </textarea>
+                    </textarea>
 
                     <div id="TextDescriptionInputHelpBlock" class="form-text">
 
@@ -162,12 +162,12 @@
 
                 </div>
 
-                @* связанная книга (статья) *@
+                @* Связанная книга (статья) *@
                 <div>
 
                     <label asp-for="RefForBookOrArticle" class="col-form-label text-primary fs-5 me-2"></label>
 
-                    <input id="RefForBookOrArticleInput" class="form-control text-start" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
+                    <input id="RefForBookOrArticleInput" class="form-control text-start mx-auto maxwidth600px" asp-for="RefForBookOrArticle" aria-describedby="RefForBookOrArticleInputHelpBlock" />
 
                     <div id="RefForBookOrArticleInputHelpBlock" class="form-text">
 
@@ -181,12 +181,12 @@
 
                 </div>
 
-                @* номер страницы книги (статьи) *@
-                <div class="row justify-content-center">
+                @* Номер страницы книги (статьи) *@
+                <div>
 
-                    <label class="form-label col-12 col-sm-5 text-center text-sm-end text-primary fs-5" asp-for="SequenceNumber"></label>
+                    <label class="form-label d-inline-block text-primary fs-5" asp-for="SequenceNumber"></label>
 
-                    <input id="SequenceNumberInput" class="form-control col-12 col-sm-7 maxwidth28percent" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
+                    <input id="SequenceNumberInput" class="form-control d-inline-block maxwidth100px" asp-for="SequenceNumber" aria-describedby="SequenceNumberInputHelpBlock" />
 
                     <div id="SequenceNumberInputHelpBlock" class="form-text">
 
@@ -197,8 +197,7 @@
                     <span asp-validation-for="SequenceNumber" class="text-danger"></span>
 
                 </div>
-
-                @* сохранить - отменить *@
+                @* Сохранить - Отменить *@
                 <div class="card-footer p-0 pb-2 mt-4">
 
                     <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
