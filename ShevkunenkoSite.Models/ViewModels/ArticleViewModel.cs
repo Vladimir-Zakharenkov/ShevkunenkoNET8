@@ -31,4 +31,10 @@ public class ArticleViewModel
     public bool? Scan { get; set; }
 
     #endregion
+
+    #region Кадры слева и справа от текста
+
+    public FramesAroundMainContentModel FramesAroundMainContent { get; set; } = new();
+
+    #endregion
 }

@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Views.Shared.Components.Code;
+﻿using System.Linq;
+
+namespace ShevkunenkoSite.Views.Shared.Components.Code;
 
 public class MovieFrames(IImageFileRepository imageFileContext) : ViewComponent
 {
@@ -11,18 +13,19 @@ public class MovieFrames(IImageFileRepository imageFileContext) : ViewComponent
         {
             var imageItems = await imageFileContext.ImageFiles
                 .Where(img => img.SearchFilter.ToLower().Contains(imageFilter.ToLower()))
-                .OrderBy(order => order.WebImageFileName)
                 .ToArrayAsync();
+
+            imageItems = imageItems.Shuffle().ToArray();
 
             if (imageItems.Length > 1)
             {
                 if (leftSide)
                 {
-                    imageItems = [.. imageItems.Take((int)imageItems.Length / 2)];
+                    imageItems = imageItems.Take(imageItems.Length / 2).ToArray();
                 }
                 else
                 {
-                    imageItems = [.. imageItems.Skip((int)imageItems.Length / 2)];
+                    imageItems = imageItems.Skip(imageItems.Length / 2).ToArray();
                 }
             }
 
@@ -36,7 +39,8 @@ public class MovieFrames(IImageFileRepository imageFileContext) : ViewComponent
                 return View("OneFrame", imageItem);
             }
             // кадры для страниц статей
-            else if (HttpContext.Request.QueryString.ToString().Contains("articleid", StringComparison.CurrentCultureIgnoreCase))
+            else if (HttpContext.Request.QueryString.ToString().Contains("articleid", StringComparison.CurrentCultureIgnoreCase)
+                    || HttpContext.Request.QueryString.ToString().Contains("bookid", StringComparison.CurrentCultureIgnoreCase))
             {
                 return View("PhotoArounArticle", imageItems);
             }

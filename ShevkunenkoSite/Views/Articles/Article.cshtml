@@ -78,11 +78,37 @@
 
     </header>
 
+    @* статья *@
     <div class="row">
 
-        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="true" one-frame="false" />
+        @* кадры слева *@
+        @if (Model.FramesAroundMainContent.FramesOnTheLeft.Length > 0)
+        {
+            <div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
 
-        @* статья *@
+                @foreach (var item in Model.FramesAroundMainContent.FramesOnTheLeft)
+                {
+                    <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
+                       class=""
+                       title="@item.ImageAltTitle"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@item.ImageFileModelId"
+                                       css-class="my-2 w-100 shadw imageref"
+                                       icon-type="webicon200" />
+
+                    </a>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="col-2 d-none d-md-block"></div>
+        }
+
+
+        @* текст статьи *@
         <div class="col col-md-8 article_page mx-auto paragraph shadw @(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")" itemprop="articleBody text">
 
             @* инфо вверху страницы *@
@@ -222,7 +248,32 @@
 
         </div>
 
-        <vc:movie-frames image-filter="@Model.BookOrArticle.CaptionOfText" left-side="false" one-frame="false" />
+        @* кадры справа *@
+        @if (Model.FramesAroundMainContent.FramesOnTheRight.Length > 0)
+        {
+            <div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
+
+                @foreach (var item in Model.FramesAroundMainContent.FramesOnTheRight)
+                {
+                    <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
+                       class=""
+                       title="@item.ImageAltTitle"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@item.ImageFileModelId"
+                                       css-class="my-2 w-100 shadw imageref"
+                                       icon-type="webicon200" />
+
+                    </a>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="col-2 d-none d-md-block"></div>
+        }
+
 
     </div>
 

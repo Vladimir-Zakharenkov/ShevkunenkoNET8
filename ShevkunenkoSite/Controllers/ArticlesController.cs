@@ -1,9 +1,12 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using System.Net;
+
+namespace ShevkunenkoSite.Controllers;
 
 public class ArticlesController(
     IBooksAndArticlesRepository articleContext,
     ITextInfoRepository textContext,
     IPageInfoRepository pageContext,
+    IImageFileRepository imageFileContext,
     IWebHostEnvironment hostEnvironment) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
@@ -18,7 +21,8 @@ public class ArticlesController(
             && pageNumber > -1
             && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == articleId).NumberOfPages)
         {
-            // Если есть только скан
+            #region Если есть только скан
+
             if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId).AnyAsync() & scan == true)
             {
                 ArticleViewModel scanForArticle = new()
@@ -41,7 +45,10 @@ public class ArticlesController(
                 return View("Article", scanForArticle);
             }
 
-            // Если для статьи или книги отсутствует текст
+            #endregion
+
+            #region Если для статьи или книги отсутствует текст
+
             if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == articleId & text.SequenceNumber == pageNumber).AnyAsync())
             {
                 return RedirectToAction(nameof(Index));
@@ -54,24 +61,62 @@ public class ArticlesController(
                 return RedirectToAction(nameof(Index));
             }
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName);
+            #endregion
 
-            ArticleViewModel bookOrArticle = new()
-            {
-                BookOrArticle = await articleContext.BooksAndArticles
+            #region Экземпляр  книги или статьи
+
+            var bookOrArticleItem = await articleContext.BooksAndArticles
                         .Include(logo => logo.LogoOfArticle)
                         .Include(scan => scan.ScanOfArticle)
                         .Include(movie => movie.VideoForBookOrArticle)
-                        .FirstAsync(article => article.BooksAndArticlesModelId == articleId),
+                        .FirstAsync(article => article.BooksAndArticlesModelId == articleId);
+
+            #endregion
+
+            #region Html текст
+
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName);
+
+            var textWithMarkUp = htmlText.ReadToEnd();
+
+            #endregion
+
+            #region Кадры слева и справа
+
+            FramesAroundMainContentModel framesAroundMainContent = new();
+
+            var imageItems = await imageFileContext.ImageFiles
+                .Where(img => img.SearchFilter.ToLower().Contains(bookOrArticleItem.CaptionOfText.ToLower()))
+                .ToArrayAsync();
+
+            imageItems = [.. imageItems.Shuffle()];
+
+            if (imageItems.Length > 1)
+            {
+                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
+                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+            }
+
+            #endregion
+
+            #region ViewModel
+
+            ArticleViewModel bookOrArticle = new()
+            {
+                BookOrArticle = bookOrArticleItem,
 
                 PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
 
-                HtmlText = htmlText.ReadToEnd(),
+                HtmlText = textWithMarkUp,
 
                 PageNumber = pageNumber,
 
-                Scan = scan
+                Scan = scan,
+
+                FramesAroundMainContent = framesAroundMainContent
             };
+
+            #endregion
 
             return View("Article", bookOrArticle);
         }
