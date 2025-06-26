@@ -1,3 +1,5 @@
+using System.Text;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration

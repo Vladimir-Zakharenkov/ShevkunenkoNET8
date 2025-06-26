@@ -198,40 +198,6 @@ public class PageInfoModel
 
     #endregion
 
-    #region Связанные страницы и видео
-
-    #region Включить ссылки по первому списку GUID
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки по GUID (1) :")]
-    public bool PageLinks { get; set; } = false;
-
-    #endregion
-
-    #region Включить ссылки по второму списку GUID
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки по GUID (2) :")]
-    public bool PageLinks2 { get; set; } = false;
-
-    #endregion
-
-    #region Включить ссылки на видео
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки на видео :")]
-    public bool VideoLinks { get; set; } = false;
-
-    #endregion
-
-    #region Включить ссылки на страницы по текстовому фильтру
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки на страницы :")]
-    public bool PageLinksByFilters { get; set; } = false;
-
-    #endregion
-
     #region Фильтры поиска текущей страницы
 
     [Required(AllowEmptyStrings = true)]
@@ -242,23 +208,45 @@ public class PageInfoModel
 
     #endregion
 
-    #region Список фильтров страниц сайта, для формирования ссылок на них
+    #region Значение для сортировки страницы
 
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска страниц :")]
-    [DataType(DataType.Text)]
-    public string PageFilterOut { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Значение для сортировки:")]
+    public int SortOfPage { get; set; } = 1;
 
     #endregion
 
-    #region Список фильтров видео, для формирования ссылок на них
+    #region Связанные фотографии, страницы и видео
+
+    #region Ссылки на связанные фото
+
+    #region Включить ссылки на фото
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки на фото :")]
+    public bool PhotoLinks { get; set; } = false;
+
+    #endregion
+
+    #region Список фильтров фото, для формирования ссылок на них
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска видео :")]
+    [Display(Name = "Фильтры поиска фото :")]
     [DataType(DataType.Text)]
-    public string VideoFilterOut { get; set; } = string.Empty;
+    public string PhotoFilterOut { get; set; } = string.Empty;
+
+    #endregion
+
+    #endregion
+
+    #region Ссылки по первому списку GUID
+
+    #region Включить ссылки по первому списку GUID
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки по GUID (1) :")]
+    public bool PageLinks { get; set; } = false;
 
     #endregion
 
@@ -268,6 +256,18 @@ public class PageInfoModel
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Ссылки по GUID (1) :")]
     public string RefPages { get; set; } = string.Empty;
+
+    #endregion
+
+    #endregion
+
+    #region Ссылки по второму списку GUID
+
+    #region Включить ссылки по второму списку GUID
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки по GUID (2) :")]
+    public bool PageLinks2 { get; set; } = false;
 
     #endregion
 
@@ -282,11 +282,49 @@ public class PageInfoModel
 
     #endregion
 
-    #region Значение для сортировки страницы
+    #region Ссылки на видео
+
+    #region Включить ссылки на видео
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Значение для сортировки:")]
-    public int SortOfPage { get; set; } = 1;
+    [Display(Name = "Ссылки на видео :")]
+    public bool VideoLinks { get; set; } = false;
+
+    #endregion
+
+    #region Список фильтров видео, для формирования ссылок на них
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Фильтры поиска видео :")]
+    [DataType(DataType.Text)]
+    public string VideoFilterOut { get; set; } = string.Empty;
+
+    #endregion
+
+    #endregion
+
+    #region Ссылки на страницы
+
+    #region Включить ссылки на страницы по текстовому фильтру
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки на страницы :")]
+    public bool PageLinksByFilters { get; set; } = false;
+
+    #endregion
+
+    #region Список фильтров страниц сайта, для формирования ссылок на них
+
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Фильтры поиска страниц :")]
+    [DataType(DataType.Text)]
+    public string PageFilterOut { get; set; } = string.Empty;
+
+    #endregion
+
+    #endregion
 
     #endregion
 
@@ -301,5 +339,4 @@ public class PageInfoModel
     public BooksAndArticlesModel? BooksAndArticles { get; set; }
 
     #endregion
-
 }

@@ -2,7 +2,9 @@
 
 @if (Model.IconType == null || Model.IconType == "webimage" || Model.IconType == "image")
 {
-    <h1><span class="fs-3 text_shadow">Параметры картинки</span></h1>
+    <h1>
+        <span class="fs-3 text_shadow">Параметры картинки</span>
+    </h1>
 }
 else if (Model.IconType.Contains("web"))
 {
@@ -18,6 +20,7 @@ else
         <span class="fs-5 text-primary">файла</span> <span class="fs-5 text_shadow">@Model.ImageItem.ImageFileName</span>
     </h1>
 }
+
 
 <hr class="liniya" />
 

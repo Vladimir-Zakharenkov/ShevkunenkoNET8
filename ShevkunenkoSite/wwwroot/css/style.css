@@ -12259,6 +12259,7 @@ body {
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 a:active, .dropdown:active {
@@ -12951,6 +12952,10 @@ li#yandex-search * {
 .width30percent {
   width: 30%;
   min-width: 180px;
+}
+
+.minwidth100px {
+  min-width: 100px;
 }
 
 .maxwidth100px {

@@ -94,10 +94,9 @@ public class PageInfoController(
     {
         if (pageId.HasValue)
         {
-            PageInfoModel pageItem;
-            IconFileModel iconItem;
+            #region Инициализация экземпляра страницы
 
-            #region Инициализация pageItem и  iconItem
+            PageInfoModel pageItem;
 
             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageId).AnyAsync())
             {
@@ -109,6 +108,12 @@ public class PageInfoController(
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            #endregion
+
+            #region Инициализация экземпляра иконки для страницы
+
+            IconFileModel iconItem;
 
             if (await iconContext.IconFiles
                 .Where(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem).AnyAsync())
@@ -128,10 +133,13 @@ public class PageInfoController(
             List<PageInfoModel> linksFromPagesByGuid = [];
 
 #pragma warning disable CA1862
-            linksFromPagesByGuid.AddRange(await pageInfoContext.PagesInfo.Where(p => p.RefPages.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower())).ToArrayAsync());
+            linksFromPagesByGuid
+                .AddRange(await pageInfoContext.PagesInfo
+                    .Where(p => p.RefPages.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
+                .ToArrayAsync());
 #pragma warning restore CA1862
 
-            _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+            _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
@@ -140,10 +148,13 @@ public class PageInfoController(
             List<PageInfoModel> linksFromPagesByGuid2 = [];
 
 #pragma warning disable CA1862
-            linksFromPagesByGuid2.AddRange(await pageInfoContext.PagesInfo.Where(p => p.RefPages2.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower())).ToArrayAsync());
+            linksFromPagesByGuid2
+                .AddRange(await pageInfoContext.PagesInfo
+                    .Where(p => p.RefPages2.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
+                .ToArrayAsync());
 #pragma warning restore CA1862
 
-            _ = linksFromPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+            _ = linksFromPagesByGuid2.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
@@ -163,7 +174,7 @@ public class PageInfoController(
                 }
             }
 
-            _ = linksFromPagesByPageFilter.Distinct().OrderBy(p => p.PageCardText);
+            _ = linksFromPagesByPageFilter.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
@@ -266,6 +277,8 @@ public class PageInfoController(
 
             #endregion
 
+            #region DetailsPageViewModel
+
             return View(new DetailsPageViewModel
             {
                 PageItem = pageItem,
@@ -279,6 +292,8 @@ public class PageInfoController(
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter
             });
+
+            #endregion
         }
         else
         {

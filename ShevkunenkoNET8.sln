@@ -420,6 +420,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page03", "Metanit.com\C# 13
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page05", "Metanit.com\C# 13\Глава 10 - Коллекции\Page05\Page05\Page05.csproj", "{79F6003A-F352-40FE-ACE8-0B5766E8209F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 04 - Маршрутизация", "Глава 04 - Маршрутизация", "{B53F2213-1F81-4E6F-ADD5-F350DD932086}"
+	ProjectSection(SolutionItems) = preProject
+		Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01 - Конечные точки Метод Map.txt = Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01 - Конечные точки Метод Map.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Страница 01", "Страница 01", "{02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-01", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-01\Chapter04-01-01.csproj", "{F0304FED-E930-4FD9-81C1-F9B0E6B1E698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-02", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-02\Chapter04-01-02.csproj", "{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-03", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-03\Chapter04-01-03.csproj", "{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-04", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-04\Chapter04-01-04.csproj", "{258A1141-E4AB-489B-94AE-86763AB6652D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-05", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-05\Chapter04-01-05.csproj", "{1032AECF-5A0A-4B62-B721-E7C2C01619A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-06", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-06\Chapter04-01-06.csproj", "{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-07", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-07\Chapter04-01-07.csproj", "{F57C5C96-B1D5-4196-897F-DAFF132727E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -566,6 +587,34 @@ Global
 		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F6003A-F352-40FE-ACE8-0B5766E8209F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0304FED-E930-4FD9-81C1-F9B0E6B1E698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0304FED-E930-4FD9-81C1-F9B0E6B1E698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0304FED-E930-4FD9-81C1-F9B0E6B1E698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0304FED-E930-4FD9-81C1-F9B0E6B1E698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258A1141-E4AB-489B-94AE-86763AB6652D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258A1141-E4AB-489B-94AE-86763AB6652D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258A1141-E4AB-489B-94AE-86763AB6652D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258A1141-E4AB-489B-94AE-86763AB6652D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1032AECF-5A0A-4B62-B721-E7C2C01619A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1032AECF-5A0A-4B62-B721-E7C2C01619A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1032AECF-5A0A-4B62-B721-E7C2C01619A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1032AECF-5A0A-4B62-B721-E7C2C01619A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -619,6 +668,15 @@ Global
 		{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B} = {A7BA2253-DD4A-41E3-B12D-819262814248}
 		{19EC0004-1113-413B-B9AF-41D43C665ADE} = {A7BA2253-DD4A-41E3-B12D-819262814248}
 		{79F6003A-F352-40FE-ACE8-0B5766E8209F} = {4B8C2613-A4B0-4E00-8216-2639A43ABEF9}
+		{B53F2213-1F81-4E6F-ADD5-F350DD932086} = {C8B84BA2-BADB-48E9-9531-9A46B84E6934}
+		{02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5} = {B53F2213-1F81-4E6F-ADD5-F350DD932086}
+		{F0304FED-E930-4FD9-81C1-F9B0E6B1E698} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{F7DB5956-9CA3-4AEE-8B90-DABF0E2D57C8} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{C2DBA724-7DBE-4FFB-8473-2E9F4E72A102} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{258A1141-E4AB-489B-94AE-86763AB6652D} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{1032AECF-5A0A-4B62-B721-E7C2C01619A1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{F57C5C96-B1D5-4196-897F-DAFF132727E1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
