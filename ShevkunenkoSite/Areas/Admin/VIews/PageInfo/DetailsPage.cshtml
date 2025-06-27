@@ -771,71 +771,201 @@
 
             <div id="LinkToCurrentPage" class="accordion-collapse collapse" aria-labelledby="headingLinkToCurrentPage" data-bs-parent="#accordionDetailsPage">
 
-                <div class="accordion-body accordion-body-nointend text-center">
+                <div class="accordion-body accordion-body-nointend text-start">
 
                     @if (Model.LinksFromPagesByGuid.Count > 0)
                     {
-                        <p class="px-5 text-center text_shadow fluid-font-size">
-                            @Model.PageItem.PageInfoModelId
-                        </p>
+                        @foreach (var item in Model.LinksFromPagesByGuid)
+                        {
+                            if (i == 0)
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i++;
+                            }
 
-                        <div class="table-responsive mt-3">
+                            <p class="fs-5 border-bottom py-2 fluid-font-size">
+                                <span class="text-primary fw-bold fluid-font-size">
+                                    №@i
+                                </span>
+                                <br />
+                                <span class="d-none d-sm-inline">
+                                    <span class="fw-bold fluid-font-size">
+                                        GUID -
+                                    </span>
+                                    <br class="d-xl-none" />
+                                    <span class="text_shadow fluid-font-size">
+                                        @item.PageInfoModelId
+                                    </span>
+                                </span>
+                                <br class="d-none d-sm-block" />
+                                <span>
+                                    <span class="fw-bold fluid-font-size">
+                                        Title -
+                                    </span>
+                                    <br class="d-xl-none" />
+                                    <span class="text_shadow fluid-font-size">
+                                        @item.PageTitle
+                                    </span>
+                                </span>
+                            </p>
+                        }
 
-                            <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
-
-                                <thead>
-
-                                    <tr class="text-start text-primary">
-
-                                        <th scope="col" class="text-primary">№</th>
-                                        <th scope="col" class="text-primary">GUID</th>
-                                        <th scope="col" class="text-primary">Title</th>
-
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    @foreach (var item in Model.LinksFromPagesByGuid)
-                                    {
-                                        if (i == 0)
-                                        {
-                                            i = 1;
-                                        }
-                                        else
-                                        {
-                                            i++;
-                                        }
-
-                                        <tr class="text-start fs-5">
-
-                                            <td scope="col" class="text-primary">@i</td>
-                                            <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
-                                            <td scope="col" class="text_shadow">@item.PageTitle</td>
-
-                                        </tr>
-                                    }
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
+                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-2">
 
                             @foreach (var item in Model.LinksFromPagesByGuid)
                             {
-                                <vc:card-of-page page=item />
+                                <div class="col p-1 p-lg-2">
+
+                                    <div class="card shadw rounded-3 cardborder" title="@item.PageTitle">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="PageInfo"
+                                           asp-action="DetailsPage"
+                                           asp-route-pageid="@item.PageInfoModelId"
+                                           class="rounded-3 p-0 p-md-1 shadw"
+                                           onclick="this.target='_blank'"
+                                           title="данные о странице">
+
+                                            <vc:view-image image-id="@item.ImageFileModelId"
+                                                           css-class="card-img-top shadw rounded-3"
+                                                           icon-type="webicon300" />
+
+                                            @if (!string.IsNullOrEmpty(@item.PageCardText))
+                                            {
+                                                <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+
+                                                    <p class="card-title p-0 mb-0 fw-medium fontadaptive text-center">@item.PageCardText</p>
+
+                                                </div>
+                                            }
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
                             }
 
                         </div>
                     }
                     else
                     {
-                        <p class="fs-6 form-text text-success">
-                            нет ссылок по GUID
+                        <p class="fs-6 form-text text-success text-center">
+                            нет ссылок по GUID1
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @* Ссылки на текущую страницу по GUID2 *@
+        <div class="accordion-item mb-3 shadw">
+
+            <h2 class="accordion-header" id="headingLinkToCurrentPage2">
+                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#LinkToCurrentPage2" aria-expanded="true" aria-controls="LinkToCurrentPage2">
+                    <span class="form-label fs-5">
+                        <span class="d-sm-none">
+                            Ref-In GUID2
+                        </span>
+                        <span class="d-none d-sm-inline">
+                            Ссылки на страницу по GUID2
+                        </span> :
+                    </span>
+                </button>
+            </h2>
+
+            <div id="LinkToCurrentPage2" class="accordion-collapse collapse" aria-labelledby="headingLinkToCurrentPage2" data-bs-parent="#accordionDetailsPage">
+
+                <div class="accordion-body accordion-body-nointend text-start">
+
+                    @if (Model.LinksFromPagesByGuid2.Count > 0)
+                    {
+                        @foreach (var item in Model.LinksFromPagesByGuid2)
+                        {
+                            if (i == 0)
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+
+                            <p class="fs-5 border-bottom py-2 fluid-font-size">
+                                <span class="text-primary fw-bold fluid-font-size">
+                                    №@i
+                                </span>
+                                <br />
+                                <span class="d-none d-sm-inline">
+                                    <span class="fw-bold fluid-font-size">
+                                        GUID -
+                                    </span>
+                                    <br class="d-xl-none" />
+                                    <span class="text_shadow fluid-font-size">
+                                        @item.PageInfoModelId
+                                    </span>
+                                </span>
+                                <br class="d-none d-sm-block" />
+                                <span>
+                                    <span class="fw-bold fluid-font-size">
+                                        Title -
+                                    </span>
+                                    <br class="d-xl-none" />
+                                    <span class="text_shadow fluid-font-size">
+                                        @item.PageTitle
+                                    </span>
+                                </span>
+                            </p>
+                        }
+
+                        <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-2">
+
+                            @foreach (var item in Model.LinksFromPagesByGuid2)
+                            {
+                                <div class="col p-1 p-lg-2">
+
+                                    <div class="card shadw rounded-3 cardborder" title="@item.PageTitle">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="PageInfo"
+                                           asp-action="DetailsPage"
+                                           asp-route-pageid="@item.PageInfoModelId"
+                                           class="rounded-3 p-0 p-md-1 shadw"
+                                           onclick="this.target='_blank'"
+                                           title="данные о странице">
+
+                                            <vc:view-image image-id="@item.ImageFileModelId"
+                                                           css-class="card-img-top shadw rounded-3"
+                                                           icon-type="webicon300" />
+
+                                            @if (!string.IsNullOrEmpty(@item.PageCardText))
+                                            {
+                                                <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+
+                                                    <p class="card-title p-0 mb-0 fw-medium fontadaptive text-center">@item.PageCardText</p>
+
+                                                </div>
+                                            }
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="fs-6 form-text text-success text-center">
+                            нет ссылок по GUID2
                         </p>
                     }
 

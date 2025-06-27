@@ -2,8 +2,10 @@
 
 public class DetailsPageViewModel
 {
+    // Экземпляр страницы
     public PageInfoModel PageItem { get; set; } = new();
 
+    // Экземпляр иконки странницы
     public IconFileModel IconItem { get; set; } = new();
 
     // список ссылок на страницы по GUID (1)
