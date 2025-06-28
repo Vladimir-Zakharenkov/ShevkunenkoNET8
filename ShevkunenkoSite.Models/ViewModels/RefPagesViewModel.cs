@@ -2,7 +2,7 @@
 
 public class RefPagesViewModel
 {
-    // Словарь страниц по текстовому фильтрам
+    // Словарь страниц по текстовым фильтрам
     public Dictionary<string, List<PageInfoModel>> DictionaryOfPages { get; set; } = [];
 
     // связанные страницы по GUID (1)

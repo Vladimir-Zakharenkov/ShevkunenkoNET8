@@ -164,17 +164,22 @@ public class PageInfoController(
 
             List<PageInfoModel> linksFromPagesByPageFilter = [];
 
+            Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
+
             if (pageFilters.Length > 0)
             {
                 for (int i = 0; i < pageFilters.Length; i++)
                 {
-#pragma warning disable CA1862
-                    linksFromPagesByPageFilter.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut.ToLower().Contains(pageFilters[i].ToLower().Trim() + ",")).ToArrayAsync());
-#pragma warning restore CA1862
+                    if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i] + ',')).AnyAsync())
+                    {
+                        var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut.Contains(pageFilters[i] + ',')).ToListAsync();
+
+                        _ = listOfFilterOut.Distinct().OrderBy(p => p.SortOfPage);
+
+                        dictionaryOfOutPages[pageFilters[i]] = listOfFilterOut;
+                    }
                 }
             }
-
-            _ = linksFromPagesByPageFilter.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
@@ -236,6 +241,7 @@ public class PageInfoController(
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
                     linksToPagesByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
+
                     _ = linksToPagesByFilterOut.Distinct().OrderBy(p => p.PageCardText);
                 }
             }
@@ -290,7 +296,8 @@ public class PageInfoController(
                 ListsMoviesFileModel = listOfListMoviesFileModel,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
-                LinksFromPagesByPageFilter = linksFromPagesByPageFilter
+                LinksFromPagesByPageFilter = linksFromPagesByPageFilter,
+                DictionaryOfOutPages = dictionaryOfOutPages
             });
 
             #endregion

@@ -31,4 +31,7 @@ public class DetailsPageViewModel
 
     // список ссылок на текущую страницу по фильтру
     public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];
+
+    // Словарь страниц по текстовым фильтрам
+    public Dictionary<string, List<PageInfoModel>> DictionaryOfOutPages { get; set; } = [];
 }

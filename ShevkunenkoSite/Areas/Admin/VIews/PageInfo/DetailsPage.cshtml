@@ -980,90 +980,104 @@
 
             <h2 class="accordion-header" id="headingPageFilter">
                 <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageFilter" aria-expanded="true" aria-controls="PageFilter">
-                    <span class="form-label fs-5">Фильтры поиска текущей страницы (PageFilter)&nbsp;:</span>
+                    <span class="form-label fs-5">
+                        <span class="d-lg-none">
+                            Ref-In Filters
+                        </span>
+                        <span class="d-none d-lg-inline">
+                            Фильтры поиска текущей страницы
+                        </span> :
+                    </span>
                 </button>
             </h2>
 
             <div id="PageFilter" class="accordion-collapse collapse" aria-labelledby="headingPageFilter" data-bs-parent="#accordionDetailsPage">
 
-                <div class="accordion-body accordion-body-nointend text-center">
+                <div class="accordion-body accordion-body-nointend">
 
                     @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
                     {
-                        <p class="px-5 text-center text_shadow fluid-font-size">
-                            @Model.PageItem.PageFilter
-                        </p>
+                        string[] pageFilterOut = Model.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-                        <p class="fs-6 form-text text-success">
-                            фильтр поиска страницы
-                        </p>
-
-                        @if (Model.LinksFromPagesByPageFilter.Count > 0)
+                        @for (int sf = 0; sf < pageFilterOut.Count(); sf++)
                         {
-                            <div class="table-responsive mt-3">
+                            <p class="text-start text_shadow fluid-font-size border-bottom pb-2">
+                                # @pageFilterOut[sf]
+                            </p>
+                        }
 
-                                <table class="table table-sm table-hover table-bordered table-light caption-top align-middle fs-5">
+                        <p class="fs-6 form-text text-success text-center">
+                            <span class="d-sm-none">
+                                фильтры поиска
+                            </span>
+                            <span class="d-none d-sm-inline">
+                                фильтры поиска страницы
+                            </span>
+                        </p>
 
-                                    <thead>
+                        <h2 class="text_shadow mt-4 text-center">Страницы, ссылающиеся на текущую</h2>
 
-                                        <tr class="text-start text-primary">
+                        @if (Model.DictionaryOfOutPages.Count > 0)
+                        {
+                            foreach (var (caption, listOfPages) in Model.DictionaryOfOutPages)
+                            {
+                                if (listOfPages.Count > 0)
+                                {
+                                    <h2 class="text_shadow mt-4 text-center">@caption</h2>
 
-                                            <th scope="col" class="text-primary">№</th>
-                                            <th scope="col" class="text-primary">GUID</th>
-                                            <th scope="col" class="text-primary">Title</th>
+                                    <hr class="liniya w-75" />
 
-                                        </tr>
+                                    <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
+                                                                                                                @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                                                                @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                                                                @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
-                                    </thead>
-
-                                    <tbody>
-
-                                        @foreach (var item in Model.LinksFromPagesByPageFilter)
+                                        @foreach (var item in listOfPages)
                                         {
-                                            if (j == 0)
-                                            {
-                                                j = 1;
-                                            }
-                                            else
-                                            {
-                                                j++;
-                                            }
+                                            <div class="col p-1 p-lg-2">
 
-                                            <tr class="text-start fs-5">
+                                                <div class="card shadw rounded-3 cardborder" title="@item.PageTitle">
 
-                                                <td scope="col" class="text-primary">@j</td>
-                                                <td scope="col" class="text_shadow">@item.PageInfoModelId</td>
-                                                <td scope="col" class="text_shadow">@item.PageTitle</td>
+                                                    <a asp-area="Admin"
+                                                       asp-controller="PageInfo"
+                                                       asp-action="DetailsPage"
+                                                       asp-route-pageid="@item.PageInfoModelId"
+                                                       class="rounded-3 p-0 p-md-1 shadw"
+                                                       onclick="this.target='_blank'"
+                                                       title="данные о странице">
 
-                                            </tr>
+                                                        <vc:view-image image-id="@item.ImageFileModelId"
+                                                                       css-class="card-img-top shadw rounded-3"
+                                                                       icon-type="webicon300" />
+
+                                                        @if (!string.IsNullOrEmpty(@item.PageCardText))
+                                                        {
+                                                            <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+
+                                                                <p class="card-title p-0 mb-0 fw-medium fontadaptive text-center">@item.PageCardText</p>
+
+                                                            </div>
+                                                        }
+
+                                                    </a>
+
+                                                </div>
+
+                                            </div>
+
+                                           @*  <vc:card-of-page page="@item" /> *@
                                         }
 
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-                            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
-
-                                @foreach (var item in Model.LinksFromPagesByPageFilter)
-                                {
-                                    <vc:card-of-page page=item />
+                                    </div>
                                 }
+                            }
 
-                            </div>
-                        }
-                        else
-                        {
-                            <p class="fs-6 form-text text-success">
-                                по данным фильтрам нет ссылок
-                            </p>
                         }
                     }
                     else
                     {
                         <p class="fs-6 form-text text-success">
-                            фильтр поиска текущей страницы не задан
+                            фильтры поиска страницы не заданы
                         </p>
                     }
 
