@@ -7,6 +7,8 @@
     int l = 0;
     int videoRef = 0;
 
+    int innerAccordion = 0;
+
     // var dict = Model.PageItem!.RoutData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
     //            .Select(part => part.Split('='))
     //            .ToDictionary(split => split[0], split => split[1]);
@@ -975,7 +977,7 @@
 
         </div>
 
-        @* Фильтр поиска текущей страницы *@
+        @* Фильтры поиска текущей страницы *@
         <div class="accordion-item mb-3 shadw">
 
             <h2 class="accordion-header" id="headingPageFilter">
@@ -1015,7 +1017,9 @@
                             </span>
                         </p>
 
-                        <h2 class="text_shadow mt-4 text-center">Страницы, ссылающиеся на текущую</h2>
+                        <h2 class="text_shadow my-2 text-center fluid-font-size">
+                            Страницы, ссылающиеся на текущую
+                        </h2>
 
                         @if (Model.DictionaryOfOutPages.Count > 0)
                         {
@@ -1023,50 +1027,75 @@
                             {
                                 if (listOfPages.Count > 0)
                                 {
-                                    <h2 class="text_shadow mt-4 text-center">@caption</h2>
+                                    innerAccordion++;
 
-                                    <hr class="liniya w-75" />
+                                    <div id="accordionFiltersOfPage" class="accordion">
 
-                                    <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
-                                                                                                                @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                                                                @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                                                                @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                        <div class="accordion-item mb-2">
 
-                                        @foreach (var item in listOfPages)
-                                        {
-                                            <div class="col p-1 p-lg-2">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_@innerAccordion" aria-expanded="true" aria-controls="collapseOne_@innerAccordion">
+                                                    <span class="fluid-font-size"># @caption</span>
+                                                </button>
+                                            </h2>
 
-                                                <div class="card shadw rounded-3 cardborder" title="@item.PageTitle">
+                                            <div id="collapseOne_@innerAccordion" class="accordion-collapse collapse" data-bs-parent="#accordionFiltersOfPage">
 
-                                                    <a asp-area="Admin"
-                                                       asp-controller="PageInfo"
-                                                       asp-action="DetailsPage"
-                                                       asp-route-pageid="@item.PageInfoModelId"
-                                                       class="rounded-3 p-0 p-md-1 shadw"
-                                                       onclick="this.target='_blank'"
-                                                       title="данные о странице">
+                                                <div class="accordion-body p-1">
 
-                                                        <vc:view-image image-id="@item.ImageFileModelId"
-                                                                       css-class="card-img-top shadw rounded-3"
-                                                                       icon-type="webicon300" />
+                                                    <div class="row mt-1 justify-content-center g-1
+                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
-                                                        @if (!string.IsNullOrEmpty(@item.PageCardText))
+                                                        @foreach (var item in listOfPages)
                                                         {
-                                                            <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+                                                            <div class="col">
 
-                                                                <p class="card-title p-0 mb-0 fw-medium fontadaptive text-center">@item.PageCardText</p>
+                                                                <a asp-area="Admin"
+                                                                   asp-controller="PageInfo"
+                                                                   asp-action="DetailsPage"
+                                                                   asp-route-pageid="@item.PageInfoModelId"
+                                                                   class="d-block rounded-3 p-1 imageref"
+                                                                   onclick="this.target='_blank'"
+                                                                   title="данные о странице">
+
+                                                                    <div class="card p-0 rounded-3 shadw" title="@item.PageTitle">
+
+                                                                        <vc:view-image image-id="@item.ImageFileModelId"
+                                                                                       css-class="card-img-top rounded-3 p-0"
+                                                                                       icon-type="webicon300" />
+
+
+                                                                        <div class="d-none d-sm-flex card-body p-1 justify-content-center">
+                                                                            @if (!string.IsNullOrEmpty(@item.PageCardText))
+                                                                            {
+                                                                                <p class="card-text px-2 text-indent-0 arial fontadaptive shadw">
+                                                                                    @item.PageCardText
+                                                                                </p>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <p class="card-text px-2 text-indent-0 arial fontadaptive shadw">
+                                                                                    БЕЗ ТЕКСТА
+                                                                                </p>
+                                                                            }
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </a>
 
                                                             </div>
                                                         }
 
-                                                    </a>
+                                                    </div>
 
                                                 </div>
 
                                             </div>
 
-                                           @*  <vc:card-of-page page="@item" /> *@
-                                        }
+                                        </div>
 
                                     </div>
                                 }

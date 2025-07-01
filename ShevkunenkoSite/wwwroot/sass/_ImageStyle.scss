@@ -3,10 +3,20 @@
     border-radius: 1rem;
 }
 
-.imageref {
-    border: .2rem ridge rgba(194, 10, 41, 0);
-    border-radius: .3rem;
-    transition: all .3s ease-in-out;
+@media only screen and (max-width: 575px) {
+    .imageref {
+        border: 2px ridge rgba(194, 10, 41, 0);
+        border-radius: .2rem;
+        transition: all .3s ease-in-out;
+    }
+}
+
+@media only screen and (min-width: 576px) {
+    .imageref {
+        border: 3px ridge rgba(194, 10, 41, 0);
+        border-radius: .3rem;
+        transition: all .3s ease-in-out;
+    }
 }
 
 .imageref:hover {

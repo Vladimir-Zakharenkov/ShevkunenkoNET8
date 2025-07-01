@@ -39,6 +39,10 @@ p {
     font-family: "Times New Roman", Times, serif;
 }
 
+.arial {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 @media print {
     p {
         color: #000; /* Черный цвет текста */
@@ -72,12 +76,62 @@ p {
 
 @media screen {
     .fluid-font-size {
-        font-size: calcFluidFontSize(16, 18, 480, 1280);
+        font-size: calcFluidFontSize(16, 18, 480, 1280) !important;
     }
 }
 
 @media print {
     .fluid-font-size {
-        font-size: 12pt;
+        font-size: 12pt !important;
+    }
+}
+
+// SM
+@media only screen and (max-width: 576px) {
+    .fontadaptive {
+        font-size: 9px;
+        font-weight: normal;
+    }
+}
+
+
+// MD
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+    .fontadaptive {
+        font-size: 9px;
+        font-weight: normal;
+    }
+}
+
+
+// LG
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+    .fontadaptive {
+        font-size: 10px;
+        font-weight: normal;
+    }
+}
+
+// XL
+@media only screen and (min-width: 993px) and (max-width: 1200px) {
+    .fontadaptive {
+        font-size: 11px;
+        font-weight: bold;
+    }
+}
+
+// XXL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {
+    .fontadaptive {
+        font-size: 12px;
+        font-weight: bold;
+    }
+}
+
+// HD
+@media only screen and (min-width: 1401px) {
+    .fontadaptive {
+        font-size: 17px;
+        font-weight: bold;
     }
 }
