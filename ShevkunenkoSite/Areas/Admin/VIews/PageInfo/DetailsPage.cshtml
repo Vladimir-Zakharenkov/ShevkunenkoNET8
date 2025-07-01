@@ -62,7 +62,7 @@
 
 </div>
 
-@* Карточка страницы *@
+@* Карточка страницы и индкес сортировки *@
 <div>
 
     <p>
@@ -70,11 +70,21 @@
             Карточка страницы
         </span>
     </p>
+
     <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center">
 
         <vc:card-of-page page=Model.PageItem />
 
     </div>
+
+    <p class="mt-2">
+        <span class="fw-bold fs-5 text-primary">
+            Индекс сортировки :
+        </span>
+        <span class="fw-bold fs-4 text-danger">
+            @Model.PageItem.SortOfPage
+        </span>
+    </p>
 
 </div>
 
@@ -1044,9 +1054,9 @@
                                                 <div class="accordion-body p-1">
 
                                                     <div class="row mt-1 justify-content-center g-1
-                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                                                         @foreach (var item in listOfPages)
                                                         {
