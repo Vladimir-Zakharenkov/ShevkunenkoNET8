@@ -1,6 +1,4 @@
-﻿using Microsoft.Docs.Samples;
-
-namespace ShevkunenkoSite.Controllers;
+﻿namespace ShevkunenkoSite.Controllers;
 
 public class Shevkunenko(
     IImageFileRepository imageContext,

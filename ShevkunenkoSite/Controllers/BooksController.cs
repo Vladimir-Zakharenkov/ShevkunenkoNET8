@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-
-namespace ShevkunenkoSite.Controllers;
+﻿namespace ShevkunenkoSite.Controllers;
 
 public class BooksController(
     IBooksAndArticlesRepository articleContext,
@@ -93,8 +91,8 @@ public class BooksController(
 
             if (imageItems.Length > 1)
             {
-                    framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                    framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
+                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
             }
 
             #endregion
@@ -104,15 +102,10 @@ public class BooksController(
             ArticleViewModel bookOrArticle = new()
             {
                 BookOrArticle = bookOrArticleItem,
-
                 PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
-
                 HtmlText = textWithMarkUp,
-
                 PageNumber = pageNumber,
-
                 Scan = scan,
-
                 FramesAroundMainContent = framesAroundMainContent
             };
 

@@ -10,7 +10,7 @@
 
 <div class="row">
 
-    @* Кадры фильма слева *@
+    @* Лента кадров слева *@
     @if (!string.IsNullOrEmpty(Model.MovieItem.FramesAroundMovie) == true)
     {
         <vc:movie-frames image-filter="@Model.MovieItem.FramesAroundMovie" left-side="true" one-frame="false" />
@@ -19,6 +19,7 @@
     {
         <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="true" one-frame="false" />
     }
+
 
     <div class="col-sm-12 col-md w-100 mb-3">
 
@@ -2089,5 +2090,6 @@
     {
         <vc:movie-frames image-filter="@Model.MovieItem.MovieCaption," left-side="false" one-frame="false" />
     }
+
 
 </div>

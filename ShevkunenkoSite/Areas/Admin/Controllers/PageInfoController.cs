@@ -8,7 +8,8 @@ public class PageInfoController(
     IMovieFileRepository movieContext,
     IIconFileRepository iconContext,
     IImageFileRepository imageContext,
-    IBackgroundFotoRepository backgroundContext
+    IBackgroundFotoRepository backgroundContext,
+     IBooksAndArticlesRepository bookAndArticleContext
     ) : Controller
 {
     #region Список страниц сайта
@@ -283,6 +284,43 @@ public class PageInfoController(
 
             #endregion
 
+            #region Кадры слева и справа от текста
+
+            FramesAroundMainContentModel framesAroundMainContent = new();
+
+            if (pageItem.OgType == "book")
+            {
+                if (pageItem.RoutData.Contains("bookid", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    string[] routData = pageItem.RoutData[1..].Split('&');
+
+                    var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+
+                    if (Guid.TryParse(dictionaryOfRoutdata["bookid"], out var bookGuid))
+                    {
+                        if (await bookAndArticleContext.BooksAndArticles.Where(book => book.BooksAndArticlesModelId == bookGuid).AnyAsync())
+                        {
+                            var bookForPage = await bookAndArticleContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookGuid);
+
+                            var imageItems = await imageContext.ImageFiles
+                                                            .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
+                                                            .ToArrayAsync();
+
+                            imageItems = [.. imageItems.Shuffle()];
+
+                            if (imageItems.Length > 1)
+                            {
+                                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
+                                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            #endregion
+
             #region DetailsPageViewModel
 
             return View(new DetailsPageViewModel
@@ -297,7 +335,8 @@ public class PageInfoController(
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter,
-                DictionaryOfOutPages = dictionaryOfOutPages
+                DictionaryOfOutPages = dictionaryOfOutPages,
+                FramesAroundMainContent = framesAroundMainContent
             });
 
             #endregion
