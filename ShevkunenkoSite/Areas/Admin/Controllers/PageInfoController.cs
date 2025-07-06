@@ -137,7 +137,7 @@ public class PageInfoController(
             linksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
-                .ToArrayAsync());
+                    .ToArrayAsync());
 #pragma warning restore CA1862
 
             _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
@@ -184,7 +184,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на страницы сайта по GUID (RefPages)
+            #region Ссылки на страницы сайта по GUID1
 
             string[] pageIdOut = pageItem.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -199,6 +199,7 @@ public class PageInfoController(
                         if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
                         {
                             linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+
                             _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
                         }
                     }
@@ -231,19 +232,24 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на страницы сайта по фильтру (PageFilterOut)
+            #region Ссылки на страницы сайта по фильтрам (PageFilterOut)
+
+            Dictionary<string, List<PageInfoModel>> dictionaryOfLinksByPageFilterOut = [];
 
             string[] pageFiltersOut = pageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            List<PageInfoModel> linksToPagesByFilterOut = [];
 
             if (pageFiltersOut.Length > 0)
             {
                 for (int i = 0; i < pageFiltersOut.Length; i++)
                 {
-                    linksToPagesByFilterOut.AddRange(await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim() + ",")).ToArrayAsync());
+                    if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).AnyAsync())
+                    {
+                        var pages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).ToListAsync();
 
-                    _ = linksToPagesByFilterOut.Distinct().OrderBy(p => p.PageCardText);
+                        _ = pages.OrderBy(p => p.SortOfPage);
+
+                        dictionaryOfLinksByPageFilterOut[pageFiltersOut[i]] = pages;
+                    }
                 }
             }
 
@@ -251,8 +257,7 @@ public class PageInfoController(
 
             #region  Ссылки на видео сайта по текстовому фильтру (VideoFilterOut)
 
-            List<VideoLinksViewModel> listOfVideoLinksViewModel = [];
-            List<List<MovieFileModel>> listOfListMoviesFileModel = [];
+            Dictionary<string, VideoLinksViewModel> dictionaryOfLinksByVideoFilterOut = [];
 
             string[] videoFilterOut = pageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -263,6 +268,7 @@ public class PageInfoController(
                     if (await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i])).AnyAsync())
                     {
                         var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
+
                         movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
 
                         VideoLinksViewModel videoLinksViewModel = new()
@@ -275,9 +281,7 @@ public class PageInfoController(
                             IsPartsMoreOne = true
                         };
 
-                        listOfVideoLinksViewModel.Add(videoLinksViewModel);
-
-                        listOfListMoviesFileModel.Add(movies);
+                        dictionaryOfLinksByVideoFilterOut[videoFilterOut[i]] = videoLinksViewModel;
                     }
                 }
             }
@@ -315,7 +319,6 @@ public class PageInfoController(
                             }
                         }
                     }
-
                 }
             }
 
@@ -329,14 +332,13 @@ public class PageInfoController(
                 IconItem = iconItem,
                 LinksToPagesByGuid = linksToPagesByGuid,
                 LinksToPagesByGuid2 = linksToPagesByGuid2,
-                LinksToPagesByFilterOut = linksToPagesByFilterOut,
-                LinksToVideosByFilterOut = listOfVideoLinksViewModel,
-                ListsMoviesFileModel = listOfListMoviesFileModel,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
                 LinksFromPagesByPageFilter = linksFromPagesByPageFilter,
                 DictionaryOfOutPages = dictionaryOfOutPages,
-                FramesAroundMainContent = framesAroundMainContent
+                FramesAroundMainContent = framesAroundMainContent,
+                DictionaryOfLinksByVideoFilterOut = dictionaryOfLinksByVideoFilterOut,
+                DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut
             });
 
             #endregion

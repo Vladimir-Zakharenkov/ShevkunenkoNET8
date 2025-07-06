@@ -15,10 +15,15 @@ public class VideoCard(
 
     ImageFileModel imageVideo = new();
 
-    public async Task<IViewComponentResult> InvokeAsync(MovieFileModel movieFileModel, bool IsPartsMoreOne, bool? isImage, string? iconType = "webicon300")
+    public async Task<IViewComponentResult> InvokeAsync(
+        MovieFileModel movieFileModel, 
+        bool IsPartsMoreOne, 
+        bool? isImage, 
+        string?  iconType = "webicon300", 
+        bool? linkToInfoAboutMovie = null)
     {
         // определяем страницу серий многосерийного фильма
-        if (IsPartsMoreOne == true & movieFileModel.PageForMovieSeriesId != null)
+        if (IsPartsMoreOne == true & movieFileModel.PageForMovieSeriesId != null & linkToInfoAboutMovie !=true)
         {
             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == movieFileModel.PageForMovieSeriesId).AnyAsync())
             {
@@ -56,7 +61,8 @@ public class VideoCard(
             ImageForVideo = imageForVideo,
             ImageForVideoGuid = imageForVideoGuid,
             IsImageIcon = isImage,
-            IconType = iconType ?? "webicon300"
+            IconType = iconType ?? "webicon300",
+            LinkToInfoAboutMovie = linkToInfoAboutMovie
         });
     }
 }

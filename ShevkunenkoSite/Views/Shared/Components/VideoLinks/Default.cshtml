@@ -10,11 +10,11 @@
 
         @foreach (var movieFile in Model?.Movies ?? Enumerable.Empty<MovieFileModel>())
         {
-            <vc:video-card 
-                movie-file-model="@movieFile" 
-                is-parts-more-one="@Model!.IsPartsMoreOne" 
-                is-image="@Model.IsImage" 
-                icon-type="@Model.IconType" />
+            <vc:video-card movie-file-model="@movieFile"
+                           is-parts-more-one="@Model!.IsPartsMoreOne"
+                           is-image="@Model.IsImage"
+                           icon-type="@Model.IconType"
+                           link-to-info-about-movie=@Model.LinkToInfoAboutMovie />
         }
 
     </div>

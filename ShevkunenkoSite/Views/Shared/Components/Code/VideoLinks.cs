@@ -5,7 +5,7 @@ public class VideoLinks(
     IPageInfoRepository pageContext
     ) : ViewComponent
 {
-    public async Task<IViewComponentResult> InvokeAsync(VideoLinksViewModel moviesList)
+    public async Task<IViewComponentResult> InvokeAsync(VideoLinksViewModel moviesList, bool? linkToInfoAboutMovie = null)
     {
         // Если постер или картинка для фильма
         if (moviesList.IsImage != null)
@@ -23,7 +23,8 @@ public class VideoLinks(
                     IsPartsMoreOne = moviesList.IsPartsMoreOne,
                     PageHeadTitle = moviesList.HeadTitleForVideoLinks,
                     IsImage = moviesList.IsImage,
-                    IconType = moviesList.IconType
+                    IconType = moviesList.IconType,
+                    LinkToInfoAboutMovie = linkToInfoAboutMovie
                 };
 
                 if (movies.Movies.Where(m => m.MoviePosterId == null).Any())
@@ -44,7 +45,8 @@ public class VideoLinks(
                     IsPartsMoreOne = moviesList.IsPartsMoreOne,
                     PageHeadTitle = moviesList.HeadTitleForVideoLinks,
                     IsImage = moviesList.IsImage,
-                    IconType = moviesList.IconType
+                    IconType = moviesList.IconType,
+                    LinkToInfoAboutMovie = linkToInfoAboutMovie
                 };
 
                 return View(movies);

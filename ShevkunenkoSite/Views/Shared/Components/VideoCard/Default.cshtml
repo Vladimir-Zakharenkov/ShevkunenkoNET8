@@ -17,6 +17,10 @@
 
         onClickTaget = "this.target ='_blank'";
     }
+    else if(Model.LinkToInfoAboutMovie == true)
+    {
+        pathToMoviePage = ($"/admin/movieinfo/detailsmovie/?movieid={Model.MovieInfo.MovieFileModelId}");
+    }
     else
     {
         pathToMoviePage = Model.MovieInfo.PageInfoModel!.PageFullPathWithData;

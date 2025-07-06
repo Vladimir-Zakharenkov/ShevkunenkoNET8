@@ -2,21 +2,39 @@
 
 public class VideoLinksViewModel
 {
-    // Заголовок над ссылками на видео
+    #region Заголовок над ссылками на видео
+
     public string HeadTitleForVideoLinks { get; set; } = string.Empty;
 
-    // true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео
+    #endregion
+
+    #region ВИд изображения ссылки (true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео)
+
     public bool? IsImage { get; set; }
 
-    // "hd", "image" "icon300", "icon200", "icon100", "webhd", "webimage" "webicon300", "webicon200", "webicon100"
+    #endregion
+
+    #region Параметры картинки ("hd", "image" "icon300", "icon200", "icon100", "webhd", "webimage" "webicon300", "webicon200", "webicon100")
+
     public string IconType { get; set; } = string.Empty;
 
-    // Текстовый фильтр поиска фильмов
+    #endregion
+
+    #region Текстовый фильтр поиска фильмов
+
     public string SearchFilter { get; set; } = string.Empty;
 
-    // true -> отображать фильмы с параметром InMainList=true, false -> все найденные фильмы
+    #endregion
+
+    #region Отображать все фильмы ( InMainList=false) или с параметром (InMainList=true)
+
     public bool MovieInMainList { get; set; } = true;
 
-    // true - ссылка на страницу серий фильма (если фильм многосерийный)
+    #endregion
+
+    #region Ссылка на страницу серий фильма (true) если фильм многосерийный
+
     public bool IsPartsMoreOne { get; set; } = true;
+
+    #endregion
 }
