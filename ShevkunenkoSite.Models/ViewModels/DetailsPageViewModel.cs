@@ -58,11 +58,11 @@ public class DetailsPageViewModel
 
     #region Список ссылок на текущую страницу по фильтру
 
-    public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];
+    public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];  // TODO Убрать после изменения вьюшки Edit
 
     #endregion
 
-    #region Словарь страниц по текстовым фильтрам
+    #region Словарь страниц ссылающихся на текущую по текстовым фильтрам
 
     public Dictionary<string, List<PageInfoModel>> DictionaryOfOutPages { get; set; } = [];
 
@@ -80,6 +80,11 @@ public class DetailsPageViewModel
 
     #endregion
 
+    #region Словарь ссылок на видео по текстовым фильтрам
+
+    public Dictionary<string, ImageListViewModel> DictionaryOfLinksByFotoFilterOut { get; set; } = [];
+
+    #endregion
 
     #region Кадры слева и справа от текста
 

@@ -1,6 +1,12 @@
 ﻿@model ImageListViewModel
 
-<h1 class="text_shadow">Фото из фильмов о Сергее&nbsp;Шевкуненко<br /><span class="h2">страница @Model.PagingInfo.CurrentPage</span></h1>
+<h1 class="text_shadow">
+    Фото из фильмов о Сергее Шевкуненко
+    <br />
+    <span class="h2">
+        страница @Model.PagingInfo.CurrentPage
+    </span>
+</h1>
 
 <hr class="liniya" />
 
@@ -12,7 +18,12 @@
 
             <div class="card h-100 me-1 mb-1 p-1 shadw borderforitem">
 
-                <a asp-area="" asp-controller="Shevkunenko" asp-action="PhotoAlbum" asp-route-imageid="@imageItem.ImageFileModelId" asp-route-pageNumber="@Model.PagingInfo.CurrentPage" title="смотреть фото">
+                <a asp-area=""
+                   asp-controller="Shevkunenko"
+                   asp-action="PhotoAlbum"
+                   asp-route-imageid="@imageItem.ImageFileModelId"
+                   asp-route-pageNumber="@Model.PagingInfo.CurrentPage"
+                   title="смотреть фото">
 
                     <vc:view-image image-id="@imageItem.ImageFileModelId" css-class="card-img-top shadw" icon-type="webicon300" />
 
@@ -22,6 +33,7 @@
 
         </div>
     }
+
 
 </div>
 

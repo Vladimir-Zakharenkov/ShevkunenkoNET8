@@ -240,9 +240,9 @@ public class PageInfoModel
 
     #endregion
 
-    #region Ссылки по первому списку GUID
+    #region Ссылки по списку GUID1
 
-    #region Включить ссылки по первому списку GUID
+    #region Включить ссылки по GUID1
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Ссылки по GUID (1) :")]
@@ -250,7 +250,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Первый список GUID страниц, для формирования ссылок на них
+    #region Список GUID1 страниц
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -261,9 +261,9 @@ public class PageInfoModel
 
     #endregion
 
-    #region Ссылки по второму списку GUID
+    #region Ссылки по GUID2
 
-    #region Включить ссылки по второму списку GUID
+    #region Включить ссылки по GUID2
 
     [Required(ErrorMessage = "Выберите значение")]
     [Display(Name = "Ссылки по GUID (2) :")]
@@ -271,7 +271,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Второй список GUID страниц, для формирования ссылок на них
+    #region Список GUID2 страниц
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
