@@ -211,7 +211,7 @@ public class PageInfoModel
     #region Значение для сортировки страницы
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Значение для сортировки:")]
+    [Display(Name = "Индекс сортировки:")]
     public int SortOfPage { get; set; } = 1;
 
     #endregion

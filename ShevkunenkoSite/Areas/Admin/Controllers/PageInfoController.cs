@@ -1221,6 +1221,7 @@ public class PageInfoController(
 
             #endregion
 
+            #region QueryString
 
             if (string.IsNullOrWhiteSpace(editPage.PageItem.RoutData) || string.IsNullOrEmpty(editPage.PageItem.RoutData))
             {
@@ -1230,6 +1231,10 @@ public class PageInfoController(
             {
                 pageUpdate.RoutData = "?" + editPage.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
             }
+
+            #endregion
+
+            #region Адрес (для RazorPage) или Действие (для MVC)
 
             if (string.IsNullOrWhiteSpace(editPage.PageItem.PageLoc) || string.IsNullOrEmpty(editPage.PageItem.PageLoc))
             {
@@ -1243,6 +1248,10 @@ public class PageInfoController(
             {
                 pageUpdate.PageLoc = "/" + editPage.PageItem.PageLoc.Trim().Trim('/').ToLower();
             }
+
+            #endregion
+
+            #region Псевдоним адреса
 
             if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName))
             {
@@ -1258,6 +1267,16 @@ public class PageInfoController(
             }
 
             #endregion
+
+            #endregion
+
+            #region Изменить индекс сортировки
+
+            pageUpdate.SortOfPage = editPage.PageItem.SortOfPage;
+
+            #endregion
+
+
 
             #region Изменить картинку для страницы
 

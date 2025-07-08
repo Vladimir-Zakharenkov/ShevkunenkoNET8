@@ -213,7 +213,7 @@
 
                                     <div class="col-12 col-lg-auto">
 
-                                        <input id="ControllerInput" asp-for="PageItem.Controller" class="form-control  justify-content-start" aria-describedby="ControllerInputHelpBlock" />
+                                        <input asp-for="PageItem.Controller" id="ControllerInput" class="form-control  justify-content-start" aria-describedby="ControllerInputHelpBlock" />
 
                                     </div>
 
@@ -332,6 +332,48 @@
                         </div>
 
                     </div>
+
+                    @* Индекс сортировки *@
+                    <div class="accordion-item mb-3 shadw">
+
+                        <h2 id="headingSortingPage" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SortingPage" aria-expanded="true" aria-controls="SortingPage">
+                                <span class="form-label fs-5">Индекс сортировки :</span>
+                            </button>
+                        </h2>
+
+                        <div id="SortingPage" class="accordion-collapse collapse" aria-labelledby="headingSortingPage" data-bs-parent="#accordionEditPage">
+
+                            <div class="accordion-body accordion-body-nointend text-center">
+
+                                <div class="row g-2 justify-content-center">
+
+                                    <div class="col-12 col-lg-auto">
+
+                                        <label asp-for="PageItem.SortOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+
+                                    </div>
+
+                                    <div class="col-12 col-lg-auto">
+
+                                        <input asp-for="PageItem.SortOfPage" id="SortingPageInput" class="form-control w-50 mx-auto" aria-describedby="SortingPageInputHelpBlock" />
+
+                                    </div>
+
+                                    <p id="SortingPageInputHelpBlock" class="fs-6 form-text text-success">
+                                        индекс сортировки
+                                    </p>
+
+                                    <span asp-validation-for="PageItem.SortOfPage" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
 
                     @* Картинка страницы *@
                     <div class="accordion-item mb-3 shadw">
