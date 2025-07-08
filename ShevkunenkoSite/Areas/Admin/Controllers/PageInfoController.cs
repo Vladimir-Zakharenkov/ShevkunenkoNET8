@@ -1126,6 +1126,8 @@ public class PageInfoController(
                             {
                                 framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
                                 framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+
+                                editPage.FramesAroundMainContent = framesAroundMainContent;
                             }
                         }
                     }
@@ -1168,6 +1170,91 @@ public class PageInfoController(
             {
                 editPageiconItem = await iconContext.IconFiles
                     .FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
+            }
+
+            #endregion
+
+            #region Изменить адрес страницы (MVC или RazorPage)
+
+            #region MVC или RazorPage
+
+            pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
+
+            #endregion
+
+            #region Area
+
+            if (string.IsNullOrEmpty(editPage.PageItem.PageArea.Trim()) || editPage.PageItem.PageArea == "Root")
+            {
+                pageUpdate.PageArea = string.Empty;
+            }
+            else
+            {
+                pageUpdate.PageArea = "/" + editPage.PageItem.PageArea.Trim().Trim('/').ToLower();
+            }
+
+            #endregion
+
+            #region Controller
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.Controller) || string.IsNullOrEmpty(editPage.PageItem.Controller) || editPage.PageItem.PageAsRazorPage)
+            {
+                pageUpdate.Controller = string.Empty;
+            }
+            else
+            {
+                pageUpdate.Controller = "/" + editPage.PageItem.Controller.Trim().Trim('/').ToLower();
+            }
+
+            #endregion
+
+            #region Action
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.Action) || string.IsNullOrEmpty(editPage.PageItem.Action) || editPage.PageItem.PageAsRazorPage)
+            {
+                pageUpdate.Action = string.Empty;
+            }
+            else
+            {
+                pageUpdate.Action = "/" + editPage.PageItem.Action.Trim().Trim('/').ToLower();
+            }
+
+            #endregion
+
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.RoutData) || string.IsNullOrEmpty(editPage.PageItem.RoutData))
+            {
+                pageUpdate.RoutData = string.Empty;
+            }
+            else
+            {
+                pageUpdate.RoutData = "?" + editPage.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
+            }
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.PageLoc) || string.IsNullOrEmpty(editPage.PageItem.PageLoc))
+            {
+                pageUpdate.PageLoc = string.Empty;
+            }
+            else if (editPage.PageItem.PageLoc == "/")
+            {
+                pageUpdate.PageLoc = "/";
+            }
+            else
+            {
+                pageUpdate.PageLoc = "/" + editPage.PageItem.PageLoc.Trim().Trim('/').ToLower();
+            }
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName))
+            {
+                pageUpdate.PagePathNickName = string.Empty;
+            }
+            else if (editPage.PageItem.PagePathNickName == "/")
+            {
+                pageUpdate.PagePathNickName = "/";
+            }
+            else
+            {
+                pageUpdate.PagePathNickName = "/" + editPage.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
             #endregion
@@ -1420,74 +1507,6 @@ public class PageInfoController(
                         IconItem = editPageiconItem
                     });
                 }
-            }
-
-            #endregion
-
-            #region Изменить адрес страницы (MVC или RazorPage)
-
-            pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
-
-            if (string.IsNullOrEmpty(editPage.PageItem.PageArea.Trim()) || editPage.PageItem.PageArea == "Root")
-            {
-                pageUpdate.PageArea = string.Empty;
-            }
-            else
-            {
-                pageUpdate.PageArea = "/" + editPage.PageItem.PageArea.Trim().Trim('/').ToLower();
-            }
-
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.Controller) || string.IsNullOrEmpty(editPage.PageItem.Controller))
-            {
-                pageUpdate.Controller = string.Empty;
-            }
-            else
-            {
-                pageUpdate.Controller = "/" + editPage.PageItem.Controller.Trim().Trim('/').ToLower();
-            }
-
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.Action) || string.IsNullOrEmpty(editPage.PageItem.Action))
-            {
-                pageUpdate.Action = string.Empty;
-            }
-            else
-            {
-                pageUpdate.Action = "/" + editPage.PageItem.Action.Trim().Trim('/').ToLower();
-            }
-
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.RoutData) || string.IsNullOrEmpty(editPage.PageItem.RoutData))
-            {
-                pageUpdate.RoutData = string.Empty;
-            }
-            else
-            {
-                pageUpdate.RoutData = "?" + editPage.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
-            }
-
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.PageLoc) || string.IsNullOrEmpty(editPage.PageItem.PageLoc))
-            {
-                pageUpdate.PageLoc = string.Empty;
-            }
-            else if (editPage.PageItem.PageLoc == "/")
-            {
-                pageUpdate.PageLoc = "/";
-            }
-            else
-            {
-                pageUpdate.PageLoc = "/" + editPage.PageItem.PageLoc.Trim().Trim('/').ToLower();
-            }
-
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName))
-            {
-                pageUpdate.PagePathNickName = string.Empty;
-            }
-            else if (editPage.PageItem.PagePathNickName == "/")
-            {
-                pageUpdate.PagePathNickName = "/";
-            }
-            else
-            {
-                pageUpdate.PagePathNickName = "/" + editPage.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
             #endregion

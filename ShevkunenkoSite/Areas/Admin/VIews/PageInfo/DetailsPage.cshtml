@@ -3,10 +3,6 @@
 @{
     int i = 0;
     int innerAccordion = 0;
-
-    // var dict = Model.PageItem!.RoutData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
-    //            .Select(part => part.Split('='))
-    //            .ToDictionary(split => split[0], split => split[1]);
 }
 
 <h1>
@@ -121,7 +117,7 @@
                asp-controller="PageInfo"
                asp-action="EditPage"
                asp-route-pageid="@Model.PageItem.PageInfoModelId"
-               class="btn btn-outline-dark py-1 m-2 shadw minwidth70px"
+               class="btn btn-outline-dark py-1 m-2 shadw minwidth100px"
                title="редактировать данные">
                 Изменить
             </a>
@@ -130,13 +126,13 @@
                asp-controller="PageInfo"
                asp-action="DeletePage"
                asp-route-pageid="@Model.PageItem.PageInfoModelId"
-               class="btn btn-outline-danger m-2 shadw minwidth100px"
+               class="btn btn-outline-danger py-1 m-2 shadw minwidth100px"
                title="удалить страницу">
                 Удалить
             </a>
 
             <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
-               class="btn btn-outline-primary m-2 shadw minwidth100px"
+               class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
                title="просмотр">
                 Просмотр
             </a>
@@ -144,7 +140,7 @@
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="Index"
-               class="btn btn-outline-success m-2 shadw minwidth100px d-inline-block"
+               class="btn btn-outline-success py-1 m-2 shadw minwidth100px"
                title="список страниц">
                 Список
             </a>
@@ -155,7 +151,7 @@
                    asp-controller="MovieInfo"
                    asp-action="DetailsMovie"
                    asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
-                   class="btn btn-outline-info m-2 shadw minwidth100px"
+                   class="btn btn-outline-info py-1 m-2 shadw minwidth100px"
                    title="данные фильма">
                     Фильм
                 </a>
@@ -1079,9 +1075,9 @@
                                                     <div class="accordion-body p-1">
 
                                                         <div class="row mt-1 justify-content-center g-1
-                                                                                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                                                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                                                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                                                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                                                             @foreach (var item in listOfPages)
                                                             {
@@ -1410,9 +1406,9 @@
                                                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                                                     <div class="row mt-1 justify-content-center g-1
-                                                                                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                                                                                                                @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+                                                                                                                                                                            @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+                                                                                                                                                                                        @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                                                                         @foreach (var item in modelForPageLinks)
                                                                         {
@@ -1986,22 +1982,22 @@
                asp-controller="PageInfo"
                asp-action="EditPage"
                asp-route-pageid="@Model.PageItem.PageInfoModelId"
-               class="btn btn-outline-dark py-1 m-2 shadw minwidth70px"
+               class="btn btn-outline-dark py-1 m-2 shadw minwidth100px"
                title="редактировать данные">
-               Изменить
+                Изменить
             </a>
 
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="DeletePage"
                asp-route-pageid="@Model.PageItem.PageInfoModelId"
-               class="btn btn-outline-danger m-2 shadw minwidth100px"
+               class="btn btn-outline-danger py-1 m-2 shadw minwidth100px"
                title="удалить страницу">
                 Удалить
             </a>
 
             <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
-               class="btn btn-outline-primary m-2 shadw minwidth100px"
+               class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
                title="просмотр">
                 Просмотр
             </a>
@@ -2009,7 +2005,7 @@
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="Index"
-               class="btn btn-outline-success m-2 shadw minwidth100px d-inline-block"
+               class="btn btn-outline-success py-1 m-2 shadw minwidth100px"
                title="список страниц">
                 Список
             </a>
@@ -2020,7 +2016,7 @@
                    asp-controller="MovieInfo"
                    asp-action="DetailsMovie"
                    asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
-                   class="btn btn-outline-info m-2 shadw minwidth100px"
+                   class="btn btn-outline-info py-1 m-2 shadw minwidth100px"
                    title="данные фильма">
                     Фильм
                 </a>
