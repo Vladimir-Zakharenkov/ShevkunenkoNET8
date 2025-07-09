@@ -11,6 +11,6 @@ public class EditPageViewModel : DetailsPageViewModel
     public IFormFile? BackgroundFormFile { get; set; }
 
     [DataType(DataType.Upload)]
-    [Display(Name = "Картинка под заголовком :")]
+    [Display(Name = "Картинка страницы :")]
     public IFormFile? ImagePageHeadingFormFile { get; set; }
 }

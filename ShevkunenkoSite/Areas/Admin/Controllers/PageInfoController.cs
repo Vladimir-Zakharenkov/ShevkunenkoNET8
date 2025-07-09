@@ -11,7 +11,7 @@ public class PageInfoController(
     IIconFileRepository iconContext,
     IImageFileRepository imageContext,
     IBackgroundFotoRepository backgroundContext,
-     IBooksAndArticlesRepository bookAndArticleContext
+    IBooksAndArticlesRepository bookAndArticleContext
     ) : Controller
 {
     #region Список страниц сайта
@@ -993,7 +993,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на страницы сайта по GUID (RefPages2)
+            #region Ссылки на страницы сайта по GUID2
 
             string[] pageIdOut2 = editPage.PageItem.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -1174,7 +1174,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Изменить адрес страницы (MVC или RazorPage)
+            #region Изменить адрес страницы
 
             #region MVC или RazorPage
 
@@ -1275,8 +1275,6 @@ public class PageInfoController(
             pageUpdate.SortOfPage = editPage.PageItem.SortOfPage;
 
             #endregion
-
-
 
             #region Изменить картинку для страницы
 
@@ -1400,7 +1398,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Изменить заголовок страницы (тег <head>)
+            #region Изменить заголовок страницы теги title, description, keywords
 
             pageUpdate.PageTitle = editPage.PageItem.PageTitle.Trim();
             pageUpdate.PageDescription = editPage.PageItem.PageDescription.Trim();

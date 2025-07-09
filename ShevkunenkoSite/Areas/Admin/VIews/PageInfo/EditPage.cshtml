@@ -374,13 +374,12 @@
 
                     </div>
 
-
-                    @* Картинка страницы *@
+                    @* Карточка страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPagePicture">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PagePicture" aria-expanded="true" aria-controls="PagePicture">
-                                <span class="form-label text-success fs-5">Картинка страницы :</span>
+                        <h2 id="headingPagePicture" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PagePicture" aria-expanded="true" aria-controls="PagePicture">
+                                <span class="form-label fs-5">Карточка страницы :</span>
                             </button>
                         </h2>
 
@@ -401,7 +400,9 @@
                                            class="d-block mx-auto maxwidth300px shadw imageref"
                                            title="информация о картинке"
                                            onclick="this.target='_blank'">
+
                                             <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+
                                         </a>
 
                                         @if (!string.IsNullOrEmpty(Model.PageItem.ImageFileModel.WebImageFileName))
@@ -419,30 +420,37 @@
                                     }
                                     else
                                     {
-                                        <p class="fs-6 form-text">
+                                        <p class="fs-6 form-text text-success">
                                             картинка для страницы не выбрана
                                         </p>
                                     }
                                 }
 
                                 <input id="ImageFileFormFile" asp-for="ImageFileFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImageFileFormFileHelpBlock" />
+
                                 <span asp-validation-for="ImageFileFormFile" class="text-danger"></span>
 
-                                <hr class="w-50 liniya" />
+                                <hr class="w-75 mx-auto" />
 
                                 @* Текст карточки страницы *@
-                                <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
-                                <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control text-center w-50 mx-auto" aria-describedby="PageCardTextInputHelpBlock" />
-                                <div id="PageCardTextInputHelpBlock">
-                                    <p class="form-text fs-6 mb-3">текст для карточки страницы</p>
-                                    @if (string.IsNullOrEmpty(Model.PageItem.PageCardText))
-                                    {
-                                        <p class="fordetails text-center">(текст не задан)</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="fordetails text-center">текущее значение <span class=" fs-5 text_shadow">«@Model.PageItem.PageCardText»</span></p>
-                                    }
+                                <div class="row g-2 justify-content-center">
+
+                                    <div class="col-12 col-lg-auto">
+
+                                        <label asp-for="PageItem.PageCardText" class="form-label text-primary fs-5 fw-bold"></label>
+
+                                    </div>
+
+                                    <div class="col-12 col-lg-auto">
+
+                                        <input id="PageCardTextInput" asp-for="PageItem.PageCardText" class="form-control mx-auto" aria-describedby="PageCardTextInputHelpBlock" />
+
+                                    </div>
+
+                                    <p id="PageCardTextInputHelpBlock" class="fs-6 form-text text-success">
+                                        текст карточки
+                                    </p>
+
                                 </div>
 
                             </div>
@@ -454,9 +462,9 @@
                     @* Иконка страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageIcon">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageIcon" aria-expanded="true" aria-controls="PageIcon">
-                                <span class="form-label text-success fs-5">Иконка страницы :</span>
+                        <h2 id="headingPageIcon" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageIcon" aria-expanded="true" aria-controls="PageIcon">
+                                <span class="form-label fs-5">Иконка страницы :</span>
                             </button>
                         </h2>
 
@@ -477,7 +485,7 @@
                                     </p>
                                 }
 
-                                <p class="fs-6 form-text">
+                                <p class="fs-6 form-text text-success">
                                     выбор иконки связан с OgType
                                 </p>
 
@@ -490,9 +498,9 @@
                     @* Фон страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageBackground">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageBackground" aria-expanded="true" aria-controls="PageBackground">
-                                <span class="form-label text-success fs-5">Фон страницы :</span>
+                        <h2 id="headingPageBackground" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageBackground" aria-expanded="true" aria-controls="PageBackground">
+                                <span class="form-label fs-5">Фон страницы :</span>
                             </button>
                         </h2>
 
@@ -501,10 +509,20 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="BackgroundFormFile" class="form-label text-primary fs-5 fw-bold d-block mb-0"></label>
-                                <input id="BackgroundFormFileInput" asp-for="BackgroundFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="BackgroundFormFileInputHelpBlock" />
-                                <p class="fs-6 form-text">
+
+                                <p class="text_shadow my-2 fluid-font-size">
+                                    @Model.PageItem.BackgroundFileModel!.WebLeftBackground
+                                </p>
+                                <p class="text_shadow my-2 fluid-font-size">
+                                    @Model.PageItem.BackgroundFileModel!.WebRightBackground
+                                </p>
+
+                                <input asp-for="BackgroundFormFile" id="BackgroundFormFileInput" class="form-control my-3 mx-auto maxwidth300px" aria-describedby="BackgroundFormFileInputHelpBlock" />
+
+                                <p id="BackgroundFormFileInputHelpBlock" class="fs-6 form-text text-success">
                                     фон страницы
                                 </p>
+
                                 <span asp-validation-for="BackgroundFormFile" class="text-danger"></span>
 
                             </div>
@@ -516,9 +534,9 @@
                     @* Тег «title» *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageTitle">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageTitle" aria-expanded="true" aria-controls="PageTitle">
-                                <span class="form-label text-success fs-5">Заголовок (PageTitle)&nbsp;:</span>
+                        <h2 id="headingPageTitle" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageTitle" aria-expanded="true" aria-controls="PageTitle">
+                                <span class="form-label fs-5">Тег « title » :</span>
                             </button>
                         </h2>
 
@@ -527,10 +545,13 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="PageItem.PageTitle" class="form-label text-primary fs-5 fw-bold"></label>
-                                <input id="PageTitleInput" asp-for="PageItem.PageTitle" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
-                                <div id="PageTitleInputHelpBlock" class="form-text fs-6">
+
+                                <input asp-for="PageItem.PageTitle" id="PageTitleInput" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
+
+                                <p id="PageTitleInputHelpBlock" class="form-text fs-6 text-success">
                                     тег «title» - <span class="text-danger">обязательное поле</span>
-                                </div>
+                                </p>
+
                                 <span asp-validation-for="PageItem.PageTitle" class="text-danger"></span>
 
                             </div>
@@ -542,9 +563,9 @@
                     @* Тег «description» *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageDescription">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageDescription" aria-expanded="true" aria-controls="PageDescription">
-                                <span class="form-label text-success fs-5">Описание (PageDescription)&nbsp;:</span>
+                        <h2 id="headingPageDescription" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageDescription" aria-expanded="true" aria-controls="PageDescription">
+                                <span class="form-label fs-5">Тег « description » :</span>
                             </button>
                         </h2>
 
@@ -553,11 +574,14 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="PageItem.PageDescription" class="form-label text-primary fs-5 fw-bold"></label>
-                                <textarea id="PageDescriptionInput" asp-for="PageItem.PageDescription" rows="4" class="form-control fordetails" aria-describedby="PageDescriptionInputHelpBlock">
-                            </textarea>
-                                <div id="PageDescriptionInputHelpBlock" class="form-text fs-6">
-                                    тег «description» - <span class="text-danger">обязательное поле</span>
-                                </div>
+
+                                <textarea asp-for="PageItem.PageDescription" rows="4" id="PageDescriptionInput" class="form-control fordetails" aria-describedby="PageDescriptionInputHelpBlock">
+                                </textarea>
+
+                                <p id="PageDescriptionInputHelpBlock" class="form-text fs-6 text-success">
+                                    тег «description»<span class="d-none d-sm-inline text-danger"> - обязательное поле</span>
+                                </p>
+
                                 <span asp-validation-for="PageItem.PageDescription" class="text-danger"></span>
 
                             </div>
@@ -569,9 +593,9 @@
                     @* Тег «keywords» *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageKeywords">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageKeywords" aria-expanded="true" aria-controls="PageKeywords">
-                                <span class="form-label text-success fs-5">Ключевые слова (PageKeyWords)&nbsp;:</span>
+                        <h2 id="headingPageKeywords" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageKeywords" aria-expanded="true" aria-controls="PageKeywords">
+                                <span class="form-label fs-5">Тег « keywords » :</span>
                             </button>
                         </h2>
 
@@ -580,11 +604,14 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="PageItem.PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
-                                <textarea id="PageKeyWordsInput" asp-for="PageItem.PageKeyWords" rows="7" class="form-control fordetails" aria-describedby="PageKeyWordsInputHelpBlock">
-                            </textarea>
-                                <div id="PageKeyWordsInputHelpBlock" class="form-text fs-6">
-                                    тег «keywords» - <span class="text-danger">обязательное поле</span>
-                                </div>
+
+                                <textarea asp-for="PageItem.PageKeyWords" rows="7" id="PageKeyWordsInput" class="form-control fordetails" aria-describedby="PageKeyWordsInputHelpBlock">
+                                </textarea>
+
+                                <p id="PageKeyWordsInputHelpBlock" class="form-text fs-6 text-success">
+                                    тег «keywords»<span class="d-none d-sm-inline text-danger"> - обязательное поле</span>
+                                </p>
+
                                 <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
 
                             </div>
@@ -596,9 +623,9 @@
                     @* Заголовок страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageHeading">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageHeading" aria-expanded="true" aria-controls="PageHeading">
-                                <span class="form-label text-success fs-5">Заголовок страницы (PageHeading)&nbsp;:</span>
+                        <h2 id="headingPageHeading" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageHeading" aria-expanded="true" aria-controls="PageHeading">
+                                <span class="form-label fs-5">Заголовок страницы :</span>
                             </button>
                         </h2>
 
@@ -607,20 +634,15 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="PageItem.PageHeading" class="form-label text-primary fs-5 fw-bold"></label>
-                                <input id="PageHeadingInput" asp-for="PageItem.PageHeading" class="form-control fs-6 w-75 mx-auto" aria-describedby="PageHeadingInputHelpBlock" />
 
-                                @if (!string.IsNullOrEmpty(Model.PageItem.PageHeading))
-                                {
-                                    <div id="PageCardTextInputHelpBlock" class="form-text fs-6">
-                                        текст заголовка страницы в теге &lt;h1&gt;... &lt;/h1&gt;
-                                    </div>
+                                <input asp-for="PageItem.PageHeading" id="PageHeadingInput" class="form-control fs-6 w-75 mx-auto" aria-describedby="PageHeadingInputHelpBlock" />
 
-                                    <h1 class="text_shadow">@Html.Raw(Model.PageItem.PageHeading)</h1>
-                                }
-                                else
-                                {
-                                    <p class="fordetails text-center">заголовок для страницы не задан</p>
-                                }
+                                <p id="PageCardTextInputHelpBlock" class="form-text fs-6 text-success">
+                                    заголовок страницы в теге &lt;h1&gt;... &lt;/h1&gt;
+                                </p>
+
+                                <h1 class="fs-3 mt-2 text_shadow">@Html.Raw(Model.PageItem.PageHeading)</h1>
+
                                 <span asp-validation-for="PageItem.PageKeyWords" class="text-danger"></span>
 
                             </div>
@@ -632,9 +654,9 @@
                     @* Картинка заголовка страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="imagePageHeading">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#ImagePageHeading" aria-expanded="true" aria-controls="ImagePageHeading">
-                                <span class="form-label text-success fs-5">Картинка заголовка страницы (ImagePageHeadingId) :</span>
+                        <h2 id="imagePageHeading" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#ImagePageHeading" aria-expanded="true" aria-controls="ImagePageHeading">
+                                <span class="form-label fs-5">Картинка заголовка :</span>
                             </button>
                         </h2>
 
@@ -655,7 +677,9 @@
                                            class="d-block mx-auto maxwidth700px shadw imageref"
                                            title="информация о картинке"
                                            onclick="this.target='_blank'">
+
                                             <vc:view-image image-id="@Model.PageItem.ImagePageHeadingId" css-class="w-100" icon-type="webimage" />
+
                                         </a>
 
                                         @if (!string.IsNullOrEmpty(Model.PageItem.ImagePageHeading!.WebImageFileName))
@@ -671,15 +695,10 @@
                                             </p>
                                         }
                                     }
-                                    else
-                                    {
-                                        <p class="fs-6 form-text">
-                                            картинка для заголовка страницы не выбрана
-                                        </p>
-                                    }
                                 }
 
-                                <input id="ImagePageHeadingFormFile" asp-for="ImagePageHeadingFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImagePageHeadingFormFileHelpBlock" />
+                                <input asp-for="ImagePageHeadingFormFile" id="ImagePageHeadingFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImagePageHeadingFormFileHelpBlock" />
+                                
                                 <span asp-validation-for="ImagePageHeadingFormFile" class="text-danger"></span>
 
                             </div>
@@ -691,9 +710,9 @@
                     @* Текст страницы *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageText">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageText" aria-expanded="true" aria-controls="PageText">
-                                <span class="form-label text-success fs-5">Текст страницы (TextOfPage)&nbsp;:</span>
+                        <h2 id="headingPageText" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageText" aria-expanded="true" aria-controls="PageText">
+                                <span class="form-label fs-5">Текст страницы :</span>
                             </button>
                         </h2>
 
@@ -702,8 +721,9 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <label asp-for="PageItem.TextOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+
                                 <textarea id="TextOfPageInput" asp-for="PageItem.TextOfPage" rows="15" class="form-control text-start fordetails px-3" aria-describedby="TextOfPageInputHelpBlock">
-                            </textarea>
+                                </textarea>
 
                                 <article class="px-2 mt-3 border border-secondary paragraph fluid-font-size" itemprop="text">
 
@@ -711,9 +731,10 @@
 
                                 </article>
 
-                                <div id="TextOfPageInputHelpBlock" class="form-text fs-6">
+                                <p id="TextOfPageInputHelpBlock" class="form-text fs-6 text-success">
                                     текст страницы
-                                </div>
+                                </p>
+
                                 <span asp-validation-for="PageItem.TextOfPage" class="text-danger"></span>
 
                             </div>
@@ -725,9 +746,9 @@
                     @* Open Graf Type *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageOgType">
-                            <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageOgType" aria-expanded="true" aria-controls="PageOgType">
-                                <span class="form-label text-success fs-5">Open Graf Type (OgType)&nbsp;:</span>
+                        <h2 id="headingPageOgType" class="accordion-header shadw">
+                            <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageOgType" aria-expanded="true" aria-controls="PageOgType">
+                                <span class="form-label fs-5">Open Graf (OgType) :</span>
                             </button>
                         </h2>
 
@@ -736,9 +757,11 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <div class="row g-2 justify-content-center">
+
                                     <div class="col-auto">
                                         <label asp-for="PageItem.OgType" class="col-form-label text-primary fs-5 fw-bold"></label>
                                     </div>
+
                                     <div class="col-auto">
                                         <select id="OgTypeInput" asp-for="PageItem.OgType" class="form-select">
                                             <option value="website" selected>website</option>
@@ -747,12 +770,14 @@
                                             <option value="book">book</option>
                                         </select>
                                     </div>
+
                                     <div class="col-12 justify-content-center">
-                                        <span id="OgTypeInputHelpBlock" class="form-text fs-6">
-                                            тег «og:type» - <span class="text-danger">обязательное поле</span>
+                                        <span id="OgTypeInputHelpBlock" class="form-text fs-6 text-success">
+                                            тег «og:type»<span class="d-none d-sm-inline text-danger"> - обязательное поле</span>
                                         </span>
                                     </div>
                                 </div>
+
                                 <span asp-validation-for="PageItem.OgType" class="text-danger"></span>
 
                             </div>

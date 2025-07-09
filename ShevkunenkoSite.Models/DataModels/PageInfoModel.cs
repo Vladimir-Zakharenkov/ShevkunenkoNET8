@@ -80,7 +80,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Описание
+    #region Теги title, description, keywords
 
     [Required(ErrorMessage = "Добавьте заголовок страницы")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -156,7 +156,18 @@ public class PageInfoModel
 
     #endregion
 
-    #region Оформление
+    #region Фон страницы (фотопленка)
+
+    public Guid BackgroundFileModelId { get; set; }
+    public BackgroundFileModel? BackgroundFileModel { get; set; }
+
+    #endregion
+
+    #region Карточка страницы
+
+    // Картинка страницы
+    public Guid ImageFileModelId { get; set; }
+    public ImageFileModel? ImageFileModel { get; set; }
 
     // Текст карточки страницы
     [Required(AllowEmptyStrings = true)]
@@ -165,20 +176,9 @@ public class PageInfoModel
     [DataType(DataType.Text)]
     public string PageCardText { get; set; } = string.Empty;
 
-    // Фон страницы (фотопленка)
-    public Guid BackgroundFileModelId { get; set; }
-    public BackgroundFileModel? BackgroundFileModel { get; set; }
-
     #endregion
 
-    #region Картинка страницы
-
-    public Guid ImageFileModelId { get; set; }
-    public ImageFileModel? ImageFileModel { get; set; }
-
-    #endregion
-
-    #region Содержание страницы
+    #region Заголовок, картинка и текст страницы
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -186,13 +186,13 @@ public class PageInfoModel
     [DataType(DataType.Text)]
     public string PageHeading { get; set; } = string.Empty;
 
-    [Display(Name = "Картинка под заголовком :")]
-    public Guid? ImagePageHeadingId { get; set; } = null;
+    [Display(Name = "Картинка страницы :")]
+    public Guid? ImagePageHeadingId { get; set; }
     public ImageFileModel? ImagePageHeading { get; set; }
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Текст страницы (HTML) :")]
+    [Display(Name = "Текст (HTML) :")]
     [DataType(DataType.Text)]
     public string TextOfPage { get; set; } = string.Empty;
 
