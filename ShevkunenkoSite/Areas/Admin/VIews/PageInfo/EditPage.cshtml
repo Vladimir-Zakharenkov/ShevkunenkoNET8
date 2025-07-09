@@ -698,7 +698,7 @@
                                 }
 
                                 <input asp-for="ImagePageHeadingFormFile" id="ImagePageHeadingFormFile" class="form-control mt-2 mx-auto maxwidth300px" aria-describedby="ImagePageHeadingFormFileHelpBlock" />
-                                
+
                                 <span asp-validation-for="ImagePageHeadingFormFile" class="text-danger"></span>
 
                             </div>
@@ -789,9 +789,9 @@
                     @* Sitemap *@
                     <div class="accordion-item mb-3 shadw">
 
-                        <h2 class="accordion-header" id="headingPageSitemap">
+                        <h2 id="headingPageSitemap" class="accordion-header shadw">
                             <button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageSitemap" aria-expanded="true" aria-controls="PageSitemap">
-                                <span class="form-label text-success fs-5">Sitemap&nbsp;:</span>
+                                <span class="form-label fs-5">Sitemap :</span>
                             </button>
                         </h2>
 
@@ -800,9 +800,11 @@
                             <div class="accordion-body accordion-body-nointend text-center">
 
                                 <div class="row g-2 justify-content-center">
+
                                     <div class="col-auto">
                                         <label asp-for="PageItem.Changefreq" class="col-form-label text-primary fs-5 fw-bold"></label>
                                     </div>
+
                                     <div class="col-auto">
                                         <select id="ChangefreqInput" asp-for="PageItem.Changefreq" class="form-select">
                                             <option value="always">always</option>
@@ -814,20 +816,26 @@
                                             <option value="never">never</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 justify-content-center">
-                                        <span id="ChangefreqInputHelpBlock" class="form-text fs-6">
-                                            Changefreq: частота изменения страницы - <span class="text-danger">обязательное поле</span>
+
+                                    <p id="ChangefreqInputHelpBlock" class="col-12 justify-content-center form-text fs-6 text-success">
+                                        Changefreq: частота изменения
+                                        <span class="d-none d-lg-inline text-danger">
+                                            - обязательное поле
                                         </span>
-                                    </div>
+                                    </p>
+
                                 </div>
+
                                 <span asp-validation-for="PageItem.Changefreq" class="text-danger"></span>
 
-                                <hr class="liniya" />
+                                <hr class="w-75 mx-auto" />
 
                                 <div class="row g-2 justify-content-center">
+
                                     <div class="col-auto">
                                         <label asp-for="PageItem.Priority" class="col-form-label text-primary fs-5 fw-bold"></label>
                                     </div>
+
                                     <div class="col-auto">
                                         <select id="PriorityInput" asp-for="PageItem.Priority" class="form-select">
                                             <option value="0.0">0.0</option>
@@ -843,12 +851,18 @@
                                             <option value="1.0">1.0</option>
                                         </select>
                                     </div>
+
                                     <div class="col-12 justify-content-center">
-                                        <span id="PrioritylInputHelpBlock" class="form-text fs-6">
-                                            Priority: значимость страницы (от 0.0 до 1.0) - <span class="text-danger">обязательное поле</span>
+                                        <span id="PrioritylInputHelpBlock" class="form-text fs-6 text-success">
+                                            Priority: значимость страницы
+                                            <span class="d-none d-lg-inline text-danger">
+                                                - обязательное поле
+                                            </span>
                                         </span>
                                     </div>
+
                                 </div>
+
                                 <span asp-validation-for="PageItem.Priority" class="text-danger"></span>
 
                             </div>
