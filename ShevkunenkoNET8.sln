@@ -449,6 +449,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введе�
 		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloBlazorApp", "Metanit.com\Blazor\Глава 01 - Введение в Blazor\HelloBlazorApp\HelloBlazorApp.csproj", "{D6859EAF-13E2-4925-80E8-2BB244EC3635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -623,6 +625,10 @@ Global
 		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57C5C96-B1D5-4196-897F-DAFF132727E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -687,6 +693,7 @@ Global
 		{F57C5C96-B1D5-4196-897F-DAFF132727E1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
 		{44D5B14D-F2FD-4FEE-947B-2E6D975FE935} = {903275A2-A9B0-43E1-A13C-A089F3E48289}
 		{E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0} = {44D5B14D-F2FD-4FEE-947B-2E6D975FE935}
+		{D6859EAF-13E2-4925-80E8-2BB244EC3635} = {E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
