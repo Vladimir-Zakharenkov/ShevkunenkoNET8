@@ -111,3 +111,34 @@
         <vc:video-links movies-list="@videoLinksViewModel" />
     }
 }
+
+@* Ссылки на картинки по фильтру *@
+<div class="d-print-none mt-3">
+
+    @if (Model.DictionaryOfPictures.Count > 0)
+    {
+        foreach (var (caption, listOfPictures) in Model.DictionaryOfPictures)
+        {
+            if (listOfPictures.Count > 0)
+            {
+                <h2 class="text_shadow mt-4">@caption (фото)</h2>
+
+                <hr class="liniya w-75" />
+
+                <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
+                                                        @(listOfPictures.Count < 4 ? "row-cols-3" : "")
+                                                                    @((listOfPictures.Count % 4 == 0 || listOfPictures.Count == 7) ? "row-cols-4" : "")
+                                                                                @((listOfPictures.Count > 4 & listOfPictures.Count % 4 != 0 & listOfPictures.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+
+                    @foreach (var item in listOfPictures)
+                    {
+                        <vc:view-image image-id="@item.ImageFileModelId.ToString()" css-class="" icon-type="" />
+                    }
+
+                </div>
+            }
+        }
+    }
+
+
+</div>

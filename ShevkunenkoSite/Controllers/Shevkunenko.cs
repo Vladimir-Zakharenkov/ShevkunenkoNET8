@@ -19,9 +19,8 @@ public class Shevkunenko(
     public async Task<IActionResult> PhotoAlbum(Guid? imageId, int imagesPerPage = 12, int pageNumber = 1)
     {
         var allPhotoes = from m in imageContext.ImageFiles
+            .Where(p => p.SearchFilter.Contains("Криминальная звезда"))
             .OrderBy(p => p.WebImageFileName)
-            .Where(p => p.SearchFilter
-            .Contains("Криминальная звезда"))
                          select m;
 
         ImageListViewModel imageList = new()

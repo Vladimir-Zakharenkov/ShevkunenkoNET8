@@ -26,12 +26,6 @@ public class DetailsPageViewModel
 
     #endregion
 
-    #region Список ссылок на страницы по фильтру
-
-    public List<PageInfoModel> LinksToPagesByFilterOut { get; set; } = [];
-
-    #endregion
-
     #region Список ссылок на видео по фильтру
 
     public List<VideoLinksViewModel> LinksToVideosByFilterOut = [];
@@ -56,12 +50,6 @@ public class DetailsPageViewModel
 
     #endregion
 
-    #region Список ссылок на текущую страницу по фильтру
-
-    public List<PageInfoModel> LinksFromPagesByPageFilter { get; set; } = [];  // TODO Убрать после изменения вьюшки Edit
-
-    #endregion
-
     #region Словарь страниц ссылающихся на текущую по текстовым фильтрам
 
     public Dictionary<string, List<PageInfoModel>> DictionaryOfOutPages { get; set; } = [];
@@ -80,7 +68,7 @@ public class DetailsPageViewModel
 
     #endregion
 
-    #region Словарь ссылок на видео по текстовым фильтрам
+    #region Словарь ссылок на картинки по текстовым фильтрам
 
     public Dictionary<string, ImageListViewModel> DictionaryOfLinksByFotoFilterOut { get; set; } = [];
 

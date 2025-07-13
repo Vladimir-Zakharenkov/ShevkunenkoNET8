@@ -1075,9 +1075,9 @@
                                                     <div class="accordion-body p-1">
 
                                                         <div class="row mt-1 justify-content-center g-1
-                                                                                                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                                                             @foreach (var item in listOfPages)
                                                             {
@@ -1141,6 +1141,7 @@
                                 фильтры поиска не заданы
                             </p>
                         }
+
 
                     </div>
 
@@ -1406,9 +1407,9 @@
                                                                 <div class="accordion-body accordion-body-nointend text-center">
 
                                                                     <div class="row mt-1 justify-content-center g-1
-                                                                                                                                                                @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                                                            @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                                                                        @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                                                                         @foreach (var item in modelForPageLinks)
                                                                         {
@@ -1872,91 +1873,32 @@
 
                                     <div class="accordion-body accordion-body-nointend text-start">
 
-                                        @if (Model.LinksToPagesByGuid2.Count > 0)
+                                        @if (!string.IsNullOrEmpty(Model.PageItem.PhotoFilterOut))
                                         {
-                                            @foreach (var item in Model.LinksToPagesByGuid2)
-                                            {
-                                                if (i == 0)
-                                                {
-                                                    i = 1;
-                                                }
-                                                else
-                                                {
-                                                    i++;
-                                                }
+                                            string[] photoFilterOut = Model.PageItem.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-                                                <p class="fs-5 border-bottom py-2 fluid-font-size">
-                                                    <span class="text-primary fw-bold fluid-font-size">
-                                                        №@i
-                                                    </span>
-                                                    <br />
-                                                    <span class="d-none d-sm-inline">
-                                                        <span class="fw-bold fluid-font-size">
-                                                            GUID -
-                                                        </span>
-                                                        <br class="d-xl-none" />
-                                                        <span class="text_shadow fluid-font-size">
-                                                            @item.PageInfoModelId
-                                                        </span>
-                                                    </span>
-                                                    <br class="d-none d-sm-block" />
-                                                    <span>
-                                                        <span class="fw-bold fluid-font-size">
-                                                            Title -
-                                                        </span>
-                                                        <br class="d-xl-none" />
-                                                        <span class="text_shadow fluid-font-size">
-                                                            @item.PageTitle
-                                                        </span>
-                                                    </span>
+                                            @for (int sf = 0; sf < photoFilterOut.Count(); sf++)
+                                            {
+                                                <p class="text-start text_shadow fluid-font-size border-bottom pb-2">
+                                                    # @photoFilterOut[sf]
                                                 </p>
                                             }
 
-                                            <div class="row row-cols-2 row-cols-lg-3 row-cols-xxl-4 g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-2">
-
-                                                @foreach (var item in Model.LinksToPagesByGuid2)
-                                                {
-                                                    <div class="col p-1 p-lg-2">
-
-                                                        <div class="card shadw rounded-3 cardborder" title="@item.PageTitle">
-
-                                                            <a asp-area="Admin"
-                                                               asp-controller="PageInfo"
-                                                               asp-action="DetailsPage"
-                                                               asp-route-pageid="@item.PageInfoModelId"
-                                                               class="rounded-3 p-0 p-md-1 shadw"
-                                                               onclick="this.target='_blank'"
-                                                               title="данные о странице">
-
-                                                                <vc:view-image image-id="@item.ImageFileModelId"
-                                                                               css-class="card-img-top shadw rounded-3"
-                                                                               icon-type="webicon300" />
-
-                                                                @if (!string.IsNullOrEmpty(@item.PageCardText))
-                                                                {
-                                                                    <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
-
-                                                                        <p class="card-title p-0 mb-0 fw-medium fontadaptive text-center">@item.PageCardText</p>
-
-                                                                    </div>
-                                                                }
-
-                                                            </a>
-
-                                                        </div>
-
-                                                    </div>
-                                                }
-
-                                            </div>
+                                            <p class="fs-6 form-text text-success text-center">
+                                                <span class="d-sm-none">
+                                                    фильтры поиска
+                                                </span>
+                                                <span class="d-none d-sm-inline">
+                                                    фильтры поиска картинок
+                                                </span>
+                                            </p>
                                         }
                                         else
                                         {
                                             <p class="fs-6 form-text text-success text-center">
-                                                нет фильтров для фотоальбома
+                                                нет фильтров картинок
                                             </p>
                                         }
-
 
                                     </div>
 

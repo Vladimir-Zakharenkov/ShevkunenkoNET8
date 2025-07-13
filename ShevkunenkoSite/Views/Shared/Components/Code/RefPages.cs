@@ -2,7 +2,8 @@
 
 public class RefPages(
     IPageInfoRepository pageInfoContext,
-    IMovieFileRepository movieContext) : ViewComponent
+    IMovieFileRepository movieContext,
+    IImageFileRepository imageContext) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
     {
@@ -10,6 +11,9 @@ public class RefPages(
 
         // Словарь страниц по текстовому фильтрам
         Dictionary<string, List<PageInfoModel>> dictionaryOfPages = [];
+
+        // Словарь картинок по текстовому фильтрам
+        Dictionary<string, List<ImageFileModel>> dictionaryOfPictures = [];
 
         // 1-ый список по GUID страниц
         List<PageInfoModel> linksToPagesByGuid = [];
@@ -25,14 +29,16 @@ public class RefPages(
         if (pageInfoModel.PageLinks == false
             & pageInfoModel.PageLinks2 == false
             & pageInfoModel.PageLinksByFilters == false
-            & pageInfoModel.VideoLinks == false)
+            & pageInfoModel.VideoLinks == false
+            & pageInfoModel.PhotoLinks == false)
         {
             return View("Empty");
         }
         else if (string.IsNullOrEmpty(pageInfoModel.PageFilterOut)
             & string.IsNullOrEmpty(pageInfoModel.RefPages)
             & string.IsNullOrEmpty(pageInfoModel.RefPages2)
-            & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut))
+            & string.IsNullOrEmpty(pageInfoModel.VideoFilterOut)
+            & string.IsNullOrEmpty(pageInfoModel.PhotoFilterOut))
         {
             return View("Empty");
         }
@@ -105,6 +111,27 @@ public class RefPages(
                 }
             }
 
+            // ссылки на связанные картинки по текстовому фильтру
+            if (!string.IsNullOrEmpty(pageInfoModel.PhotoFilterOut) & pageInfoModel.PhotoLinks == true)
+            {
+                string[] photoFilterOut = pageInfoModel.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (photoFilterOut.Length > 0)
+                {
+                    for (int i = 0; i < photoFilterOut.Length; i++)
+                    {
+                        if (await imageContext.ImageFiles.Where(p => p.SearchFilter.Contains(photoFilterOut[i] + ',')).AnyAsync())
+                        {
+                            var listOfFilterOut = await imageContext.ImageFiles.Where(p => p.SearchFilter.Contains(photoFilterOut[i] + ',')).ToListAsync();
+
+                            _ = listOfFilterOut.Distinct().OrderBy(s => s.SortOfPicture);
+
+                            dictionaryOfPictures[photoFilterOut[i]] = listOfFilterOut;
+                        }
+                    }
+                }
+            }
+
             // ссылки на связанные видео по текстовому фильтру VideoFilterOut
             if (!string.IsNullOrEmpty(pageInfoModel.VideoFilterOut) & pageInfoModel.VideoLinks == true)
             {
@@ -134,7 +161,11 @@ public class RefPages(
             }
         }
 
-        if (dictionaryOfPages.Count < 1 & listOfVideoLinksViewModel.Count < 1 & linksToPagesByGuid.Count < 1 & linksToPagesByGuid2.Count < 1)
+        if (dictionaryOfPages.Count < 1 
+            & dictionaryOfPictures.Count < 1
+            & listOfVideoLinksViewModel.Count < 1 
+            & linksToPagesByGuid.Count < 1 
+            & linksToPagesByGuid2.Count < 1)
         {
             return View("Empty");
         }
@@ -143,6 +174,7 @@ public class RefPages(
             return View(new RefPagesViewModel
             {
                 DictionaryOfPages = dictionaryOfPages,
+                DictionaryOfPictures = dictionaryOfPictures,
                 ListOfVideoLinksViewModel = listOfVideoLinksViewModel,
                 LinksToPagesByGuid = linksToPagesByGuid,
                 LinksToPagesByGuid2 = linksToPagesByGuid2

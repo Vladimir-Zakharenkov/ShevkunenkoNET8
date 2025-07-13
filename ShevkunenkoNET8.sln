@@ -441,6 +441,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-06", "Metanit.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapter04-01-07", "Metanit.com\Руководство по ASP.NET Core 8\Глава 04 - Маршрутизация\Страница 01\Chapter04-01-07\Chapter04-01-07.csproj", "{F57C5C96-B1D5-4196-897F-DAFF132727E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{44D5B14D-F2FD-4FEE-947B-2E6D975FE935}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введение в Blazor", "Глава 01 - Введение в Blazor", "{E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0}"
+	ProjectSection(SolutionItems) = preProject
+		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page01 - Что такое Blazor.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page01 - Что такое Blazor.txt
+		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -677,6 +685,8 @@ Global
 		{1032AECF-5A0A-4B62-B721-E7C2C01619A1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
 		{D3EA72BA-19D2-4D7D-B3FB-0B1E84855EA1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
 		{F57C5C96-B1D5-4196-897F-DAFF132727E1} = {02AE52DE-2E47-4C8F-A9F5-A45D4C8CCEE5}
+		{44D5B14D-F2FD-4FEE-947B-2E6D975FE935} = {903275A2-A9B0-43E1-A13C-A089F3E48289}
+		{E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0} = {44D5B14D-F2FD-4FEE-947B-2E6D975FE935}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

@@ -202,7 +202,7 @@ public class PageInfoModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтр поиска страницы :")]
+    [Display(Name = "Фильтр поиска :")]
     [DataType(DataType.Text)]
     public string PageFilter { get; set; } = string.Empty;
 

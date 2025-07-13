@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-
-namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -164,8 +162,6 @@ public class PageInfoController(
             #region Ссылки на текущую страницу по фильтру PageFilter
 
             string[] pageFilters = pageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            List<PageInfoModel> linksFromPagesByPageFilter = [];  // TODO Убрать после изменения вьюшки Edit
 
             Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
 
@@ -361,7 +357,6 @@ public class PageInfoController(
                 LinksToPagesByGuid2 = linksToPagesByGuid2,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
-                LinksFromPagesByPageFilter = linksFromPagesByPageFilter,
                 DictionaryOfOutPages = dictionaryOfOutPages,
                 FramesAroundMainContent = framesAroundMainContent,
                 DictionaryOfLinksByVideoFilterOut = dictionaryOfLinksByVideoFilterOut,
@@ -948,8 +943,6 @@ public class PageInfoController(
 
             string[] pageFilters = editPage.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            List<PageInfoModel> linksFromPagesByPageFilter = []; // TODO Убрать после изменения вьюшки Edit
-
             Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
 
             if (pageFilters.Length > 0)
@@ -963,6 +956,8 @@ public class PageInfoController(
                         _ = listOfFilterOut.Distinct().OrderBy(p => p.SortOfPage);
 
                         dictionaryOfOutPages[pageFilters[i]] = listOfFilterOut;
+
+                        editPage.DictionaryOfOutPages = dictionaryOfOutPages;
                     }
                 }
             }
@@ -986,6 +981,8 @@ public class PageInfoController(
                             linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
 
                             _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+
+                            editPage.LinksToPagesByGuid = linksToPagesByGuid;
                         }
                     }
                 }
@@ -1010,6 +1007,8 @@ public class PageInfoController(
                             linksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
 
                             _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+
+                            editPage.LinksToPagesByGuid2 = linksToPagesByGuid2;
                         }
                     }
                 }
@@ -1034,6 +1033,8 @@ public class PageInfoController(
                         _ = pages.OrderBy(p => p.SortOfPage);
 
                         dictionaryOfLinksByPageFilterOut[pageFiltersOut[i]] = pages;
+
+                        editPage.DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut;
                     }
                 }
             }
@@ -1067,6 +1068,8 @@ public class PageInfoController(
                         };
 
                         dictionaryOfLinksByVideoFilterOut[videoFilterOut[i]] = videoLinksViewModel;
+
+                        editPage.DictionaryOfLinksByVideoFilterOut = dictionaryOfLinksByVideoFilterOut;
                     }
                 }
             }

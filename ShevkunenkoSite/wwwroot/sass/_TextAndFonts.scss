@@ -85,10 +85,9 @@ p {
 // SM
 @media only screen and (max-width: 576px) {
     .fontadaptive {
-        font-size: 9px;
+        font-size: 8px;
     }
 }
-
 
 // MD
 @media only screen and (min-width: 577px) and (max-width: 768px) {
@@ -96,7 +95,6 @@ p {
         font-size: 9px;
     }
 }
-
 
 // LG
 @media only screen and (min-width: 769px) and (max-width: 992px) {

@@ -11,7 +11,7 @@ public class ImageFileModel
 
     #endregion
 
-    #region Описание
+    #region Название и описание
 
     [Required(ErrorMessage = "Введите название картинки")]
     [DataType(DataType.Text)]
@@ -26,6 +26,10 @@ public class ImageFileModel
     [Display(Name = "Описание картинки :")]
     public string ImageDescription { get; set; } = string.Empty;
 
+    #endregion
+
+    #region Теги  «alt» и «title»
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
@@ -33,15 +37,31 @@ public class ImageFileModel
     [Display(Name = "Свойства «alt» и «title» :")]
     public string ImageAltTitle { get; set; } = string.Empty;
 
+    #endregion
+
+    #region Каталог картинки
+
     [DataType(DataType.Text)]
     [Display(Name = "Каталог картинки :")]
     public string ImagePath { get; set; } = "images";
+
+    #endregion
+
+    #region Фильтры поиска
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Фильтры поиска: ")]
     public string SearchFilter { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Индекс сортировки
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Индекс сортировки:")]
+    public int SortOfPicture { get; set; } = 1;
 
     #endregion
 
