@@ -1,0 +1,161 @@
+Рендеринг на сервере
+
+Статический рендеринг
+
+Самая простая модель рендеринга в приложении Blazor представляет статический рендеринг на сервере. 
+Так, создадим новый проект Blazor по типу Blazor Web App.
+
+При создании проекта для опции Interactive render mode укажем значение 
+None (интерактивность по умолчанию отсутствует). И также снимем отметку 
+с поля Include sample pages, чтобы проект был предельно простым:
+
+https://metanit.com/sharp/blazor/pics/1.34.png
+
+Для создания аналогичного проекта с помощью .NET CLI применяется команда
+
+dotnet new blazor -o ServerBlazorApp -e --interactivity None
+
+В итоге у нас получится следующий проект:
+
+https://metanit.com/sharp/blazor/pics/1.35.png
+
+В чем отличительные особенности проекта со статическим рендерингом? Посмотрим на файл Program.cs:
+
+using StaticBlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents();
+ 
+var app = builder.Build();
+ 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
+}
+ 
+app.UseHttpsRedirection();
+ 
+app.UseStaticFiles();
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>();
+ 
+app.Run();
+
+Для приложения Blazor здесь важны два момента. Прежде всего добавляем сервисы 
+для работы с компонентами Razor:
+
+builder.Services.AddRazorComponents();
+
+Затем устанавливаем корневой компонент приложения - App:
+
+app.MapRazorComponents<App>();
+
+Благодаря этому компоненты Blazor внутри компонента App смогут сопоставляться с запросами.
+
+Эти два метода позволяют определить базовое приложение Blazor. Однако оно 
+не применяет никакой интерактивности, только статический рендеринг.
+
+В папке "Components/Pages" есть один базовый компонент, которые сопоставляется 
+с запросами - Home.razor
+
+Мы можем запустить проект и попереходить по ссылкам, обращаясь к компонентам:
+
+https://metanit.com/sharp/blazor/pics/1.36.png
+
+Тем не менее поддержка интерактивности в проекте отсутствует. Для теста изменим 
+данный компонент следующим образом:
+
+@page "/"
+ 
+<PageTitle>Home</PageTitle>
+ 
+<h1>Hello, world!</h1>
+ 
+<button @onclick="IncrementCount">Click</button>
+
+<p>Count: @count</p>
+
+@code {
+    int count = 0;
+    void IncrementCount() => count++;
+}
+
+Теперь компонент определяет кнопку, по нажатию на которую срабатывает метод IncrementCount, 
+увеличивая значение переменной count. То есть мы предполагаем некоторую интерактивность - нажимаем 
+на кнопку, счетчик увеличивается и изменяется содержимое страницы. Тем не менее поскольку 
+интерактивность не подключена, нажатия на кнопку не будут иметь никакого смысла, 
+а счетчик count все время будет равен 0:
+
+https://metanit.com/sharp/blazor/pics/1.37.png
+
+Соответственно такой тип рендеринга подходит для статических сайтов, где не нужна интерактивность, 
+и в тоже время можно сочетать различные преимущества Blazor, типа организации веб-приложения, 
+установку общего макета веб-страниц.
+
+Интерактивный рендеринг на сервере
+
+Для поддержки на сервере интерактивного рендеринга изменим файл Program.cs следующим образом:
+
+Здесь опять же важны два момента. Прежде всего нам надо добавить необходимые сервисы 
+для поддержки интерактивного рендеринга на сервере:
+
+AddInteractiveServerComponents()
+
+Далее непосредственно устанавливаем режим интерактивного рендеринга:
+
+AddInteractiveServerRenderMode()
+
+После этого надо настроить режим рендеринга для компонентов. Это можно сделать как для всех компонентов 
+приложения глобально, так и для отдельных компонентов. Для применения режима рендеринга для компонентов 
+применяется директива @rendermode, которая получает одно из значений перечисления 
+Microsoft.AspNetCore.Components.Web.RenderMode:
+
+•   InteractiveServer
+
+•   InteractiveWebAssembly
+
+•   InteractiveAuto
+
+Соответственно, чтобы применить рендеринг на сервере, надо использовать значение InteractiveServer. 
+Так, изменим компонент Home.razor следующим образом:
+
+@page "/"
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@rendermode InteractiveServer
+ 
+<PageTitle>Home</PageTitle>
+ 
+<h1>Hello, world!</h1>
+ 
+<button @onclick="IncrementCount">Click</button>
+
+<p>Count: @count</p>
+
+@code {
+    int count = 0;
+    void IncrementCount() 
+    {
+        count++;
+        Console.WriteLine($"count: {count}");
+    }
+}
+
+Здесь сначала импортируем перечисление RenderMode
+
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
+В реальности его не надо импортировать для каждого компонента, и обычно оно импортируется 
+в файле _Imports.razor сразу для всех компонентов.
+
+Затем собственно применяем режим рендеринга:
+
+@rendermode InteractiveServer
+
+Запустим сервер, и благодаря соединению SignalR между сервером и клиентом будет происходить 
+взаимодействие. При нажати на кнопку на сервере выполнится метод IncrementCount, который 
+увеличивает переменную count, клиент получить результат работы сервера и обновит код страницы.
+
+https://metanit.com/sharp/blazor/pics/1.38.png

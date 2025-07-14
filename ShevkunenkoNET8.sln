@@ -447,9 +447,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 01 - Введе�
 	ProjectSection(SolutionItems) = preProject
 		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page01 - Что такое Blazor.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page01 - Что такое Blazor.txt
 		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page02 - Первое приложение на Blazor.txt
+		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page03 - Рендеринг на сервере.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page03 - Рендеринг на сервере.txt
+		Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page05 - Добавление Blazor в проект ASP.NET Core.txt = Metanit.com\Blazor\Глава 01 - Введение в Blazor\Page05 - Добавление Blazor в проект ASP.NET Core.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloBlazorApp", "Metanit.com\Blazor\Глава 01 - Введение в Blazor\HelloBlazorApp\HelloBlazorApp.csproj", "{D6859EAF-13E2-4925-80E8-2BB244EC3635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddBlazorToAspNetCore", "Metanit.com\Blazor\Глава 01 - Введение в Blazor\AddBlazorToAspNetCore\AddBlazorToAspNetCore.csproj", "{11589F4D-1CB1-40C8-B471-C7B4A9B27B57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticRendering", "Metanit.com\Blazor\Глава 01 - Введение в Blazor\StaticRendering\StaticRendering.csproj", "{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -629,6 +635,14 @@ Global
 		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6859EAF-13E2-4925-80E8-2BB244EC3635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11589F4D-1CB1-40C8-B471-C7B4A9B27B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11589F4D-1CB1-40C8-B471-C7B4A9B27B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11589F4D-1CB1-40C8-B471-C7B4A9B27B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11589F4D-1CB1-40C8-B471-C7B4A9B27B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -694,6 +708,8 @@ Global
 		{44D5B14D-F2FD-4FEE-947B-2E6D975FE935} = {903275A2-A9B0-43E1-A13C-A089F3E48289}
 		{E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0} = {44D5B14D-F2FD-4FEE-947B-2E6D975FE935}
 		{D6859EAF-13E2-4925-80E8-2BB244EC3635} = {E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0}
+		{11589F4D-1CB1-40C8-B471-C7B4A9B27B57} = {E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0}
+		{4F3955D1-2B8C-4C6D-AD6A-FE403EEA7145} = {E9B90DF4-60DA-4EA0-9FCC-973AFE3CD8A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

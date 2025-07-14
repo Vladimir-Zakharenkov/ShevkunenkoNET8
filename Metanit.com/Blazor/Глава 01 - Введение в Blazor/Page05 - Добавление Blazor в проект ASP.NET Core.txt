@@ -1,0 +1,184 @@
+Добавление Blazor в проект ASP.NET Core
+
+.NET CLI и Visual Studio уже по умолчанию предоставляет шаблоны проектов для использования Blazor. Подобные шаблоны проектов 
+имеют некоторое типовое содержимое, что позволяет нам тут же запустить и протестировать проект. Тем не менее мы можем 
+взять и обычный проект ASP.NET Core и с нуля добавить в него все необходимые файлы. Потому что и стандартный 
+проект ASP.NET Core, и проект Blazor используют один и тот же SDK - Microsoft.NET.Sdk.Web. Рассмотрим, 
+как добавить функциональность Blazor в проект ASP.NET Core и вообще как можно сочетать стандартную 
+функциональность ASP.NET Core и компоненты Blazor.
+
+Для этого в качестве типа проекта выберем ASP.NET Core Empty:
+
+https://metanit.com/sharp/blazor/pics/1.12.png
+
+Основным стоительным блоком приложения Blazor являются компоненты. Определим один компонент. 
+Для этого в корень проекта добавим новый элемент Razor Component, который назовем App.razor:
+
+https://metanit.com/sharp/blazor/pics/1.13.png
+
+То есть в итоге проект будет выглядеть следующим образом:
+
+https://metanit.com/sharp/blazor/pics/1.32.png
+
+Первая строка - директива @page указывает, что данный компонент будет обрабатывать запросы по пути "/app". 
+И далее идут заголовки, которые собственно составляют содержимое компонента.
+
+В идеале мы могли бы определить здесь полноценную веб-страницу с более сложной структурой, 
+добавить более сложную логику, маршрутизацию и кучу компонентов, но пока остановимся на этом 
+и будем идти от простого.
+
+Но пока по умолчанию данный компонент никак не участвует в обработке запроса. Нам надо его встроить 
+в конвейер обработки запроса. И для этого изменим файл Program.cs следующим образом:
+
+using SimpleBlazorApp;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents();  // добавляем сервисы компонентов Razor
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+// устанавливает корневой компонент и встраиваем его в конвейер обработки запроса
+app.MapRazorComponents<App>();  
+ 
+app.MapGet("/", () => "Hello World!");
+ 
+app.Run();
+
+Прежде всего нам надо добавить необходимые сервисы для работы с компонентами Razor:
+
+builder.Services.AddRazorComponents();
+
+После создания объекта приложения app у него вызывается метод MapRazorComponents().
+
+app.MapRazorComponents<App>();
+
+Данный метод устанавливает корневой компонент - в данном случае компонент App и встраивает его 
+(все его вложенные компоненты) в конвейер обработки запроса. Таким образом, компонент 
+App сможет сопоставляться с запросами.
+
+Для работы компонентов Blazor также необходимо установить middleware для защиты от поддельных ресурсов:
+
+app.UseAntiforgery();
+
+При этом в проекте могут быть и стандартные middleware ASP.NET Core, разработчики других запросов.
+
+Запустим приложение, обратимся в браузере по пути "/app" и увидим код нашего компонента:
+
+https://metanit.com/sharp/blazor/pics/1.16.2.png
+
+Добавление интерактивности
+
+В примере выше был продемонстрирован статический рендеринг компонента. Но простой компонент, 
+который выводит статический текст, не очень интересен. Добавим интерактивность. Однако ограничение Blazor таково, 
+что корневой компонент не может быть интерактивным. Поэтому добавим в проект еще один компонент, 
+который назовем Counter, а также добавим дополнительный файл _Imports.razor:
+
+https://metanit.com/sharp/blazor/pics/1.33.png
+
+В файле _Imports.razor подключим ряд пространств имен, которые будут использоваться в обоих компонентах:
+
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
+Далее изменим компонент App следующий код:
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>METANIT.COM</title>
+    </head>
+    <body>
+ 
+    <h1>Hello METANIT.COM</h1>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData"  />
+        </Found>
+    </Router>
+ 
+    <script src="_framework/blazor.web.js"></script>
+    </body>
+</html>
+
+Теперь компонент App представляет полноценную веб-страницу, в которую встроен компонент Router. 
+Его атрибут AppAssembly указывает на сборку, в которой следует искать запрошенные вложенные компоненты 
+(в нашем случае компонент Counter). Если c запрошенным путем сопоставлен определенный компонент, 
+то он рендерится вложенный компонент Found. Компонент Found содержит другой компонент - RouteView. 
+Через атрибут RouteData он получает контекст маршрутизации, который будут использоваться при обработке запроса.
+
+В файле Counter.razor определим следующий код:
+
+@page "/app"
+@rendermode InteractiveServer
+ 
+ 
+<p>Count: @currentCount</p>
+<button @onclick="IncrementCount">+</button>
+<button @onclick="DecrementCount">-</button>
+ 
+@code {
+    private int currentCount = 0;
+ 
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+     
+    private void DecrementCount()
+    {
+        if(currentCount > 0) currentCount--;
+    }
+}
+
+Первая строка - директива @page "/app" позволяет настроить данный компонент на обработку 
+запросов по пути "/app". Вторая строка:
+
+@rendermode InteractiveServer
+
+устанавливает для компонента режим рендеринга на стороне сервера.
+
+Суть компонента - по нажатию на одну из кнопок происходит увеличение или уменьшение счетчика currentCount, 
+который выводится на страницу. И поскольку для компонента установлен рендеринг на стороне сервера, 
+то эти действия будут выполняться на сервере.
+
+И внизу компонента подключается скрипт _framework/blazor.web.js. Это автогенерируемый скрипт, нам не надо 
+его специально подключать. Его роль заключается в установке подключения SignalR с сервером, 
+что и обеспечивает интерактивность.
+
+Последний шаг в установке интерактивности состоит в изменении файла Program.cs:
+
+using SimpleBlazorApp;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+        .AddInteractiveServerComponents();  // добавляем сервисы для серверного рендеринга
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();  // добавляем интерактивный рендеринг сервера 
+ 
+app.MapGet("/", () => "Hello World!");
+ 
+app.Run();
+
+Здесь вначале добавляем сервисы для обеспечения интерактивного рендеринга на стороне сервера:
+
+AddInteractiveServerComponents()
+
+Далее с помощью метода
+
+AddInteractiveServerRenderMode()
+
+устанавливаем собственно режим интерактивного рендеринга уровня сервера.
+
+Запустим проект и снова обратимся по пути "/app":
+
+https://metanit.com/sharp/blazor/pics/1.16.3.png
