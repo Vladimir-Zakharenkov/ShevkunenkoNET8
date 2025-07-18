@@ -50,6 +50,7 @@
     <None Include="DataConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Views\Shared\Components\Blazor\_Host.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

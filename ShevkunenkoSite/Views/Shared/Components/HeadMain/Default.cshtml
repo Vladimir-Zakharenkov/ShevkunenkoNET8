@@ -2,6 +2,11 @@
 
 <head>
 
+    @* Для работы Blazor в проекте ASP.NET Core MVC*@
+    <base href="~/" />
+    <component type="typeof(Microsoft.AspNetCore.Components.Web.HeadOutlet)"
+               render-mode="ServerPrerendered" />
+
     <meta charset="UTF-8">
     <title>@Model.PageInfo.PageTitle</title>
     <meta name="description" content="@Model.PageInfo.PageDescription" />

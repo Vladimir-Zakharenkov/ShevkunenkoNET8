@@ -1,5 +1,3 @@
-using System.Text;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -18,10 +16,20 @@ IWebHostEnvironment environment = builder.Environment;
 
 IServiceCollection services = builder.Services;
 
-// Работа с MVC
+#region Работа с Blazor
+
+builder.Services.AddServerSideBlazor();
+
+#endregion
+
+#region Работа с MVC
+
 services.AddControllersWithViews();
 
-// Работа с RazorPages
+#endregion
+
+#region Работа с RazorPages
+
 services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeAreaPage("Admin", "/Index");
@@ -29,6 +37,8 @@ services.AddRazorPages(options =>
     options.Conventions.AddPageRoute("/Sitemap", "sitemap.xml");
     options.Conventions.AddPageRoute("/Robots", "robots.txt");
 });
+
+#endregion
 
 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -40,6 +50,7 @@ services.Configure<RazorViewEngineOptions>(options =>
 {
     options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.PageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.PageViewLocationFormats.Add("/Views/Shared/Components/Blazor/{0}" + RazorViewEngine.ViewExtension);
 
     options.AreaPageViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.AreaPageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
@@ -48,6 +59,7 @@ services.Configure<RazorViewEngineOptions>(options =>
     options.ViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
+    options.ViewLocationFormats.Add("/Views/Shared/Components/Blazor/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
 
     options.AreaViewLocationFormats.Clear();
@@ -171,6 +183,10 @@ app.MapControllerRoute(
         pattern: "{controller=Shevkunenko}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.MapBlazorHub();
+
+app.MapFallbackToController("Blazor", "Shevkunenko");
 
 #endregion
 
