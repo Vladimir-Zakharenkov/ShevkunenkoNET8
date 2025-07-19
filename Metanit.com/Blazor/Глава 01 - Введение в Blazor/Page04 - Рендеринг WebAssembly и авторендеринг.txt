@@ -226,3 +226,72 @@ Blazor примен€етс€ рендеринг в WebAssembly.
 “ак, возьмем выше созданный проект и применим в автоматический рендеринг. ѕрежде всего изменим 
 файл Program.cs в главном проекте:
 
+using ClientBlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+    .AddInteractiveWebAssemblyComponents()
+    .AddInteractiveServerComponents();
+ 
+var app = builder.Build();
+ 
+if (app.Environment.IsDevelopment())
+{
+    app.UseWebAssemblyDebugging();
+}
+else
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
+}
+ 
+app.UseHttpsRedirection();
+ 
+app.UseStaticFiles();
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(ClientBlazorApp.Client._Imports).Assembly);
+ 
+app.Run();
+
+ѕрежде всего подключаем сервисы дл€ интерактивного рендеринга как стороны клиента, так и стороны сервера
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveWebAssemblyComponents()
+    .AddInteractiveServerComponents();
+
+ роме того, примен€ем оба типа рендеринга:
+
+app.MapRazorComponents<App>()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(ClientBlazorApp.Client._Imports).Assembly);
+
+—тоит отметить, что компоненты, которые примен€ют автоматический рендеринг, должны располагатьс€ 
+в отдельном проекте WebAssembly. ¬ нашем случае уже ранее был определен компонент Counter. 
+ѕрименим к нему автоматический рендеринг:
+
+@page "/counter"
+@rendermode InteractiveAuto
+ 
+<h1>Counter</h1>
+ 
+<button @onclick="IncrementCount">Click</button>
+<p>Count: @count</p>
+ 
+@code {
+    int count = 0;
+ 
+    void IncrementCount()
+    {
+        count++;
+    }
+}
+
+ѕрименение автоматического рендеринга на уровне компонента заключаетс€ в использовании директивы:
+
+@rendermode InteractiveAuto
