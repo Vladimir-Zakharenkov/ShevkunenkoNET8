@@ -1,0 +1,27 @@
+﻿@page "/"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>METANIT.COM</title>
+    <base href="/" />
+    <link href="HelloEugene.styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <h1>@Message @name</h1>
+    <h2>@DisplayTime()</h2>
+    <div>@html</div>
+    <div>@((MarkupString)html)</div>
+</body>
+</html>
+@code {
+    string name = "Eugene";
+    string html = "<h1>Hello Metanit.com</h1>";
+    string DisplayTime()
+    {
+        return $"Current time: {DateTime.Now.ToString("HH:mm:ss")}";
+    }
+    string Message { get; } = "Hello";
+}
+

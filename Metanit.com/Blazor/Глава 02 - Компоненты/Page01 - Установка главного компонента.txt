@@ -1,0 +1,157 @@
+Компоненты
+
+Установка главного компонента
+
+Работа собственно приложения Blazor начинается с вызова главного компонента приложения, в рамках которого 
+разворачиваются все остальные компоненты. Приложение может иметь множество компонентов. 
+Но только один из них является корневым, главным. Так, возьмем простейший проект с одним компонентом 
+App.razor, который помещен в папку Components:
+
+https://metanit.com/sharp/blazor/pics/2.12.png
+
+Для установки корневого компонента он должен быть установлен в файле Program.cs:
+
+using BlazorApp.Components; // Пространство имен компонента App
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents();
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>();
+ 
+app.Run();
+
+Прежде всего добавляем сервисы для работы с компонентами с помощью метода AddRazorComponents():
+
+builder.Services.AddRazorComponents();
+
+Для установки корневого компонента применяется метод MapRazorComponents(), который типизируется 
+типом главного компонента:
+
+app.MapRazorComponents<App>();
+
+Обычно главный компонент называется App (App.razor), но в реальности имя может быть любым.
+
+Кроме того, если компоненты или вообще приложение используют статические файлы, то добавляется соответствующий middleware:
+
+app.UseStaticFiles();
+
+Кроме того, компоненты Razor используют механизм защиты от подделки (antiforgery-токены), 
+поэтому также добавляется специальный middleware:
+
+app.UseAntiforgery();
+
+Пусть компонент App.razor имеет следующий код:
+
+@page "/"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>METANIT.COM</title>
+    <base href="/" />
+</head>
+ 
+<body>
+    <h1>Hello METANIT.COM</h1>
+</body>
+</html>
+
+По большому счету это код простейшей веб-страницы за одним исключением: в начале идет директива 
+@page "/", которая позволяет связать данный компонент с запросами по пути "/", то есть с запросами 
+к корню сайта. И компонент App будет обрабатывать подобные запросы.
+
+И если мы запустим проект, то в веб-браузере увидим содержимое этого компонента:
+
+https://metanit.com/sharp/blazor/pics/2.56.png
+
+Хостирование компонента на странице Razor/представлении MVC
+
+Выше рассмотренная модель, которая предлагается по умолчанию и при которой вся веб-страница определяется 
+корневым компонентом, не единственная. При вызове главного компонента в коде страницы Razor Page, либо 
+в представлении MVC можно использовать два способа: tag-хелпер <component> 
+и html-хелпер Html.RenderComponentAsync().
+
+Например, добавим в проект новую страницу Razor Page (Visual Studio Razor Page - Empty), которую назовем _Host.cshtml
+
+https://metanit.com/sharp/blazor/pics/2.55.png
+
+По умолчанию страницы Razor помещаются в папку Pages:
+
+https://metanit.com/sharp/blazor/pics/2.7.png
+
+Tag-хелпер <component>
+
+Например, у нас есть следующий компонент App_test в файле App.razor:
+
+<h1>Hello METANIT.COM</h1>
+<h2>Первое приложение на Blazor</h2>
+
+Для вызова этого компонента определим на странице Host.cshtml следующий код:
+
+@page "/"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using BlazorApp.Components
+@{
+    Layout = null;
+}
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>METANIT.COM</title>
+    <base href="~/" />
+</head>
+<body>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+</body>
+</html>
+
+Перед использованием tag-хелпера <component> следует не забывать подключать в представление 
+соответствующий хелпер из пространства имен Microsoft.AspNetCore.Mvc.TagHelpers.
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+Основные два свойства тега component - это свойство Type и свойство RenderMode, значения которых 
+устанавливаются через соответствующие атрибуты. Эти два атрибута мы обязательно должны указать.
+
+Атрибут type получает тип компонента, который надо отобразить. Атрибут render-mode задает 
+способ рендеринга компонента. Способы рендеринга будут рассмотрены далее.
+
+В итоге на веб-странице мы увидит содержимое, определяемое компонентом App:
+
+https://metanit.com/sharp/blazor/pics/2.8.png
+
+Метод Html.RenderComponentAsync()
+
+Вызов с помощью метода Html.RenderComponentAsync() на странице _Host.cshtml:
+
+@page "/"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using BlazorApp.Components
+@{
+    Layout = null;
+}
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>METANIT.COM</title>
+    <base href="~/" />
+</head>
+<body>
+    @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
+</body>
+</html>
+
+Метод RenderComponentAsync типизируется классом компонента (в данном случае - класс App), 
+а в качестве параметра в него передается значение перечисления RenderMode (в данном случае 
+RenderMode.ServerPrerendered), которое задает способ рендеринга компонента.
+
+Результат будет аналогичен использованию tag-хелпера <component> в примере выше.

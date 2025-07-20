@@ -58,8 +58,12 @@ public class Shevkunenko(
 
     public IActionResult Error404() => View();
 
+    #region Для запуска Blazor
+
     public IActionResult Blazor()
     {
         return View("_Host");
     }
+
+    #endregion
 }

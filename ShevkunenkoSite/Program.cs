@@ -1,3 +1,5 @@
+using ShevkunenkoSite.Views.Shared.Components.Blazor;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -20,6 +22,8 @@ IServiceCollection services = builder.Services;
 
 builder.Services.AddServerSideBlazor();
 
+builder.Services.AddRazorComponents();
+
 #endregion
 
 #region Работа с MVC
@@ -40,16 +44,23 @@ services.AddRazorPages(options =>
 
 #endregion
 
+#region Подключить аутентификацию
+
 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = new PathString("/Admin/Login");
     });
 
+#endregion
+
+#region Указать пути поиска файлов
+
 services.Configure<RazorViewEngineOptions>(options =>
 {
     options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.PageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.PageViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
     options.PageViewLocationFormats.Add("/Views/Shared/Components/Blazor/{0}" + RazorViewEngine.ViewExtension);
 
     options.AreaPageViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
@@ -73,7 +84,15 @@ services.Configure<RazorViewEngineOptions>(options =>
     options.AreaViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
 });
 
+#endregion
+
+#region Кодирование в Unicode
+
 services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
+
+#endregion
+
+#region RouteOptions
 
 services.Configure<RouteOptions>(options =>
 {
@@ -82,9 +101,21 @@ services.Configure<RouteOptions>(options =>
     options.AppendTrailingSlash = true;
 });
 
+#endregion
+
+#region MemoryCache
+
 builder.Services.AddDistributedMemoryCache();
 
+#endregion
+
+#region AddSession
+
 builder.Services.AddSession();
+
+#endregion
+
+#region AddWebMarkupMin
 
 services.AddWebMarkupMin(
         options =>
@@ -101,6 +132,8 @@ services.AddWebMarkupMin(
             })
         //.AddXmlMinification()
         .AddHttpCompression();
+
+#endregion
 
 #region Работа с базой данных
 
@@ -184,9 +217,17 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
+#endregion
+
+#region Для запуска Blazor
+
+app.UseAntiforgery();
+
 app.MapBlazorHub();
 
 app.MapFallbackToController("Blazor", "Shevkunenko");
+
+app.MapRazorComponents<App>();
 
 #endregion
 

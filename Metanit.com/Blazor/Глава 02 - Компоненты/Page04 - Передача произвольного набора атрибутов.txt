@@ -1,0 +1,119 @@
+Передача произвольного набора атрибутов
+
+В прошлой теме для передачи во вложенный компонент в компоненте для каждого атрибута определялось 
+свое свойство-параметр. Но компоненты могут использовать также дополнительные произольные атрибуты 
+в добавление к свойствам-параметрам. Подобные атрибуты могут передаваться через словарь 
+Dictionary с помощью директивы @attributes и затем они будут использоваться при ренедеринге элемента.
+
+Данная функциональноcть может быть полезна при определении элемента, для которого может быть 
+не определен точный набор атрибутов, либо мы точно не знаем, какие данные будут передаватся в элемент.
+
+Например, пусть у нас есть компонент Home со следующим кодом:
+
+<div>@Title</div>
+<input id="userAge" @attributes="InputAttributes" />
+ 
+@code{
+    public string Title { get; set; } = "Input Age";
+ 
+    public Dictionary<string, object> InputAttributes { get; set; } =
+        new()
+        {
+            {"type", "number" },
+            { "min", "1" },
+            { "max", "99" },
+            { "placeholder", "Input age" },
+            { "style", "width:150px;" }
+        };
+}
+
+В элемент <input /> через директиву @attributes передается набор атрибутов в виде свойства InputAttributes, 
+которое представляет свойство Dictionary<string, object>. Директива @attributes должна принимать объект типа, 
+который реализует интерфейс IEnumerable<KeyValuePair<string, object>>. И объект Dictionary<string, object> 
+как раз является таким объектом.
+
+Само свойство InputAttributes содержит ряд элементов, каждый из которых представляет связку 
+атрибут - значение атрибута. Например, элемент {"type", "number" } предполагает, 
+что для элемента input будет устанавливаться атрибут type = "number".
+
+В итоге вместо элемента
+
+<input id="userAge" @attributes="InputAttributes" />
+
+будет сгенерирован элемент:
+
+<input id="userAge" type="number" min="1" max="99" placeholder="Input age" style="width:150px;">
+
+Передача атрибутов из главного в дочерний компонент
+
+Подобным образом мы можем передавать произвольный набор атрибутов из главного 
+в дочерний компонент. Допустим, у нас главный компонент App.razor и вложенный - Home.razor.
+
+Определим следующий компонент Home:
+
+<div>@Title</div>
+<input id="userAge" @attributes="InputAttributes" />
+ 
+@code{
+    [Parameter]
+    public string Title { get; set; } = "";
+ 
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? InputAttributes { get; set; }
+}
+
+Чтобы получить набор атрибутов из вне, для свойства InputAttributes устанавливается 
+атрибут [Parameter(CaptureUnmatchedValues = true)]. Свойство CaptureUnmatchedValues 
+класса атрибута Parameter позволяет сопоставить со свойством InputAttributes 
+все остальные атрибуты, которые не соответствуют параметрам данного компонента.
+
+Теперь вызовем этот компонент в главном компоненте App:
+
+@page "/"
+ 
+<Home Title="Input Age" InputAttributes="Attributes" />
+ 
+@code{
+ 
+    public Dictionary<string, object> Attributes { get; set; } =
+        new Dictionary<string, object>()
+        {
+            {"type", "number" },
+            { "min", "1" },
+            { "max", "99" },
+            { "placeholder", "Input age" },
+            { "style", "width:150px;" }
+        };
+}
+
+Здесь также через атрибут InputAttributes в компонент Home передается объект Dictionary<string, object>, 
+который представляет набор атрибутов.
+
+Стоит также отметить, что мы могли бы передать данные в компонент Home и через директиву @attributes:
+
+@page "/"
+ 
+<Home Title="Input Age" @attributes="Attributes" />
+ 
+@code{
+ 
+    public Dictionary<string, object> Attributes { get; set; } =
+        new ()
+        {
+            {"type", "number" },
+            { "min", "1" },
+            { "max", "99" },
+            { "placeholder", "Input age" },
+            { "style", "width:150px;" }
+        };
+}
+
+В качестве альтернативы мы могли бы передать атрибуты по отдельности, а не в виде словаря:
+
+<Home Title="User Age" Max="45" Min="18" Placeholder="Input age" />
+
+В этом случае компонент Home получил бы значения атрибутов Max, Min и Placeholder через 
+свойство Dictionary<string, object> InputAttributes { get; set; }, потому что к нему применяется 
+атрибут [Parameter(CaptureUnmatchedValues = true)], и, следовательно, все атрибуты, 
+для которых в компоненте нет соответствующих свойств-параметров, будут попадать 
+в это свойство InputAttributes.

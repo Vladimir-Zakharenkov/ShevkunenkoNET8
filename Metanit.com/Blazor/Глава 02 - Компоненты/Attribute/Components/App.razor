@@ -1,0 +1,17 @@
+﻿@page "/"
+@using Attribute.Components.Pages
+ 
+<Home Title="Input Age" InputAttributes="Attributes" />
+ 
+@code{
+ 
+    public Dictionary<string, object> Attributes { get; set; } =
+        new Dictionary<string, object>()
+        {
+            {"type", "number" },
+            { "min", "1" },
+            { "max", "99" },
+            { "placeholder", "Input age" },
+            { "style", "width:150px;" }
+        };
+}

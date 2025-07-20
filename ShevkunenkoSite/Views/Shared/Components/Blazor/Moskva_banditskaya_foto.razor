@@ -1,0 +1,40 @@
+﻿@page "/moskva-banditskaya/foto"
+
+<hr class="liniya w-75" />
+
+<h1 class="text_shadow">
+    Москва бандитская (фото)
+    <br />
+    <span class="h2">
+        страница @TestRef?.Count
+    </span>
+</h1>
+
+<hr class="liniya w-75" />
+
+@foreach (var (caption, listOfPictures) in TestRef!)
+{
+    if (listOfPictures.Count > 0)
+    {
+        <h2 class="text_shadow mt-4">@caption (фото)</h2>
+
+        <hr class="liniya w-75" />
+
+    }
+}
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    [Parameter]
+    public Dictionary<string, List<ImageFileModel>>? TestRef { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
