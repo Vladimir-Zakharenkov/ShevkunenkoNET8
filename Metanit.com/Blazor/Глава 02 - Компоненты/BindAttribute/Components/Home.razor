@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+
+<div>
+    <input @bind-value="number" @bind-value:event="oninput" />
+    <p>@number</p>
+
+</div>
+
+@code {
+    double number = 23.8;
+}
