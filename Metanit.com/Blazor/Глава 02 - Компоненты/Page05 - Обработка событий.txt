@@ -1,2 +1,39 @@
 Обработка событий
 
+Компоненты Blazor поддерживают обработку событий и интерактивность. Для рассмотрения 
+обработчика событий определим следующий проект с двумя компонентами App.razor и Counter.razor:
+
+https://metanit.com/sharp/blazor/pics/2.58.png
+
+Если элемент html имеет атрибуты вида on{СОБЫТИЕ}, которые позволяют связать событие с некоторой 
+функцией javascript (например, атрибут onclick), то Blazor предоставляет их двойники - атрибуты типа @on{СОБЫТИЕ}, 
+которые позволяют прикрепить к событию в качестве обработчика метод компонента.
+
+Однако обработка событий предполагает интерактивность. Поэтому в файле Program.cs определим следующий код:
+
+using BlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+ 
+app.Run();
+
+В данном случае будем использовать интерактивность на сервере (при желании в качестве альтернативы можно 
+использовать интерактивный рендеринг на клиенте). Для этого устанавливаем соответствующие сервисы:
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+И устанавливаем в качестве корневого компонента App и применяем интерактивный рендеринг на стороне сервера.
+
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();

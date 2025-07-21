@@ -482,6 +482,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestedComponents", "Metanit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attribute", "Metanit.com\Blazor\Глава 02 - Компоненты\Attribute\Attribute.csproj", "{B13745BD-2B6E-4379-AD4C-80F036CDBD10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandler", "Metanit.com\Blazor\Глава 02 - Компоненты\EventHandler\EventHandler.csproj", "{82F8FEC1-0728-437F-8BC8-2582AABC0D68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -696,6 +698,10 @@ Global
 		{B13745BD-2B6E-4379-AD4C-80F036CDBD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B13745BD-2B6E-4379-AD4C-80F036CDBD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B13745BD-2B6E-4379-AD4C-80F036CDBD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -771,6 +777,7 @@ Global
 		{3EB857DA-B993-4B41-B287-9A674E61B08E} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{67337A40-F218-4678-A242-4E37145F1192} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{B13745BD-2B6E-4379-AD4C-80F036CDBD10} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
+		{82F8FEC1-0728-437F-8BC8-2582AABC0D68} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}
