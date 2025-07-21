@@ -37,3 +37,251 @@ builder.Services.AddRazorComponents()
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+Ограничение интерактивности в Blazor таково, что корневой компонент не может быть интерактивным. 
+Поэтому в компоненте App, который является корневым, будем использовать второй компонент - Counter
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <Counter />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+Но здесь также надо отметить одну вещь. Поскольку в нашем случае интерактивный рендеринг происходит 
+на стороне сервера и все события будут обрабатываться на стороне сервера, то нам надо устанавливать 
+соединение между клиентом и сервером посредством SignalR. Для этого в корневом компоненте 
+подключаем скрипт "_framework/blazor.web.js". Это автогенерируемый скрипт, его не надо вручную создавать.
+
+И определим следующий компонент Counter:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+ 
+<button @onclick="IncrementCount">+</button>
+<span>@currentCount</span>
+<button @onclick="DecrementCount">-</button>
+ 
+ 
+@code {
+    int currentCount;
+ 
+    void IncrementCount()
+    {
+        currentCount++;
+    }
+    void DecrementCount()
+    {
+        if (currentCount > 0) currentCount--;
+    }
+}
+
+Прежде всего стоит отметить, что поддержка привязки событий сосредоточена в пространстве имен 
+Microsoft.AspNetCore.Components.Web. Поэтому подключаем данное пространство имен:
+
+@using Microsoft.AspNetCore.Components.Web
+
+В частности, в этом пространстве имен определен класс EventHandlers, который конфигурирует 
+сопоставление между именами событий и типами аргументов события. Собственно в определении 
+классов можно посмотреть все поддерживаемые типы событий.
+
+Поскольку компонент применяет интерактивный рендеринг на стороне сервера, то устанавливаем 
+соответствующий режим рендеринга с помощью директивы @rendermode:
+
+@rendermode RenderMode.InteractiveServer
+
+Для этого директиве передается константа InteractiveServer из перечисления 
+"Microsoft.AspNetCore.Components.Web.RenderMode".
+
+Html-элемент <button> представляет кнопку, поддерживает атрибут onclick и позволяет при нажатии 
+кнопки вызвать какую-нибудь функцию javascript. Поэтому Blazor предоставляет для этого атрибута 
+его аналог @onclick. В качестве значению этому атрибуту можно передать один из методов компонента.
+
+В данном случае определены две кнопки, которые связаны с методами IncrementCount и DecrementCount. 
+Метод IncrementCount вызывает увеличение значения переменной currentCount, 
+а метод DecrementCount - ее уменьшение.
+
+https://metanit.com/sharp/blazor/pics/2.22.png
+
+Аргументы события
+
+Обработчики событий могут принимать различные аргументы. В начале статьи по ссылке на описание 
+класса EventHandlers можно найти, какие именно аргументы каких типов принимает то или иное событие. 
+Например, обработчик события нажатия кнопки может принимать аргумент типа MouseEventArgs, 
+который с помощью следующих свойств передает некоторую информацию о событии:
+
+•   AltKey: указывает, нажата ли клавиша Alt
+
+•   Button: хранит номер нажатой клавиши мыши (0 - левая клавиша, 1 - средняя, 2 - правая)
+
+•   Buttons: хранит номер нажатых клавиш, если нажато несколько клавиш, возвращается их логическая сумма
+
+•   ClientX: возвращает значение X координаты нажатия в локальных координатах
+
+•   ClientY: возвращает значение Y координаты нажатия в локальных координатах
+
+•   CtrlKey: указывает, нажата ли клавиша Ctrl
+
+•   Detail: возвращает количество нажатий
+
+•   MetaKey: если возвращает true, то нажата метаклавиша
+
+•   MovementX: координата X указателя мыши относительно положения при последнем событии mousemove
+
+•   MovementY: координата Y указателя мыши относительно положения при последнем событии mousemove
+
+•   OffsetX: возвращает значение X координаты нажатия относительно верхнего левого угла нажатого элемента
+
+•   OffsetY: возвращает значение Y координаты нажатия относительно верхнего левого угла нажатого элемента
+
+•   PageX: возвращает значение X координаты нажатия относительно верхнего левого угла страницы
+
+•   PageY: возвращает значение Y координаты нажатия относительно верхнего левого угла страницы
+
+•   ScreenX: возвращает значение X координаты нажатия в глобальных координатах
+
+•   ScreenY: возвращает значение Y координаты нажатия в глобальных координатах
+
+•   ShiftKey: указывает, нажата ли клавиша Shift
+
+•   Type: возвращает строковое название события
+
+Различные типы событий могут принимать аргументы других типов, которые соответственно 
+могут иметь другой набор свойств.
+
+Для примера применим класс MouseEventArgs для обработки событий в компоненте Counter:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+ 
+<button @onclick="IncrementCount">+</button>
+<span>@currentCount</span>
+<button @onclick="DecrementCount">-</button>
+ 
+@code {
+    int currentCount;
+ 
+    void IncrementCount(MouseEventArgs e)
+    {
+        if (e.CtrlKey == true) currentCount = currentCount + 10;
+        else currentCount++;
+    }
+    void DecrementCount()
+    {
+        if(currentCount > 0) currentCount--;
+    }
+}
+
+Метод IncrementCount принимает параметр MouseEventArgs. В методе мы смотрим, 
+нажата ли одновременно с нажатием кнопки клавиша Ctrl. И если она нажата, 
+увеличиваем счетчик сразу на 10.
+
+Или получим координаты нажатия с помощью аргумента события MouseEventArgs:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<style>
+#canvas {margin:20px;width:200px; height:200px; background-color:#ccc;}
+</style>
+<div id="canvas" @onclick="Click"></div>
+<div>
+    <p>ClientX: @clientX , ClientY: @clientY</p>
+    <p>OffsetX: @offsetX , OffsetY: @offsetY</p>
+    <p>PageX: @pageX , PageY: @pageY</p>
+    <p>ScreenX: @screenX , ScreenY: @screenY</p>
+</div>
+ 
+@code {
+    double clientX, clientY, offsetX, offsetY, pageX, pageY, screenX, screenY;
+ 
+    void Click(MouseEventArgs e)
+    {
+        clientX = e.ClientX;
+        clientY = e.ClientY;
+        offsetX = e.OffsetX;
+        offsetY = e.OffsetY;
+        pageX = e.PageX;
+        pageY = e.PageY;
+        screenX = e.ScreenX;
+        screenY = e.ScreenY;
+    }
+}
+
+При нажати на элемент div сработает метод Click, который получит значения координат нажатия, 
+выводимых на страницу.
+
+Список событий
+
+Всего в Blazor доступны следующие события:
+
+https://sergeyshef.ru/images/metanit/blazor/eventhandler.webp
+
+Асинхронная обработка событий
+
+Обработчики событий можно сделать асинхронными:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+ 
+<button @onclick="IncrementCount">+</button>
+<span>@currentCount</span>
+<button @onclick="DecrementCount">-</button>
+ 
+@code {
+    int currentCount;
+ 
+    async Task IncrementCount(MouseEventArgs e)
+    {
+        await Task.Delay(500);
+        if (e.CtrlKey == true) currentCount = currentCount + 10;
+        else currentCount++;
+    }
+    async Task DecrementCount()
+    {
+        await Task.Delay(500);
+        if(currentCount > 0) currentCount--;
+    }
+}
+
+В данном случае для имитации асинхронности в методах вызывается метод Task.Delay(500), 
+но в реальности здесь могло бы находиться обращение к сетевым ресурсам, 
+бд или выполняться какая-то другая работа, которая требует продолжительного времени. 
+Асинхронные версии методов как и синхронные могут принимать в качестве параметра 
+аргумент события.
+
+При этом в качестве возвращаемого типа метода следует использовать Task, но никак не void.
+
+Лямбда-выражения
+
+В качестве обработчиков событий также можно использовать лямбда-выражения:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+ 
+<button @onclick="@(e => currentCount++)">+</button>
+<span>@currentCount</span>
+<button @onclick="@(e => currentCount--)">-</button>
+ 
+@code {
+    int currentCount;
+}
+
+В качестве параметра в лямбда-выражение может передаваться аргумент события. 
+В примере выше это e - объект MouseEventArgs. В коде выше он не используется,
+но также мы его можем использовать как в обычных методах-обработчиках событий.
