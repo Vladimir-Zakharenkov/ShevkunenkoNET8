@@ -472,6 +472,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 02 - Компо�
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page03 - Вложенные компоненты. Параметры компонентов.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page03 - Вложенные компоненты. Параметры компонентов.txt
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page04 - Передача произвольного набора атрибутов.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page04 - Передача произвольного набора атрибутов.txt
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page05 - Обработка событий.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page05 - Обработка событий.txt
+		Metanit.com\Blazor\Глава 02 - Компоненты\Page06 - Обработка событий вложенного компонента в родительском.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page06 - Обработка событий вложенного компонента в родительском.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "Metanit.com\Blazor\Глава 02 - Компоненты\BlazorApp\BlazorApp.csproj", "{75E12541-CB9C-4E3E-AAA9-9CD31055EE2D}"
@@ -483,6 +484,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attribute", "Metanit.com\Blazor\Глава 02 - Компоненты\Attribute\Attribute.csproj", "{B13745BD-2B6E-4379-AD4C-80F036CDBD10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandler", "Metanit.com\Blazor\Глава 02 - Компоненты\EventHandler\EventHandler.csproj", "{82F8FEC1-0728-437F-8BC8-2582AABC0D68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventCallback", "Metanit.com\Blazor\Глава 02 - Компоненты\EventCallback\EventCallback.csproj", "{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -702,6 +705,10 @@ Global
 		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82F8FEC1-0728-437F-8BC8-2582AABC0D68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -778,6 +785,7 @@ Global
 		{67337A40-F218-4678-A242-4E37145F1192} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{B13745BD-2B6E-4379-AD4C-80F036CDBD10} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{82F8FEC1-0728-437F-8BC8-2582AABC0D68} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
+		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

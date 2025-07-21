@@ -1,0 +1,252 @@
+Обработка событий вложенного компонента в родительском
+
+Родительский компонент может устанавливать обработчик события на вложенном компоненте. 
+Для этого применяется тип EventCallback. Он имеет две формы:
+
+•	EventCallback
+
+•	EventCallback<T>
+
+Если применяется форма EventCallback<T>, то обработчик события в качестве параметра 
+принимает значение типа T.
+
+Возьмем вначале нетипизированную форму EventCallback. Допустим, у нас в проекте; который 
+использует интерактивный рендеринг сервера, есть главный компонент App.razor, есть родительский 
+компонент Home.razor и дочерний компонент Counter.razor:
+
+https://metanit.com/sharp/blazor/pics/2.23.png
+
+Пусть корневой компонент App.razor просто загружает компонент Home.razor:
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <Home />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+Определим в дочернем компоненте Counter.razor следующий код:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<div>
+    <button @onclick="OnClickCallback">Click</button>
+</div>
+ 
+@code {
+    [Parameter]
+    public EventCallback OnClickCallback { get; set; }
+}
+
+Свойство-параметр EventCallback OnClickCallback представляет обработчик события 
+нажатия кнопки, который не принимает параметров.
+
+Теперь вызовем этот компонент из родительского компонента Home.razor:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+<div>@count</div>
+<Counter OnClickCallback="@Increment" />
+ 
+@code {
+ 
+    int count;
+    void Increment() => count++;
+}
+
+Здесь в компонент Home параметру OnClickCallback передается метод Increment, 
+который не имеет параметров и будет выполнять функцию обработчика события 
+нажатия кнопки в компоненте Home. Таким образом, нажатие кнопки 
+в компоненте Home будет вызывать метод Increment, который увеличит 
+счетчик в компоненте App.
+
+https://metanit.com/sharp/blazor/pics/2.24.png
+
+Таким образом, главный родительский компонент устанавливает обработчики событий. 
+А вызывает эти события дочерний компонент.
+
+Подобным образом можно устанавливать несколько обработчиков. 
+Например, определим в компоненте Counter две кнопки и два разных свойства EventCallback:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<div>
+    <button @onclick="OnIncreaseCallback">+</button>
+    <button @onclick="OnDecreaseCallback">-</button>
+</div>
+ 
+@code {
+    [Parameter]
+    public EventCallback OnIncreaseCallback { get; set; }
+    [Parameter]
+    public EventCallback OnDecreaseCallback { get; set; }
+}
+
+В компоненте Home определим для них обработчики:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h2>Count: @count</h2>
+<Counter OnIncreaseCallback="Increase" OnDecreaseCallback="Decrease" />
+@code {
+    int count;
+    void Increase() => count++;
+    void Decrease() => count--;
+}
+
+https://metanit.com/sharp/blazor/pics/2.27.png
+
+EventCallback<T>
+
+Ряд событий позволяют передавать в обработчик аргумент определенного типа, 
+например, при событии нажатия кнопки мыши, в обработчик передается аргумент 
+типа MouseEventArgs. Если мы хотим получить этот объект, то нам надо типизировать 
+его типом EventCallback.
+
+Например, мы хотим получить в родительском компоненте координаты нажатия 
+в дочернем компоненте. Для этого изменим компонент Counter следующим образом:
+
+@using Microsoft.AspNetCore.Components.Web
+ 
+<div style="width:100px;height:100px;background-color:#ccc;" @onclick="OnClickCallback"></div>
+ 
+@code {
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+}
+
+Тип EventCallback<MouseEventArgs> указывает, что в обработчике события с помощью 
+параметра типа MouseEventArgs мы можем получить информацию о нажатии кнопки мыши.
+
+Теперь изменим родительский компонент Home.razor:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>Blazor Counter</h1>
+<div>@coords</div>
+<Counter OnClickCallback="@GetCoords" />
+ 
+@code {
+ 
+    string coords = "";
+ 
+    void GetCoords(MouseEventArgs e)
+    {
+        coords = $"Coords X = {e.ClientX}  Y= {e.ClientY}";
+    }
+}
+
+В данном случае мы просто получаем координаты нажатия кнопки мыши:
+
+https://metanit.com/sharp/blazor/pics/2.25.png
+
+Передача произвольного объекта в обработчик события
+
+Выше мы рассмотрели, как в обработчике события мы можем получить аргумент 
+события (на примере MouseEventArgs). Но в реальности мы можем передавать 
+в обработчик события объект любого типа. Рассмотрим, более сложную композицию. 
+Например, главный компонент выводит список объектов, а дочерний компонент
+может добавлять в этот список новые объекты.
+
+Пусть компонент Counter выглядит следующим образом:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<div>
+    <input type="text" @bind-value="@item" />
+    <button @onclick="@(async() => await OnClickCallback.InvokeAsync(item))">Add</button>
+</div>
+ 
+@code {
+ 
+    string item = "";
+ 
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+}
+
+Итак, в компоненте есть переменная item - некоторая строка, которая с помощью атрибута @bind-value="@item" 
+привязана к текстовому полю input. То есть введенное в это поле значение и будет значением переменной item.
+
+И есть кнопка, по нажатию которой вызывается обработчик OnClickCallback. 
+Он типизирован типом string - EventCallback<string> OnClickCallback. А это значит, что в обработчике события 
+можно с помощью параметра типа string получить переданную в него строку. Обратите внимание, как он вызывается:
+
+await OnClickCallback.InvokeAsync(item)
+
+С помощью вызова InvokeAsync и передачи в него переменной item в обработчике события 
+мы сможем получить значение этой переменной.
+
+Хотя в данном случае используется лямбда-выражение в качестве обработчика события нажатия кнопки, 
+но мы могли бы вынести все действия и в отдельный метод:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<div>
+    <input type="text" @bind-value="@item" />
+    <button @onclick="@OnClick">Add Item</button>
+</div>
+ 
+@code {
+ 
+    string item = "";
+ 
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+ 
+    async Task OnClick()
+    {
+        await OnClickCallback.InvokeAsync(item);
+    }
+}
+
+Теперь изменим компонент Home:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h2>Users</h2>
+ 
+<Counter OnClickCallback="@AddNewUser" />
+
+<ul>
+    @foreach (var user in users)
+    {
+        <li>@user</li>
+    }
+</ul>
+
+@code {
+ 
+    List<string> users = [];
+ 
+    void AddNewUser(string user)
+    {
+        users.Add(user);
+    }
+}
+
+В компоненте Home есть список строк - users, который выводится на веб-страницу. 
+По умолчанию он пуст. И с помощью дочернего компонента Counter мы будем добавлять 
+в него новые объекты.
+
+Метод AddNewUser передается в компонент Counter свойству OnClickCallback. 
+Через его параметр string user мы и сможем получить переданное из компонента Counter 
+введенное значение (OnClickCallback.InvokeAsync(item)) и затем добавить это значение в список.
+
+https://metanit.com/sharp/blazor/pics/2.26.png
