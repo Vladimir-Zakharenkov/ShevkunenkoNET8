@@ -1,2 +1,243 @@
 Двусторонняя привязка и привязка параметров компонентов
 
+Двусторонняя привязка
+
+Компоненты Blazor также поддерживают двустороннюю привязку значений и полей ввода. 
+Для этого применяется следующая пара модификаторов:
+
+•	@bind:get - определяет привязанное значение
+
+•	@bind:set - определяет действия, выполняемые при изменении значения. 
+	Это должен быть метод, который возвращает Task или void
+
+Модификаторы @bind:get и @bind:set всегда применяются вместе. И поскольку задействуется интерактивность, 
+то приложение должно поддерживать интерактивный рендеринг на сервере или на клиенте. 
+В данном случае используем интерактивный рендеринг на сервере.
+
+Например, пусть у нас в проекте есть два компонента: корневой компонент App.razor и Home.razor:
+
+https://metanit.com/sharp/blazor/pics/2.59.png
+
+На корневом компоненте App.razor загружается вложенный компонент Home:
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <Home />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+А в компоненте Home.razor определим следующий код:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<input type="number" @bind:get="age" @bind:set="SetAge" />
+<h2>Age: @age</h2>
+ 
+@code {
+    int age = 18;
+    void SetAge(int value)
+    {
+        if (value > 0 && value < 110) age = value;
+    }
+}
+
+В данном случае поле ввода числа привязано к переменной age, которая представляет некоторый возраст:
+
+@bind:get="age"
+
+Для обработки изменения значения применяется метод SetAge:
+
+@bind:set="SetAge"
+
+Поскольку значение поля с типом number представляет число, то мы можем получить устанавливаемое значение 
+через параметр метода как значение типа int и решить, будем ли мы изменять значение переменной age:
+
+void SetAge(int value)
+{
+    if (value > 0 && value < 110) age = value;
+}
+
+https://metanit.com/sharp/blazor/pics/2.32.png
+
+При этом если мы НЕ изменим значение переменной age, то число в текстовом поле 
+обновится на текущее значение age.
+
+В качестве альтернативы модификаторам @bind:get и @bind:set можно использовать 
+геттеры и сеттеры свойств, который также позволяют организовать двустороннюю привязку 
+и отслеживать передаваемое значение:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<input type="number" @bind="Age" />
+<h2>Age: @Age</h2>
+ 
+@code {
+    int age = 18;
+ 
+    int Age
+    {
+        get { return age; }
+        set
+        {
+            if (value > 0 && value < 110) age = value;
+        }
+    }
+}
+
+В данном случае свойство Age использует переменную age для хранения значения и применяет ту же 
+самую логику для установки значения. Когда в поле ввода будет введено новое значение, 
+сработает сеттер свойства, где мы также можно проверить полученное значение и решить, 
+надо ли изменять переменную age.
+
+Причем для установки двусторонней привязки достаточно установить атрибут @bind:
+
+@bind="Age"
+
+Привязка параметров вложенных компонентов
+
+Механизм привязки Blazor действует и для параметров вложенных компонентов. 
+Например, пусть у нас в проекте также есть компонент Main.razor, который будет дочерним 
+по отношению к "Home.razor"
+
+https://metanit.com/sharp/blazor/pics/2.34.png
+
+Пусть компонент Main определяет свойство-параметр Title:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h1>@Title</h1>
+ 
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+}
+
+В компоненте Home устанавливаем привязку с параметром Title:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<Main Title="@title" />
+<input @bind="@title" />
+ 
+@code {
+    string title = "Hello";
+}
+
+Здесь переменная title привязана и к параметру Title компонента Main, и к тексту в поле ввода. 
+И при изменении текста в поле ввода изменится также заголовок в компоненте Main:
+
+https://metanit.com/sharp/blazor/pics/2.35.png
+
+
+Двусторонняя привязка параметров
+
+Двусторонняя привязка также может вовлекать параметры вложенных компонентов. 
+Посмотрим, как организовать подобную привязку. Возьмем те же компоненты Home и Main
+
+В компоненте Main определим следующий код:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+ 
+<input @onchange="ChangeValue" value="@search" />
+@code {
+    string? search = "";
+    [Parameter]
+    public string? Search 
+    { 
+      get { return search; } 
+      set { search = value; } 
+    }
+ 
+    [Parameter]
+    public EventCallback<string> SearchChanged { get; set; }
+ 
+    async Task ChangeValue(ChangeEventArgs e)
+    {
+        search = e?.Value?.ToString();
+        await SearchChanged.InvokeAsync(search);
+    }
+}
+
+Здесь компонент содержит свойство-параметр Search, которое хранит данные в переменной search. 
+Эта переменная привязана к полю ввода. При изменении значения вызывается метод ChangeValue, 
+в котором переустанавливается значение переменной search (она получает введенное 
+в текстовое поле значение) и вызывается коллбек SearchChanged.
+
+Также определим компонент Home со следующим кодом:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<Main @bind-Search="text" />
+<p><button @onclick="Clear">Clear</button></p>
+<ul>
+    @foreach(var item in Found)
+    {
+        <li>@item</li>
+    }
+</ul>
+ 
+@code {
+    string text = "C";    // искомое слово
+    // условная база данных
+    List<string> database  = ["C#", "C++", "JavaScript", "Java", "Python"];
+    // найденные элементы
+    List<string> Found 
+    { 
+        get { return database.Where(name => name.Contains(text)).ToList(); } 
+    }
+    // очищаем поиск
+    void Clear() => text = "";
+}
+
+Компонент Home определяет переменную text, которая будет хранить ключ поиска. 
+Также в компоненте определен список database - условная база данных, в которой будет 
+идти поиск, а также список Found, который будет хранить найденные из database данные 
+и который будет выводиться на страницу в элемент <ul>. Кроме того, метод Clear() 
+позволяет сбросить значение переменной text.
+
+Причем сам ввод строки для переменной text будет идти в компоненте Main:
+
+<Main @bind-Search="text" />
+
+Здесь устанавливается привязка к параметру Search компонента Main - он привязан 
+к переменной text. Для установки привязки к параметру применяется атрибут
+
+@bind-Параметр
+
+То есть при запуске приложения параметр Search из компонента Main получит значение переменной text. 
+Но здесь еще есть один момент - в компоненте Home должен быть определен EventCallback, 
+который должен называться ПараметрChanged. И именно для этого в компоненте Home определено свойство
+
+public EventCallback<string> SearchChanged { get; set; }
+
+Поскольку параметр Search и переменная text представляют тип String, то SearchChanged 
+также типизирован типом string.
+
+В итоге когда в компоненте Main изменится текст в текстовом поле, сработает метод ChangeValue, 
+который в свою очередь вызовет коллбек SearchChanged
+
+async Task ChangeValue(ChangeEventArgs e)
+{
+    search = e?.Value?.ToString();
+    await SearchChanged.InvokeAsync(search);
+}
+
+После вызова коллбека SearchChanged компонент Home автоматически получит новое значение 
+и изменит значение переменной text:
+
+https://metanit.com/sharp/blazor/pics/2.36.png

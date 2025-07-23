@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+
+<Main @bind-Search="text" />
+
+<p><button @onclick="Clear">Clear</button></p>
+
+<ul>
+    @foreach (var item in Found)
+    {
+        <li>@item</li>
+    }
+</ul>
+
+@code {
+    string text = "C";    // искомое слово
+
+    // условная база данных
+    List<string> database = ["C#", "C++", "JavaScript", "Java", "Python"];
+
+    // найденные элементы
+    List<string> Found
+    {
+        get { return database.Where(name => name.Contains(text)).ToList(); }
+    }
+
+    // очищаем поиск
+    void Clear() => text = "";
+}

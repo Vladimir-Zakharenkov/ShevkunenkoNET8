@@ -475,6 +475,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 02 - Компо�
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page06 - Обработка событий вложенного компонента в родительском.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page06 - Обработка событий вложенного компонента в родительском.txt
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page07 - Привязка данных.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page07 - Привязка данных.txt
 		Metanit.com\Blazor\Глава 02 - Компоненты\Page08 - Двусторонняя привязка и привязка параметров компонентов.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page08 - Двусторонняя привязка и привязка параметров компонентов.txt
+		Metanit.com\Blazor\Глава 02 - Компоненты\Page09 - Каскадная передача значений.txt = Metanit.com\Blazor\Глава 02 - Компоненты\Page09 - Каскадная передача значений.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "Metanit.com\Blazor\Глава 02 - Компоненты\BlazorApp\BlazorApp.csproj", "{75E12541-CB9C-4E3E-AAA9-9CD31055EE2D}"
@@ -490,6 +491,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventCallback", "Metanit.com\Blazor\Глава 02 - Компоненты\EventCallback\EventCallback.csproj", "{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindAttribute", "Metanit.com\Blazor\Глава 02 - Компоненты\BindAttribute\BindAttribute.csproj", "{2960F0A7-6D3F-4EEA-902B-EFD1D8608669}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindGetSet", "Metanit.com\Blazor\Глава 02 - Компоненты\BindGetSet\BindGetSet.csproj", "{89FB682A-A6C4-40AA-9405-2A0E68E88E82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadingValue", "Metanit.com\Blazor\Глава 02 - Компоненты\CascadingValue\CascadingValue.csproj", "{6F479F05-7F36-4B24-B365-DAB62708216B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -717,6 +722,14 @@ Global
 		{2960F0A7-6D3F-4EEA-902B-EFD1D8608669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2960F0A7-6D3F-4EEA-902B-EFD1D8608669}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2960F0A7-6D3F-4EEA-902B-EFD1D8608669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89FB682A-A6C4-40AA-9405-2A0E68E88E82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89FB682A-A6C4-40AA-9405-2A0E68E88E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89FB682A-A6C4-40AA-9405-2A0E68E88E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89FB682A-A6C4-40AA-9405-2A0E68E88E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F479F05-7F36-4B24-B365-DAB62708216B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F479F05-7F36-4B24-B365-DAB62708216B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F479F05-7F36-4B24-B365-DAB62708216B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F479F05-7F36-4B24-B365-DAB62708216B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -795,6 +808,8 @@ Global
 		{82F8FEC1-0728-437F-8BC8-2582AABC0D68} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{92B9B314-DF3B-4876-BD6D-4E5CC2DAC8FB} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{2960F0A7-6D3F-4EEA-902B-EFD1D8608669} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
+		{89FB682A-A6C4-40AA-9405-2A0E68E88E82} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
+		{6F479F05-7F36-4B24-B365-DAB62708216B} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

@@ -1,0 +1,170 @@
+Каскадная передача значений
+
+Каскадная передача значений представляет передачу данных из родительского компонента в любое 
+количество вложенных компонентов. То есть грубо говоря некоторое значение передается каскадно 
+всем вложенным компонентам вне зависимости от уровня вложенности. Для передачи каскадных 
+значений не требуются определение специальных атрибутов в каждом вложенном компоненте, 
+куда передаются данные.
+
+Для передачи каскадных значений родительский компонент использует встроенный CascadingValue, 
+которые есть в фреймворке Blazor. Компонент CascadingValue обертывает иерархию компонентов 
+и для этой иерархии предоставляет некоторое значение. Чтобы получить это значение, 
+компоненты определяют свойство, к которому применяется атрибут [CascadingParameter]
+
+Допустим, у нас есть в проекте главный компонент App и три вложенных компонента Home, Main и Time
+
+https://metanit.com/sharp/blazor/pics/2.37.png
+
+В корневом компоненте App просто выводим на веб-страницу компонент Home:
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <Home />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+В компоненте Home выводим компонент "Main":
+
+@using Microsoft.AspNetCore.Components.Web
+ 
+<CascadingValue Value="@now">
+    <Main />
+</CascadingValue>
+ 
+@code {
+    DateTime now = DateTime.Now;
+}
+
+В качестве примера компонент Home определяет переменную now, которая хранит текущие дату и время. 
+Компонента Home использует компонент CascadingValue, у которого устанавливается атрибут 
+Value - это и будет то значение, которое передается каскадно всем вложенным компонентам. 
+В качестве такого значения здесь выступает значение переменной now.
+
+Внутри компонента <CascadingValue> определен компонент Main, в который будет передаваться значение. 
+Причем, что стоит отметить, у компонента Main не устанавливается никаких атрибутов.
+
+В файле компонента Main определим следующий код:
+
+<h2>Date: @DateTime?.ToShortDateString()</h2>
+<Time />
+ 
+@code {
+ 
+    [CascadingParameter]
+    DateTime? DateTime { get; set; }
+}
+
+Компонент Home определяет свойство DateTime и представляет тип DateTime? и выводит хранимую дату на страницу. 
+Поскольку это значение передается в Home каскадным образом, то к свойству применяется атрибут CascadingParameter.
+
+Далее в компоненте Time определим следующий код:
+
+<h3>Time: @DateTime?.ToShortTimeString()</h3>
+ 
+@code {
+ 
+    [CascadingParameter]
+    DateTime? DateTime { get; set; }
+}
+
+Здесь фактические то же самое, только на страницу выводится время.
+
+Таким образом, нигде явным образом в компоненты Home и Time не передается дата и время, однако благодаря 
+свойству с атрибутом [CascadingParameter] все эти компоненты могут получить каскадное значение. 
+Причем от уровня вложенности это не зависит, как в данном случае Time вложен в Home, 
+а Ноme - в CascadingValue, но все они получают одно и то же значение.
+
+https://metanit.com/sharp/blazor/pics/2.38.png
+
+Каскадные значения могут быть полезны, когда нам надо передать общие данные для всех нижележащих 
+компонентов, например, какие-то общие стилистические характеристики, чтобы создать единообразный стиль.
+
+Передача нескольких значений
+
+Для каскадной передачи нескольких значений можно вкладывать компоненты CascadingValue друг в друга 
+и назначать им отдельные имена через атрибут Name. Например, определим в компоненте Home следующий код:
+
+@using Microsoft.AspNetCore.Components.Web
+ 
+<CascadingValue Value="@now" Name="Now">
+    <CascadingValue Value="@color" Name="Color">
+        <Main />
+    </CascadingValue>
+</CascadingValue>
+ 
+@code {
+    DateTime now = DateTime.Now;
+    string color = "navy";
+}
+
+Здесь используются два компонента <CascadingValue>. Через первый такой компонент передается значение 
+переменной now и данный компонент называется "Now". Второй компонент CascadingValue называется "Color" 
+и передает значение переменной сolor, которое будет представлять цвет текста.
+
+Изменим код компонента Main:
+
+<h2 style="color:@Color;">Date: @DateTime?.ToShortDateString()</h2>
+<Time />
+ 
+@code {
+ 
+    [CascadingParameter(Name = "Now")]
+    DateTime? DateTime { get; set; }
+    [CascadingParameter(Name = "Color")]
+    string? Color { get; set; }
+}
+
+Чтобы получить каскадное значение из определенного компонента CascadingValue, у атрибута 
+[CascadingParameter] через свойство Name устанавливаем имя компонента CascadingValue, 
+значение которого мы хотим получить. Таким образом, мы можем определить нескольких 
+свойств для получения разных каскадных значений.
+
+Также изменим компонент Time:
+
+<h3 style="color:@Color">Time: @DateTime?.ToShortTimeString()</h3>
+ 
+@code {
+ 
+    [CascadingParameter(Name = "Now")]
+    DateTime? DateTime { get; set; }
+    [CascadingParameter(Name = "Color")]
+    string? Color { get; set; }
+}
+
+Результат работы приложения:
+
+https://metanit.com/sharp/blazor/pics/2.39.png
+
+Для каскадных параметров мы также можем использовать механизм привязки. 
+Например, изменим компонент Home:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+ 
+<CascadingValue Value="@now" Name="Now">
+    <CascadingValue Value="@color" Name="Color">
+        <Main />
+    </CascadingValue>
+</CascadingValue>
+<input @bind="@color" />
+ 
+ 
+@code {
+    DateTime now = DateTime.Now;
+    string color = "navy";
+}
+
+Здесь добавлено текстовое поле, текст которого привязан к переменной color. 
+Остальные компоненты Home и Time остаются без изменений. Благодаря 
+этому мы сможем динамически управлять каскадными значениями:
+
+https://metanit.com/sharp/blazor/pics/2.40.png

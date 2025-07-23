@@ -1,0 +1,10 @@
+﻿<h2 style="color:@Color;">Date: @DateTime?.ToShortDateString()</h2>
+<Time />
+
+@code {
+
+    [CascadingParameter(Name = "Now")]
+    DateTime? DateTime { get; set; }
+    [CascadingParameter(Name = "Color")]
+    string? Color { get; set; }
+}

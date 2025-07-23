@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+
+
+<CascadingValue Value="@now" Name="Now">
+    <CascadingValue Value="@color" Name="Color">
+        <Main />
+    </CascadingValue>
+</CascadingValue>
+<input @bind="@color" />
+
+
+@code {
+    DateTime now = DateTime.Now;
+    string color = "navy";
+}
