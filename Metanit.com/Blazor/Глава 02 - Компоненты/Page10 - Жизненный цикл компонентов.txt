@@ -1,0 +1,241 @@
+Жизненный цикл компонентов
+
+Каждый компонент Blazor проходит ряд этапов или событий жизненного цикла. 
+С помощью специальных встроенных методов мы можем обработать эти события.
+
+Для рассмотрения жизненного цикла компонентов возьмем проект с тремя компонентами - корневым 
+компонентом App, родительским компонентом Home и вложенным компонентом Main
+
+https://metanit.com/sharp/blazor/pics/2.47.png
+
+Корневой компонент App устанавливает общий шаблон страницы и встраивает компонент Home:
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <Home />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+Далее мы этот компонент не трогаем и работаем только с компонентами Home и Main.
+
+Большинство методов жизненного цикла однотипны в том плане, что имеют два типа 
+методов - синхронную и асинхронную версию, например, OnInitialized() и OnInitializedAsync. 
+Синхронная версия имеет тип void, а асинхронная версия в названии имеет суффикс Async 
+и возвращает объект Task:
+
+protected override void OnInitialized()
+{
+    // ..................
+}
+ 
+protected override async Task OnInitializedAsync()
+{
+    // ..................
+}
+
+SetParametersAsync
+
+Метод SetParametersAsync() устанавливает параметры компонента значениями, предоставленными 
+родительским компонентом. В качестве параметра метод принимает объект типа ParameterView, 
+который содержит набор значений для параметров компонента.
+
+Реализация метода SetParametersAsync по умолчанию устанавливает значения каждого свойства, 
+к которому применяется атрибут [Parameter] или [CascadingParameter], соответствующее ему значение 
+из объекта ParameterView. Если в ParameterView нет значений для каких-то определенных свойств, 
+то эти свойства не изменяются.
+
+Например, определим в компоненте Main следующий код:
+
+<h5>@message</h5>
+<div>@Password</div>
+ 
+@code{
+    string message = "Not set"; // значение по умолчанию, если для Password не передано значение
+    [Parameter]
+    public string? Password { get; set; }
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        // если в parameters есть Password
+        if (parameters.TryGetValue<string>(nameof(Password), out var value))
+        {
+            if (value is null || value?.Length < 6)
+            {
+                message = "Password is invalid";
+            }
+            else
+            {
+                message = "Password is strong";
+            }
+        }
+        return base.SetParametersAsync(parameters);
+    }
+}
+
+здесь определено свойство-параметр Password, а также переменная message. 
+В методе SetParametersAsync из объекта ParameterView с помощью метода TryGetValue()
+
+parameters.TryGetValue<string>(nameof(Password), out var value))
+
+Если в ParameterView есть значение с именем "Password", то оно попадает в переменную value, 
+и мы можем это значение как-то обработать. В данном случае просто устанавливаем определенное 
+сообщение в переменной message.
+
+Затем вызываем реализацию метода SetParametersAsync базового класса, 
+которая собственно и установит значение свойства Password.
+
+В компоненте Home передадим в Main какое-нибудь значение:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<input type="password" @bind="pass" />
+<Main Password="@pass" />
+@code {
+    string pass = "";
+}
+
+Здесь значение, передаваемое в компонент Main, привязано к текстовому полю, 
+благодаря чему мы сможем протестировать разные варианты:
+
+https://metanit.com/sharp/blazor/pics/2.41.png
+
+OnInitialized и OnInitializedAsync
+
+Методы OnInitialized/OnInitializedAsync вызываются после инициализации компонента после получения 
+данных для параметров в методе SetParametersAsync. При синхронной инициализации инициализация 
+родительского компонента гарантированно завершится первой. При асинхронной инициализации 
+порядок завершения инициализации родительского и дочернего компонентов невозможно определить, 
+так как он зависит от выполняемого кода инициализации.
+
+Для примера просто выведем на страницу время инициализации обоих компонентов. 
+Код компонента Main:
+
+<h2>@message</h2>
+ 
+@code{
+    string message = "";
+    protected override void OnInitialized()
+    {
+        message = $"Main initialized at {DateTime.Now.ToLongTimeString()}";
+    }
+}
+
+Код компонента Home:
+
+@using Microsoft.AspNetCore.Components.Web
+  
+<h1>@message</h1>
+<Main />
+ 
+@code {
+    string message = "";
+    protected override void OnInitialized()
+    {
+        message = $"Home initialized at {DateTime.Now.ToLongTimeString()}";
+    }
+}
+
+https://metanit.com/sharp/blazor/pics/2.42.png
+
+OnParametersSet и OnParametersSetAsync
+
+Методы OnParametersSet/OnParametersSetAsync вызываются после инициализации компонента 
+в OnInitialized()/OnInitializedAsync(), а также после повторного рендеринга родительского компонента. 
+На этом этапе значения параметров установлены, мы их можем использовать для некоторой 
+обработки или даже изменить.
+
+Например, пусть в компоненте Main определен следующий код:
+
+@using System.Text.RegularExpressions
+ 
+<h3>@message</h3>
+ 
+@code {
+    string message = "";
+    [Parameter]
+    public string Phone { get; set; } = "";
+    protected override void OnParametersSet()
+    {
+        if (Regex.IsMatch(Phone, "^\\d{10}$"))
+            message = $"Phone: +{Phone}";
+        else
+            message = "Invalid Phone Number";
+    }
+}
+
+Здесь компонент получает данные в параметр Phone, который представляет телефонный номер. 
+В методе OnParametersSet() проверяем значение параметра Phone на соответствие регулярному 
+выражению "\\d{10}". То есть телефонный номер должен состоять лишь из 10 цифр. 
+И в зависимости от проверки определяем строку сообщения, которая выводится на консоль.
+
+В компоненте Home передадим в Main некоторые данные:
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<p><input @bind="@phone" /></p>
+<Main Phone="@phone" />
+ 
+@code {
+    string phone = ""; 
+}
+
+Здесь параметр Phone привязан к переменной phone, которая привязана к текстовому полю:
+
+https://metanit.com/sharp/blazor/pics/2.45.png
+
+OnAfterRender и OnAfterRenderAsync
+
+Методы OnAfterRender()/OnAfterRenderAsync() вызываются после рендеринга компонента. 
+Здесь можно выполнить какую-то дополнительную логику инициализации с использованием 
+содержимого компонента. В качестве параметра эти методы получают булево значение - если 
+оно равно true, то рендеринг компонента произведен первый раз.
+
+Для теста определим следующий компонент Home
+
+@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+ 
+<h2>@message</h2>
+<input @bind="@message" />
+<ul>
+    @foreach(var renderTime in renderTimes)
+    {
+        <li>@renderTime</li>
+    }
+</ul>
+ 
+@code {
+    string message = "";
+    List<string> renderTimes = [];
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+            renderTimes.Add($"First render time: {DateTime.Now.ToLongTimeString()}");
+        else
+            renderTimes.Add($"Rerender time: {DateTime.Now.ToLongTimeString()}");
+    }
+}
+
+Здесь переменная message привязана к текстовому полю и выводится в заголовок. 
+Соответственно, когда изменится значение переменной message, произойдет 
+повторный рендеринг компонента.
+
+Для отслеживания рендеринга компонента определен список строка renderTimes, 
+в который в методе OnAfterRender() добавляется определенное сообщение. 
+И все эти сообщения выводятся на страницу.
+
+https://metanit.com/sharp/blazor/pics/2.46.png
+
+Стоит отметить, что методы OnAfterRender()/OnAfterRenderAsync() не вызываются во время 
+пререндеринга на сервере. Эти методы вызываются уже после того, как скрипт 
+Blazor (blazor.web.js) запустится в браузере, а компонент будет перезапущен 
+в интерактивном режиме рендеринга.

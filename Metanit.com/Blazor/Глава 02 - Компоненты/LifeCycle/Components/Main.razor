@@ -1,0 +1,18 @@
+﻿@using System.Text.RegularExpressions
+
+<h3>@message</h3>
+
+@code {
+    string message = "";
+
+    [Parameter]
+    public string Phone { get; set; } = "";
+
+    protected override void OnParametersSet()
+    {
+        if (Regex.IsMatch(Phone, "^\\d{10}$"))
+            message = $"Phone: +{Phone}";
+        else
+            message = "Invalid Phone Number";
+    }
+}
