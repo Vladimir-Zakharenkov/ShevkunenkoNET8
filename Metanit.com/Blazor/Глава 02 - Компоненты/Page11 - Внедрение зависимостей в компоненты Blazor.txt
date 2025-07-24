@@ -80,3 +80,124 @@ ITimeService в качестве реализации класс TimeService.
 которое получено через сервис ITimeService:
 
 https://metanit.com/sharp/blazor/pics/2.49.png
+
+јтрибут [Inject]
+
+ƒл€ получени€ сервисов в компоненте также можно использовать атрибут [Inject]. 
+Ётот атрибут примен€етс€ к свойству, в которое получаем сервис. Ќапример, 
+изменим компонент App следующим образом:
+
+@page "/"
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h2>Time: @Timer.GetTime()</h2>
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+ 
+@code {
+ 
+    [Inject]
+    public required ITimeService Timer { get; set; }
+}
+
+ѕоскольку к свойству Timer примен€етс€ атрибут [Inject], то значение дл€ данного свойства 
+будет обеспечивать система внедрени€ зависимостей. ѕоскольку это свойство представл€ет 
+ITimeService, то механизм DI будет искать в коллекции сервисов реализацию именно этого типа.
+
+ѕолучение сервисов в других сервисах
+
+≈сли сервис предполагаетс€ использовать в другом сервисе, то один сервис может получить другой, 
+как и вообще в .NET, через конструктор. Ќапример, пусть у нас есть еще один сервис -
+
+public class TimeFormatter
+{
+    ITimeService timeService;
+    public TimeFormatter(ITimeService timeService)
+    {
+        this.timeService = timeService;
+    }
+    public string FormatTime() => $"Current Time: {timeService.GetTime()}";
+}
+
+ќн использует сервис ITimeService, который он получает через механизм DI через параметр конструктора.
+
+¬ файле Program.cs оба сервиса добавл€ютс€ в коллекцию сервисов приложени€:
+
+using BlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+ 
+// добавл€ем сервисы
+builder.Services.AddTransient<ITimeService, TimeService>();
+builder.Services.AddTransient<TimeFormatter>();
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+ 
+app.Run();
+
+¬ компоненте App также получим сервис TimeFormatter дл€ рендеринга содержимого:
+
+@page "/"
+@inject TimeFormatter Formatter
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h2>@Formatter.FormatTime()</h2>
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+https://metanit.com/sharp/blazor/pics/2.51.png
+
+—ервисы по умолчанию
+
+–€д сервисов фреймворк Blazor предоставл€ет по умолчанию. Ќапример, выведем 
+все сервисы на консоль в файле Program.cs:
+
+using BlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+ 
+// добавл€ем сервисы
+builder.Services.AddTransient<ITimeService, TimeService>();
+builder.Services.AddTransient<TimeFormatter>();
+ 
+// выводим все сервисы на консоль
+foreach (var service in builder.Services)
+{
+    Console.WriteLine(service.ServiceType);
+}
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+ 
+app.Run();
+
+https://metanit.com/sharp/blazor/pics/2.52.png
