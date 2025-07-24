@@ -500,6 +500,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadingValue", "Metanit.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCycle", "Metanit.com\Blazor\Глава 02 - Компоненты\LifeCycle\LifeCycle.csproj", "{E78F7715-4CB4-4D53-AF64-8AB4F82A8575}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DI", "Metanit.com\Blazor\Глава 02 - Компоненты\DI\DI.csproj", "{5F2C0E82-1101-4A50-96AF-FE33884C513C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -738,6 +740,10 @@ Global
 		{E78F7715-4CB4-4D53-AF64-8AB4F82A8575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E78F7715-4CB4-4D53-AF64-8AB4F82A8575}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E78F7715-4CB4-4D53-AF64-8AB4F82A8575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2C0E82-1101-4A50-96AF-FE33884C513C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2C0E82-1101-4A50-96AF-FE33884C513C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2C0E82-1101-4A50-96AF-FE33884C513C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2C0E82-1101-4A50-96AF-FE33884C513C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -819,6 +825,7 @@ Global
 		{89FB682A-A6C4-40AA-9405-2A0E68E88E82} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{6F479F05-7F36-4B24-B365-DAB62708216B} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{E78F7715-4CB4-4D53-AF64-8AB4F82A8575} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
+		{5F2C0E82-1101-4A50-96AF-FE33884C513C} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

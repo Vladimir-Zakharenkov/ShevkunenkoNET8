@@ -1,1 +1,82 @@
 Внедрение зависимостей в компоненты Blazor
+
+Фреймворк Blazor позволяет воспользоваться системой внедрения зависимостей, которая 
+используется в ASP.NET Core и в целом в .NET. Рассмотрим только те моменты механизма DI, 
+которые характерны именно для приложения Blazor. Пусть у нас есть следующий проект 
+с одним компонентом App.razor и файлом TimeService.cs
+
+https://metanit.com/sharp/blazor/pics/2.48.png
+
+В файле TimeService.cs определен одноименный сервис:
+
+public interface ITimeService
+{
+    string GetTime();
+}
+public class TimeService : ITimeService
+{
+    public string GetTime() => DateTime.Now.ToShortTimeString();
+}
+
+Класс TimeService представляет интерфейс ITimeService и реализует его метод GetTime(), 
+который возвращает текущее время.
+
+В главном файле программы - Program.cs добавим сервис ITimeService в коллекцию 
+сервисов приложения:
+
+using BlazorApp.Components;
+ 
+var builder = WebApplication.CreateBuilder(args);
+ 
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+ 
+// добавляем сервис TimeService
+builder.Services.AddTransient<ITimeService, TimeService>();
+ 
+var app = builder.Build();
+ 
+app.UseAntiforgery();
+ 
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+ 
+app.Run();
+
+Для установки сервисов через свойство Services получаем коллекцию сервисов приложения - объект 
+IServiceCollection. Далее у него вызываем методы AddTransient/AddScoped/AddSingleton для 
+добавления сервиса. В данном случае посредством метода AddTransient добавляем для сервиса 
+ITimeService в качестве реализации класс TimeService.
+
+Для получения сервиса в компоненте применяется директива @inject. Например, получим 
+сервис ITimeService в компоненте App:
+
+@page "/"
+@inject ITimeService Timer
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h2>Time: @Timer.GetTime()</h2>
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+После директивы @inject указывается название сервиса (ITimeService), а затем название 
+переменной (Timer), через которую можно получить реализацию сервиса.
+
+@inject ITimeService Timer
+
+Используя название переменной, можно обращаться к функциональности сервиса 
+в коде компонента:
+
+<h2>Time: @Timer.GetTime()</h2>
+
+В итоге после запуска проекта на веб-странице в заголовке мы увидим текущее время, 
+которое получено через сервис ITimeService:
+
+https://metanit.com/sharp/blazor/pics/2.49.png
