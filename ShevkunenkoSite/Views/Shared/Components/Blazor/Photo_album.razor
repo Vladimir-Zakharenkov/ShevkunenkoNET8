@@ -1,14 +1,27 @@
-﻿@page "/shevkunenko/photo-album"
+﻿@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
-<p>Current count: @currentCount</p>
+@if (DictionaryOfRefPictures != null && DictionaryOfRefPictures.Count >0)
+{
+    @foreach (var (caption, listOfPictures) in DictionaryOfRefPictures)
+    {
+        if (listOfPictures.Count > 0)
+        {
+            <h2 class="text_shadow mt-4">@caption (фото)</h2>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+            <hr class="liniya w-75" />
+
+            @foreach (var item in listOfPictures)
+            {
+                <Picture ImageObject=@item />
+            }
+        }
+    }
+}
+
+
+<script src="_framework/blazor.web.js"></script>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+    [Parameter]
+    public Dictionary<string, List<ImageFileModel>>? DictionaryOfRefPictures { get; set; }
 }

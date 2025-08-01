@@ -161,10 +161,10 @@ public class RefPages(
             }
         }
 
-        if (dictionaryOfPages.Count < 1 
+        if (dictionaryOfPages.Count < 1
             & dictionaryOfPictures.Count < 1
-            & listOfVideoLinksViewModel.Count < 1 
-            & linksToPagesByGuid.Count < 1 
+            & listOfVideoLinksViewModel.Count < 1
+            & linksToPagesByGuid.Count < 1
             & linksToPagesByGuid2.Count < 1)
         {
             return View("Empty");

@@ -20,9 +20,12 @@ IServiceCollection services = builder.Services;
 
 #region Работа с Blazor
 
-builder.Services.AddServerSideBlazor();
+services.AddServerSideBlazor();
 
-builder.Services.AddRazorComponents();
+services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+services.AddQuickGridEntityFrameworkAdapter();
 
 #endregion
 
@@ -137,6 +140,16 @@ services.AddWebMarkupMin(
 
 #region Работа с базой данных
 
+services.AddDbContextFactory<SiteDbContext>(options =>
+{
+    options.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"] ?? throw new InvalidOperationException("Connection string 'ShevkunenkoSite' not found."));
+
+    if (environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging(true);
+    }
+});
+
 services.AddDbContext<SiteDbContext>(opts =>
 {
     opts.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"]);
@@ -180,7 +193,11 @@ app.UseStatusCodePagesWithReExecute("/Shevkunenko/Error{0}");
 // for production scenarios, see https://aka.ms/aspnetcore-hsts.
 app.UseHsts();
 
+#region Принудительное перенаправление на HTTPS
+
 app.UseHttpsRedirection();
+
+#endregion
 
 app.UseStaticFiles();
 

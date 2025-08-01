@@ -9,12 +9,9 @@ public class ViewImage(
     public async Task<IViewComponentResult> InvokeAsync(string? imageId, string? cssClass, string? iconType)
     {
         // Поиск картинки по GUID
-        if (Guid.TryParse(imageId, out Guid imageIdGuid))
+        if (Guid.TryParse(imageId, out Guid imageIdGuid) & await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageIdGuid).AnyAsync())
         {
-            if (await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageIdGuid).AnyAsync())
-            {
-                viewImageViewModel.ImageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageIdGuid);
-            }
+            viewImageViewModel.ImageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageIdGuid);
         }
         // Поиск картинки по названию файла
         else if (await imageFileContext.ImageFiles.Where(img => img.WebImageFileName == imageId || img.ImageFileName == imageId).AnyAsync())

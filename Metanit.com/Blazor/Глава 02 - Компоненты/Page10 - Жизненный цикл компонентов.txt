@@ -59,8 +59,10 @@ SetParametersAsync
  
 @code{
     string message = "Not set"; // значение по умолчанию, если для Password не передано значение
+
     [Parameter]
     public string? Password { get; set; }
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
         // если в parameters есть Password

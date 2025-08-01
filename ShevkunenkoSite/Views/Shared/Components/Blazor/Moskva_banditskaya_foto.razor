@@ -20,6 +20,10 @@
 
         <hr class="liniya w-75" />
 
+        @foreach (var item in listOfPictures)
+        {
+            <Picture ImageObject=@item />
+        }
     }
 }
 
@@ -31,9 +35,9 @@
     [Parameter]
     public Dictionary<string, List<ImageFileModel>>? TestRef { get; set; }
 
-    private int currentCount = 0;
+    public int currentCount = 0;
 
-    private void IncrementCount()
+    public void IncrementCount()
     {
         currentCount++;
     }
