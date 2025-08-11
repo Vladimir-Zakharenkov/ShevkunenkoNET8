@@ -1,6 +1,4 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-@model RefPagesViewModel
+﻿@model RefPagesViewModel
 
 @* Ссылки на связанные страницы по GUID (1) *@
 <div>
@@ -88,9 +86,9 @@
                 <hr class="liniya w-75" />
 
                 <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
-                                                                                                                                                                    @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                                                    @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                                                    @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                                                                                                                                                                                                                                                    @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                                                                                                                                                                                                                                                    @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                                                                                                                                                                                                                                                    @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                     @foreach (var item in listOfPages)
                     {
@@ -122,13 +120,6 @@ else
 @* Ссылки на картинки по фильтру *@
 @if (Model.DictionaryOfPictures.Count > 0)
 {
-    @* <component type="typeof(Counter)"
-               render-mode="ServerPrerendered" /> *@
-
-    @* <component type="typeof(Photo_album)"
-               render-mode="ServerPrerendered"
-               param-DictionaryOfRefPictures=Model.DictionaryOfPictures /> *@
-
     <div class="d-print-none mt-3">
 
         @foreach (var (caption, listOfPictures) in Model.DictionaryOfPictures)
@@ -140,9 +131,9 @@ else
                 <hr class="liniya w-75" />
 
                 <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
-                                                                            @(listOfPictures.Count < 4 ? "row-cols-3" : "")
-                                                                                        @((listOfPictures.Count % 4 == 0 || listOfPictures.Count == 7) ? "row-cols-4" : "")
-                                                                                                    @((listOfPictures.Count > 4 & listOfPictures.Count % 4 != 0 & listOfPictures.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                                    @(listOfPictures.Count < 4 ? "row-cols-3" : "")
+                                                @((listOfPictures.Count % 4 == 0 || listOfPictures.Count == 7) ? "row-cols-4" : "")
+                                                            @((listOfPictures.Count > 4 & listOfPictures.Count % 4 != 0 & listOfPictures.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                     @foreach (var item in listOfPictures)
                     {

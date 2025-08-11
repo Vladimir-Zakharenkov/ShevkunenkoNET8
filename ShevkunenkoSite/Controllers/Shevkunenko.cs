@@ -57,13 +57,4 @@ public class Shevkunenko(
     public IActionResult Press() => Redirect("https://shevkunenko.ru/pressa/index.htm");
 
     public IActionResult Error404() => View();
-
-    #region Для запуска Blazor
-
-    public IActionResult Blazor()
-    {
-        return View("_Host");
-    }
-
-    #endregion
 }

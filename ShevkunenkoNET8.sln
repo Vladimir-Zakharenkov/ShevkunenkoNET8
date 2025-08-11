@@ -407,8 +407,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Глава 22 - Работ�
 		Metanit.com\C# 13\Глава 22 - Работа с файловой системой\Page05 - Чтение и запись текстовых файлов. StreamReader и StreamWriter.txt = Metanit.com\C# 13\Глава 22 - Работа с файловой системой\Page05 - Чтение и запись текстовых файлов. StreamReader и StreamWriter.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LtuMangment.online", "LtuMangment.online\LtuMangment.online.csproj", "{CC0E08EA-39CF-4961-8EFF-6D66683740E6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Page05", "Metanit.com\C# 13\Глава 22 - Работа с файловой системой\Page05\Page05.csproj", "{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
@@ -505,6 +503,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicrosoftTutorials", "MicrosoftTutorials", "{34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAppMovies", "MicrosoftTutorials\BlazorWebAppMovies\BlazorWebAppMovies.csproj", "{44A92C10-1CC7-421F-8C3B-55C882B36163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LtuManagment", "LtuManagment\LtuManagment.csproj", "{2F22FB34-EEED-48D0-A42B-47002D374203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWithBlazor", "MicrosoftTutorials\MvcWithBlazor\MvcWithBlazor.csproj", "{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -636,10 +638,6 @@ Global
 		{8E07F389-66B4-4F13-A268-D0E1AADF5658}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E07F389-66B4-4F13-A268-D0E1AADF5658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E07F389-66B4-4F13-A268-D0E1AADF5658}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC0E08EA-39CF-4961-8EFF-6D66683740E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC0E08EA-39CF-4961-8EFF-6D66683740E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC0E08EA-39CF-4961-8EFF-6D66683740E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC0E08EA-39CF-4961-8EFF-6D66683740E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEB02A2D-21B1-4EA4-A402-7F1D04AB225B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -752,6 +750,14 @@ Global
 		{44A92C10-1CC7-421F-8C3B-55C882B36163}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44A92C10-1CC7-421F-8C3B-55C882B36163}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44A92C10-1CC7-421F-8C3B-55C882B36163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F22FB34-EEED-48D0-A42B-47002D374203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F22FB34-EEED-48D0-A42B-47002D374203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F22FB34-EEED-48D0-A42B-47002D374203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F22FB34-EEED-48D0-A42B-47002D374203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -835,6 +841,7 @@ Global
 		{E78F7715-4CB4-4D53-AF64-8AB4F82A8575} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{5F2C0E82-1101-4A50-96AF-FE33884C513C} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{44A92C10-1CC7-421F-8C3B-55C882B36163} = {34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}
+		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2} = {34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

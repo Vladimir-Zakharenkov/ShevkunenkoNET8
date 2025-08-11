@@ -1,4 +1,5 @@
-using ShevkunenkoSite.Views.Shared.Components.Blazor;
+using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -17,17 +18,6 @@ IWebHostEnvironment environment = builder.Environment;
 #region Add services to the container
 
 IServiceCollection services = builder.Services;
-
-#region Работа с Blazor
-
-services.AddServerSideBlazor();
-
-services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
-services.AddQuickGridEntityFrameworkAdapter();
-
-#endregion
 
 #region Работа с MVC
 
@@ -61,25 +51,23 @@ services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 
 services.Configure<RazorViewEngineOptions>(options =>
 {
-    options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.PageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.PageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.PageViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
-    options.PageViewLocationFormats.Add("/Views/Shared/Components/Blazor/{0}" + RazorViewEngine.ViewExtension);
 
-    options.AreaPageViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.AreaPageViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
+    options.AreaPageViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.AreaPageViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
 
+    options.ViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Pages/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/Shared/Partials/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
-    options.ViewLocationFormats.Add("/Views/Shared/Components/Blazor/{0}" + RazorViewEngine.ViewExtension);
-    options.ViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
 
     options.AreaViewLocationFormats.Clear();
+    options.AreaViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Areas/{2}/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Areas/{2}/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
-    options.AreaViewLocationFormats.Add("/Views/Shared/Layouts/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Views/Shared/Components/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
     options.AreaViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
@@ -150,17 +138,10 @@ services.AddDbContextFactory<SiteDbContext>(options =>
     }
 });
 
-services.AddDbContext<SiteDbContext>(opts =>
+if (environment.IsDevelopment())
 {
-    opts.UseSqlServer(configuration["ConnectionStrings:ShevkunenkoSite"]);
-
-    if (environment.IsDevelopment())
-    {
-        opts.EnableSensitiveDataLogging(true);
-    }
-});
-
-services.AddDatabaseDeveloperPageExceptionFilter();
+    services.AddDatabaseDeveloperPageExceptionFilter();
+}
 
 services.AddScoped<IPageInfoRepository, PageInfoImplementation>();
 services.AddScoped<IBackgroundFotoRepository, BackGroundFotoImplementation>();
@@ -233,18 +214,6 @@ app.MapControllerRoute(
         pattern: "{controller=Shevkunenko}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
-#endregion
-
-#region Для запуска Blazor
-
-app.UseAntiforgery();
-
-app.MapBlazorHub();
-
-app.MapFallbackToController("Blazor", "Shevkunenko");
-
-app.MapRazorComponents<App>();
 
 #endregion
 

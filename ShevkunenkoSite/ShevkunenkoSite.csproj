@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.13.2" />
-    <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
-    <PackageReference Include="Markdig" Version="0.40.0" />
+    <PackageReference Include="BuildWebCompiler2022" Version="1.14.15" />
+    <PackageReference Include="Markdig" Version="0.41.3" />
     <PackageReference Include="MetadataExtractor" Version="2.8.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11" />
@@ -51,7 +51,6 @@
     <None Include="DataConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Views\Shared\Components\Blazor\_Host.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
