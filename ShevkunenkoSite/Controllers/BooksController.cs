@@ -97,6 +97,17 @@ public class BooksController(
 
             #endregion
 
+            #region Фото из книги
+
+            List<ImageFileModel>? listOfPictures = null;
+
+            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + ',')).AnyAsync())
+            {
+                listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + ',')).ToListAsync();
+            }
+
+            #endregion
+
             #region ViewModel
 
             ArticleViewModel bookOrArticle = new()
@@ -106,7 +117,8 @@ public class BooksController(
                 HtmlText = textWithMarkUp,
                 PageNumber = pageNumber,
                 Scan = scan,
-                FramesAroundMainContent = framesAroundMainContent
+                FramesAroundMainContent = framesAroundMainContent,
+                ListOfPictures = listOfPictures
             };
 
             #endregion

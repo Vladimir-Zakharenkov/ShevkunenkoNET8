@@ -37,4 +37,10 @@ public class ArticleViewModel
     public FramesAroundMainContentModel FramesAroundMainContent { get; set; } = new();
 
     #endregion
+
+    #region Фото из книги
+
+    public List<ImageFileModel>? ListOfPictures {get; set;}
+
+    #endregion
 }

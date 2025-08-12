@@ -1,5 +1,9 @@
 ﻿@model ArticleViewModel
 
+@{
+    int n = 0;
+}
+
 <div class="mx-auto fluid-font-size" itemscope itemtype="https://schema.org/Book">
 
     <meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText" />
@@ -371,7 +375,7 @@
 
                 <button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PagesOfBook" aria-expanded="true" aria-controls="PagesOfBook">
 
-                    <span class="d-inline-block w-100 fs-5 text-center">Страницы книги :</span>
+                    <span class="d-inline-block w-100 fs-5">Страницы книги :</span>
 
                 </button>
 
@@ -400,7 +404,7 @@
         </div>
 
         @* скачать книгу *@
-        <div class="accordion-item shadw">
+        <div class="accordion-item my-3 shadw">
 
             @* заголовок группы «скачать книгу» *@
             <h2 class="accordion-header" id="headingLoadBook">
@@ -495,6 +499,54 @@
             </div>
 
         </div>
+
+        @* фото из книги *@
+        @if (Model.ListOfPictures != null)
+        {
+            <div class="accordion-item shadw">
+
+                @* заголовок группы «фото из книги» *@
+                <h2 class="accordion-header" id="headingPhoto">
+
+                    <button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Photo" aria-expanded="true" aria-controls="Photo">
+
+                        <span class="d-none d-sm-block me-2">Фото из книги :</span>
+
+                        @do
+                        {
+                            Random rnd = new();
+                            int rndIndex = rnd.Next(Model.ListOfPictures.Count);
+
+                            <vc:view-image image-id="@Model.ListOfPictures[rndIndex].ImageFileModelId"
+                                           css-class="maxwidth40px p-0 me-2"
+                                           icon-type="webicon100" />
+                            n++;
+                        }
+                        while (n < 5 & n < Model.ListOfPictures.Count);
+
+                    </button>
+
+                </h2>
+
+                <div id="Photo" class="accordion-collapse collapse p-2" aria-labelledby="headingPhoto" data-bs-parent="#accordionForBook">
+
+                    <div class="accordion-body accordion-body-nointend">
+
+                        <div class="row row-cols-2 row-cols-sm-4 row-cols-lg-5 justify-content-center">
+
+                            @foreach (var item in Model.ListOfPictures)
+                            {
+                                <vc:view-image image-id="@item.ImageFileModelId.ToString()" css-class="col m-2" icon-type="webicon100" />
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
 
     </div>
 

@@ -111,7 +111,8 @@ public class RefPages(
                 }
             }
 
-            // ссылки на связанные картинки по текстовому фильтру
+            #region Картинки по текстовому фильтру
+
             if (!string.IsNullOrEmpty(pageInfoModel.PhotoFilterOut) & pageInfoModel.PhotoLinks == true)
             {
                 string[] photoFilterOut = pageInfoModel.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -131,6 +132,8 @@ public class RefPages(
                     }
                 }
             }
+
+            #endregion
 
             // ссылки на связанные видео по текстовому фильтру VideoFilterOut
             if (!string.IsNullOrEmpty(pageInfoModel.VideoFilterOut) & pageInfoModel.VideoLinks == true)
