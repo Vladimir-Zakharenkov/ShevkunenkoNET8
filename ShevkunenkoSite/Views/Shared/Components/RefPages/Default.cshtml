@@ -85,10 +85,10 @@
 
                 <hr class="liniya w-75" />
 
-                <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1
-                                                                                                                                                                                                                                                                    @(listOfPages.Count < 4 ? "row-cols-3" : "")
-                                                                                                                                                                                                                                                                    @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-                                                                                                                                                                                                                                                                    @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+                <div class="row g-sm-1 g-md-2 g-lg-3 gy-2 justify-content-center mt-1>
+                                    @(listOfPages.Count < 4 ? "row-cols-3" : "")
+                                    @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+                                    @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
                     @foreach (var item in listOfPages)
                     {
