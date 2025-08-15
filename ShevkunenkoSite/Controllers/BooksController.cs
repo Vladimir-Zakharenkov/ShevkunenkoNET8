@@ -101,9 +101,16 @@ public class BooksController(
 
             List<ImageFileModel>? listOfPictures = null;
 
-            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + ',')).AnyAsync())
+            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).AnyAsync())
             {
-                listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + ',')).ToListAsync();
+                //listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).ToListAsync();
+
+                var listOfPictures2 = from m in imageFileContext.ImageFiles
+                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText+"#album,"))
+                   .OrderBy(p => p.SortOfPicture)
+                                 select m;
+
+                listOfPictures = [.. listOfPictures2.AsEnumerable()];
             }
 
             #endregion
@@ -131,4 +138,23 @@ public class BooksController(
         }
     }
 
+    public async Task<IActionResult> PhotoAlbum(string? captionOfAlbum, Guid? imageId, int? pageNumber)
+    {
+        if (string.IsNullOrEmpty(captionOfAlbum) || imageId == null || await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (pageNumber == null)
+        {
+            pageNumber = 1;
+        }
+
+        var allPhotoes = from m in imageFileContext.ImageFiles
+           .Where(p => p.SearchFilter.Contains(captionOfAlbum))
+           .OrderBy(p => p.SortOfPicture)
+                         select m;
+
+        return View();
+    }
 }

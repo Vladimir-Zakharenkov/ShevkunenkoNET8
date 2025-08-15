@@ -532,15 +532,21 @@
 
                     <div class="accordion-body accordion-body-nointend p-0 pt-2">
 
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-2 pb-2 justify-content-center">
+                        @* <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-2 pb-2 justify-content-center"> - для webicon200 *@
+                        <div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-2 pb-2 justify-content-center">
 
                             @foreach (var item in Model.ListOfPictures)
                             {
-                                <a class="col rounded-3 text-center" href="">
-                                    <vc:view-image 
-                                        image-id="@item.ImageFileModelId.ToString()"
-                                        css-class="rounded-3 shadw imageref"
-                                        icon-type="webicon200" />
+                                <a asp-area=""
+                                   asp-controller="Books"
+                                   asp-action="PhotoAlbum"
+                                   asp-route-captionOfAlbum="@Model.BookOrArticle.CaptionOfText"
+                                   asp-route-imageId="@item.ImageFileModelId"
+                                   class="col rounded-3 text-center">
+
+                                    <vc:view-image image-id="@item.ImageFileModelId.ToString()"
+                                                   css-class="rounded-3 shadw imageref"
+                                                   icon-type="webicon100" />
                                 </a>
                             }
 
