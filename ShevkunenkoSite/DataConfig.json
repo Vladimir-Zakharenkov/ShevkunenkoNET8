@@ -25,6 +25,6 @@
 
     "Test": "appsetting",
 
-    "NumberOfVideoPerPage": 12
+    "NumberOfItemsPerPage": 12
   }
 }

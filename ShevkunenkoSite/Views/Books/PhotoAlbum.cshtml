@@ -1,1 +1,16 @@
-﻿<h1>PhotoAlbum</h1>
+﻿@model PhotoAlbumViewModel
+
+<h1 class="text_shadow">
+    @Model.CaptionOfAlbum
+    @if (Model.NoteForCaptionOfAlbum != null)
+    {
+        <br />
+        <span class="h2">
+            (@Model.NoteForCaptionOfAlbum)
+        </span>
+    }
+</h1>
+
+<hr class="liniya" />
+
+<div album-paging="1"></div>

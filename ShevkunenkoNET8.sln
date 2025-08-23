@@ -508,6 +508,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LtuManagment", "LtuManagmen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWithBlazor", "MicrosoftTutorials\MvcWithBlazor\MvcWithBlazor.csproj", "{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthoringTagHelpers", "MicrosoftTutorials\AuthoringTagHelpers\AuthoringTagHelpers.csproj", "{FFA53A8B-E4EB-446F-B087-1D540D53062C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -758,6 +760,10 @@ Global
 		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFA53A8B-E4EB-446F-B087-1D540D53062C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA53A8B-E4EB-446F-B087-1D540D53062C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA53A8B-E4EB-446F-B087-1D540D53062C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA53A8B-E4EB-446F-B087-1D540D53062C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -842,6 +848,7 @@ Global
 		{5F2C0E82-1101-4A50-96AF-FE33884C513C} = {CDD2C5BC-B0FB-45AA-B5BD-36AEE37E7FEE}
 		{44A92C10-1CC7-421F-8C3B-55C882B36163} = {34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}
 		{C3B0BF7C-6DB5-EB6F-D72D-169BFE0C19B2} = {34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}
+		{FFA53A8B-E4EB-446F-B087-1D540D53062C} = {34F3D23B-25FE-42CE-A8CD-C71ECB530B9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22722325-6FE3-4A44-9D6F-E82DEB2E6AFC}

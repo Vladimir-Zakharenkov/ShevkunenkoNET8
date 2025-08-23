@@ -31,8 +31,8 @@ public class AllVideoController(
             moviesListViewModel.Movies = await movieContext.MovieFiles
                 .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true /*& p.MovieInMainList == true*/)
                 .OrderBy(p => p.MovieDatePublished)
-                .Skip((pageNumber - 1) * DataConfig.NumberOfVideoPerPage)
-                .Take(DataConfig.NumberOfVideoPerPage)
+                .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                .Take(DataConfig.NumberOfItemsPerPage)
                 .ToArrayAsync();
 
             moviesListViewModel.PageHeadTitle = topicMovie.TopicHeadPage;
@@ -46,7 +46,7 @@ public class AllVideoController(
             moviesListViewModel.PagingInfo = new PagingInfoViewModel
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = DataConfig.NumberOfVideoPerPage,
+                ItemsPerPage = DataConfig.NumberOfItemsPerPage,
                 TotalItems = movieContext.MovieFiles
                     .Where(p => p.TopicGuidList.Contains(topicId.ToString()!) == true).Count()
             };
@@ -57,8 +57,8 @@ public class AllVideoController(
             moviesListViewModel.Movies = await movieContext.MovieFiles
                 .Where(p => p.MovieInMainList == true)
                 .OrderBy(p => p.MovieDatePublished)
-                .Skip((pageNumber - 1) * DataConfig.NumberOfVideoPerPage)
-                .Take(DataConfig.NumberOfVideoPerPage)
+                .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                .Take(DataConfig.NumberOfItemsPerPage)
                 .ToArrayAsync();
 
             moviesListViewModel.PageHeadTitle = "ВИДЕО НА САЙТЕ";
@@ -72,7 +72,7 @@ public class AllVideoController(
             moviesListViewModel.PagingInfo = new PagingInfoViewModel
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = DataConfig.NumberOfVideoPerPage,
+                ItemsPerPage = DataConfig.NumberOfItemsPerPage,
                 TotalItems = movieContext.MovieFiles
                     .Where(p => p.MovieInMainList == true)
                     .Count()

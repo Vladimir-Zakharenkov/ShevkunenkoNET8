@@ -32,9 +32,9 @@ public class Shevkunenko(
 
             PagingInfo = new PagingInfoViewModel
             {
-                CurrentPage = pageNumber,
+                TotalItems = allPhotoes.Count(),
                 ItemsPerPage = imagesPerPage,
-                TotalItems = allPhotoes.Count()
+                CurrentPage = pageNumber
             },
 
             ImageSearchString = string.Empty,

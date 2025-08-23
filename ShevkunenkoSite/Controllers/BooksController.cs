@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using System.Drawing;
+
+namespace ShevkunenkoSite.Controllers;
 
 public class BooksController(
     IBooksAndArticlesRepository articleContext,
@@ -106,9 +108,9 @@ public class BooksController(
                 //listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).ToListAsync();
 
                 var listOfPictures2 = from m in imageFileContext.ImageFiles
-                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText+"#album,"))
+                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + "#album#"))
                    .OrderBy(p => p.SortOfPicture)
-                                 select m;
+                                      select m;
 
                 listOfPictures = [.. listOfPictures2.AsEnumerable()];
             }
@@ -138,23 +140,74 @@ public class BooksController(
         }
     }
 
-    public async Task<IActionResult> PhotoAlbum(string? captionOfAlbum, Guid? imageId, int? pageNumber)
+    public async Task<IActionResult> PhotoAlbum(Guid? imageId, int pageNumber = 1)
     {
-        if (string.IsNullOrEmpty(captionOfAlbum) || imageId == null || await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
+        if (imageId == null
+            || await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
         {
             return RedirectToAction(nameof(Index));
         }
 
-        if (pageNumber == null)
+        var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
+
+        PhotoAlbumViewModel photoAlbumView = new();
+
+        if (imageItem.SearchFilter.Contains("#album#"))
+        {
+            string[] filters = imageItem.SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
+
+            if (filterForCaption != null)
+            {
+                int foundForCaption = filterForCaption.IndexOf("#album#");
+
+                photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
+
+                if (filterForCaption.Contains("#note#"))
+                {
+                    int foundForNote = filterForCaption.IndexOf("#note#");
+
+                    photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                }
+            }
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        var allItems = from m in imageFileContext.ImageFiles
+           .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + "#album#"))
+           .OrderBy(p => p.SortOfPicture)
+                       select m;
+
+        var arrayOfItems = await allItems.ToArrayAsync();
+
+        var indexOfItem = Array.FindIndex(arrayOfItems, item => item.ImageFileModelId == imageId) + 1;
+
+        if (indexOfItem < DataConfig.NumberOfItemsPerPage)
         {
             pageNumber = 1;
         }
+        else if (indexOfItem % (DataConfig.NumberOfItemsPerPage) == 0)
+        {
+            pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage;
+        }
+        else
+        {
+            pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage + 1;
+        }
 
-        var allPhotoes = from m in imageFileContext.ImageFiles
-           .Where(p => p.SearchFilter.Contains(captionOfAlbum))
-           .OrderBy(p => p.SortOfPicture)
-                         select m;
+        var itemsOnPage = await allItems
+               .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
+               .Take(photoAlbumView.PagingInfo.ItemsPerPage)
+               .ToArrayAsync();
 
-        return View();
+        photoAlbumView.ItemsOnPage = itemsOnPage;
+        photoAlbumView.PagingInfo.TotalItems = allItems.Count();
+        photoAlbumView.PagingInfo.CurrentPage = pageNumber;
+
+        return View(photoAlbumView);
     }
 }

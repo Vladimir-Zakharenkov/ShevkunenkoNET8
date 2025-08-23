@@ -96,10 +96,17 @@
 
                 @foreach (var item in Model.FramesAroundMainContent.FramesOnTheLeft)
                 {
-                    <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
+                    @* Вывод фотографии в отдельное окно *@
+                    @* <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
                        class=""
                        title="@item.ImageAltTitle"
-                       onclick="this.target='_blank'">
+                       onclick="this.target='_blank'"> *@
+
+                    <a asp-area=""
+                       asp-controller="Books"
+                       asp-action="PhotoAlbum"
+                       asp-route-imageId="@item.ImageFileModelId"
+                       class="">
 
                         <vc:view-image image-id="@item.ImageFileModelId"
                                        css-class="my-2 w-100 shadw imageref"
@@ -278,10 +285,17 @@
 
                 @foreach (var item in Model.FramesAroundMainContent.FramesOnTheRight)
                 {
-                    <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
+                    @* Вывод фотографии в отдельное окно *@
+                    @* <a href="@item.ImagePath/@(string.IsNullOrEmpty(item.WebImageHDFileName) == false ? item.WebImageHDFileName : item.WebImageFileName)"
                        class=""
                        title="@item.ImageAltTitle"
-                       onclick="this.target='_blank'">
+                       onclick="this.target='_blank'"> *@
+
+                    <a asp-area=""
+                       asp-controller="Books"
+                       asp-action="PhotoAlbum"
+                       asp-route-imageId="@item.ImageFileModelId"
+                       class="">
 
                         <vc:view-image image-id="@item.ImageFileModelId"
                                        css-class="my-2 w-100 shadw imageref"
@@ -522,7 +536,7 @@
                                            icon-type="webicon100" />
                             n++;
                         }
-                        while (n < Model.ListOfPictures.Count && n < 5 );
+                        while (n < Model.ListOfPictures.Count && n < 5);
 
                     </button>
 
@@ -540,7 +554,6 @@
                                 <a asp-area=""
                                    asp-controller="Books"
                                    asp-action="PhotoAlbum"
-                                   asp-route-captionOfAlbum="@Model.BookOrArticle.CaptionOfText"
                                    asp-route-imageId="@item.ImageFileModelId"
                                    class="col w-auto rounded-3 text-center">
 
@@ -558,6 +571,7 @@
 
             </div>
         }
+
 
     </div>
 

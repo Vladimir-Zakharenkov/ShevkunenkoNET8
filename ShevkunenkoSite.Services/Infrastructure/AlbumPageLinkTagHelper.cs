@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using ShevkunenkoSite.Models.ViewModels;
-
-namespace ShevkunenkoSite.Services.Infrastructure;
+﻿namespace ShevkunenkoSite.Services.Infrastructure;
 
 [HtmlTargetElement("div", Attributes = "album-page")]
 public class AlbumPageLinkTagHelper : TagHelper
@@ -45,8 +38,11 @@ public class AlbumPageLinkTagHelper : TagHelper
             {
                 TagBuilder tag = new("a");
 
-                tag.Attributes["href"] = urlHelper.Action(PageAction, 
-                    new { pageNumber = i, imageId = 1
+                tag.Attributes["href"] = urlHelper.Action(PageAction,
+                    new
+                    {
+                        pageNumber = i,
+                        imageId = 1
                     });
 
                 if (PageClassesEnabled)

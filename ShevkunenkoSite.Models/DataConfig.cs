@@ -35,5 +35,5 @@ public class DataConfig
     public static string ArchiveTextsFolderPath { get; set; } = null!;
 
     // колличество видео на странице для постраничного представления
-    public static int NumberOfVideoPerPage { get; set; }
+    public static int NumberOfItemsPerPage { get; set; }
 }

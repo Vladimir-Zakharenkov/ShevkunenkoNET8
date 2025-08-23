@@ -2,11 +2,27 @@
 
 public class PagingInfoViewModel
 {
+    #region Полное количество объектов
+
     public int TotalItems { get; set; } = 1;
 
-    public int ItemsPerPage { get; set; } = DataConfig.NumberOfVideoPerPage;
+    #endregion
+
+    #region Количество объектов на странице
+
+    public int ItemsPerPage { get; set; } = DataConfig.NumberOfItemsPerPage;
+
+    #endregion
+
+    #region Текущая страница
 
     public int CurrentPage { get; set; } = 1;
 
+    #endregion
+
+    #region Полное количество страниц
+
     public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
+
+    #endregion
 }
