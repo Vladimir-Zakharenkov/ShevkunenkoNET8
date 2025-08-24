@@ -152,14 +152,19 @@ public class BooksController(
 
         PhotoAlbumViewModel photoAlbumView = new();
 
+        #region Просмотр картинки
+
         if (imageId != null)
         {
             photoAlbumView.AlbumOrPhoto = false;
 
             var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
 
+
             if (imageItem.SearchFilter.Contains("#album#"))
             {
+                #region Определение заголовка и подзаголовка альбома
+
                 string[] filters = imageItem.SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
@@ -177,6 +182,8 @@ public class BooksController(
                         photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
                     }
                 }
+
+                #endregion
 
                 var allItems = from m in imageFileContext.ImageFiles
                    .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + "#album#"))
@@ -214,18 +221,23 @@ public class BooksController(
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        #endregion
+
+        #region Просмотр страницы альбома
+
         else
         {
             photoAlbumView.AlbumOrPhoto = true;
 
             var allItems = from m in imageFileContext.ImageFiles
-               .Where(p => p.SearchFilter.Contains(albumCaption + "#album#", StringComparison.CurrentCultureIgnoreCase))
+               .Where(p => p.SearchFilter.ToLower().Contains(albumCaption + "#album#"))
                .OrderBy(p => p.SortOfPicture)
                            select m;
 
             var allItemsArray = await allItems.ToArrayAsync();
 
-            if (pageNumber < 1 || pageNumber > (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage))
+            if (pageNumber < 1 || pageNumber > (allItemsArray.Length % photoAlbumView.PagingInfo.ItemsPerPage == 0 ? (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage) : (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage + 1)))
             {
                 pageNumber = 1;
             }
@@ -235,10 +247,34 @@ public class BooksController(
                    .Take(photoAlbumView.PagingInfo.ItemsPerPage)
                    .ToArrayAsync();
 
+            #region Определение заголовка и подзаголовка альбома
+
+            string[] filters = itemsOnPage[0].SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
+
+            if (filterForCaption != null)
+            {
+                int foundForCaption = filterForCaption.IndexOf("#album#");
+
+                photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
+
+                if (filterForCaption.Contains("#note#"))
+                {
+                    int foundForNote = filterForCaption.IndexOf("#note#");
+
+                    photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                }
+            }
+
+            #endregion
+
             photoAlbumView.ItemsOnPage = itemsOnPage;
             photoAlbumView.PagingInfo.TotalItems = allItems.Count();
             photoAlbumView.PagingInfo.CurrentPage = pageNumber;
         }
+
+        #endregion
 
         return View(photoAlbumView);
     }

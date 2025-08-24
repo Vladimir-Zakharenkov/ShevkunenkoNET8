@@ -1,7 +1,4 @@
-﻿using Azure;
-using System.Formats.Asn1;
-
-namespace ShevkunenkoSite.Services.TagHelpers;
+﻿namespace ShevkunenkoSite.Services.TagHelpers;
 
 [HtmlTargetElement("div", Attributes = "album-paging")]
 public class AlbumPagingTagHelper(IUrlHelperFactory helperFactory) : TagHelper
