@@ -25,4 +25,10 @@ public class PhotoAlbumViewModel
     public PagingInfoViewModel PagingInfo { get; set; } = new();
 
     #endregion
+
+    #region Страница альбома (true) или страница картинки (false)
+
+    public bool AlbumOrPhoto { get; set; }
+
+    #endregion
 }

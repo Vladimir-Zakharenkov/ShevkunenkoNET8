@@ -9,8 +9,59 @@
             (@Model.NoteForCaptionOfAlbum)
         </span>
     }
+    <br />
+    <span class="h2">
+        страница @Model.PagingInfo.CurrentPage
+    </span>
 </h1>
 
 <hr class="liniya" />
 
-<div album-paging="1"></div>
+@if (Model.AlbumOrPhoto)
+{
+    <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-6 g-2 justify-content-center">
+
+        @foreach (var imageItem in Model.ItemsOnPage)
+        {
+            <div class="col">
+
+                <div class="card h-100 me-1 mb-1 p-1 shadw borderforitem">
+
+                    <a asp-area=""
+                       asp-controller="Books"
+                       asp-action="PhotoAlbum"
+                       asp-route-imageId="@imageItem.ImageFileModelId"
+                       asp-route-pageNumber="@Model.PagingInfo.CurrentPage"
+                       asp-route-albumOrPhoto="@false"
+                       title="смотреть фото">
+
+                        <vc:view-image image-id="@imageItem.ImageFileModelId"
+                                       css-class="card-img-top shadw"
+                                       icon-type="webicon300" />
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+
+
+    </div>
+}
+else
+{
+    <h1>Temp</h1>
+}
+
+
+<div class="row p-2 m-2">
+
+    <div album-paging="@Model.PagingInfo"
+         album-caption="@Model.CaptionOfAlbum"
+         data-toggle="buttons"
+         role="group"
+         aria-label="фотоальбом">
+    </div>
+
+</div>

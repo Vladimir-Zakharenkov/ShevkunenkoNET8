@@ -1,14 +1,9 @@
 ﻿namespace ShevkunenkoSite.Services.Infrastructure;
 
 [HtmlTargetElement("div", Attributes = "album-page")]
-public class AlbumPageLinkTagHelper : TagHelper
+public class AlbumPageLinkTagHelper(IUrlHelperFactory helperFactory) : TagHelper
 {
-    private readonly IUrlHelperFactory urlHelperFactory;
-
-    public AlbumPageLinkTagHelper(IUrlHelperFactory helperFactory)
-    {
-        urlHelperFactory = helperFactory;
-    }
+    private readonly IUrlHelperFactory urlHelperFactory = helperFactory;
 
     [ViewContext]
     [HtmlAttributeNotBound]

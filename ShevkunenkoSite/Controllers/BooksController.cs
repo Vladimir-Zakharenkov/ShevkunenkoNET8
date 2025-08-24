@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ShevkunenkoSite.Controllers;
+﻿namespace ShevkunenkoSite.Controllers;
 
 public class BooksController(
     IBooksAndArticlesRepository articleContext,
@@ -140,73 +138,107 @@ public class BooksController(
         }
     }
 
-    public async Task<IActionResult> PhotoAlbum(Guid? imageId, int pageNumber = 1)
+    public async Task<IActionResult> PhotoAlbum(Guid? imageId, string? albumCaption, int pageNumber = 1)
     {
-        if (imageId == null
-            || await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
+        if (
+            (imageId == null & string.IsNullOrEmpty(albumCaption))
+            || (imageId != null & !string.IsNullOrEmpty(albumCaption))
+            || (imageId != null & await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
+            || (!string.IsNullOrEmpty(albumCaption) & await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(albumCaption! + "#album#")).AnyAsync() == false)
+            )
         {
             return RedirectToAction(nameof(Index));
         }
 
-        var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
-
         PhotoAlbumViewModel photoAlbumView = new();
 
-        if (imageItem.SearchFilter.Contains("#album#"))
+        if (imageId != null)
         {
-            string[] filters = imageItem.SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            photoAlbumView.AlbumOrPhoto = false;
 
-            string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
+            var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
 
-            if (filterForCaption != null)
+            if (imageItem.SearchFilter.Contains("#album#"))
             {
-                int foundForCaption = filterForCaption.IndexOf("#album#");
+                string[] filters = imageItem.SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-                photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
+                string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
 
-                if (filterForCaption.Contains("#note#"))
+                if (filterForCaption != null)
                 {
-                    int foundForNote = filterForCaption.IndexOf("#note#");
+                    int foundForCaption = filterForCaption.IndexOf("#album#");
 
-                    photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                    photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
+
+                    if (filterForCaption.Contains("#note#"))
+                    {
+                        int foundForNote = filterForCaption.IndexOf("#note#");
+
+                        photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                    }
                 }
+
+                var allItems = from m in imageFileContext.ImageFiles
+                   .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + "#album#"))
+                   .OrderBy(p => p.SortOfPicture)
+                               select m;
+
+                var arrayOfItems = await allItems.ToArrayAsync();
+
+                var indexOfItem = Array.FindIndex(arrayOfItems, item => item.ImageFileModelId == imageId) + 1;
+
+                if (indexOfItem < DataConfig.NumberOfItemsPerPage)
+                {
+                    pageNumber = 1;
+                }
+                else if (indexOfItem % (DataConfig.NumberOfItemsPerPage) == 0)
+                {
+                    pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage;
+                }
+                else
+                {
+                    pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage + 1;
+                }
+
+                var itemsOnPage = await allItems
+                   .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
+                   .Take(photoAlbumView.PagingInfo.ItemsPerPage)
+                   .ToArrayAsync();
+
+                photoAlbumView.ItemsOnPage = itemsOnPage;
+                photoAlbumView.PagingInfo.TotalItems = allItems.Count();
+                photoAlbumView.PagingInfo.CurrentPage = pageNumber;
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
             }
         }
         else
         {
-            return RedirectToAction(nameof(Index));
+            photoAlbumView.AlbumOrPhoto = true;
+
+            var allItems = from m in imageFileContext.ImageFiles
+               .Where(p => p.SearchFilter.Contains(albumCaption + "#album#", StringComparison.CurrentCultureIgnoreCase))
+               .OrderBy(p => p.SortOfPicture)
+                           select m;
+
+            var allItemsArray = await allItems.ToArrayAsync();
+
+            if (pageNumber < 1 || pageNumber > (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage))
+            {
+                pageNumber = 1;
+            }
+
+            var itemsOnPage = await allItems
+                   .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
+                   .Take(photoAlbumView.PagingInfo.ItemsPerPage)
+                   .ToArrayAsync();
+
+            photoAlbumView.ItemsOnPage = itemsOnPage;
+            photoAlbumView.PagingInfo.TotalItems = allItems.Count();
+            photoAlbumView.PagingInfo.CurrentPage = pageNumber;
         }
-
-        var allItems = from m in imageFileContext.ImageFiles
-           .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + "#album#"))
-           .OrderBy(p => p.SortOfPicture)
-                       select m;
-
-        var arrayOfItems = await allItems.ToArrayAsync();
-
-        var indexOfItem = Array.FindIndex(arrayOfItems, item => item.ImageFileModelId == imageId) + 1;
-
-        if (indexOfItem < DataConfig.NumberOfItemsPerPage)
-        {
-            pageNumber = 1;
-        }
-        else if (indexOfItem % (DataConfig.NumberOfItemsPerPage) == 0)
-        {
-            pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage;
-        }
-        else
-        {
-            pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage + 1;
-        }
-
-        var itemsOnPage = await allItems
-               .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
-               .Take(photoAlbumView.PagingInfo.ItemsPerPage)
-               .ToArrayAsync();
-
-        photoAlbumView.ItemsOnPage = itemsOnPage;
-        photoAlbumView.PagingInfo.TotalItems = allItems.Count();
-        photoAlbumView.PagingInfo.CurrentPage = pageNumber;
 
         return View(photoAlbumView);
     }
