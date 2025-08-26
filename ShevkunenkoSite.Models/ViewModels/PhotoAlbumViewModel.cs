@@ -20,6 +20,12 @@ public class PhotoAlbumViewModel
 
     #endregion
 
+    #region Id (Guid) текущей картинки
+
+    public Guid? CurrentImageId { get; set; }
+
+    #endregion
+
     #region Постраничная информация альбома
 
     public PagingInfoViewModel PagingInfo { get; set; } = new();

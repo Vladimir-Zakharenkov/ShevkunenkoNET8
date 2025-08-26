@@ -213,6 +213,7 @@ public class BooksController(
                    .ToArrayAsync();
 
                 photoAlbumView.ItemsOnPage = itemsOnPage;
+                photoAlbumView.CurrentImageId = imageId;
                 photoAlbumView.PagingInfo.TotalItems = allItems.Count();
                 photoAlbumView.PagingInfo.CurrentPage = pageNumber;
             }
@@ -270,6 +271,7 @@ public class BooksController(
             #endregion
 
             photoAlbumView.ItemsOnPage = itemsOnPage;
+            photoAlbumView.CurrentImageId = itemsOnPage[0].ImageFileModelId;
             photoAlbumView.PagingInfo.TotalItems = allItems.Count();
             photoAlbumView.PagingInfo.CurrentPage = pageNumber;
         }
