@@ -654,7 +654,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region MVC или RazorPage
+            #region Адрес
 
             #region Область
 
@@ -758,7 +758,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Псевдоним страницы
+            #region Псевдоним страницы (1)
 
             if (string.IsNullOrWhiteSpace(addPage.PagePathNickName) || string.IsNullOrEmpty(addPage.PagePathNickName))
             {
@@ -771,6 +771,23 @@ public class PageInfoController(
             else
             {
                 addPage.PagePathNickName = "/" + addPage.PagePathNickName.Trim().Trim('/').ToLower();
+            }
+
+            #endregion
+
+            #region Псевдоним страницы (2)
+
+            if (string.IsNullOrWhiteSpace(addPage.PagePathNickName2) || string.IsNullOrEmpty(addPage.PagePathNickName2))
+            {
+                addPage.PagePathNickName2 = string.Empty;
+            }
+            else if (addPage.PagePathNickName2 == "/")
+            {
+                addPage.PagePathNickName2 = "/";
+            }
+            else
+            {
+                addPage.PagePathNickName2 = "/" + addPage.PagePathNickName2.Trim().Trim('/').ToLower();
             }
 
             #endregion
@@ -1254,7 +1271,7 @@ public class PageInfoController(
 
             #endregion
 
-            #region Псевдоним адреса
+            #region Псевдоним адреса (1)
 
             if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName))
             {
@@ -1267,6 +1284,23 @@ public class PageInfoController(
             else
             {
                 pageUpdate.PagePathNickName = "/" + editPage.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
+            }
+
+            #endregion
+
+            #region Псевдоним адреса (2)
+
+            if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName2) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName2))
+            {
+                pageUpdate.PagePathNickName2 = string.Empty;
+            }
+            else if (editPage.PageItem.PagePathNickName2 == "/")
+            {
+                pageUpdate.PagePathNickName2 = "/";
+            }
+            else
+            {
+                pageUpdate.PagePathNickName2 = "/" + editPage.PageItem.PagePathNickName2.Trim().Trim('/').ToLower();
             }
 
             #endregion

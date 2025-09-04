@@ -105,6 +105,7 @@
                     <a asp-area=""
                        asp-controller="Books"
                        asp-action="PhotoAlbum"
+                      asp-route-albumCaption ="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                        asp-route-imageId="@item.ImageFileModelId"
                        class="">
 
@@ -294,6 +295,7 @@
                     <a asp-area=""
                        asp-controller="Books"
                        asp-action="PhotoAlbum"
+                       asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                        asp-route-imageId="@item.ImageFileModelId"
                        class="">
 
@@ -515,7 +517,7 @@
         </div>
 
         @* фото из книги *@
-        @if (Model.ListOfPictures != null)
+        @if (Model.ListOfPictures != null && Model.ListOfPictures.Count > 0)
         {
             <div class="accordion-item shadw">
 
@@ -554,6 +556,7 @@
                                 <a asp-area=""
                                    asp-controller="Books"
                                    asp-action="PhotoAlbum"
+                                   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                                    asp-route-imageId="@item.ImageFileModelId"
                                    class="col w-auto rounded-3 text-center">
 

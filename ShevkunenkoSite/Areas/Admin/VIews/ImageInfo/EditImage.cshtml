@@ -167,7 +167,9 @@
                 @* Фильтр поиска картинки в базе данных *@
                 <div>
 
-                    <label asp-for="EditImage.SearchFilter" class="form-label text-primary fs-5"></label>
+                    <label class="form-label text-primary fs-5 fw-bold"
+                           asp-for="EditImage.SearchFilter">
+                    </label>
 
                     @* текущие фильтры для картинки *@
                     <div class="maxwidthcontent mx-auto justify-content-lg-start mb-3">
@@ -195,6 +197,38 @@
                     <hr class="liniya" />
 
                 </div>
+
+                @* Порядок сортировки картинки *@
+                <div class="row g-2 justify-content-center mb-2">
+
+                    <div class="col-auto">
+                        <label class="form-label text-primary fs-5 fw-bold"
+                               asp-for="EditImage.SortOfPicture">
+                        </label>
+                    </div>
+
+                    <div class="col-auto">
+                        <input id="SortOfPictureInput"
+                               class="form-control text-center"
+                               asp-for="EditImage.SortOfPicture"
+                               aria-describedby="SortOfPictureInputHelpBlock" />
+                    </div>
+
+                    <div id="SortOfPictureInputHelpBlock" class="form-text">
+
+                        <span class="fs-6 text-success">индекс сортировки</span>
+
+                    </div>
+
+                    @if (Context.Request.Method == "POST")
+                    {
+                        <span asp-validation-for="EditImage.SortOfPicture" class="text-danger"></span>
+                    }
+
+                    <hr class="w-50 mx-auto" />
+
+                </div>
+
 
                 @* Каталог картинки *@
                 <div>

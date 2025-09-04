@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Components.QuickGrid;
-using Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -184,15 +181,19 @@ app.UseStaticFiles();
 
 app.UseSession();
 
-app.UseAuthentication();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
 app.UseWebMarkupMin();
 
 #region Маршруты
+
+app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area}/{controller=Shevkunenko}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
         name: "videos_area",
@@ -200,18 +201,33 @@ app.MapAreaControllerRoute(
         pattern: "videos/{controller=Номе}/{action=Index}/{id?}");
 
 app.MapControllerRoute("pagination", "Video-na-saite/Stranica{pageNumber}",
-    new { Controller = "AllVideo", action = "Index" });
+    new { Controller = "AllVideo", Action = "Index" });
 
 app.MapControllerRoute("PhotoAlbum", "Shevkunenko/PhotoAlbum/Page{pageNumber}/Photo-{imageId}",
-        new { Controller = "Shevkunenko", action = "PhotoAlbum" });
+        new { Controller = "Shevkunenko", Action = "PhotoAlbum" });
+
+#region Альбом фотографий из книги
 
 app.MapControllerRoute(
-    name: "MyArea",
-    pattern: "{area}/{controller=Shevkunenko}/{action=Index}/{id?}");
+    name: "album_page_photo",
+    pattern: "{albumCaption}/Альбом/Страница-{pageNumber}/Фото-{imageId}",
+    defaults: new { Controller = "Books", Action = "PhotoAlbum" });
+
+app.MapControllerRoute(
+    name: "album_paging",
+    pattern: "{albumCaption}/Альбом/Страница-{pageNumber}",
+    defaults: new { Controller = "Books", Action = "PhotoAlbum" });
+
+app.MapControllerRoute(
+    name: "album_photo",
+    pattern: "{albumCaption}/Альбом/Фото-{imageId}",
+    defaults: new { Controller = "Books", Action = "PhotoAlbum" });
+
+#endregion
 
 app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Shevkunenko}/{action=Index}/{id?}");
+        pattern: "{Controller=Shevkunenko}/{Action=Index}/{id?}");
 
 app.MapRazorPages();
 

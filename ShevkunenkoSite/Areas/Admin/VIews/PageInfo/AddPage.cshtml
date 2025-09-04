@@ -238,17 +238,48 @@
 
                     </div>
 
-                    @* Псевдоним адреса *@
+                    @* Псевдоним адреса (1) *@
                     <div>
 
-                        <label class="form-label text-primary fs-5 fw-bold" asp-for="PagePathNickName"></label>
+                        <label class="form-label text-primary fs-5 fw-bold"
+                               asp-for="PagePathNickName">
+                        </label>
 
-                        <input id="PagePathNickNameInput" class="form-control text-start" asp-for="PagePathNickName" aria-describedby="PagePathNickNameInputHelpBlock" />
+                        <input id="PagePathNickNameInput"
+                               class="form-control text-start"
+                               asp-for="PagePathNickName"
+                               aria-describedby="PagePathNickNameInputHelpBlock" />
 
                         <div id="PagePathNickNameInputHelpBlock" class="form-text">
 
                             <span class="fs-6 text-success">
-                                альтернативный адрес страницы
+                                псевдоним страницы (1)
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="PagePathNickName" class="text-danger"></span>
+
+                        <hr class="w-50 mx-auto" />
+
+                    </div>
+
+                    @* Псевдоним адреса (2) *@
+                    <div>
+
+                        <label class="form-label text-primary fs-5 fw-bold"
+                               asp-for="PagePathNickName2">
+                        </label>
+
+                        <input id="PagePathNickName2Input"
+                               class="form-control text-start"
+                               asp-for="PagePathNickName2"
+                               aria-describedby="PagePathNickName2InputHelpBlock" />
+
+                        <div id="PagePathNickName2InputHelpBlock" class="form-text">
+
+                            <span class="fs-6 text-success">
+                                псевдоним страницы (2)
                             </span>
 
                         </div>
@@ -533,11 +564,18 @@
                     <div class="row g-2 justify-content-center mb-2">
 
                         <div class="col-auto">
-                            <label asp-for="SortOfPage" class="form-label text-primary fs-5"></label>
+                            <label class="form-label text-primary fs-5 fw-bold"
+                                   asp-for="SortOfPage">
+                            </label>
                         </div>
 
                         <div class="col-auto">
-                            <input id="SortOfPageInput" asp-for="SortOfPage" value="1" class="form-control text-center" aria-describedby="SortOfPageInputHelpBlock" />
+                            <input 
+                                id="SortOfPageInput" 
+                                class="form-control text-center" 
+                                asp-for="SortOfPage" 
+                                value="1" 
+                                aria-describedby="SortOfPageInputHelpBlock" />
                         </div>
 
                         <div id="SortOfPageInputHelpBlock" class="form-text">

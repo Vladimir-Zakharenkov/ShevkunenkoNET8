@@ -60,6 +60,7 @@ public class ImageFileModel
     #region Индекс сортировки
 
     [Required(ErrorMessage = "Выберите значение")]
+    [Range(0, 1000000, ErrorMessage = "Недопустимое значение")]
     [Display(Name = "Индекс сортировки:")]
     public int SortOfPicture { get; set; } = 1;
 

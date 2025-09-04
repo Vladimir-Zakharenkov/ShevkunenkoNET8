@@ -84,7 +84,7 @@ public class BooksController(
             FramesAroundMainContentModel framesAroundMainContent = new();
 
             var imageItems = await imageFileContext.ImageFiles
-                .Where(img => img.SearchFilter.ToLower().Contains(bookOrArticleItem.CaptionOfText.ToLower()))
+                .Where(img => img.SearchFilter.ToLower().Contains(bookOrArticleItem.CaptionOfText.Replace(' ', '-').ToLower()))
                 .ToArrayAsync();
 
             imageItems = [.. imageItems.Shuffle()];
@@ -106,7 +106,7 @@ public class BooksController(
                 //listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).ToListAsync();
 
                 var listOfPictures2 = from m in imageFileContext.ImageFiles
-                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText + "#album#"))
+                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText.Replace(' ', '-') + "#album#"))
                    .OrderBy(p => p.SortOfPicture)
                                       select m;
 
@@ -142,9 +142,8 @@ public class BooksController(
     {
         if (
             (imageId == null & string.IsNullOrEmpty(albumCaption))
-            || (imageId != null & !string.IsNullOrEmpty(albumCaption))
             || (imageId != null & await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
-            || (!string.IsNullOrEmpty(albumCaption) & await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(albumCaption! + "#album#")).AnyAsync() == false)
+            || (albumCaption != null & await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(albumCaption + "#album#")).AnyAsync() == false)
             )
         {
             return RedirectToAction(nameof(Index));
@@ -159,7 +158,6 @@ public class BooksController(
             photoAlbumView.AlbumOrPhoto = false;
 
             var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
-
 
             if (imageItem.SearchFilter.Contains("#album#"))
             {
@@ -229,7 +227,7 @@ public class BooksController(
 
         else
         {
-            photoAlbumView.AlbumOrPhoto = true;
+            #region Все картинки по фильтру albumCaption + "#album#
 
             var allItems = from m in imageFileContext.ImageFiles
                .Where(p => p.SearchFilter.ToLower().Contains(albumCaption + "#album#"))
@@ -238,15 +236,26 @@ public class BooksController(
 
             var allItemsArray = await allItems.ToArrayAsync();
 
-            if (pageNumber < 1 || pageNumber > (allItemsArray.Length % photoAlbumView.PagingInfo.ItemsPerPage == 0 ? (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage) : (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage + 1)))
+            #endregion
+
+            #region Проверка параметра pageNumber
+
+            if (pageNumber < 1
+                || pageNumber > (allItemsArray.Length % photoAlbumView.PagingInfo.ItemsPerPage == 0 ? (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage) : (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage + 1)))
             {
-                pageNumber = 1;
+                return RedirectToAction(nameof(PhotoAlbum), new { pageNumber = 1 });
             }
+
+            #endregion
+
+            #region Картинки на текущей странице
 
             var itemsOnPage = await allItems
                    .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
                    .Take(photoAlbumView.PagingInfo.ItemsPerPage)
                    .ToArrayAsync();
+
+            #endregion
 
             #region Определение заголовка и подзаголовка альбома
 
@@ -270,6 +279,7 @@ public class BooksController(
 
             #endregion
 
+            photoAlbumView.AlbumOrPhoto = true;
             photoAlbumView.ItemsOnPage = itemsOnPage;
             photoAlbumView.CurrentImageId = itemsOnPage[0].ImageFileModelId;
             photoAlbumView.PagingInfo.TotalItems = allItems.Count();

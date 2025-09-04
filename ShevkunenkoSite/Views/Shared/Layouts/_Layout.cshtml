@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Random randomBackground = new();
+
+    var backgroundLeftOrRight = randomBackground.Next(100);
+}
+
+<!DOCTYPE html>
 
 <html dir="ltr" lang="ru" itemscope itemtype="http://schema.org/WebPage" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# book: http://ogp.me/ns/book# video: http://ogp.me/ns/video# article: https://ogp.me/ns/article# ya: http://webmaster.yandex.ru/vocabularies/">
 
@@ -18,7 +24,7 @@
         <div class="row text-center bg-light">
 
             @* фотопленка слева *@
-            <vc:background-foto left="true" />
+            <vc:background-foto background=@backgroundLeftOrRight />
 
             <main itemprop="mainContentOfPage" class="col pb-3 text-center mx-auto shadw">
 
@@ -37,7 +43,7 @@
             </main>
 
             @* фотопленка справа *@
-            <vc:background-foto left="false" />
+            <vc:background-foto background=@backgroundLeftOrRight+1 />
 
         </div>
 

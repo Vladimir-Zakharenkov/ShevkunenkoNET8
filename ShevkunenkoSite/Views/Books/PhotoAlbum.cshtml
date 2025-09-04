@@ -1,11 +1,12 @@
-﻿@model PhotoAlbumViewModel
+﻿@using Microsoft.AspNetCore.Http
+@model PhotoAlbumViewModel
 
 @{
     int i = 0;
 }
 
 <h1 class="text_shadow">
-    @Model.CaptionOfAlbum
+    @Model.CaptionOfAlbum.Replace('-', ' ')
     @if (Model.NoteForCaptionOfAlbum != null)
     {
         <br />
@@ -17,6 +18,7 @@
 
 <hr class="liniya" />
 
+@* Просмотр страницы альбома *@
 @if (Model.AlbumOrPhoto)
 {
     <div class="row row-cols-3 row-cols-lg-4 row-cols-xxl-6 g-2 justify-content-center">
@@ -30,9 +32,8 @@
                     <a asp-area=""
                        asp-controller="Books"
                        asp-action="PhotoAlbum"
+                       asp-route-albumCaption="@Model.CaptionOfAlbum"
                        asp-route-imageId="@imageItem.ImageFileModelId"
-                       asp-route-pageNumber="@Model.PagingInfo.CurrentPage"
-                       asp-route-albumOrPhoto="@false"
                        title="смотреть фото">
 
                         <vc:view-image image-id="@imageItem.ImageFileModelId"
@@ -46,9 +47,9 @@
             </div>
         }
 
-
     </div>
 }
+@* Просмотр картинки *@
 else
 {
     <div class="row py-2">
@@ -93,7 +94,7 @@ else
                                                css-class="d-block mx-auto shadw"
                                                icon-type="" />
 
-                                <p class="d-none d-md-block fs-4 mt-3 text_shadow">
+                                <p class="d-none d-md-block fs-4 mt-3 text_shadow maxwidth700px mx-auto">
                                     @picture.ImageDescription
                                 </p>
 
@@ -107,7 +108,7 @@ else
                                                css-class="d-block mx-auto shadw"
                                                icon-type="" />
 
-                                <p class="d-none d-md-block fs-4 mt-3 text_shadow">
+                                <p class="d-none d-md-block fs-4 mt-3 text_shadow maxwidth700px mx-auto">
                                     @picture.ImageDescription
                                 </p>
 

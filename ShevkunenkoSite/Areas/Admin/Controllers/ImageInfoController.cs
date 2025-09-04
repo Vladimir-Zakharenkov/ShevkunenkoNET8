@@ -551,6 +551,12 @@ public class ImageInfoController(
 
             #endregion
 
+            #region Индекс сортировки
+
+            imageItem.EditImage.SortOfPicture = imageItem.EditImage.SortOfPicture;
+
+            #endregion
+
             #region Каталог картинки
 
             if (imageItem.EditImage.ImagePath != "images")
@@ -3057,6 +3063,12 @@ public class ImageInfoController(
             #region Фильтр поиска
 
             imageUpdate.SearchFilter = imageItem.EditImage.SearchFilter.Trim();
+
+            #endregion
+
+            #region Индекс сортировки
+
+            imageUpdate.SortOfPicture = imageItem.EditImage.SortOfPicture;
 
             #endregion
 

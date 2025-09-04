@@ -297,25 +297,58 @@
                                 <span class="text_shadow">
                                     @Model.PageItem.PageFullPathWithData
                                 </span>
+                                <hr class="w-75 mx-auto" />
+                                <span class="text_shadow">
+                                    @Uri.UnescapeDataString(Model.PageItem.PageFullPathWithData)
+                                </span>
                             </p>
 
                             <hr class="w-75 mx-auto" />
 
                             <p class="fs-5 mb-0">
                                 <span class="text-primary fw-bold">
-                                    Псевдоним :
+                                    Псевдоним (1) :
                                 </span>
                                 <br class="d-sm-none" />
                                 @if (string.IsNullOrEmpty(Model.PageItem.PagePathNickName))
                                 {
                                     <span class="fs-6 form-text text-success">
-                                        псевдоним не задан
+                                        псевдоним (1) не задан
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="text_shadow">
                                         @Model.PageItem.PagePathNickName
+                                    </span>
+                                    <hr class="w-75 mx-auto" />
+                                    <span class="text_shadow">
+                                        @Uri.UnescapeDataString(Model.PageItem.PagePathNickName)
+                                    </span>
+                                }
+                            </p>
+
+                            <hr class="w-75 mx-auto" />
+
+                            <p class="fs-5 mb-0">
+                                <span class="text-primary fw-bold">
+                                    Псевдоним (2) :
+                                </span>
+                                <br class="d-sm-none" />
+                                @if (string.IsNullOrEmpty(Model.PageItem.PagePathNickName2))
+                                {
+                                    <span class="fs-6 form-text text-success">
+                                        псевдоним (2) не задан
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text_shadow">
+                                        @Model.PageItem.PagePathNickName2
+                                    </span>
+                                    <hr class="w-75 mx-auto" />
+                                    <span class="text_shadow">
+                                        @Uri.UnescapeDataString(Model.PageItem.PagePathNickName2)
                                     </span>
                                 }
                             </p>

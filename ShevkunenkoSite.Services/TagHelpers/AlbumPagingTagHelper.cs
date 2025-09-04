@@ -34,12 +34,15 @@ public class AlbumPagingTagHelper(IUrlHelperFactory helperFactory) : TagHelper
                             new
                             {
                                 pageNumber = i,
-                                albumCaption = AlbumCaption
+                                albumCaption = AlbumCaption,
+                                imageId = string.Empty
                             });
+
+                        tag.Attributes["title"] = "страница " + i;
                     }
                 }
 
-                tag.AddCssClass("btn");
+                tag.AddCssClass("btn me-1");
                 tag.AddCssClass(i == AlbumPaging.CurrentPage ? "btn-danger" : "btn-outline-dark");
 
                 tag.InnerHtml.Append(i.ToString());

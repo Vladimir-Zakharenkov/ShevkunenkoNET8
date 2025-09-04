@@ -95,6 +95,10 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
             {
                 return await PagesInfo.FirstAsync(p => p.PagePathNickName == pagePath);
             }
+            else if (await PagesInfo.Where(p => p.PagePathNickName2 == pagePath).AnyAsync())
+            {
+                return await PagesInfo.FirstAsync(p => p.PagePathNickName2 == pagePath);
+            }
             else if (await PagesInfo.Where(p => p.PageFullPath == pagePath + "/index").AnyAsync())
             {
                 return await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath + "/index");

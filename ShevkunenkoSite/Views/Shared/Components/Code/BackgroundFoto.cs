@@ -2,13 +2,13 @@
 
 [ViewComponent]
 public class BackgroundFoto(
-    IPageInfoRepository pageInfoContext, 
+    IPageInfoRepository pageInfoContext,
     IMovieFileRepository movieFileContext) : ViewComponent
 {
     private Guid pageIdGuid;
     private Guid movieIdGuid;
 
-    public async Task<IViewComponentResult> InvokeAsync(bool left)
+    public async Task<IViewComponentResult> InvokeAsync(int background)
     {
         PageInfoModel pageInfoModel = await pageInfoContext.GetPageInfoByPathAsync(HttpContext);
 
@@ -39,14 +39,14 @@ public class BackgroundFoto(
         {
             if (!string.IsNullOrEmpty(pageInfoModel.BackgroundFileModel.WebLeftBackground) & !string.IsNullOrEmpty(pageInfoModel.BackgroundFileModel.WebRightBackground))
             {
-                return left
+                return background % 2 == 0
                     ? View("BackgroundFoto", pageInfoModel.BackgroundFileModel.WebLeftBackground)
                     : View("BackgroundFoto", pageInfoModel.BackgroundFileModel.WebRightBackground);
             }
             else
             {
-                return left
-                    ? View("BackgroundFoto", pageInfoModel.BackgroundFileModel.LeftBackground)
+                return background % 2 == 0
+                   ? View("BackgroundFoto", pageInfoModel.BackgroundFileModel.LeftBackground)
                     : View("BackgroundFoto", pageInfoModel.BackgroundFileModel.RightBackground);
             }
         }
