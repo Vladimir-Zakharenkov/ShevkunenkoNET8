@@ -11,17 +11,24 @@ public class BooksController(
 
     public IActionResult Index() => View();
 
-    public async Task<IActionResult> Book(Guid? bookId, int? pageNumber, bool? scan)
+    public async Task<IActionResult> Book(string? bookCaption, int? pageNumber, bool? scan)
     {
-        if (bookId != null
-            && await articleContext.BooksAndArticles.Where(article => article.BooksAndArticlesModelId == bookId).AnyAsync()
-            && pageNumber != null
-            && pageNumber > -1
-            && pageNumber <= articleContext.BooksAndArticles.First(article => article.BooksAndArticlesModelId == bookId).NumberOfPages)
+        if (scan == null)
         {
+            scan = false;
+        }
+
+        if (bookCaption != null
+            && await articleContext.BooksAndArticles.Where(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).AnyAsync()
+            && pageNumber > -1
+            && pageNumber <= articleContext.BooksAndArticles.First(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).NumberOfPages
+            )
+        {
+            var bookModel = await articleContext.BooksAndArticles.FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
+
             #region Если есть только скан
 
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookId).AnyAsync() & scan == true)
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId).AnyAsync() & scan == true)
             {
                 ArticleViewModel scanForArticle = new()
                 {
@@ -29,7 +36,7 @@ public class BooksController(
                        .Include(logo => logo.LogoOfArticle)
                        .Include(scan => scan.ScanOfArticle)
                        .Include(movie => movie.VideoForBookOrArticle)
-                       .FirstAsync(article => article.BooksAndArticlesModelId == bookId),
+                       .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' ')),
 
                     PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
 
@@ -47,12 +54,12 @@ public class BooksController(
 
             #region Если для статьи или книги отсутствует текст
 
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookId & text.SequenceNumber == pageNumber).AnyAsync())
+            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId & text.SequenceNumber == pageNumber).AnyAsync())
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == bookId & text.SequenceNumber == pageNumber);
+            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId & text.SequenceNumber == pageNumber);
 
             if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName))
             {
@@ -67,7 +74,7 @@ public class BooksController(
                         .Include(logo => logo.LogoOfArticle)
                         .Include(scan => scan.ScanOfArticle)
                         .Include(movie => movie.VideoForBookOrArticle)
-                        .FirstAsync(article => article.BooksAndArticlesModelId == bookId);
+                        .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
 
             #endregion
 

@@ -193,10 +193,35 @@ else
 
                     <td scope="col" class="text-end">
 
-                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="DetailsPage" asp-route-pageId="@pageInfo.PageInfoModelId" class="btn btn-outline-info py-0 px-2 mb-1 ms-1 shadw" title="подробно">Info</a>
-                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="EditPage" asp-route-pageId="@pageInfo.PageInfoModelId" class="btn btn-outline-dark py-0 px-2 mb-1 ms-1 shadw" title="редактировать">Edit</a>
-                        <a href="@Url.Content(pageInfo.PageFullPathWithData)" class="btn btn-outline-primary py-0 px-2 mb-1 ms-1 shadw" title="просмотр">Run</a>
-                        <a asp-area="Admin" asp-controller="PageInfo" asp-action="DeletePage" asp-route-pageId="@pageInfo.PageInfoModelId" class="btn btn-outline-danger py-0 px-2 mb-1 ms-1 shadw" title="удалить">Del</a>
+                        <a asp-area="Admin"
+                           asp-controller="PageInfo"
+                           asp-action="DetailsPage"
+                           asp-route-pageId="@pageInfo.PageInfoModelId"
+                           class="btn btn-outline-info py-0 px-2 mb-1 ms-1 shadw"
+                           title="подробно">
+                            Info
+                        </a>
+                        <a asp-area="Admin"
+                           asp-controller="PageInfo"
+                           asp-action="EditPage"
+                           asp-route-pageId="@pageInfo.PageInfoModelId"
+                           class="btn btn-outline-dark py-0 px-2 mb-1 ms-1 shadw"
+                           title="редактировать">
+                            Edit
+                        </a>
+                        <a href="@Url.Content(pageInfo.PageFullPathWithData)"
+                           class="btn btn-outline-primary py-0 px-2 mb-1 ms-1 shadw"
+                           title="просмотр">
+                            Run
+                        </a>
+                        <a asp-area="Admin"
+                           asp-controller="PageInfo"
+                           asp-action="DeletePage"
+                           asp-route-pageId="@pageInfo.PageInfoModelId"
+                           class="btn btn-outline-danger py-0 px-2 mb-1 ms-1 shadw"
+                           title="удалить">
+                            Del
+                        </a>
 
                     </td>
 

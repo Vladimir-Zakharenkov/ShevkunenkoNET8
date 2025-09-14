@@ -330,8 +330,8 @@ public class PageInfoController(
                             var bookForPage = await bookAndArticleContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookGuid);
 
                             var imageItems = await imageContext.ImageFiles
-                                                            .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
-                                                            .ToArrayAsync();
+                                    .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
+                                    .ToArrayAsync();
 
                             imageItems = [.. imageItems.Shuffle()];
 
@@ -341,6 +341,25 @@ public class PageInfoController(
                                 framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
                             }
                         }
+                    }
+                }
+
+                if (pageItem.RoutData.Contains("bookcaption", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    string[] routData = pageItem.RoutData[1..].Split('&');
+
+                    var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+
+                    var imageItems = await imageContext.ImageFiles
+                                .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
+                                .ToArrayAsync();
+
+                    imageItems = [.. imageItems.Shuffle()];
+
+                    if (imageItems.Length > 1)
+                    {
+                        framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
+                        framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
                     }
                 }
             }
@@ -1150,6 +1169,25 @@ public class PageInfoController(
                                 editPage.FramesAroundMainContent = framesAroundMainContent;
                             }
                         }
+                    }
+                }
+
+                if (editPage.PageItem.RoutData.Contains("bookcaption", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    string[] routData = editPage.PageItem.RoutData[1..].Split('&');
+
+                    var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
+
+                    var imageItems = await imageContext.ImageFiles
+                                .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
+                                .ToArrayAsync();
+
+                    imageItems = [.. imageItems.Shuffle()];
+
+                    if (imageItems.Length > 1)
+                    {
+                        framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
+                        framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
                     }
                 }
             }

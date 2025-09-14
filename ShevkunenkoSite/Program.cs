@@ -1,3 +1,5 @@
+using System.Net;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -177,7 +179,11 @@ app.UseHttpsRedirection();
 
 #endregion
 
+#region Работа со статическими файлами
+
 app.UseStaticFiles();
+
+#endregion
 
 app.UseSession();
 
@@ -205,6 +211,29 @@ app.MapControllerRoute("pagination", "Video-na-saite/Stranica{pageNumber}",
 
 app.MapControllerRoute("PhotoAlbum", "Shevkunenko/PhotoAlbum/Page{pageNumber}/Photo-{imageId}",
         new { Controller = "Shevkunenko", Action = "PhotoAlbum" });
+
+#region Книги о Сергее Шевкуненко
+
+app.MapControllerRoute(
+    name: "books_about_shevkunenko",
+    pattern: "Книги-о-Сергее-Шевкуненко",
+    defaults: new { Controller = "Books", Action = "Index" });
+
+#endregion
+
+#region Страницы книги
+
+app.MapControllerRoute(
+    name: "pages_of_book",
+    pattern: "Книга/{bookCaption}/Страница-{pageNumber}",
+    defaults: new { Controller = "Books", Action = "Book" });
+
+app.MapControllerRoute(
+    name: "pages_of_book",
+    pattern: "Книга/{bookCaption}",
+    defaults: new { Controller = "Books", Action = "Book", pageNumber = 0});
+
+#endregion
 
 #region Альбом фотографий из книги
 

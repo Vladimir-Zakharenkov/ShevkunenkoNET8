@@ -1,7 +1,4 @@
-﻿
-
-
-// Ignore Spelling: Pdf
+﻿// Ignore Spelling: Pdf
 
 namespace ShevkunenkoSite.Models.DataModels;
 

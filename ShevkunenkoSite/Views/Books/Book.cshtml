@@ -1,7 +1,7 @@
 ﻿@model ArticleViewModel
 
 @{
-    int n = 0; // колличество миниатюр фотографий
+    int n = 0; // количество миниатюр фотографий
 }
 
 <div class="mx-auto fluid-font-size" itemscope itemtype="https://schema.org/Book">
@@ -105,7 +105,7 @@
                     <a asp-area=""
                        asp-controller="Books"
                        asp-action="PhotoAlbum"
-                      asp-route-albumCaption ="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
+                       asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                        asp-route-imageId="@item.ImageFileModelId"
                        class="">
 
@@ -327,9 +327,8 @@
                    asp-area=""
                    asp-controller="Books"
                    asp-action="Book"
-                   asp-route-bookId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                    asp-route-pageNumber="@(Model.PageNumber - 1)"
-                   asp-route-scan="false"
                    title="предыдущая странице"
                    itemprop="url">
 
@@ -357,13 +356,12 @@
 
             @if (Model.PageNumber < Model.BookOrArticle.NumberOfPages && Model.Scan != true)
             {
-                <a class="btn btn-outline-primary py-1 float-end shadw d-print-none"
-                   asp-area=""
+                <a asp-area=""
                    asp-controller="Books"
                    asp-action="Book"
-                   asp-route-bookId="@Model.BookOrArticle.BooksAndArticlesModelId"
+                   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                    asp-route-pageNumber="@(Model.PageNumber + 1)"
-                   asp-route-scan="false"
+                   class="btn btn-outline-primary py-1 float-end shadw d-print-none"
                    title="следующая странице"
                    itemprop="url">
 
@@ -401,11 +399,11 @@
 
                 @for (int i = 0; i < Model.BookOrArticle.NumberOfPages; i++)
                 {
-                    <a asp-controller="Books"
+                    <a asp-area=""
+                       asp-controller="Books"
                        asp-action="Book"
-                       asp-route-bookid="@Model.BookOrArticle.BooksAndArticlesModelId"
+                       asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
                        asp-route-pagenumber="@(i+1)"
-                       asp-route-scan="false"
                        class="ref-to-page shadw @(Model.PageNumber == (i+1) ? "text-primary border border-danger" : "")"
                        title="страница @(i + 1)"
                        itemprop="url">

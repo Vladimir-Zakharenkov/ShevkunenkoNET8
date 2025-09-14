@@ -179,25 +179,52 @@
         }
 
 
-        <a class="rounded-3 p-0 p-md-1"
-           href="@Url.Content(Model.PageFullPathWithData)"
-           title="@Model.PageTitle"
-           itemprop="url">
+        @if (Model.OgType == "book" && Model.BooksAndArticles != null)
+        {
+            <a asp-area=""
+               asp-controller="Books"
+               asp-action="Book"
+               asp-route-bookCaption="@Model.BooksAndArticles.CaptionOfText.Replace(' ', '-')"
+               asp-route-pageNumber=0>
 
-            <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId"
-                           css-class="card-img-top shadw rounded-3"
-                           icon-type="webicon300" />
+                <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId"
+                               css-class="card-img-top shadw rounded-3"
+                               icon-type="webicon300" />
 
-            @if (!string.IsNullOrEmpty(Model.PageCardText))
-            {
-                <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+                @if (!string.IsNullOrEmpty(Model.PageCardText))
+                {
+                    <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
 
-                    <p class="card-title p-0 mb-0 fw-medium fontadaptive">@Model.PageCardText</p>
+                        <p class="card-title p-0 mb-0 fw-medium fontadaptive">@Model.PageCardText</p>
 
-                </div>
-            }
+                    </div>
+                }
 
-        </a>
+            </a>
+        }
+        else
+        {
+            <a class="rounded-3 p-0 p-md-1"
+               href="@Url.Content(Model.PageFullPathWithData)"
+               title="@Model.PageTitle"
+               itemprop="url">
+
+                <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId"
+                               css-class="card-img-top shadw rounded-3"
+                               icon-type="webicon300" />
+
+                @if (!string.IsNullOrEmpty(Model.PageCardText))
+                {
+                    <div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
+
+                        <p class="card-title p-0 mb-0 fw-medium fontadaptive">@Model.PageCardText</p>
+
+                    </div>
+                }
+
+            </a>
+        }
+
 
     </div>
 
