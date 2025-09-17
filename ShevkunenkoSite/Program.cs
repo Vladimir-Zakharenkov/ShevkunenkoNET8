@@ -151,6 +151,7 @@ services.AddScoped<IAccessRepository, AccessImplementation>();
 services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
 services.AddScoped<ITextInfoRepository, TextInfoImplementation>();
 services.AddScoped<IBooksAndArticlesRepository, BooksAndArticlesImplementation>();
+services.AddScoped<IAudioBookRepository, AudioBookImplementation>();
 
 #endregion
 

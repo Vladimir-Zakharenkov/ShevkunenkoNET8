@@ -2,6 +2,8 @@
 
 public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(options)
 {
+    #region Таблицы в базе данных по моделям
+
     public DbSet<PageInfoModel> PageInfo => Set<PageInfoModel>();
 
     public DbSet<BackgroundFileModel> BackgroundFile => Set<BackgroundFileModel>();
@@ -22,8 +24,12 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<AudioBookModel> AudioBook => Set<AudioBookModel>();
 
+    #endregion
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        #region Вычисляемые поля базы данных
+
         modelBuilder.Entity<PageInfoModel>()
             .Property(p => p.PageFullPath)
             .HasComputedColumnSql("[PageArea] + [Controller] + [PageLoc]");
@@ -35,6 +41,8 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
         modelBuilder.Entity<PageInfoModel>()
             .Property(p => p.PagePathNickNameWithData)
             .HasComputedColumnSql("[PagePathNickName] + [RoutData]");
+
+        #endregion
 
         modelBuilder.Entity<MovieFileModel>()
             .HasOne(o => o.PageForMovieSeries)
