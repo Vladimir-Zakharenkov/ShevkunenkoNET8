@@ -164,4 +164,10 @@ public class BooksAndArticlesModel
     public Uri? RefToAudio { get; set; }
 
     #endregion
+
+    #region Навигационное свойство AudioBookModel
+
+    public AudioBookModel? AudioBook { get; set; }
+
+    #endregion
 }

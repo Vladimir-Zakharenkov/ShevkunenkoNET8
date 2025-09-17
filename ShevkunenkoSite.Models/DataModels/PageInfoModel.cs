@@ -344,4 +344,11 @@ public class PageInfoModel
     public BooksAndArticlesModel? BooksAndArticles { get; set; }
 
     #endregion
+
+    #region Навигационное свойство аудиокниги
+
+    public AudioBookModel? AudioBook { get; set; }
+
+    #endregion
+
 }

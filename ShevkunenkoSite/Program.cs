@@ -185,9 +185,17 @@ app.UseStaticFiles();
 
 #endregion
 
+#region Работа с сессиями
+
 app.UseSession();
 
+#endregion
+
+#region Минификация HTML
+
 app.UseWebMarkupMin();
+
+#endregion
 
 #region Маршруты
 

@@ -20,6 +20,8 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<BooksAndArticlesModel> BooksAndArticles => Set<BooksAndArticlesModel>();
 
+    public DbSet<AudioBookModel> AudioBook => Set<AudioBookModel>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PageInfoModel>()
