@@ -22,7 +22,7 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<BooksAndArticlesModel> BooksAndArticles => Set<BooksAndArticlesModel>();
 
-    public DbSet<AudioBookModel> AudioBook => Set<AudioBookModel>();
+    public DbSet<AudioBookModel> AudioBookModel => Set<AudioBookModel>();
 
     #endregion
 

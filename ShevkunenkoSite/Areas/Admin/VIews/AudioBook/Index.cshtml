@@ -1,0 +1,51 @@
+﻿@model ItemsListViewModel
+
+@* Значение строки поиска *@
+<div>
+    @if (!String.IsNullOrEmpty(Model.SearchString))
+    {
+        <div class="row mb-0">
+
+            <p class="col-12 fs-5 text-primary">
+                Поиск по строке: <span class="text-black text_shadow">@Model.SearchString</span>
+            </p>
+
+        </div>
+    }
+</div>
+
+@* Сообщение о количестве аудиокниг *@
+<div>
+
+    @if (Model.TotalItems == 0)
+    {
+        <div class="row">
+
+            <div class="col text-center p-2">
+
+                <p class="fs-5 text_shadow mb-0">
+                    В базе данных нет аудиокниг
+                </p>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="row">
+
+            <div class="col-12 text-center">
+
+                <p class="fs-5 text-primary mb-0">
+                    Количество книг (статей):&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span>
+                </p>
+
+            </div>
+
+        </div>
+    }
+
+    <hr class="liniya" />
+
+</div>

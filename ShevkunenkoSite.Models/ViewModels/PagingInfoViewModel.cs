@@ -25,4 +25,10 @@ public class PagingInfoViewModel
     public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
 
     #endregion
+
+    #region Строка поиска
+
+    public string? SearchString { get; set; }
+
+    #endregion
 }

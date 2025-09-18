@@ -1,4 +1,12 @@
-﻿<nav class="navbar sticky-top navbar-expand-md navbar-light bg-light mt-1 mb-3 py-1 rounded-3 shadw">
+﻿@{
+    string liNavItemClass = "nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent";
+    string refNavItemClass = "nav-link dropdown-toggle text-black p-0";
+    string ulDropdownMenuClass = "dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0";
+    string liDropdownClass = "bg-light p-0 mb-1 rounded-1 maxwidthcontent";
+    string refDropdownClass = "dropdown-item py-0 px-1 shadw donate border border-2 rounded-1";
+}
+
+<nav class="navbar sticky-top navbar-expand-md navbar-light bg-light mt-1 mb-3 py-1 rounded-3 shadw">
 
     <div class="container-fluid">
 
@@ -9,12 +17,25 @@
            asp-action="Index"
            title="оглавление сайта">
 
-            <img class="border border-2 rounded-1 shadw" src="~/images/common/index1-300.gif" width="78" title="оглавление сайта" alt="оглавление сайта" />
+            <img src="~/images/common/index1-300.gif"
+                 class="border border-2 rounded-1 shadw"
+                 width="78"
+                 title="оглавление сайта"
+                 alt="оглавление сайта" />
 
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+        @* Кнопка свернутого меню *@
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#siteNav"
+                aria-controls="siteNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
         <div id="siteNav" class="collapse navbar-collapse">
@@ -22,51 +43,87 @@
             <ul class="navbar-nav" itemscope itemtype="http://schema.org/BreadcrumbList">
 
                 @* Картинки *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Images" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="картинки сайта" itemprop="item">
+                    <a id="Images"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="картинки сайта"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Картинки</span>
+
                     </a>
+
                     <meta itemprop="position" content="0">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Images" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Images" itemscope itemtype="http://schema.org/BreadcrumbList">
 
                         @* Добавить картинку *@
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить картинку" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить картинку"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="ImageInfo"
                                asp-action="AddImage"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить</span>
+
                             </a>
+
                             <meta itemprop="position" content="0">
+
                         </li>
 
                         @* Список картинок *@
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список картинок" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список картинок"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="ImageInfo"
                                asp-action="Index"
                                asp-route-iconlist="false"
                                itemprop="item">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
                         </li>
 
                         @* Иконки картинок *@
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="иконки картинок" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="иконки картинок"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="ImageInfo"
                                asp-action="Index"
                                asp-route-iconlist="true"
                                itemprop="item">
+
                                 <span itemprop="name">Иконки</span>
+
                             </a>
+
                             <meta itemprop="position" content="2">
+
                         </li>
 
                     </ul>
@@ -74,57 +131,101 @@
                 </li>
 
                 @* Фильмы *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Movies" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="фильмы сайта" itemprop="item">
+                    <a id="Movies"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="фильмы сайта"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Фильмы</span>
+
                     </a>
+
                     <meta itemprop="position" content="1">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Movies" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Movies" itemscope itemtype="http://schema.org/BreadcrumbList">
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить фильм" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить фильм"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="MovieInfo"
                                asp-action="AddMovie"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить фильм</span>
+
                             </a>
+
                             <meta itemprop="position" content="0">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список фильмов" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список фильмов"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="MovieInfo"
                                asp-action="Index"
                                itemprop="item">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="темы видео" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="темы видео"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="TopicMovie"
                                asp-action="Index"
                                itemprop="item">
+
                                 <span itemprop="name">Темы видео</span>
+
                             </a>
+
                             <meta itemprop="position" content="2">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить тему видео" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить тему видео"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="TopicMovie"
                                asp-action="AddTopicMovie"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить тему</span>
+
                             </a>
+
                             <meta itemprop="position" content="3">
+
                         </li>
 
                     </ul>
@@ -132,45 +233,81 @@
                 </li>
 
                 @* Страницы *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Pages" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="страницы сайта" itemprop="item">
+                    <a id="Pages"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="страницы сайта"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Страницы</span>
+
                     </a>
+
                     <meta itemprop="position" content="2">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Pages" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Pages" itemscope itemtype="http://schema.org/BreadcrumbList">
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить страницу" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить страницу"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="PageInfo"
                                asp-action="AddPage">
+
                                 <span itemprop="name">Добавить</span>
-                                <meta itemprop="position" content="0">
+
                             </a>
+
+                            <meta itemprop="position" content="0">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список страниц сайта" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список страниц сайта"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="PageInfo"
                                asp-action="Index"
                                asp-route-pageCard="false">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="иконки страниц сайта" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="иконки страниц сайта"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="PageInfo"
                                asp-action="Index"
                                asp-route-pageCard="true">
+
                                 <span itemprop="name">Иконки</span>
+
                             </a>
+
                             <meta itemprop="position" content="2">
+
                         </li>
 
                     </ul>
@@ -178,34 +315,62 @@
                 </li>
 
                 @* Иконки страниц *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Icons" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="иконки для страниц" itemprop="item">
+                    <a id="Icons"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="иконки для страниц"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Иконки</span>
+
                     </a>
+
                     <meta itemprop="position" content="3">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Icons" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Icons" itemscope itemtype="http://schema.org/BreadcrumbList">
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список иконок для страниц" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список иконок для страниц"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="IconInfo"
                                asp-action="Index"
                                temprop="item">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="0">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить иконки для страниц" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить иконки для страниц"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-page="/DBCRUD/Icon-Add"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
                         </li>
 
                     </ul>
@@ -213,35 +378,63 @@
                 </li>
 
                 @* Тексты *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Texts" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="тексты" itemprop="item">
+                    <a id="Texts"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="тексты"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Тексты</span>
+
                     </a>
+
                     <meta itemprop="position" content="4">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Texts" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Texts" itemscope itemtype="http://schema.org/BreadcrumbList">
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список текстов" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список текстов"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="TextInfo"
                                asp-action="Index"
                                temprop="item">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="0">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить текст" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="добавить текст"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="TextInfo"
                                asp-action="AddText"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
                         </li>
 
                     </ul>
@@ -249,35 +442,127 @@
                 </li>
 
                 @* Книги и статьи *@
-                <li class="nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
 
-                    <a class="nav-link dropdown-toggle text-black p-0" href="#" id="Books" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="книги" itemprop="item">
+                    <a id="Books"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="книги"
+                       itemprop="item">
+
                         <span class="px-2" itemprop="name">Книги</span>
+
                     </a>
+
                     <meta itemprop="position" content="5">
 
-                    <ul class="dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0" aria-labelledby="Books" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Books" itemscope itemtype="http://schema.org/BreadcrumbList">
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="список книг (статей)" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass"
+                            title="список книг (статей)"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="BooksAndArticles"
                                asp-action="Index"
                                temprop="item">
+
                                 <span itemprop="name">Список</span>
+
                             </a>
+
                             <meta itemprop="position" content="0">
+
                         </li>
 
-                        <li class="bg-light p-0 mb-1 rounded-1 maxwidthcontent" title="добавить книгу (статью)" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a class="dropdown-item py-0 px-1 shadw donate border border-2 rounded-1"
+                        <li class="@liDropdownClass" 
+                            title="добавить книгу (статью)" 
+                            itemprop="itemListElement" 
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
                                asp-area="Admin"
                                asp-controller="BooksAndArticles"
                                asp-action="AddBook"
                                itemprop="item">
+
                                 <span itemprop="name">Добавить</span>
+
                             </a>
+
                             <meta itemprop="position" content="1">
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                @* Аудио *@
+                <li class="@liNavItemClass"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
+
+                    <a id="Audio"
+                       class="@refNavItemClass"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                       title="аудиокниги"
+                       itemprop="item">
+
+                        <span class="px-2" itemprop="name">Аудио</span>
+
+                    </a>
+
+                    <meta itemprop="position" content="6">
+
+                    <ul class="@ulDropdownMenuClass" aria-labelledby="Audio" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                        <li class="@liDropdownClass"
+                            title="список аудиокниг"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
+                               asp-area="Admin"
+                               asp-controller="AudioBook"
+                               asp-action="Index"
+                               temprop="item">
+
+                                <span itemprop="name">Список</span>
+
+                            </a>
+
+                            <meta itemprop="position" content="0">
+
+                        </li>
+
+                        <li class="@liDropdownClass"
+                            title="добавить аудиокнигу"
+                            itemprop="itemListElement"
+                            itemscope itemtype="http://schema.org/ListItem">
+
+                            <a class="@refDropdownClass"
+                               asp-area="Admin"
+                               asp-controller="AudioBook"
+                               asp-action="AddAudioBook"
+                               itemprop="item">
+
+                                <span itemprop="name">Добавить</span>
+
+                            </a>
+
+                            <meta itemprop="position" content="1">
+
                         </li>
 
                     </ul>
@@ -285,9 +570,13 @@
                 </li>
 
                 @* Поиск от Yandex *@
-                <li id="yandex-search" class="nav-item shadw mb-2 mb-md-0 maxwidthcontent search-button pb-md-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <li id="yandex-search"
+                    class="@liNavItemClass search-button pb-md-0"
+                    itemprop="itemListElement"
+                    itemscope itemtype="http://schema.org/ListItem">
+
                     <meta itemprop="name" content="Поиск на сайте" />
-                    <meta itemprop="position" content="4" />
+                    <meta itemprop="position" content="7" />
 
                     <div class="ya-site-form ya-site-form_inited_no"
                          data-bem="{&quot;action&quot;:&quot;https://yandex.ru/search/site/&quot;,&quot;arrow&quot;:false,&quot;bg&quot;:&quot;transparent&quot;,&quot;fontsize&quot;:14,&quot;fg&quot;:&quot;#000000&quot;,&quot;language&quot;:&quot;ru&quot;,&quot;logo&quot;:&quot;rb&quot;,&quot;publicname&quot;:&quot;Поиск по shevkunenko.site&quot;,&quot;suggest&quot;:true,&quot;target&quot;:&quot;_blank&quot;,&quot;tld&quot;:&quot;ru&quot;,&quot;type&quot;:3,&quot;usebigdictionary&quot;:true,&quot;searchid&quot;:10605639,&quot;input_fg&quot;:&quot;#000000&quot;,&quot;input_bg&quot;:&quot;#ffffff&quot;,&quot;input_fontStyle&quot;:&quot;normal&quot;,&quot;input_fontWeight&quot;:&quot;normal&quot;,&quot;input_placeholder&quot;:null,&quot;input_placeholderColor&quot;:&quot;#000000&quot;,&quot;input_borderColor&quot;:&quot;#cc0000&quot;}">
@@ -325,7 +614,12 @@
            href="https://www.donationalerts.com/r/sergey1965"
            onclick="this.target='_blank'">
 
-            <img class="border border-2 rounded-1 shadw" src="~/images/admin/coffee.webp" width="33" height="33" title="кофе админу" alt="кофе админу" />
+            <img src="~/images/admin/coffee.webp"
+                 class="border border-2 rounded-1 shadw"
+                 width="33"
+                 height="33"
+                 title="кофе админу"
+                 alt="кофе админу" />
 
         </a>
 
