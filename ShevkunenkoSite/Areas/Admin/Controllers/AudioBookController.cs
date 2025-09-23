@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
@@ -6,24 +8,34 @@ public class AudioBookController(IAudioBookRepository audioBookContext) : Contro
 {
     #region Список аудиокниг
 
-    public int booksPerPage = 16;
-
-    public IActionResult Index(string? audioBookSearchString, int pageNumber = 1)
+    public IActionResult Index(string? searchString, int pageNumber = 1)
     {
-        var allAudioBooks = audioBookContext.AudioBooks.AudioBookSearch(audioBookSearchString);
+        var allAudioBooks = audioBookContext.AudioBooks.AudioBookSearch(searchString);
 
         return View(new ItemsListViewModel
         {
             AllAudioBooks = [.. allAudioBooks
-                     .Skip((pageNumber - 1) * booksPerPage)
-                     .Take(booksPerPage)],
+                     .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                     .Take(DataConfig.NumberOfItemsPerPage)],
 
             CurrentPage = pageNumber,
-            ItemsPerPage = booksPerPage,
+            ItemsPerPage = DataConfig.NumberOfItemsPerPage,
             TotalItems = allAudioBooks.Count(),
 
-            SearchString = audioBookSearchString ?? string.Empty
+            SearchString = searchString ?? string.Empty
         });
+    }
+
+    #endregion
+
+    #region Добавить книгу или статью
+
+    [HttpGet]
+    public ViewResult AddAudioBook()
+    {
+        AudioBookModel newAudioBook = new();
+
+        return View(newAudioBook);
     }
 
     #endregion

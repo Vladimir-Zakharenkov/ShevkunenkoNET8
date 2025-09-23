@@ -49,3 +49,131 @@
     <hr class="liniya" />
 
 </div>
+
+@* Добавить аудиокнигу - Поиск аудиокниги *@
+<div class="row">
+
+    <div class="col-12 col-md-3">
+
+        <a class="btn btn-outline-danger shadw py-1 mt-2"
+           asp-area="Admin"
+           asp-controller="AudioBook"
+           asp-action="AddAudioBook"
+           title="добавить аудиокнигу">
+
+            Добавить
+
+        </a>
+
+    </div>
+
+    <hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
+
+    <div class="col-12 col-md-9 mb-2">
+
+        <form method="get"
+              class="text-center text-md-end mt-md-2"
+              asp-area="Admin"
+              asp-controller="AudioBook"
+              asp-action="Index">
+
+            <input class="d-inline-block align-middle mt-1 w-50"
+                   type="text"
+                   asp-for="SearchString" />
+
+            <input class="btn btn-outline-success shadw py-1 me-md-3"
+                   type="submit"
+                   value="Поиск"
+                   title="поиск аудио" />
+
+        </form>
+
+    </div>
+
+    <hr class="liniya" />
+
+</div>
+
+@* Таблица данных *@
+<div class="row">
+
+    <div class="col m-1 shadw">
+
+        <div class="table-responsive">
+
+            <table class="table table-sm table-hover caption-top align-middle">
+
+                <thead>
+
+                    <tr class="table-secondary text-start">
+
+                        <th scope="col" class="text-primary d-none d-md-table-cell">Название</th>
+                        <th scope="col" class="text-primary">Описание</th>
+                        <th scope="col" class="text-primary text-center d-none d-lg-table-cell">Исполнитель</th>
+                        <th scope="col"></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var audioBook in Model.AllAudioBooks ?? [])
+                    {
+                        <tr class="text-start">
+
+                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@audioBook.CaptionOfAudioBook</td>
+
+                            <td scope="col" class="text-start text_shadow">@audioBook.AudioBookDescription</td>
+
+                            <td scope="col" class="text-start text_shadow d-none d-lg-table-cell">@audioBook.ActorOfAudioBook</td>
+
+                            <td scope="col" class="text-center">
+
+                                <a class="btn btn-outline-primary p-1 m-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="AudioBook"
+                                   asp-action="DetailsAudioBook"
+                                   asp-route-audioBookId="@audioBook.AudioBookModelId"
+                                   title="информация об аудиокниге">
+
+                                    Info
+
+                                </a>
+
+                                <a class="btn btn-outline-success p-1 m-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="AudioBook"
+                                   asp-action="EditAudioBook"
+                                   asp-route-audioBookId="@audioBook.AudioBookModelId"
+                                   title="изменить аудиокнигу">
+
+                                    Edit
+
+                                </a>
+
+                                <a class="btn btn-outline-danger p-1 m-1 shadw"
+                                   asp-area="Admin"
+                                   asp-controller="AudioBook"
+                                   asp-action="DeleteAudioBook"
+                                   asp-route-audioBookId="@audioBook.AudioBookModelId"
+                                   title="удалить аудиокнигу">
+
+                                    Del
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
