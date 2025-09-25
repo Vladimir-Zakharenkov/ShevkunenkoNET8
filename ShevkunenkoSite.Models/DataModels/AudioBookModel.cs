@@ -13,6 +13,7 @@ public class AudioBookModel
 
     #region Название аудиокниги
 
+    [Required(ErrorMessage = "Введите название")]
     [DataType(DataType.Text)]
     [Display(Name = "Заголовок :")]
     public string CaptionOfAudioBook { get; set; } = string.Empty;
@@ -22,7 +23,6 @@ public class AudioBookModel
     #region Описание аудиокниги
 
     [Required(ErrorMessage = "Добавте описание")]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Описание :")]
     public string AudioBookDescription { get; set; } = string.Empty;
@@ -31,8 +31,7 @@ public class AudioBookModel
 
     #region Исполнитель текста
 
-    [Required(ErrorMessage = "Введите имя исполнителя", AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Required(ErrorMessage = "Введите имя исполнителя")]
     [DataType(DataType.Text)]
     [Display(Name = "Исполнитель :")]
     public string ActorOfAudioBook { get; set; } = string.Empty;
@@ -41,6 +40,7 @@ public class AudioBookModel
 
     #region Количество файлов (глав)
 
+    [Range(1, 1000, ErrorMessage = "Недопустимое значение")]
     [Display(Name = "Количество файлов :")]
     public int NumberOfFiles { get; set; } = 1;
 

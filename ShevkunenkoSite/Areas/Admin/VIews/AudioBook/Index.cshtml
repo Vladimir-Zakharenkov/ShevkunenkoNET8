@@ -38,7 +38,7 @@
             <div class="col-12 text-center">
 
                 <p class="fs-5 text-primary mb-0">
-                    Количество книг (статей):&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span>
+                    Количество аудиокниг :&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span>
                 </p>
 
             </div>
@@ -77,9 +77,9 @@
               asp-controller="AudioBook"
               asp-action="Index">
 
-            <input class="d-inline-block align-middle mt-1 w-50"
-                   type="text"
-                   asp-for="SearchString" />
+            <input asp-for="SearchString"
+                   class="d-inline-block align-middle mt-1 w-50"
+                   type="text" />
 
             <input class="btn btn-outline-success shadw py-1 me-md-3"
                    type="submit"
@@ -105,12 +105,12 @@
 
                 <thead>
 
-                    <tr class="table-secondary text-start">
+                    <tr class="d-flex table-secondary text-start">
 
-                        <th scope="col" class="text-primary d-none d-md-table-cell">Название</th>
-                        <th scope="col" class="text-primary">Описание</th>
-                        <th scope="col" class="text-primary text-center d-none d-lg-table-cell">Исполнитель</th>
-                        <th scope="col"></th>
+                        <th scope="col" class="col-9 col-sm-6 col-lg-3 text-primary">Название</th>
+                        <th scope="col" class="d-none d-sm-table-cell col-sm-4 col-lg-2 text-primary">Исполнитель</th>
+                        <th scope="col" class="d-none d-lg-table-cell col-lg-6 text-primary">Описание</th>
+                        <th scope="col" class="col-3 col-sm-2 col-lg-1"></th>
 
                     </tr>
 
@@ -120,17 +120,17 @@
 
                     @foreach (var audioBook in Model.AllAudioBooks ?? [])
                     {
-                        <tr class="text-start">
+                        <tr class="d-flex text-start">
 
-                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@audioBook.CaptionOfAudioBook</td>
+                            <td scope="col" class="col-9 col-sm-6 col-lg-3 align-content-center text_shadow">@audioBook.CaptionOfAudioBook</td>
 
-                            <td scope="col" class="text-start text_shadow">@audioBook.AudioBookDescription</td>
+                            <td scope="col" class="d-none d-sm-table-cell col-sm-4 col-lg-2 align-content-center text_shadow">@audioBook.ActorOfAudioBook</td>
 
-                            <td scope="col" class="text-start text_shadow d-none d-lg-table-cell">@audioBook.ActorOfAudioBook</td>
+                            <td scope="col" class="d-none d-lg-table-cell col-lg-6 align-content-center text_shadow">@audioBook.AudioBookDescription</td>
 
-                            <td scope="col" class="text-center">
+                            <td scope="col" class="col-3 col-sm-2 col-lg-1 text-center">
 
-                                <a class="btn btn-outline-primary p-1 m-1 shadw"
+                                <a class="btn btn-outline-primary p-1 m-1 shadw minwidth40px"
                                    asp-area="Admin"
                                    asp-controller="AudioBook"
                                    asp-action="DetailsAudioBook"
@@ -141,7 +141,7 @@
 
                                 </a>
 
-                                <a class="btn btn-outline-success p-1 m-1 shadw"
+                                <a class="btn btn-outline-success p-1 m-1 shadw minwidth40px"
                                    asp-area="Admin"
                                    asp-controller="AudioBook"
                                    asp-action="EditAudioBook"
@@ -152,7 +152,7 @@
 
                                 </a>
 
-                                <a class="btn btn-outline-danger p-1 m-1 shadw"
+                                <a class="btn btn-outline-danger p-1 m-1 shadw minwidth40px"
                                    asp-area="Admin"
                                    asp-controller="AudioBook"
                                    asp-action="DeleteAudioBook"
