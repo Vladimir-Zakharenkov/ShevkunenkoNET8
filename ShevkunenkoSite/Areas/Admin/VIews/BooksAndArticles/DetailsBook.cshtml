@@ -24,36 +24,42 @@
 
     <div class="card-body">
 
-        @* Список, изменить, удалить *@
+        @* Кнопки «список», «изменить», «удалить» *@
         <div class="card-footer">
 
             @* Список текстов сайта *@
-            <a class="btn btn-outline-primary py-1 m-2 shadw"
+            <a class="btn btn-outline-primary minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="Index"
                title="список книг и статей">
+
                 Список
+
             </a>
 
             @* Изменить текст *@
-            <a class="btn btn-outline-success py-1 m-2 shadw"
+            <a class="btn btn-outline-success minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="EditBook"
                asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="изменить данные">
+
                 Изменить
+
             </a>
 
             @* Удалить текст *@
-            <a class="btn btn-outline-danger py-1 m-2 shadw"
+            <a class="btn btn-outline-danger minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="DeleteBook"
                asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="удалить текст">
+
                 Удалить
+
             </a>
 
         </div>
@@ -493,10 +499,10 @@
 
             </div>
 
-            @* Колличество страниц *@
+            @* Количество страниц *@
             <div class="accordion-item mb-3 shadw">
 
-                @* Заголовок группы «колличество страниц» *@
+                @* Заголовок группы «количество страниц» *@
                 <h2 class="accordion-header" id="headingNumberOfPages">
                     <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#NumberOfPages" aria-expanded="true" aria-controls="NumberOfPages">
                         <span class="form-label fs-5">Кол-во страниц :</span>
@@ -513,7 +519,7 @@
 
                         <div class="form-text">
                             <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfPages» - </span>
-                            <span class="fs-6 text-success">колличество страниц</span>
+                            <span class="fs-6 text-success">количество страниц</span>
                         </div>
 
                     </div>
@@ -665,39 +671,44 @@
 
             </div>
 
-
         </div>
 
-        @* Список, изменить, удалить *@
+        @* Кнопки «список», «изменить», «удалить» *@
         <div class="card-footer">
 
             @* Список текстов сайта *@
-            <a class="btn btn-outline-primary py-1 m-2 shadw"
+            <a class="btn btn-outline-primary minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="Index"
                title="список книг и статей">
+
                 Список
+
             </a>
 
             @* Изменить текст *@
-            <a class="btn btn-outline-success py-1 m-2 shadw"
+            <a class="btn btn-outline-success minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="EditBook"
                asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="изменить данные">
+
                 Изменить
+
             </a>
 
             @* Удалить текст *@
-            <a class="btn btn-outline-danger py-1 m-2 shadw"
+            <a class="btn btn-outline-danger minwidth100px m-2 shadw"
                asp-area="Admin"
                asp-controller="BooksAndArticles"
                asp-action="DeleteBook"
                asp-route-bookId="@Model.BooksAndArticlesModelId"
                title="удалить текст">
+
                 Удалить
+
             </a>
 
         </div>

@@ -1,15 +1,26 @@
 ﻿@model AudioBookModel
 
-<h1 class="fs-3 text_shadow">Добавить аудиокнигу</h1>
+<h1 class="fs-3 text_shadow">Изменить аудиокнигу</h1>
 
 <hr class="liniya" />
 
-@* Показ всех ошибок ввода данных *@
-@if (Context.Request.Method == "POST")
-{
-    <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
-}
+@* Id аудиокниги *@
+<div>
 
+    <p class="fs-5 mb-3">
+        <span class="text-primary">AudioBookModelId:</span><br />
+        <span class="text_shadow">
+            @Model.AudioBookModelId
+        </span>
+        <br />
+        <span class="fs-6 form-text text-success">
+            идентификатор в базе данных (GUID)
+        </span>
+    </p>
+
+    <hr class="liniya" />
+
+</div>
 
 <div class="col card p-2">
 
@@ -20,7 +31,7 @@
             @* Скрытые поля формы *@
             <div>
 
-                <input asp-for="@Model.AudioBookModelId" type="hidden" value="@Guid.Empty" />
+                <input asp-for="@Model.AudioBookModelId" type="hidden" />
 
             </div>
 
@@ -152,7 +163,7 @@
 
             </div>
 
-            @* Сохранить - Отменить *@
+            @* Кнопки «Сохранить» - «Отменить» *@
             <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
 
                 <button type="submit" class="btn btn-outline-success mt-2 me-3 text-center shadw"
