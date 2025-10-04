@@ -1,5 +1,3 @@
-using System.Net;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
@@ -245,7 +243,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "pages_of_book",
     pattern: "Книга/{bookCaption}",
-    defaults: new { Controller = "Books", Action = "Book", pageNumber = 0});
+    defaults: new { Controller = "Books", Action = "Book", pageNumber = 0 });
 
 #endregion
 
