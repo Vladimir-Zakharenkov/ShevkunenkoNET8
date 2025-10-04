@@ -2,7 +2,7 @@
 
 public interface IAudioInfoRepository
 {
-    IQueryable<AudioInfoModel> AudioFilles { get; }
+    IQueryable<AudioInfoModel> AudioFiles { get; }
 
     Task AddAudioFileAsync(AudioInfoModel audioFile);
 

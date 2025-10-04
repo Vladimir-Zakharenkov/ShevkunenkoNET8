@@ -3,13 +3,19 @@ namespace ShevkunenkoSite.Services.Interfaces;
 
 public class AudioBookImplementation(SiteDbContext siteContext) : IAudioBookRepository
 {
+    #region Получить все аудиокниги
+
     IQueryable<AudioBookModel> IAudioBookRepository.AudioBooks => siteContext.AudioBookModel;
 
-    #region Добавить книгу (статью)
+    #endregion
+
+    #region Добавить аудиокнигу
 
     public async Task AddAudioBookAsync(AudioBookModel audioBook)
     {
-        _ = await siteContext.AudioBookModel.AddAsync(audioBook);
+        _ = await siteContext.AudioBookModel
+            .AddAsync(audioBook);
+
         _ = await siteContext.SaveChangesAsync();
     }
 
@@ -24,15 +30,20 @@ public class AudioBookImplementation(SiteDbContext siteContext) : IAudioBookRepo
 
     #endregion
 
-    #region Удалить текст
+    #region Удалить аудиокнигу
 
     public async Task DeleteAudioBookAsync(Guid audioBookId)
     {
-        if (await siteContext.AudioBookModel.Where(b => b.AudioBookModelId == audioBookId).AnyAsync())
+        if (await siteContext.AudioBookModel
+            .Where(audioBook => audioBook.AudioBookModelId == audioBookId)
+            .AnyAsync())
         {
-            AudioBookModel audioBookToDelete = await siteContext.AudioBookModel.FirstAsync(b => b.AudioBookModelId == audioBookId);
+            AudioBookModel audioBookToDelete = await siteContext.AudioBookModel
+                .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookId);
 
-            _ = siteContext.AudioBookModel.Remove(audioBookToDelete);
+            _ = siteContext.AudioBookModel
+                .Remove(audioBookToDelete);
+
             _ = await siteContext.SaveChangesAsync();
         }
     }

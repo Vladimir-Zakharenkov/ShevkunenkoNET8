@@ -16,7 +16,11 @@ IWebHostEnvironment environment = builder.Environment;
 
 #region Add services to the container
 
+#region Коллекция сервисов
+
 IServiceCollection services = builder.Services;
+
+#endregion
 
 #region Работа с MVC
 
@@ -152,6 +156,7 @@ services.AddScoped<ITopicMovieRepository, TopicMovieImplementation>();
 services.AddScoped<ITextInfoRepository, TextInfoImplementation>();
 services.AddScoped<IBooksAndArticlesRepository, BooksAndArticlesImplementation>();
 services.AddScoped<IAudioBookRepository, AudioBookImplementation>();
+services.AddScoped<IAudioInfoRepository, AudioInfoImplementation>();
 
 #endregion
 
