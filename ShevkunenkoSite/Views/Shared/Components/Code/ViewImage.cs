@@ -10,8 +10,10 @@ public class ViewImage(
     {
         #region Поиск картинки по GUID
 
-        if (Guid.TryParse(imageId, out Guid imageIdGuid) 
-            & await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageIdGuid).AnyAsync())
+        if (Guid.TryParse(imageId, out Guid imageIdGuid)
+            & await imageFileContext.ImageFiles
+                .Where(img => img.ImageFileModelId == imageIdGuid)
+                .AnyAsync())
         {
             viewImageViewModel.ImageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageIdGuid);
         }
@@ -33,7 +35,7 @@ public class ViewImage(
         {
             viewImageViewModel.ImageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == Guid.Parse(DataConfig.NoImage));
         }
-        
+
         #endregion
 
         #region Размер и тип файла картинки

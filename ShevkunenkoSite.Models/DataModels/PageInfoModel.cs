@@ -351,4 +351,9 @@ public class PageInfoModel
 
     #endregion
 
+    #region Навигационное свойство аудиофайла
+
+    public AudioInfoModel? AudioFile { get; set; }
+
+    #endregion
 }

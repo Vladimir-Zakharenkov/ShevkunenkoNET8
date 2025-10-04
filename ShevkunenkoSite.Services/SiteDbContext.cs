@@ -24,6 +24,8 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<AudioBookModel> AudioBookModel => Set<AudioBookModel>();
 
+    public DbSet<AudioInfoModel> AudioInfoModel => Set<AudioInfoModel>();
+
     #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

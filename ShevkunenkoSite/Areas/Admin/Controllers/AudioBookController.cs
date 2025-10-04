@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using ShevkunenkoSite.Models.DataModels;
+using ShevkunenkoSite.Models.ViewModels;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -35,9 +36,14 @@ public class AudioBookController(
 
     public async Task<IActionResult> DetailsAudioBook(Guid? audioBookId)
     {
-        if (audioBookId.HasValue & await audioBookContext.AudioBooks.Where(audioBook => audioBook.AudioBookModelId == audioBookId).AnyAsync())
+        if (audioBookId.HasValue
+                & await audioBookContext.AudioBooks
+                    .Where(audioBook => audioBook.AudioBookModelId == audioBookId)
+                    .AnyAsync())
         {
             var audioBook = await audioBookContext.AudioBooks
+                .Include(inc => inc.BookForAudioBook)
+                    .ThenInclude(thenInc => thenInc != null ? thenInc.PageInfoModel : null)
                 .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookId);
 
             return View(audioBook);
@@ -117,12 +123,16 @@ public class AudioBookController(
     [HttpGet]
     public async Task<IActionResult> EditAudioBook(Guid? audioBookId)
     {
-        if (audioBookId.HasValue & await audioBookContext.AudioBooks.Where(audioBook => audioBook.AudioBookModelId == audioBookId).AnyAsync())
+        if (audioBookId.HasValue
+            & await audioBookContext.AudioBooks
+                .Where(audioBook => audioBook.AudioBookModelId == audioBookId)
+                .AnyAsync())
         {
             #region Экземпляр редактируемой аудиокниги
 
             var editAudioBook = await audioBookContext.AudioBooks
                 .Include(inc => inc.BookForAudioBook)
+                    .ThenInclude(thenInc => thenInc != null ? thenInc.PageInfoModel : null)
                 .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookId);
 
             #endregion
@@ -137,12 +147,12 @@ public class AudioBookController(
                 .OrderBy(book => book.CaptionOfText)
                 .Select(selectListItem => new SelectListItem
                 {
-                    Value = selectListItem.CaptionOfText,
+                    Value = selectListItem.BooksAndArticlesModelId.ToString(),
                     Text = selectListItem.CaptionOfText
                 })
                 .ToList();
 
-            seletListItemFromBookOnSite.Insert(0, new SelectListItem { Text = "книга не задана", Value = "книга не задана" });
+            seletListItemFromBookOnSite.Insert(0, new SelectListItem { Text = "книга не задана", Value = Guid.Empty.ToString() });
 
             #endregion
 
@@ -154,6 +164,7 @@ public class AudioBookController(
                 ActorOfAudioBook = editAudioBook.ActorOfAudioBook,
                 NumberOfFiles = editAudioBook.NumberOfFiles,
                 BookForAudioBookId = editAudioBook.BookForAudioBookId,
+                BookForAudioBook = editAudioBook.BookForAudioBook,
                 PageInfoModelId = editAudioBook.PageInfoModelId,
                 BooksOnSite = seletListItemFromBookOnSite
             });
@@ -166,7 +177,7 @@ public class AudioBookController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditAudioBook(AudioBookModel audioBookItem)
+    public async Task<IActionResult> EditAudioBook(AudioBookViewModel audioBookItem)
     {
         AudioBookModel audioBookUpdate = await audioBookContext.AudioBooks
             .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookItem.AudioBookModelId);
@@ -194,6 +205,19 @@ public class AudioBookController(
             #region Количество файлов
 
             audioBookUpdate.NumberOfFiles = audioBookItem.NumberOfFiles;
+
+            #endregion
+
+            #region Книга для аудиокниги
+
+            if (audioBookItem.BookForAudioBookId == Guid.Empty)
+            {
+                audioBookUpdate.BookForAudioBookId = null;
+            }
+            else
+            {
+                audioBookUpdate.BookForAudioBookId = audioBookItem.BookForAudioBookId;
+            }
 
             #endregion
 

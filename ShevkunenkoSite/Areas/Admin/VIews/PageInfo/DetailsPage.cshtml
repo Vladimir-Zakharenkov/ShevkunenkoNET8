@@ -382,7 +382,11 @@
                                class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
                                title="информация о картинке"
                                onclick="this.target='_blank'">
-                                <vc:view-image image-id="@Model.PageItem.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+
+                                <vc:view-image image-id="@Model.PageItem.ImageFileModelId" 
+                                        css-class="w-100" 
+                                        icon-type="webimage" />
+
                             </a>
 
                             @if (!string.IsNullOrEmpty(Model.PageItem.ImageFileModel.WebImageFileName))

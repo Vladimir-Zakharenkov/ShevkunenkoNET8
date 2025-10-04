@@ -48,7 +48,7 @@ public class AudioBookModel
 
     #region Книга связанная с аудиокнигой
 
-    [Display(Name = "Книга для аудиокниги :")]
+    [Display(Name = "Книга :")]
     public Guid? BookForAudioBookId { get; set; }
     public BooksAndArticlesModel? BookForAudioBook { get; set; }
 

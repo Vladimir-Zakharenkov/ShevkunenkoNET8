@@ -1,4 +1,4 @@
-﻿@model AudioBookModel
+﻿@model AudioBookViewModel
 
 <h1 class="fs-3 text_shadow">Изменить аудиокнигу</h1>
 
@@ -131,7 +131,7 @@
             </div>
 
             @* Количество файлов *@
-            <div class="row g-2 justify-content-center mt-3">
+            <div class="row g-2 justify-content-center my-3">
 
                 <div class="col-auto">
 
@@ -159,6 +159,72 @@
                 @if (Context.Request.Method == "POST")
                 {
                     <span asp-validation-for="@Model.NumberOfFiles" class="text-danger"></span>
+                }
+
+            </div>
+
+            @* Текст аудиокниги на сайте *@
+            <div>
+
+                <hr class="liniya" />
+
+                <p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
+
+                @if (Model.BookForAudioBookId == null)
+                {
+                    <p class="text_shadow fs-4 mb-3">книга не выбрана</p>
+                }
+                else if (Model.BookForAudioBook?.PageInfoModel?.ImageFileModelId != null)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="BooksAndArticles"
+                       asp-action="DetailsBook"
+                       asp-route-bookId="@Model.BookForAudioBook.BooksAndArticlesModelId"
+                       class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
+                       title="информация о книге"
+                       onclick="this.target='_blank'">
+
+                        <vc:view-image image-id="@Model.BookForAudioBook.PageInfoModel.ImageFileModelId"
+                                       css-class="w-100"
+                                       icon-type="webicon300" />
+
+                    </a>
+
+                    <div class="form-text">
+
+                        <span class="fs-6 text-success">тег «BookForAudioBook»</span>
+
+                    </div>
+
+                    <p class="col-form-label text-primary fs-5">GUID книги :</p>
+                    <p class="text_shadow fs-6 mb-3">@Model.BookForAudioBook.BooksAndArticlesModelId</p>
+                }
+
+                <label asp-for="BookForAudioBookId" class="d-block mx-auto form-label text-primary fs-5 fw-bold"></label>
+
+                <select class="w-100 maxwidth300px" asp-for="@Model.BookForAudioBookId"
+                        asp-items="Model.BooksOnSite">
+
+                    <option selected value="@(Model.BookForAudioBookId ?? null)">@(Model.BookForAudioBook?.CaptionOfText ?? "книга не задана")</option>
+
+                </select>
+
+                <div class="fs-6 form-text text-success mb-3">
+                    выбрать книгу на сайте
+                </div>
+
+            </div>
+
+            @* Страница аудиокниги *@
+            <div>
+
+                @if (Model.PageInfoModelId == null)
+                {
+                    <p class="text_shadow fs-4 mb-3">Страница не выбрана</p>
+                }
+                else
+                {
+
                 }
 
             </div>

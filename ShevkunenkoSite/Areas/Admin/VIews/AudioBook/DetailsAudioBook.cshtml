@@ -131,6 +131,45 @@
 
         </div>
 
+        @* Текст аудиокниги на сайте *@
+        <div>
+
+            <hr class="liniya" />
+
+            <p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
+
+            @if (Model.BookForAudioBookId == null)
+            {
+                <p class="text_shadow fs-4 mb-3">книга не выбрана</p>
+            }
+            else if (Model.BookForAudioBook?.PageInfoModel?.ImageFileModelId != null)
+            {
+                <a asp-area="Admin"
+                   asp-controller="BooksAndArticles"
+                   asp-action="DetailsBook"
+                   asp-route-bookId="@Model.BookForAudioBook.BooksAndArticlesModelId"
+                   class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
+                   title="информация о книге"
+                   onclick="this.target='_blank'">
+
+                    <vc:view-image image-id="@Model.BookForAudioBook.PageInfoModel.ImageFileModelId"
+                                   css-class="w-100"
+                                   icon-type="webicon300" />
+
+                </a>
+
+                <div class="form-text">
+
+                    <span class="fs-6 text-success">тег «BookForAudioBook»</span>
+
+                </div>
+
+                <p class="col-form-label text-primary fs-5">GUID книги :</p>
+                <p class="text_shadow fs-6 mb-3">@Model.BookForAudioBook.BooksAndArticlesModelId</p>
+            }
+
+        </div>
+
         @* Кнопки «список», «изменить», «удалить» *@
         <div class="card-footer mt-2">
 
