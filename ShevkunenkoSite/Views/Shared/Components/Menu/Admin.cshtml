@@ -4,6 +4,7 @@
     string ulDropdownMenuClass = "dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0";
     string liDropdownClass = "bg-light p-0 mb-1 rounded-1 maxwidthcontent";
     string refDropdownClass = "dropdown-item py-0 px-1 shadw donate border border-2 rounded-1";
+    string ulDropdownSubMenuClass = "dropdown-menu dropdown-submenu bg-transparent border-0 mt-1";
 }
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light mt-1 mb-3 py-1 rounded-3 shadw">
@@ -41,6 +42,7 @@
         @* Кнопки по темам*@
         <div id="siteNav" class="collapse navbar-collapse">
 
+            @* Картинки - Фильмы - Страницы - Иконки страниц - Пресса*@
             <ul class="navbar-nav" itemscope itemtype="http://schema.org/BreadcrumbList">
 
                 @* Картинки *@
@@ -378,71 +380,7 @@
 
                 </li>
 
-                @* Тексты *@
-                <li class="@liNavItemClass"
-                    itemprop="itemListElement"
-                    itemscope itemtype="http://schema.org/ListItem">
-
-                    <a id="Texts"
-                       class="@refNavItemClass"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false"
-                       title="тексты"
-                       itemprop="item">
-
-                        <span class="px-2" itemprop="name">Тексты</span>
-
-                    </a>
-
-                    <meta itemprop="position" content="4">
-
-                    <ul class="@ulDropdownMenuClass" aria-labelledby="Texts" itemscope itemtype="http://schema.org/BreadcrumbList">
-
-                        <li class="@liDropdownClass"
-                            title="список текстов"
-                            itemprop="itemListElement"
-                            itemscope itemtype="http://schema.org/ListItem">
-
-                            <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="TextInfo"
-                               asp-action="Index"
-                               temprop="item">
-
-                                <span itemprop="name">Список</span>
-
-                            </a>
-
-                            <meta itemprop="position" content="0">
-
-                        </li>
-
-                        <li class="@liDropdownClass"
-                            title="добавить текст"
-                            itemprop="itemListElement"
-                            itemscope itemtype="http://schema.org/ListItem">
-
-                            <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="TextInfo"
-                               asp-action="AddText"
-                               itemprop="item">
-
-                                <span itemprop="name">Добавить</span>
-
-                            </a>
-
-                            <meta itemprop="position" content="1">
-
-                        </li>
-
-                    </ul>
-
-                </li>
-
-                @* Книги и статьи *@
+                @* Пресса *@
                 <li class="@liNavItemClass"
                     itemprop="itemListElement"
                     itemscope itemtype="http://schema.org/ListItem">
@@ -456,113 +394,266 @@
                        title="книги"
                        itemprop="item">
 
-                        <span class="px-2" itemprop="name">Книги</span>
+                        <span class="px-2" itemprop="name">Пресса</span>
 
                     </a>
 
                     <meta itemprop="position" content="5">
 
-                    <ul class="@ulDropdownMenuClass" aria-labelledby="Books" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    @* Книги - Аудиокниги *@
+                    <ul class="@ulDropdownMenuClass"
+                        aria-labelledby="Books"
+                        itemscope itemtype="http://schema.org/BreadcrumbList">
 
+                        @* Книги и статьи *@
                         <li class="@liDropdownClass"
-                            title="список книг (статей)"
+                            title="книги и статьи"
                             itemprop="itemListElement"
                             itemscope itemtype="http://schema.org/ListItem">
 
                             <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="BooksAndArticles"
-                               asp-action="Index"
-                               temprop="item">
-
-                                <span itemprop="name">Список</span>
-
-                            </a>
-
-                            <meta itemprop="position" content="0">
-
-                        </li>
-
-                        <li class="@liDropdownClass" 
-                            title="добавить книгу (статью)" 
-                            itemprop="itemListElement" 
-                            itemscope itemtype="http://schema.org/ListItem">
-
-                            <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="BooksAndArticles"
-                               asp-action="AddBook"
+                               href="#"
                                itemprop="item">
 
-                                <span itemprop="name">Добавить</span>
+                                <span itemprop="name">Книги и статьи »</span>
 
                             </a>
 
-                            <meta itemprop="position" content="1">
+                            <meta itemprop="position" content="2">
+
+                            @* Список книг - Добавить книгу - Тексты*@
+                            <ul class="@ulDropdownSubMenuClass" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                @* Список книг и статей *@
+                                <li class="@liDropdownClass"
+                                    title="список книг (статей)"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       asp-area="Admin"
+                                       asp-controller="BooksAndArticles"
+                                       asp-action="Index"
+                                       temprop="item">
+
+                                        <span itemprop="name">Список</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="0">
+
+                                </li>
+
+                                @* Добавить книгу или статью *@
+                                <li class="@liDropdownClass"
+                                    title="добавить книгу (статью)"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       asp-area="Admin"
+                                       asp-controller="BooksAndArticles"
+                                       asp-action="AddBook"
+                                       itemprop="item">
+
+                                        <span itemprop="name">Добавить</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="1">
+
+                                </li>
+
+                                @* Тексты *@
+                                <li class="@liDropdownClass"
+                                    title="тексты"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       href="#"
+                                       itemprop="item">
+
+                                        <span itemprop="name">Тексты »</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="4">
+
+                                   @* Список текстов - Добавить текст*@
+                                    <ul class="@ulDropdownSubMenuClass" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                        @* Список текстов книг и статей *@
+                                        <li class="@liDropdownClass"
+                                            title="список текстов"
+                                            itemprop="itemListElement"
+                                            itemscope itemtype="http://schema.org/ListItem">
+
+                                            <a class="@refDropdownClass"
+                                               asp-area="Admin"
+                                               asp-controller="TextInfo"
+                                               asp-action="Index"
+                                               temprop="item">
+
+                                                <span itemprop="name">Список</span>
+
+                                            </a>
+
+                                            <meta itemprop="position" content="0">
+
+                                        </li>
+
+                                        @* Добавить текст *@
+                                        <li class="@liDropdownClass"
+                                            title="добавить текст"
+                                            itemprop="itemListElement"
+                                            itemscope itemtype="http://schema.org/ListItem">
+
+                                            <a class="@refDropdownClass"
+                                               asp-area="Admin"
+                                               asp-controller="TextInfo"
+                                               asp-action="AddText"
+                                               itemprop="item">
+
+                                                <span itemprop="name">Добавить</span>
+
+                                            </a>
+
+                                            <meta itemprop="position" content="1">
+
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ul>
 
                         </li>
 
-                    </ul>
-
-                </li>
-
-                @* Аудио *@
-                <li class="@liNavItemClass"
-                    itemprop="itemListElement"
-                    itemscope itemtype="http://schema.org/ListItem">
-
-                    <a id="Audio"
-                       class="@refNavItemClass"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false"
-                       title="аудиокниги"
-                       itemprop="item">
-
-                        <span class="px-2" itemprop="name">Аудио</span>
-
-                    </a>
-
-                    <meta itemprop="position" content="6">
-
-                    <ul class="@ulDropdownMenuClass" aria-labelledby="Audio" itemscope itemtype="http://schema.org/BreadcrumbList">
-
+                        @* Аудиокниги *@
                         <li class="@liDropdownClass"
-                            title="список аудиокниг"
+                            title="аудиокниги"
                             itemprop="itemListElement"
                             itemscope itemtype="http://schema.org/ListItem">
 
                             <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="AudioBook"
-                               asp-action="Index"
-                               temprop="item">
-
-                                <span itemprop="name">Список</span>
-
-                            </a>
-
-                            <meta itemprop="position" content="0">
-
-                        </li>
-
-                        <li class="@liDropdownClass"
-                            title="добавить аудиокнигу"
-                            itemprop="itemListElement"
-                            itemscope itemtype="http://schema.org/ListItem">
-
-                            <a class="@refDropdownClass"
-                               asp-area="Admin"
-                               asp-controller="AudioBook"
-                               asp-action="AddAudioBook"
+                               href="#"
                                itemprop="item">
 
-                                <span itemprop="name">Добавить</span>
+                                <span itemprop="name">Аудиокниги »</span>
 
                             </a>
 
-                            <meta itemprop="position" content="1">
+                            <meta itemprop="position" content="2">
+
+                            @* Список аудиокниг - Добавить аудиокнигу - Аудиофайлы*@
+                            <ul class="@ulDropdownSubMenuClass" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                @* Список аудиокниг *@
+                                <li class="@liDropdownClass"
+                                    title="список аудиокниг"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       asp-area="Admin"
+                                       asp-controller="AudioBook"
+                                       asp-action="Index"
+                                       temprop="item">
+
+                                        <span itemprop="name">Список</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="0">
+
+                                </li>
+
+                                @* Добавить аудиокнигу *@
+                                <li class="@liDropdownClass"
+                                    title="добавить аудиокнигу"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       asp-area="Admin"
+                                       asp-controller="AudioBook"
+                                       asp-action="AddAudioBook"
+                                       itemprop="item">
+
+                                        <span itemprop="name">Добавить</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="1">
+
+                                </li>
+
+                                @* Аудиофайлы *@
+                                <li class="@liDropdownClass"
+                                    title="аудиофайлы"
+                                    itemprop="itemListElement"
+                                    itemscope itemtype="http://schema.org/ListItem">
+
+                                    <a class="@refDropdownClass"
+                                       href="#"
+                                       itemprop="item">
+
+                                        <span itemprop="name">Аудиофайлы »</span>
+
+                                    </a>
+
+                                    <meta itemprop="position" content="4">
+
+                                    @* Список аудиофайлов - Добавить аудиофайл*@
+                                    <ul class="@ulDropdownSubMenuClass" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+                                        @* Список аудиофайлов *@
+                                        <li class="@liDropdownClass"
+                                            title="список аудиофайлов"
+                                            itemprop="itemListElement"
+                                            itemscope itemtype="http://schema.org/ListItem">
+
+                                            <a class="@refDropdownClass"
+                                               asp-area="Admin"
+                                               asp-controller="AudioInfo"
+                                               asp-action="Index"
+                                               temprop="item">
+
+                                                <span itemprop="name">Список</span>
+
+                                            </a>
+
+                                            <meta itemprop="position" content="0">
+
+                                        </li>
+
+                                        @* Добавить аудиофайл *@
+                                        <li class="@liDropdownClass"
+                                            title="добавить аудиофайл"
+                                            itemprop="itemListElement"
+                                            itemscope itemtype="http://schema.org/ListItem">
+
+                                            <a class="@refDropdownClass"
+                                               asp-area="Admin"
+                                               asp-controller="AudioInfo"
+                                               asp-action="AddAudioFIle"
+                                               itemprop="item">
+
+                                                <span itemprop="name">Добавить</span>
+
+                                            </a>
+
+                                            <meta itemprop="position" content="1">
+
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ul>
 
                         </li>
 
