@@ -196,30 +196,48 @@ public class TextInfoController(
 
             #region Номер страницы
 
-            if (addText.BooksAndArticlesModelId != null & addText.SequenceNumber == null)
+            if (addText.SequenceNumber == null)
             {
-                ModelState.AddModelError("SequenceNumber", $"Если указана книга (статья), нужно указать страницу");
-
-                return View(addText);
-            }
-            else if (await textContext.Texts.Where(text => text.BooksAndArticlesModelId == addText.BooksAndArticlesModelId & text.SequenceNumber == addText.SequenceNumber).AnyAsync())
-            {
-                ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{addText.RefForBookOrArticle}», страница «{addText.SequenceNumber}» уже существует");
-
-                return View(addText);
-            }
-            else
-            {
-                var book = await bookContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == addText.BooksAndArticlesModelId);
-
-                if (addText.SequenceNumber > book.NumberOfPages)
+                if (addText.BooksAndArticlesModelId != null)
                 {
-                    ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{addText.RefForBookOrArticle}», всего «{book.NumberOfPages}» страниц");
+                    ModelState.AddModelError("SequenceNumber", $"Если указана книга (статья), нужно указать страницу");
 
                     return View(addText);
                 }
+                else
+                {
+                    _ = addText.SequenceNumber;
+                }
+            }
+            else
+            {
+                if (addText.BooksAndArticlesModelId != null
+                                    & await textContext.Texts.Where(text =>
+                                        text.BooksAndArticlesModelId == addText.BooksAndArticlesModelId
+                                        & text.SequenceNumber == addText.SequenceNumber)
+                                    .AnyAsync())
+                {
+                    ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{addText.RefForBookOrArticle}», страница «{addText.SequenceNumber}» уже существует");
 
-                _ = addText.SequenceNumber;
+                    return View(addText);
+                }
+                else if (addText.BooksAndArticlesModelId != null)
+                {
+                    var book = await bookContext
+                        .BooksAndArticles
+                        .FirstAsync(book => book.BooksAndArticlesModelId == addText.BooksAndArticlesModelId);
+
+                    if (addText.SequenceNumber > book.NumberOfPages)
+                    {
+                        ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{addText.RefForBookOrArticle}», всего «{book.NumberOfPages}» страниц");
+
+                        return View(addText);
+                    }
+                }
+                else
+                {
+                    _ = addText.SequenceNumber;
+                }
             }
 
             #endregion
@@ -540,9 +558,9 @@ public class TextInfoController(
         {
             deleteText = await textContext.Texts.FirstAsync(i => i.TextInfoModelId == textId);
 
-            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + deleteText.TxtFileName);
+            using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + deleteText.FolderForText + deleteText.TxtFileName);
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.HtmlFileName);
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.FolderForText + deleteText.HtmlFileName);
 
             return View(new DetailsTextViewModel
             {

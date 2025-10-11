@@ -1,0 +1,137 @@
+﻿@model IEnumerable<ShevkunenkoSite.Models.DataModels.AudioInfoModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorOfText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaptionOfTextInAudioFile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TextInfoModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileBitRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileFrequency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileMimeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFilePlaybackType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SortOfAudioFile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InternetRefToAudioFile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioFileUploadDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AudioBookModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SequenceNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PageInfoModel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorOfText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaptionOfTextInAudioFile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TextInfoModel.FolderForText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileBitRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileFrequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileMimeType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFilePlaybackType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortOfAudioFile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InternetRefToAudioFile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioFileUploadDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AudioBookModel.ActorOfAudioBook)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SequenceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PageInfoModel.Action)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AudioInfoModelId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AudioInfoModelId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AudioInfoModelId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

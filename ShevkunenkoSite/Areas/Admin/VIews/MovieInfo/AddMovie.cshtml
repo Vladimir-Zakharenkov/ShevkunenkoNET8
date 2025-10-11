@@ -13,13 +13,6 @@
 
     <div class="col d-block mx-auto px-2">
 
-        @* Показ всех ошибок ввода данных *@
-        @if (Context.Request.Method == "POST")
-        {
-            <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
-        }
-
-
         <div class="card p-2 lay1">
 
             <div class="card-body mx-0 p-0">
@@ -30,8 +23,19 @@
                       method="post"
                       enctype="multipart/form-data">
 
-                    <input asp-for="MovieFileModelId" type="hidden" value=@Guid.Empty />
-                    <input asp-for="PageInfoModelId" type="hidden" value=@null />
+                    @* Показ всех ошибок ввода данных *@
+                    @if (Context.Request.Method == "POST")
+                    {
+                        <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+                    }
+
+                    @* скрытые поля формы *@
+                    <div>
+
+                        <input asp-for="MovieFileModelId" type="hidden" value=@Guid.Empty />
+                        <input asp-for="PageInfoModelId" type="hidden" value=@null />
+
+                    </div>
 
                     @* данные по группам*@
                     <div class="accordion" id="accordionAddMovie">

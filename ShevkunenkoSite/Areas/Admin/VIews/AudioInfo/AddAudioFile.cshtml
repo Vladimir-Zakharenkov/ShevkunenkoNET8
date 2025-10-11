@@ -1,0 +1,524 @@
+﻿@model AudioInfoViewModel
+
+@{
+    string cssForLabel = "col-form-label text-primary fs-5 me-2";
+}
+
+<h1 class="fs-3 text_shadow">Добавить аудиофайл</h1>
+
+<hr class="liniya" />
+
+<div class="row">
+
+    <div class="col col-sm-11 col-lg-10 col-xl-9 col-xxl-7 mx-auto lay1">
+
+        <form asp-area="Admin"
+              asp-controller="AudioInfo"
+              asp-action="AddAudioFile"
+              method="post"
+              enctype="multipart/form-data">
+
+            @* Показ всех ошибок ввода данных *@
+            @if (Context.Request.Method == "POST")
+            {
+                <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+            }
+
+            @* скрытые поля формы *@
+            <div>
+
+                <input asp-for="AudioInfoModelId" type="hidden" />
+
+            </div>
+
+            @* данные по группам*@
+            <div class="accordion" id="accordionAddAudioFile">
+
+                @* аудиофайл *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Аудиофайл» *@
+                    <h2 id="headingInputAudioFile" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#InputAudioFile"
+                                aria-expanded="true"
+                                aria-controls="InputAudioFile">
+
+                            <span class="form-label fs-5">Аудиофайл :</span>
+
+                        </button>
+
+                    </h2>
+
+                    @* выбрать аудиофайл *@
+                    <div id="InputAudioFile"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingInputAudioFile"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            <div class="row g-2 justify-content-center">
+
+                                <div class="col-auto">
+
+                                    <label asp-for="ChooseAudioFile" class="@cssForLabel"></label>
+
+                                </div>
+
+                                <div class="col-auto text-start">
+
+                                    <input asp-for="ChooseAudioFile"
+                                           id="AudioFileFormFile"
+                                           class="form-control"
+                                           aria-describedby="AudioFileFormFileInputHelpBlock" />
+
+                                </div>
+
+                                <div id="AudioFileFormFileInputHelpBlock" class="form-text">
+
+                                    <span class="fs-6 text-success">аудиофайл</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="ChooseAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* автор - заголовок - описание - текст *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Автор - Заголовок - Описание - Текст» *@
+                    <h2 id="headingAuthorCaptionDescription" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#AuthorCaptionDescription"
+                                aria-expanded="true"
+                                aria-controls="AuthorCaptionDescription">
+
+                            <span class="form-label fs-5">Автор - Заголовок - Описание - Текст :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="AuthorCaptionDescription"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingAuthorCaptionDescription"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Автор текста *@
+                            <div class="row g-2 justify-content-center bg-secondary mt-1">
+
+                                <div class="col-12 col-lg-3">
+
+                                    <label asp-for="AuthorOfText" class="@cssForLabel text-white py-0"></label>
+
+                                </div>
+
+                                <div class="col text-start pb-1 pe-lg-4">
+
+                                    <input asp-for="AuthorOfText"
+                                           id="AuthorOfTextInput"
+                                           class="form-control"
+                                           aria-describedby="AuthorOfTextInputHelpBlock" />
+
+                                </div>
+
+                                <div id="AuthorOfTextInputHelpBlock" class="form-text bg-light">
+
+                                    <span class="fs-6 text-success">автор текста</span>
+                                    <br class="d-md-none" />
+                                    <span class="fs-6 text-danger"> - обязательное поле</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="AuthorOfText" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Заголовок *@
+                            <div class="row g-2 justify-content-center">
+
+                                <label asp-for="CaptionOfTextInAudioFile" class="@cssForLabel"></label>
+
+                                <input asp-for="CaptionOfTextInAudioFile"
+                                       id="CaptionOfTextInAudioFileInput"
+                                       class="form-control fordetails maxwidth700px border border-1 border-primary mt-0"
+                                       aria-describedby="CaptionOfTextInAudioFileInputHelpBlock" />
+
+                                <div id="CaptionOfTextInAudioFileInputHelpBlock" class="form-text bg-light">
+
+                                    <span class="fs-6 text-success">заголовок текста</span>
+                                    <br class="d-md-none" />
+                                    <span class="fs-6 text-danger"> - обязательное поле</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="CaptionOfTextInAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Описание аудиофайла *@
+                            <div class="row g-2 justify-content-center">
+
+                                <label asp-for="AudioFileDescription" class="@cssForLabel"></label>
+
+                                <textarea asp-for="AudioFileDescription"
+                                          id="AudioFileDescriptionInput"
+                                          class="form-control fordetails maxwidth700px border border-1 border-primary mt-0"
+                                          rows="5"
+                                          aria-describedby="AudioFileDescriptionInputHelpBlock">
+                                </textarea>
+
+                                <div id="AudioFileDescriptionInputHelpBlock" class="form-text bg-light">
+
+                                    <span class="fs-6 text-success">описание аудиофайла</span>
+                                    <br class="d-md-none" />
+                                    <span class="fs-6 text-danger"> - обязательное поле</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="AudioFileDescription" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Текст аудиофайла*@
+                            <div class="form-group">
+
+                                <label asp-for="TextInfoModelId" class="@cssForLabel"></label>
+
+                                <select asp-for="TextInfoModelId"
+                                        asp-items="ViewBag.TextFIles"
+                                        class="col-12 col-sm-7 col-lg-6"
+                                        aria-describedby="TextForAudioFileInputHelpBlock">
+
+                                    <option selected value="@null">null-text.txt</option>
+
+                                </select>
+
+                                <div id="TextForAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">текст аудиофайла</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="TextInfoModelId" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* аудиокнига - номер по порядку *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Аудиокнига - Номер по порядку» *@
+                    <h2 id="headingAudioBookForAudioFile" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#AudioBookForAudioFile"
+                                aria-expanded="true"
+                                aria-controls="AudioBookForAudioFile">
+
+                            <span class="form-label fs-5">Аудиокнига :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="AudioBookForAudioFile"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingAudioBookForAudioFile"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Аудиокнига*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="AudioBookModelId" class="@cssForLabel"></label>
+
+                                <select asp-for="AudioBookModelId"
+                                        asp-items="ViewBag.AudioBooks"
+                                        class="col-12 col-sm-7 col-lg-6"
+                                        aria-describedby="AudioBookForAudioFileInputHelpBlock">
+
+                                    <option selected value="@null">no-audiobook</option>
+
+                                </select>
+
+                                <div id="AudioBookForAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">аудиокнига</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="AudioBookModelId" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Номер по порядку*@
+                            <div class="row g-2 justify-content-center mb-2">
+
+                                <div class="col-12 col-sm-auto">
+
+                                    <label asp-for="SequenceNumber" class="@cssForLabel"></label>
+
+                                </div>
+
+                                <div class="col-5 col-sm-3 col-lg-2">
+
+                                    <input asp-for="SequenceNumber" class="form-control" />
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="SequenceNumber" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* ссылка на аудиофайл *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Ссылка на аудиофайл» *@
+                    <h2 id="headingInternetRefToAudioFile" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#InternetRefToAudioFile"
+                                aria-expanded="true"
+                                aria-controls="InternetRefToAudioFile">
+
+                            <span class="form-label fs-5">Ссылка на аудиофайл :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="InternetRefToAudioFile"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingInternetRefToAudioFile"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Ссылка на аудиофайл*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="InternetRefToAudioFile" class="@cssForLabel"></label>
+
+                                <input asp-for="InternetRefToAudioFile"
+                                       class="align-text-bottom col-12 col-md-11"
+                                       aria-describedby="InternetRefToAudioFileInputHelpBlock" />
+
+                                <div id="InternetRefToAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">ссылка в интернете</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="InternetRefToAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* дата загрузки на сайт *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Дата загрузки на сайт» *@
+                    <h2 id="headingAudioFileUploadDate" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#AudioFileUploadDate"
+                                aria-expanded="true"
+                                aria-controls="AudioFileUploadDate">
+
+                            <span class="form-label fs-5">Дата загрузки :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="AudioFileUploadDate"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingAudioFileUploadDate"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Дата загрузки на сайт*@
+                            <div class="row g-2 justify-content-center">
+
+                                <div class="col-auto">
+
+                                    <label asp-for="AudioFileUploadDate" class="@cssForLabel pb-0 pb-sm-3"></label>
+
+                                </div>
+
+                                <div class="col-auto">
+
+                                    <input asp-for="AudioFileUploadDate"
+                                           class="form-control text-center"
+                                           aria-describedby="AudioFileUploadDateInputHelpBlock" />
+
+                                </div>
+
+                                <div id="AudioFileUploadDateInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">дата загрузки на сайт</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="AudioFileUploadDate" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @* страница аудиофайла на сайте *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Страница аудиофайла на сайте» *@
+                    <h2 id="headingPageForAudioFile" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#PageForAudioFile"
+                                aria-expanded="true"
+                                aria-controls="PageForAudioFile">
+
+                            <span class="form-label fs-5">Страница аудиофайла :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="PageForAudioFile"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPageForAudioFile"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Страница аудиофайла*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="PageInfoModelId" class="@cssForLabel"></label>
+
+                                <select asp-for="PageInfoModelId"
+                                        asp-items="ViewBag.PagesOfSite"
+                                        class="col-12 col-sm-7 col-lg-6"
+                                        aria-describedby="PageForAudioFileInputHelpBlock">
+
+                                    <option selected>test</option>
+
+                                </select>
+
+                                <div id="PageForAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">страница сайта</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="PageInfoModelId" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Сохранить - Отменить *@
+            <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
+
+                <button type="submit" class="btn btn-outline-success mt-2 me-3 text-center shadw"
+                        title="Сохранить">
+                    Сохранить
+                </button>
+
+                <a class="btn btn-outline-danger mt-2 shadw"
+                   asp-area="Admin"
+                   asp-controller="AudioInfo"
+                   asp-action="Index"
+                   title="Отменить">
+                    Отменить
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

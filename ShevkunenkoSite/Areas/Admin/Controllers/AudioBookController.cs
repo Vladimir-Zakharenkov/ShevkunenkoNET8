@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using ShevkunenkoSite.Models.DataModels;
-using ShevkunenkoSite.Models.ViewModels;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -61,9 +59,7 @@ public class AudioBookController(
     [HttpGet]
     public ViewResult AddAudioBook()
     {
-        AudioBookModel newAudioBook = new();
-
-        return View(newAudioBook);
+        return View();
     }
 
     [HttpPost]
@@ -106,7 +102,7 @@ public class AudioBookController(
 
             var newAudioBook = await audioBookContext.AudioBooks.FirstAsync(audioBook => audioBook.CaptionOfAudioBook == addAudioBook.CaptionOfAudioBook & audioBook.ActorOfAudioBook == addAudioBook.ActorOfAudioBook);
 
-            return RedirectToAction(nameof(DetailsAudioBook), new { audiBbookId = newAudioBook.AudioBookModelId });
+            return RedirectToAction(nameof(DetailsAudioBook), new { audioBookId = newAudioBook.AudioBookModelId });
 
             #endregion
         }

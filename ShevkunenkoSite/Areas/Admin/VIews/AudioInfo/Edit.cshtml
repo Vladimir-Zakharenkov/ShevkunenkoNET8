@@ -1,0 +1,119 @@
+﻿@model ShevkunenkoSite.Models.DataModels.AudioInfoModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AudioInfoModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AudioInfoModelId" />
+            <div class="form-group">
+                <label asp-for="AuthorOfText" class="control-label"></label>
+                <input asp-for="AuthorOfText" class="form-control" />
+                <span asp-validation-for="AuthorOfText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaptionOfTextInAudioFile" class="control-label"></label>
+                <input asp-for="CaptionOfTextInAudioFile" class="form-control" />
+                <span asp-validation-for="CaptionOfTextInAudioFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TextInfoModelId" class="control-label"></label>
+                <select asp-for="TextInfoModelId" class="form-control" asp-items="ViewBag.TextInfoModelId"></select>
+                <span asp-validation-for="TextInfoModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileDescription" class="control-label"></label>
+                <textarea asp-for="AudioFileDescription" class="form-control"></textarea>
+                <span asp-validation-for="AudioFileDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileDuration" class="control-label"></label>
+                <input asp-for="AudioFileDuration" class="form-control" />
+                <span asp-validation-for="AudioFileDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileBitRate" class="control-label"></label>
+                <input asp-for="AudioFileBitRate" class="form-control" />
+                <span asp-validation-for="AudioFileBitRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileFrequency" class="control-label"></label>
+                <input asp-for="AudioFileFrequency" class="form-control" />
+                <span asp-validation-for="AudioFileFrequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileSize" class="control-label"></label>
+                <input asp-for="AudioFileSize" class="form-control" />
+                <span asp-validation-for="AudioFileSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileMimeType" class="control-label"></label>
+                <input asp-for="AudioFileMimeType" class="form-control" />
+                <span asp-validation-for="AudioFileMimeType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileType" class="control-label"></label>
+                <input asp-for="AudioFileType" class="form-control" />
+                <span asp-validation-for="AudioFileType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileName" class="control-label"></label>
+                <input asp-for="AudioFileName" class="form-control" />
+                <span asp-validation-for="AudioFileName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFilePlaybackType" class="control-label"></label>
+                <input asp-for="AudioFilePlaybackType" class="form-control" />
+                <span asp-validation-for="AudioFilePlaybackType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SortOfAudioFile" class="control-label"></label>
+                <input asp-for="SortOfAudioFile" class="form-control" />
+                <span asp-validation-for="SortOfAudioFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InternetRefToAudioFile" class="control-label"></label>
+                <input asp-for="InternetRefToAudioFile" class="form-control" />
+                <span asp-validation-for="InternetRefToAudioFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioFileUploadDate" class="control-label"></label>
+                <input asp-for="AudioFileUploadDate" class="form-control" />
+                <span asp-validation-for="AudioFileUploadDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioBookModelId" class="control-label"></label>
+                <select asp-for="AudioBookModelId" class="form-control" asp-items="ViewBag.AudioBookModelId"></select>
+                <span asp-validation-for="AudioBookModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SequenceNumber" class="control-label"></label>
+                <input asp-for="SequenceNumber" class="form-control" />
+                <span asp-validation-for="SequenceNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PageInfoModelId" class="control-label"></label>
+                <select asp-for="PageInfoModelId" class="form-control" asp-items="ViewBag.PageInfoModelId"></select>
+                <span asp-validation-for="PageInfoModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

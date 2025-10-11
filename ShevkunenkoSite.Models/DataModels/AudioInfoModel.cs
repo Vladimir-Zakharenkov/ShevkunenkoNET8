@@ -31,9 +31,9 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Transcript - guid текста для аудиофайла
+    #region Transcript - guid файла с текстом
 
-    [Display(Name = "Страница книги (статьи) :")]
+    [Display(Name = "Текст :")]
     public Guid? TextInfoModelId { get; set; }
     public TextInfoModel? TextInfoModel { get; set; }
 
@@ -48,15 +48,34 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Продолжительность (время воспроизведения)
+    #region Аудиокнига - Номер файла по порядку
 
-    [Column(TypeName = "bigint")]
-    [Required(ErrorMessage = "Введите продолжительность аудиофайла")]
-    public TimeSpan AudioFileDuration { get; set; }
+    // идентификатор аудиокниги
+    [Display(Name = "Аудиокнига :")]
+    public Guid? AudioBookModelId { get; set; }
+    public AudioBookModel? AudioBookModel { get; set; }
+
+    // номер страницы аудиокниги
+    [Display(Name = "Номер по порядку :")]
+    [Range(0, 300)]
+    public int? SequenceNumber { get; set; }
+
+    #endregion
+
+    #region Значение для сортировки
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Индекс сортировки:")]
+    [Range(1, 100000)]
+    public int SortOfAudioFile { get; set; } = 1;
 
     #endregion
 
     #region AutoFill
+
+    [Column(TypeName = "bigint")]
+    [Required(ErrorMessage = "Введите продолжительность аудиофайла")]
+    public TimeSpan AudioFileDuration { get; set; }
 
     [Required(ErrorMessage = "Введите битрейт аудиофайла")]
     [Display(Name = "Битрейт аудиофайла :")]
@@ -96,19 +115,10 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Значение для сортировки
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Индекс сортировки:")]
-    [Range(1, 100000)]
-    public int SortOfAudioFile { get; set; } = 1;
-
-    #endregion
-
     #region Ссылки на аудиофайл в интернете
 
     [DataType(DataType.Url)]
-    [Display(Name = "Kino-Teatr: ")]
+    [Display(Name = "Ссылка на аудиофайл: ")]
     public Uri? InternetRefToAudioFile { get; set; }
 
     #endregion
@@ -122,24 +132,10 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Связанные аудиокнига
-
-    // идентификатор аудиокниги
-    [Display(Name = "Идентификатор аудиокниги :")]
-    public Guid? AudioBookModelId { get; set; }
-    public AudioBookModel? AudioBookModel { get; set; }
-
-    // номер страницы аудиокниги
-    [Display(Name = "Номер страницы :")]
-    [Range(0, 3000)]
-    public int? SequenceNumber { get; set; }
-
-    #endregion
-
     #region Связанные страница сайта
 
     // идентификатор страницы сайта
-    [Display(Name = "Идентификатор страницы сайта :")]
+    [Display(Name = "Страница аудиофайла :")]
     public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
 
