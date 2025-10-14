@@ -731,7 +731,7 @@ public class MovieInfoController(
                             }
                             else
                             {
-                                movieItem.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.ToString().IndexOf(' ')]);
+                                movieItem.MovieFileSize = Convert.ToUInt64(tag.Description[..tag.Description.IndexOf(' ')]);
                             }
                         }
                     }
@@ -1036,7 +1036,6 @@ public class MovieInfoController(
             return RedirectToAction("DetailsMovie", new { movieId = newMovie.MovieFileModelId, Area = "Admin" });
 
             #endregion
-
         }
         else
         {

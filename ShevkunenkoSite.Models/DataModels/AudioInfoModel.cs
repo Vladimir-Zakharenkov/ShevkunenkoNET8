@@ -71,6 +71,15 @@ public class AudioInfoModel
 
     #endregion
 
+    #region Папка аудиофайла
+
+    [DataType(DataType.Text)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [Display(Name = "Папка аудиофайла:")]
+    public string FolderForAudioFile { get; set; } = string.Empty;
+
+    #endregion
+
     #region AutoFill
 
     [Column(TypeName = "bigint")]
@@ -83,7 +92,7 @@ public class AudioInfoModel
     public int AudioFileBitRate { get; set; }
 
     [Required(ErrorMessage = "Введите частоту аудиофайла")]
-    [Display(Name = "Частоту аудиофайла :")]
+    [Display(Name = "Частота аудиофайла :")]
     [Range(0, 1000000)]
     public int AudioFileFrequency { get; set; }
 
@@ -107,12 +116,6 @@ public class AudioInfoModel
     [Display(Name = "Имя аудиофайла :")]
     public string AudioFileName { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Добавьте тип воспроизведения аудиофайла", AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [DataType(DataType.Text)]
-    [Display(Name = "Тип воспроизведения :")]
-    public string AudioFilePlaybackType { get; set; } = string.Empty;
-
     #endregion
 
     #region Ссылки на аудиофайл в интернете
@@ -132,7 +135,7 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Связанные страница сайта
+    #region Связанная страница сайта
 
     // идентификатор страницы сайта
     [Display(Name = "Страница аудиофайла :")]

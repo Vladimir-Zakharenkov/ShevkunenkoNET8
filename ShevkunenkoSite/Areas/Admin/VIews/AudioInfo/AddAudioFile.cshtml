@@ -97,6 +97,62 @@
 
                 </div>
 
+                @* папка аудиофайла *@
+                <div class="accordion-item mb-3 mt-2 shadw">
+
+                    @* заголовок группы «Папка аудиофайла» *@
+                    <h2 id="headingFolderForAudioFile" class="accordion-header">
+
+                        <button class="accordion-button collapsed py-0 stranicy"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#FolderForAudioFile"
+                                aria-expanded="true"
+                                aria-controls="FolderForAudioFile">
+
+                            <span class="form-label fs-5">Папка аудиофайла :</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="FolderForAudioFile"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingFolderForAudioFile"
+                         data-bs-parent="#accordionAddAudioFile">
+
+                        <div class="accordion-body accordion-body-nointend text-center">
+
+                            @* Папка аудиофайла*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="FolderForAudioFile" class="@cssForLabel"></label>
+
+                                <select asp-for="FolderForAudioFile"
+                                        asp-items="ViewBag.AudioFileFolders"
+                                        class="col-12 col-sm-7 col-lg-6"
+                                        aria-describedby="FolderForAudioFileInputHelpBlock">
+                                </select>
+
+                                <div id="FolderForAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">папка аудиофайла</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="FolderForAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
                 @* автор - заголовок - описание - текст *@
                 <div class="accordion-item mb-3 mt-2 shadw">
 
