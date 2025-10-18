@@ -130,6 +130,14 @@
 
                     </select>
 
+                    <select asp-for="FolderForText"
+                            asp-items="ViewBag.TextFileFolders"
+                            class="col-12 col-sm-7 col-lg-6"
+                            aria-describedby="FolderForAudioFileInputHelpBlock">
+
+                        <option selected value="texts">texts</option>
+                    </select>
+
                     <div id="FolderForTextInputHelpBlock" class="fs-6 form-text text-success mb-3">
                         выбрать каталог текста
                         <br class="d-sm-none" />

@@ -55,7 +55,7 @@ public class TextInfoModel
     #region Связанные книга или статья
 
     // идентификатор книги (статьи)
-    [Display(Name = "Страница книги (статьи) :")]
+    [Display(Name = "Связанная книга (статья) :")]
     public Guid? BooksAndArticlesModelId { get; set; }
     public BooksAndArticlesModel? BooksAndArticlesModel { get; set; }
 

@@ -12,9 +12,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         ITextInfoRepository textsOfSiteContext) : Controller
     {
         #region Список аудиофайлов
-
-        #endregion
-        // Список аудиофайлов
         public async Task<IActionResult> Index()
         {
             var audioFiles = audioFileContext
@@ -26,11 +23,13 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
             return View(await audioFiles.ToListAsync());
         }
 
+        #endregion
+
         #region Информация об аудиофайле
 
-        public async Task<IActionResult> DetailsAudioFile(Guid? id)
+        public async Task<IActionResult> DetailsAudioFile(Guid? audioFileId)
         {
-            if (id == null)
+            if (audioFileId == null)
             {
                 return NotFound();
             }
@@ -39,7 +38,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 .Include(a => a.AudioBookModel)
                 .Include(a => a.PageInfoModel)
                 .Include(a => a.TextInfoModel)
-                .FirstOrDefaultAsync(m => m.AudioInfoModelId == id);
+                .FirstOrDefaultAsync(m => m.AudioInfoModelId == audioFileId);
             if (audioInfoModel == null)
             {
                 return NotFound();
@@ -74,7 +73,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAudioFile(
             [Bind("ChooseAudioFile," +
-                    "AudioInfoModelId," +
                     "FolderForAudioFile," +
                     "AuthorOfText," +
                     "CaptionOfTextInAudioFile," +

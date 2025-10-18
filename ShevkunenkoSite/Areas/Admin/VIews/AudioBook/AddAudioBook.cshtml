@@ -124,20 +124,20 @@
 
                 <div class="col-auto">
 
-                    <label asp-for="@Model.NumberOfFiles" class="col-form-label text-primary fs-5 py-0"></label>
+                    <label asp-for="NumberOfFiles" class="col-form-label text-primary fs-5 py-0"></label>
 
                 </div>
 
                 <div class="col-5 col-sm-3 col-lg-2 text-start">
 
-                    <input asp-for="@Model.NumberOfFiles"
+                    <input asp-for="NumberOfFiles"
                            id="NumberOfAudioFIlesnput"
                            class="form-control text-center"
-                           aria-describedby="NumberOfAudioFIlesnputHelpBlock" />
+                           aria-describedby="NumberOfAudioFIlesInputHelpBlock" />
 
                 </div>
 
-                <div id="NumberOfAudioFIlesnputHelpBlock" class="form-text bg-light">
+                <div id="NumberOfAudioFIlesInputHelpBlock" class="form-text bg-light">
 
                     <span class="fs-6 text-success">количество файлов</span>
                     <br class="d-md-none" />
@@ -147,7 +147,7 @@
 
                 @if (Context.Request.Method == "POST")
                 {
-                    <span asp-validation-for="@Model.NumberOfFiles" class="text-danger"></span>
+                    <span asp-validation-for="NumberOfFiles" class="text-danger"></span>
                 }
 
             </div>

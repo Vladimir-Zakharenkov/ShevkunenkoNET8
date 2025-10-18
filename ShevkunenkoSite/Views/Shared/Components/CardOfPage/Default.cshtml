@@ -4,7 +4,7 @@
     string sitePath = "https://" + Context.Request.Host + Context.Request.Path.ToString().TrimEnd('/');
 }
 
-<div class="col p-1 p-lg-2">
+<div class="col p-1">
 
     <div class="card shadw rounded-3 cardborder" title="@Model.PageTitle">
 
@@ -185,7 +185,8 @@
                asp-controller="Books"
                asp-action="Book"
                asp-route-bookCaption="@Model.BooksAndArticles.CaptionOfText.Replace(' ', '-')"
-               asp-route-pageNumber=0>
+               asp-route-pageNumber=0
+               class="rounded-3 p-0 p-md-1">
 
                 <vc:view-image image-id="@Model.ImageFileModel!.ImageFileModelId"
                                css-class="card-img-top shadw rounded-3"

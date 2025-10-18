@@ -57,7 +57,7 @@ public class AudioInfoModel
 
     // номер страницы аудиокниги
     [Display(Name = "Номер по порядку :")]
-    [Range(0, 300)]
+    [Range(1, 300)]
     public int? SequenceNumber { get; set; }
 
     #endregion
@@ -80,40 +80,21 @@ public class AudioInfoModel
 
     #endregion
 
-    #region AutoFill
+    #region Автоматически вычисляемые свойства аудиофайла
 
     [Column(TypeName = "bigint")]
-    [Required(ErrorMessage = "Введите продолжительность аудиофайла")]
     public TimeSpan AudioFileDuration { get; set; }
 
-    [Required(ErrorMessage = "Введите битрейт аудиофайла")]
-    [Display(Name = "Битрейт аудиофайла :")]
-    [Range(0, 1000000)]
     public int AudioFileBitRate { get; set; }
 
-    [Required(ErrorMessage = "Введите частоту аудиофайла")]
-    [Display(Name = "Частота аудиофайла :")]
-    [Range(0, 1000000)]
     public int AudioFileFrequency { get; set; }
 
-    [Required(ErrorMessage = "Введите размер аудиофайла")]
-    [Display(Name = "Размер аудиофайла :")]
-    [Range(0, 10000000000)]
     public int AudioFileSize { get; set; }
 
-    [Required(ErrorMessage = "Добавьте MIME Type аудиофайла")]
-    [DataType(DataType.Text)]
-    [Display(Name = "MIME Type аудиофайла :")]
     public string AudioFileMimeType { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Добавьте расширение аудиофайла")]
-    [DataType(DataType.Text)]
-    [Display(Name = "Расширение аудиофайла :")]
     public string AudioFileType { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Добавьте имя аудиофайла")]
-    [DataType(DataType.Text)]
-    [Display(Name = "Имя аудиофайла :")]
     public string AudioFileName { get; set; } = string.Empty;
 
     #endregion
@@ -123,6 +104,11 @@ public class AudioInfoModel
     [DataType(DataType.Url)]
     [Display(Name = "Ссылка на аудиофайл: ")]
     public Uri? InternetRefToAudioFile { get; set; }
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Ссылка на аудиофайл: ")]
+    public Uri? PodsterFmRefToAudioFile { get; set; }
+
 
     #endregion
 

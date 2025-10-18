@@ -24,13 +24,6 @@
                 <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
             }
 
-            @* скрытые поля формы *@
-            <div>
-
-                <input asp-for="AudioInfoModelId" type="hidden" />
-
-            </div>
-
             @* данные по группам*@
             <div class="accordion" id="accordionAddAudioFile">
 
@@ -530,7 +523,7 @@
                                         class="col-12 col-sm-7 col-lg-6"
                                         aria-describedby="PageForAudioFileInputHelpBlock">
 
-                                    <option selected>test</option>
+                                    <option selected value="@null">no-page</option>
 
                                 </select>
 
