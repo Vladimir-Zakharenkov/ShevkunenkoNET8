@@ -96,7 +96,7 @@ public class TextInfoController(
 
         #region Список книг и статей
 
-        ViewData["BooksAndArticles"] = new SelectList(bookContext.BooksAndArticles.OrderBy(book => book.CaptionOfText), "BooksAndArticlesModelId", "CaptionOfText");
+        ViewData["BooksAndArticles"] = new SelectList(bookContext.BooksAndArticles.Where(book => book.TypeOfText == "book").OrderBy(book => book.CaptionOfText), "BooksAndArticlesModelId", "CaptionOfText");
 
         #endregion
 
