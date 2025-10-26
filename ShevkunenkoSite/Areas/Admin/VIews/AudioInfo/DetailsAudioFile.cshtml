@@ -1,120 +1,546 @@
-﻿@model ShevkunenkoSite.Models.DataModels.AudioInfoModel
+﻿@model AudioInfoModel
 
-@{
-    ViewData["Title"] = "Details";
-}
+<h1 class="fs-3 text_shadow">Информация об аудиофайле</h1>
 
-<h1>Details</h1>
+<hr class="w-25 mx-auto" />
 
+@* Id аудиофайла *@
 <div>
-    <h4>AudioInfoModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AuthorOfText)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AuthorOfText)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaptionOfTextInAudioFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaptionOfTextInAudioFile)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TextInfoModel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TextInfoModel.FolderForText)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileDuration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileDuration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileBitRate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileBitRate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileFrequency)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileFrequency)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileSize)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileSize)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileMimeType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileMimeType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SortOfAudioFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SortOfAudioFile)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InternetRefToAudioFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InternetRefToAudioFile)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioFileUploadDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioFileUploadDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AudioBookModel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AudioBookModel.ActorOfAudioBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SequenceNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SequenceNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PageInfoModel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PageInfoModel.Action)
-        </dd>
-    </dl>
+
+	<p class="fs-5 mb-3">
+		<span class="text-primary">AudioInfoModelId:</span><br />
+		<span class="text_shadow">
+			@Model.AudioInfoModelId
+		</span>
+		<br />
+		<span class="fs-6 form-text text-success">
+			идентификатор в базе данных (GUID)
+		</span>
+	</p>
+
+	<hr class="liniya" />
+
 </div>
+
+<div class="card col col-lg-10 col-xl-9 col-xxl-8 mx-auto p-2">
+
+	<div class="card-body">
+
+		@* Кнопки «список», «изменить», «удалить» *@
+		<div class="card-footer mb-2">
+
+			@* Список аудиофайлов сайта *@
+			<a class="btn btn-outline-primary minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="Index"
+			   title="список аудиофайлов">
+
+				Список
+
+			</a>
+
+			@* Изменить сведения об аудиофайле *@
+			<a class="btn btn-outline-success minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="EditAudioFile"
+			   asp-route-audioFileId="@Model.AudioInfoModelId"
+			   title="изменить данные">
+
+				Изменить
+
+			</a>
+
+			@* Удалить аудиофайл *@
+			<a class="btn btn-outline-danger minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="DeleteAudioFile"
+			   asp-route-audioFileId="@Model.AudioInfoModelId"
+			   title="удалить аудиофайл">
+
+				Удалить
+
+			</a>
+
+		</div>
+
+		@* Название *@
+		<div class="border border-1 mb-2">
+
+			<label asp-for="CaptionOfTextInAudioFile" class="col-form-label text-primary fs-5"></label>
+
+			<p class="fs-4 text-center text_shadow">@Model.CaptionOfTextInAudioFile</p>
+
+			<div class="form-text">
+
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfTextInAudioFile» - </span>
+				<span class="fs-6 text-success">название текста аудиофайла</span>
+
+			</div>
+
+		</div>
+
+		@* Файл - Папка файла*@
+		<div class=" mb-3">
+
+			<label asp-for="FolderForAudioFile" class="col-form-label text-primary fs-5"></label>
+
+			<p class="fs-5 text-center text_shadow">@Model.FolderForAudioFile</p>
+
+			<div class="form-text">
+
+				<span class="fs-6 text-success">папка файла на сервере</span>
+
+			</div>
+
+			<hr class="w-50 mx-auto" />
+
+			<label asp-for="AudioFileName" class="col-form-label text-primary fs-5"></label>
+
+			<p class="fs-5 text-center text_shadow">@Model.AudioFileName</p>
+
+			<div class="form-text">
+
+				<span class="fs-6 text-success">имя файла</span>
+
+			</div>
+
+		</div>
+
+		@* Описание *@
+		<div class=" mb-3">
+
+			<label asp-for="AudioFileDescription" class="col-form-label text-primary fs-5"></label>
+
+			<textarea asp-for="AudioFileDescription"
+					  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
+					  rows="5">
+            </textarea>
+
+			<div class="form-text">
+
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «AudioFileDescription» - </span>
+				<span class="fs-6 text-success">описание аудиофайла</span>
+
+			</div>
+
+		</div>
+
+		@* Автор текста *@
+		<div class=" mb-3">
+
+			@if (string.IsNullOrEmpty(Model.AuthorOfText))
+			{
+				<p class="text_shadow fs-4 mb-3">автор текста не задан</p>
+			}
+			else
+			{
+				<label asp-for="AuthorOfText" class="col-form-label text-primary fs-5"></label>
+
+				<p class="fs-4 text-center text_shadow">@Model.AuthorOfText</p>
+
+				<div class="form-text">
+
+					<span class="d-none d-sm-inline-block fs-6 text-success">тег «AuthorOfText» - </span>
+					<span class="fs-6 text-success">автор текста</span>
+
+				</div>
+			}
+
+		</div>
+
+		@* Текст аудиофайла *@
+		<div class=" mb-3">
+
+			<div id="accordionTextForAudioFile" class="accordion">
+
+				<div class="accordion-item mb-3 shadw">
+
+					@* Заголовок группы «текст аудиофайла» *@
+					<h2 id="headingTextForAudioFile" class="accordion-header shadw">
+						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#TextForAudioFile" aria-expanded="true" aria-controls="TextForAudioFile">
+							<span class="form-label fs-5">Текст аудиофайла :</span>
+						</button>
+					</h2>
+
+					<div id="TextForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingTextForAudioFile" data-bs-parent="#accordionTextForAudioFile">
+
+						@if (Model.TextInfoModel != null)
+						{
+							@* Идентификатор в базе данных *@
+							<h2 class="lh-1 mt-2">
+								<span class="fs-5 text-primary">
+									TextInfoModelId :<br />
+								</span>
+								<span class="fs-5 text_shadow">
+									@Model.TextInfoModelId<br />
+								</span>
+								<span class="fs-6 form-text text-success px-2">
+									идентификатор (GUID)
+								</span>
+							</h2>
+
+							@* Информация о связанной книге статье *@
+							<div class="@(Model.TextInfoModel.BooksAndArticlesModelId != null ? "d-block" : "d-none")">
+
+								<hr class="w-50 mx-auto" />
+
+								<p class="fs-5 text-center">
+									<span class="text-primary">Страница </span>
+									<span class="text_shadow">«@Model.TextInfoModel.SequenceNumber»</span>
+									<br class="d-xl-none" />
+									<span class="text-primary"> @(Model.TextInfoModel.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+									<span class="text_shadow">«@Model.TextInfoModel.BooksAndArticlesModel?.CaptionOfText»</span>
+								</p>
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Информация о файлах TXT *@
+							<div class="col-12 col-xxl-10 mx-auto">
+
+								@* Описание текста *@
+								<div>
+
+									<label asp-for="TextInfoModel.TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+									<textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
+											  asp-for="TextInfoModel.TextDescription"
+											  readonly
+											  rows="4"
+											  aria-describedby="TextDescriptionInputHelpBlock">
+																		</textarea>
+
+									<div id="TextDescriptionInputHelpBlock" class="form-text">
+										<span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
+										<span class="fs-6 text-success">описание текста</span>
+									</div>
+
+									<hr class="w-50 mx-auto" />
+
+								</div>
+
+								@* Каталог текста *@
+								<div>
+
+									<label asp-for="TextInfoModel.FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
+									<br class="d-md-none" />
+									<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.TextInfoModel.FolderForText</span>
+
+									<hr class="w-50 mx-auto" />
+
+								</div>
+
+								@* Файл TXT *@
+								<div>
+
+									<label asp-for="TextInfoModel.TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+									<br class="d-md-none" />
+									<span class="fs-5 text_shadow">@Model.TextInfoModel.TxtFileName</span>
+									<p class="fs-5 text-primary mb-2">(@Model.TextInfoModel.TxtFileSize байт)</p>
+
+									<textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
+											  asp-for="ClearText"
+											  readonly
+											  rows="10"
+											  aria-describedby="ClearTextInputHelpBlock">
+																			 </textarea>
+
+									<div id="ClearTextInputHelpBlock" class="form-text">
+										<span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
+										<span class="fs-6 text-success">текст аудиофайла</span>
+									</div>
+
+								</div>
+
+							</div>
+						}
+						else
+						{
+							<p class="text_shadow fs-4 mt-3">текст для аудиофайла не задан</p>
+						}
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		@* Аудиокнига - Номер файла по порядку *@
+		<div>
+
+			<label asp-for="SequenceNumber" class="col-form-label text-primary fs-5"></label>
+
+			<span class="fs-4 text-center text_shadow">@Model.SequenceNumber</span>
+
+			<div class="form-text">
+
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «SequenceNumber» - </span>
+				<span class="fs-6 text-success">номер по порядку</span>
+				<br />
+				<span class="fs-6 text-success">(индекс сортировки)</span>
+
+			</div>
+
+			<div class="accordion" id="accordionAudioBook">
+
+				<div class="accordion-item my-3 shadw">
+
+					@* Заголовок группы «аудиокнига» *@
+					<h2 id="headingAudioBook" class="accordion-header shadw">
+						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#AudioBook" aria-expanded="true" aria-controls="AudioBook">
+							<span class="form-label fs-5">Аудиокнига :</span>
+						</button>
+					</h2>
+
+					<div id="AudioBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingAudioBook" data-bs-parent="#accordionAudioBook">
+
+						@if (Model.AudioBookModel != null)
+						{
+							@* Название *@
+							<div class="border border-1 my-2">
+
+								<label asp-for="@Model.AudioBookModel.CaptionOfAudioBook" class="col-form-label text-primary fs-5"></label>
+
+								<p class="fs-4 text-center text_shadow">@Model.AudioBookModel.CaptionOfAudioBook</p>
+
+								<div class="form-text">
+
+									<span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfAudioBook» - </span>
+									<span class="fs-6 text-success">название аудиокниги</span>
+
+								</div>
+
+							</div>
+
+							@* Описание *@
+							<div class=" mb-3">
+
+								<label asp-for="@Model.AudioBookModel.AudioBookDescription" class="col-form-label text-primary fs-5"></label>
+
+								<textarea asp-for="@Model.AudioBookModel.AudioBookDescription"
+										  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
+										  rows="5">
+																				</textarea>
+
+								<div class="form-text">
+
+									<span class="d-none d-sm-inline-block fs-6 text-success">тег «AudioBookDescription» - </span>
+									<span class="fs-6 text-success">описание аудиокниги</span>
+
+								</div>
+
+							</div>
+
+							@* Исполнитель *@
+							<div class="border border-1 mb-2">
+
+								<label asp-for="@Model.AudioBookModel.ActorOfAudioBook" class="col-form-label text-primary fs-5"></label>
+
+								<p class="fs-4 text-center text_shadow">@Model.AudioBookModel.ActorOfAudioBook</p>
+
+								<div class="form-text">
+
+									<span class="d-none d-sm-inline-block fs-6 text-success">тег «ActorOfAudioBook» - </span>
+									<span class="fs-6 text-success">исполнитель аудиокниги</span>
+
+								</div>
+
+							</div>
+
+							@* Количество файлов *@
+							<div>
+
+								<label asp-for="@Model.AudioBookModel.NumberOfFiles" class="col-form-label text-primary fs-5"></label>
+
+								<span class="fs-4 text-center text_shadow">@Model.AudioBookModel.NumberOfFiles</span>
+
+								<div class="form-text">
+									<span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfFiles» - </span>
+									<span class="fs-6 text-success">количество файлов</span>
+								</div>
+
+							</div>
+
+							@* Текст аудиокниги на сайте *@
+							<div>
+
+								<hr class="liniya" />
+
+								<p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
+
+								@if (Model.AudioBookModel.BookForAudioBook != null)
+								{
+									<a asp-area="Admin"
+									   asp-controller="BooksAndArticles"
+									   asp-action="DetailsBook"
+									   asp-route-bookId="@Model.AudioBookModel.BookForAudioBook.BooksAndArticlesModelId"
+									   class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
+									   title="информация о книге"
+									   onclick="this.target='_blank'">
+
+										<vc:view-image image-id="@Model.AudioBookModel.BookForAudioBook.PageInfoModel?.ImageFileModelId"
+													   css-class="w-100"
+													   icon-type="webicon300" />
+
+									</a>
+
+									<div class="form-text">
+
+										<span class="fs-6 text-success">тег «BookForAudioBook»</span>
+
+									</div>
+
+									<p class="col-form-label text-primary fs-5">GUID книги :</p>
+									<p class="text_shadow fs-6 mb-3">@Model.AudioBookModel.BookForAudioBook.BooksAndArticlesModelId</p>
+								}
+								else
+								{
+									<p class="text_shadow fs-4 mb-3">книга не выбрана</p>
+								}
+
+							</div>
+						}
+						else
+						{
+							<p class="text_shadow fs-4 mt-2">аудиокнига не выбрана</p>
+						}
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		@* Страница аудиофайла *@
+		<div id="accordionPageForAudioFIle" class="accordion">
+
+			<div class="accordion-item my-3 shadw">
+
+				@* Заголовок группы «страница аудиофайла» *@
+				<h2 id="headingPageForAudioFIle" class="accordion-header shadw">
+					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageForAudioFIle" aria-expanded="true" aria-controls="PageForAudioFIle">
+						<span class="form-label fs-5">Страница аудиофайла :</span>
+					</button>
+				</h2>
+
+				<div id="PageForAudioFIle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForAudioFIle" data-bs-parent="#accordionPageForAudioFIle">
+
+					@if (Model.PageInfoModel != null)
+					{
+					}
+					else
+					{
+						<p class="text_shadow fs-4 mt-2">страница аудиофайла не задана</p>
+					}
+
+				</div>
+
+			</div>
+
+		</div>
+
+		@* Кнопки «список», «изменить», «удалить» *@
+		<div class="card-footer mb-2">
+
+			@* Список аудиофайлов сайта *@
+			<a class="btn btn-outline-primary minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="Index"
+			   title="список аудиофайлов">
+
+				Список
+
+			</a>
+
+			@* Изменить сведения об аудиофайле *@
+			<a class="btn btn-outline-success minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="EditAudioFile"
+			   asp-route-audioFileId="@Model.AudioInfoModelId"
+			   title="изменить данные">
+
+				Изменить
+
+			</a>
+
+			@* Удалить аудиофайл *@
+			<a class="btn btn-outline-danger minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioInfo"
+			   asp-action="DeleteAudioFile"
+			   asp-route-audioFileId="@Model.AudioInfoModelId"
+			   title="удалить аудиофайл">
+
+				Удалить
+
+			</a>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.AudioInfoModelId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileDuration)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileDuration)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileBitRate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileBitRate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileFrequency)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileFrequency)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileSize)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileSize)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileMimeType)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileMimeType)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileType)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileType)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.InternetRefToAudioFile)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.InternetRefToAudioFile)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AudioFileUploadDate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AudioFileUploadDate)
+		</dd>
+	</dl>
 </div>

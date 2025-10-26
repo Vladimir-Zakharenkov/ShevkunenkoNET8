@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -10,9 +11,14 @@ public class AudioBookController(
 {
     #region Список аудиокниг
 
-    public IActionResult Index(string? searchString, int pageNumber = 1)
+    public async Task<IActionResult> Index(string? searchString, int pageNumber = 1)
     {
-        var allAudioBooks = audioBookContext.AudioBooks.AudioBookSearch(searchString);
+        var allAudioBooks = await audioBookContext.AudioBooks.ToListAsync();
+
+        if (!searchString.IsNullOrEmpty())
+        {
+            allAudioBooks = [.. allAudioBooks.AudioBookSearch(searchString).OrderBy(audioBook => audioBook.CaptionOfAudioBook)];
+        }
 
         return View(new ItemsListViewModel
         {

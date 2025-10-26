@@ -11,7 +11,7 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Автор книги
+    #region Автор текста
 
     [Required(ErrorMessage = "Введите автора текста", AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -95,6 +95,7 @@ public class AudioInfoModel
 
     public string AudioFileType { get; set; } = string.Empty;
 
+    [Display(Name = "Имя файла :")]
     public string AudioFileName { get; set; } = string.Empty;
 
     #endregion
@@ -108,7 +109,6 @@ public class AudioInfoModel
     [DataType(DataType.Url)]
     [Display(Name = "Ссылка на аудиофайл: ")]
     public Uri? PodsterFmRefToAudioFile { get; set; }
-
 
     #endregion
 
@@ -127,6 +127,13 @@ public class AudioInfoModel
     [Display(Name = "Страница аудиофайла :")]
     public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
+
+    #endregion
+
+    #region Текст аудиофайла (NotMapped)
+
+    [NotMapped]
+    public string? ClearText { get; set; }
 
     #endregion
 }

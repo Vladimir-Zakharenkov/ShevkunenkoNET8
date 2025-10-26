@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using NAudio.Wave;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers
@@ -9,18 +10,33 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         IAudioInfoRepository audioFileContext,
         IAudioBookRepository audioBookContext,
         IPageInfoRepository pagesOfSiteContext,
-        ITextInfoRepository textsOfSiteContext) : Controller
+        ITextInfoRepository textsOfSiteContext,
+        IWebHostEnvironment hostEnvironment) : Controller
     {
-        #region Список аудиофайлов
-        public async Task<IActionResult> Index()
-        {
-            var audioFiles = audioFileContext
-                .AudioFiles
-                .Include(a => a.AudioBookModel)
-                .Include(a => a.PageInfoModel)
-                .Include(a => a.TextInfoModel);
+        private readonly string rootPath = hostEnvironment.WebRootPath;
 
-            return View(await audioFiles.ToListAsync());
+        #region Список аудиофайлов
+        public async Task<IActionResult> Index(string? searchString, int pageNumber = 1)
+        {
+            var allAudioFiles = await audioFileContext.AudioFiles.ToListAsync();
+
+            if (!searchString.IsNullOrEmpty())
+            {
+                allAudioFiles = [.. allAudioFiles.AudioFileSearch(searchString).OrderBy(audioBook => audioBook.CaptionOfTextInAudioFile)];
+            }
+
+            return View(new ItemsListViewModel
+            {
+                AllAudioFiles = [.. allAudioFiles
+                     .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                     .Take(DataConfig.NumberOfItemsPerPage)],
+
+                CurrentPage = pageNumber,
+                ItemsPerPage = DataConfig.NumberOfItemsPerPage,
+                TotalItems = allAudioFiles.Count(),
+
+                SearchString = searchString ?? string.Empty
+            });
         }
 
         #endregion
@@ -29,22 +45,34 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
         public async Task<IActionResult> DetailsAudioFile(Guid? audioFileId)
         {
-            if (audioFileId == null)
+            if (audioFileId.HasValue &
+                await audioFileContext.AudioFiles
+                    .Where(audioFile => audioFile.AudioInfoModelId == audioFileId)
+                    .AnyAsync())
             {
-                return NotFound();
-            }
+                var audioInfoModel = await audioFileContext.AudioFiles
+                    .Include(a => a.AudioBookModel)
+                        .ThenInclude(b => b!.BookForAudioBook)
+                            .ThenInclude(p => p!.PageInfoModel)
+                                .ThenInclude(i => i!.ImageFileModel)
+                    .Include(a => a.PageInfoModel)
+                    .Include(a => a.TextInfoModel)
+                        .ThenInclude(b => b!.BooksAndArticlesModel)
+                    .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);
 
-            var audioInfoModel = await audioFileContext.AudioFiles
-                .Include(a => a.AudioBookModel)
-                .Include(a => a.PageInfoModel)
-                .Include(a => a.TextInfoModel)
-                .FirstOrDefaultAsync(m => m.AudioInfoModelId == audioFileId);
-            if (audioInfoModel == null)
+                if (audioInfoModel.TextInfoModel != null)
+                {
+                    using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + audioInfoModel.TextInfoModel.FolderForText + audioInfoModel.TextInfoModel.TxtFileName);
+
+                    audioInfoModel.ClearText = clearText.ReadToEnd();
+                }
+
+                return View(audioInfoModel);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
-
-            return View(audioInfoModel);
         }
 
         #endregion

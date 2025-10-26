@@ -10,7 +10,8 @@ public static class AudioBookModelExtension
             {
                 if (foundAudioBook.CaptionOfAudioBook.Contains((audioBookSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)
                     || foundAudioBook.AudioBookDescription.Contains((audioBookSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)
-                    || foundAudioBook.ActorOfAudioBook.Contains((audioBookSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase))
+                    || foundAudioBook.ActorOfAudioBook.Contains((audioBookSearchString ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase)
+                    )
                 {
                     yield return foundAudioBook;
                 }
