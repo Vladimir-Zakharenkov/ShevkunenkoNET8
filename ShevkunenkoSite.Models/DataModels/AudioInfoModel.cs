@@ -83,16 +83,22 @@ public class AudioInfoModel
     #region Автоматически вычисляемые свойства аудиофайла
 
     [Column(TypeName = "bigint")]
+    [Display(Name = "Продолжительность :")]
     public TimeSpan AudioFileDuration { get; set; }
 
+    [Display(Name = "Битрейт :")]
     public int AudioFileBitRate { get; set; }
 
+    [Display(Name = "Частота дискредитации :")]
     public int AudioFileFrequency { get; set; }
 
+    [Display(Name = "Размер :")]
     public int AudioFileSize { get; set; }
 
+    [Display(Name = "Тип MIME :")]
     public string AudioFileMimeType { get; set; } = string.Empty;
 
+    [Display(Name = "Тип файла :")]
     public string AudioFileType { get; set; } = string.Empty;
 
     [Display(Name = "Имя файла :")]
@@ -103,12 +109,16 @@ public class AudioInfoModel
     #region Ссылки на аудиофайл в интернете
 
     [DataType(DataType.Url)]
-    [Display(Name = "Ссылка на аудиофайл: ")]
+    [Display(Name = "Сайт sergeyshef.ru : ")]
     public Uri? InternetRefToAudioFile { get; set; }
 
     [DataType(DataType.Url)]
-    [Display(Name = "Ссылка на аудиофайл: ")]
+    [Display(Name = "Сайт podster.fm : ")]
     public Uri? PodsterFmRefToAudioFile { get; set; }
+
+    [DataType(DataType.Url)]
+    [Display(Name = "Сайт disk.yandex.ru : ")]
+    public Uri? YandexDiskRefToAudioFile { get; set; }
 
     #endregion
 
@@ -116,7 +126,7 @@ public class AudioInfoModel
 
     [Required(ErrorMessage = "Введите дату загрузки на сервер")]
     [DataType(DataType.Date)]
-    [Display(Name = "Дата публикации на сайте:")]
+    [Display(Name = "Дата публикации :")]
     public DateTime AudioFileUploadDate { get; set; } = DateTime.Today;
 
     #endregion

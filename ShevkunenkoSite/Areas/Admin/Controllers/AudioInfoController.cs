@@ -107,6 +107,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     "TextInfoModelId" +
                     ",AudioFileDescription," +
                     "InternetRefToAudioFile," +
+                    "PodsterFmRefToAudioFile," +
+                    "YandexDiskRefToAudioFile," +
                     "AudioFileUploadDate," +
                     "AudioBookModelId," +
                     "SequenceNumber," +
@@ -150,6 +152,14 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 _ = audioFileForAdding.SequenceNumber;
 
                 audioFileForAdding.SortOfAudioFile = audioFileForAdding.SequenceNumber ?? 0;
+
+                #endregion
+
+                #region Ссылки на файл в интернете
+
+                _ = audioFileForAdding.InternetRefToAudioFile;
+                _ = audioFileForAdding.PodsterFmRefToAudioFile;
+                _ = audioFileForAdding.YandexDiskRefToAudioFile;
 
                 #endregion
 
