@@ -1,4 +1,4 @@
-﻿@model AudioInfoViewModel
+﻿@model AudioInfoModel
 
 @{
     string cssForLabel = "col-form-label text-primary fs-5 me-2";
@@ -371,10 +371,10 @@
 
                 </div>
 
-                @* ссылка на аудиофайл *@
+                @* ссылки на аудиофайл *@
                 <div class="accordion-item mb-3 mt-2 shadw">
 
-                    @* заголовок группы «Ссылка на аудиофайл» *@
+                    @* заголовок группы «Ссылки на аудиофайл» *@
                     <h2 id="headingInternetRefToAudioFile" class="accordion-header">
 
                         <button class="accordion-button collapsed py-0 stranicy"
@@ -397,7 +397,7 @@
 
                         <div class="accordion-body accordion-body-nointend text-center">
 
-                            @* Ссылка на аудиофайл*@
+                            @* Ссылка на сайт sergeyshef.ru*@
                             <div class="form-group mb-2">
 
                                 <label asp-for="InternetRefToAudioFile" class="@cssForLabel"></label>
@@ -408,13 +408,57 @@
 
                                 <div id="InternetRefToAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
 
-                                    <span class="fs-6 text-success">ссылка в интернете</span>
+                                    <span class="fs-6 text-success">ссылка на sergeyshef.ru</span>
 
                                 </div>
 
                                 @if (Context.Request.Method == "POST")
                                 {
                                     <span asp-validation-for="InternetRefToAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Ссылка на сайт podster.fm*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="PodsterFmRefToAudioFile" class="@cssForLabel"></label>
+
+                                <input asp-for="PodsterFmRefToAudioFile"
+                                       class="align-text-bottom col-12 col-md-11"
+                                       aria-describedby="PodsterFmRefToAudioFileInputHelpBlock" />
+
+                                <div id="PodsterFmRefToAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">ссылка на poster.fm</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="PodsterFmRefToAudioFile" class="text-danger"></span>
+                                }
+
+                            </div>
+
+                            @* Ссылка на сайт disk.yandex.ru*@
+                            <div class="form-group mb-2">
+
+                                <label asp-for="YandexDiskRefToAudioFile" class="@cssForLabel"></label>
+
+                                <input asp-for="YandexDiskRefToAudioFile"
+                                       class="align-text-bottom col-12 col-md-11"
+                                       aria-describedby="YandexDiskRefToAudioFileInputHelpBlock" />
+
+                                <div id="YandexDiskRefToAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+                                    <span class="fs-6 text-success">ссылка на disk.yandex.ru</span>
+
+                                </div>
+
+                                @if (Context.Request.Method == "POST")
+                                {
+                                    <span asp-validation-for="YandexDiskRefToAudioFile" class="text-danger"></span>
                                 }
 
                             </div>

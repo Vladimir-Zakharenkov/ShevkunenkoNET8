@@ -146,4 +146,14 @@ public class AudioInfoModel
     public string? ClearText { get; set; }
 
     #endregion
+
+    #region Выбрать аудиофайл (NotMapped)
+
+    [NotMapped]
+    [Required(ErrorMessage = "Выберите аудиофайл")]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать аудиофайл:")]
+    public IFormFile? ChooseAudioFile { get; set; }
+
+    #endregion
 }
