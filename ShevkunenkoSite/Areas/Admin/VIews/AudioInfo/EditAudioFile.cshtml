@@ -4,7 +4,7 @@
 	string cssForLabel = "col-form-label text-primary fs-5 me-2";
 }
 
-<h1 class="fs-3 text_shadow">Добавить аудиофайл</h1>
+<h1 class="fs-3 text_shadow">Изменить аудиофайл</h1>
 
 <hr class="liniya" />
 
@@ -14,9 +14,11 @@
 
 		<form asp-area="Admin"
 			  asp-controller="AudioInfo"
-			  asp-action="AddAudioFile"
+			  asp-action="EditAudioFile"
 			  method="post"
 			  enctype="multipart/form-data">
+
+			<input asp-for="AudioInfoModelId" type="hidden" />
 
 			@* Показ всех ошибок ввода данных *@
 			@if (Context.Request.Method == "POST")
@@ -25,7 +27,7 @@
 			}
 
 			@* данные по группам*@
-			<div class="accordion" id="accordionAddAudioFile">
+			<div id="accordionEditAudioFile" class="accordion">
 
 				@* аудиофайл *@
 				<div class="accordion-item mb-3 mt-2 shadw">
@@ -50,7 +52,7 @@
 					<div id="InputAudioFile"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingInputAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -112,7 +114,7 @@
 					<div id="FolderForAudioFile"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingFolderForAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -168,7 +170,7 @@
 					<div id="AuthorCaptionDescription"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingAuthorCaptionDescription"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -312,7 +314,7 @@
 					<div id="AudioBookForAudioFile"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingAudioBookForAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -393,7 +395,7 @@
 					<div id="InternetRefToAudioFile"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingInternetRefToAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -491,7 +493,7 @@
 					<div id="PlayerForAudioFile"
 						 class="accordion-collapse collapse pb-2 px-2"
 						 aria-labelledby="headingPlayerForAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -544,7 +546,7 @@
 					<div id="AudioFileUploadDate"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingAudioFileUploadDate"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -606,7 +608,7 @@
 					<div id="PageForAudioFile"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingPageForAudioFile"
-						 data-bs-parent="#accordionAddAudioFile">
+						 data-bs-parent="#accordionEditAudioFile">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 

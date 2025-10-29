@@ -122,6 +122,15 @@ public class AudioInfoModel
 
     #endregion
 
+    #region Код плейера podster.fm
+
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Код плейера :")]
+    public string? PlayerPodsterFm {  get; set; }
+
+    #endregion
+
     #region Дата загрузки
 
     [Required(ErrorMessage = "Введите дату загрузки на сервер")]
@@ -150,7 +159,6 @@ public class AudioInfoModel
     #region Выбрать аудиофайл (NotMapped)
 
     [NotMapped]
-    [Required(ErrorMessage = "Выберите аудиофайл")]
     [DataType(DataType.Upload)]
     [Display(Name = "Выбрать аудиофайл:")]
     public IFormFile? ChooseAudioFile { get; set; }

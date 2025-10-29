@@ -83,6 +83,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddAudioFile()
         {
+            AudioInfoModel newAudioFIle = new();
+
             // Список аудиокниг
             ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
 
@@ -95,7 +97,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
             // Список папок для аудиофайлов
             ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
 
-            return View();
+            return View(newAudioFIle);
         }
 
         [HttpPost]
@@ -110,6 +112,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     "InternetRefToAudioFile," +
                     "PodsterFmRefToAudioFile," +
                     "YandexDiskRefToAudioFile," +
+                    "PlayerPodsterFm," +
                     "AudioFileUploadDate," +
                     "AudioBookModelId," +
                     "SequenceNumber," +
@@ -118,6 +121,25 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (audioFileForAdding.ChooseAudioFile == null)
+                {
+                    ModelState.AddModelError("audioFileForAdding.AudioFileBitRate", "Битрейт аудиофайла равен 0");
+
+                    // Список аудиокниг
+                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                    // Список страниц сайта
+                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                    // Список текстовых файлов
+                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                    // Список папок для аудиофайлов
+                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                    return View(audioFileForAdding);
+                }
+
                 #region Автор текста
 
                 _ = audioFileForAdding.AuthorOfText.Trim();
@@ -164,11 +186,17 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #endregion
 
+                #region Код плейера
+
+                _ = audioFileForAdding.PlayerPodsterFm;
+
+                #endregion
+
                 #region Автоматическое определение значений
 
                 #region Продолжительность (время воспроизведения)
 
-                string audioFile = string.Empty;
+                //string audioFile = string.Empty;
 
                 //if (audioFileForAdding.ChooseAudioFile != null)
                 //{
@@ -183,14 +211,11 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 //    audioFileForAdding.AudioFileDuration = mp3File.TotalTime;
                 //}
 
-                if (audioFileForAdding.ChooseAudioFile != null)
-                {
-                    audioFile = Path.Combine(audioFileForAdding.FolderForAudioFile, audioFileForAdding.ChooseAudioFile.FileName);
+                string audioFile = Path.Combine(audioFileForAdding.FolderForAudioFile, audioFileForAdding.ChooseAudioFile.FileName);
 
-                    Mp3FileReader mp3File = new(audioFile);
+                Mp3FileReader mp3File = new(audioFile);
 
-                    audioFileForAdding.AudioFileDuration = mp3File.TotalTime;
-                }
+                audioFileForAdding.AudioFileDuration = mp3File.TotalTime;
 
                 #endregion
 
@@ -457,284 +482,301 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAudioFile(
             [Bind( "AudioInfoModelId," +
-            "ChooseAudioFile," +
-            "FolderForAudioFile," +
-            "AuthorOfText," +
-            "CaptionOfTextInAudioFile," +
-            "TextInfoModelId" +
-            ",AudioFileDescription," +
-            "InternetRefToAudioFile," +
-            "PodsterFmRefToAudioFile," +
-            "YandexDiskRefToAudioFile," +
-            "AudioFileUploadDate," +
-            "AudioBookModelId," +
-            "SequenceNumber," +
-            "PageInfoModelId")]
+                    "ChooseAudioFile," +
+                    "FolderForAudioFile," +
+                    "AuthorOfText," +
+                    "CaptionOfTextInAudioFile," +
+                    "TextInfoModelId" +
+                    ",AudioFileDescription," +
+                    "InternetRefToAudioFile," +
+                    "PodsterFmRefToAudioFile," +
+                    "YandexDiskRefToAudioFile," +
+                    "PlayerPodsterFm," +
+                    "AudioFileUploadDate," +
+                    "AudioBookModelId," +
+                    "SequenceNumber," +
+                    "AudioFileDuration," +
+                    "AudioFileBitRate," +
+                    "AudioFileFrequency," +
+                    "AudioFileSize," +
+                    "AudioFileMimeType," +
+                    "AudioFileType," +
+                    "AudioFileName," +
+                    "PageInfoModelId")]
             AudioInfoModel audioFileForEditing)
         {
             if (ModelState.IsValid)
             {
+               AudioInfoModel audioFileForUpdate = await audioFileContext.AudioFiles
+                    .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileForEditing.AudioInfoModelId);
+
                 #region Автор текста
 
-                _ = audioFileForEditing.AuthorOfText.Trim();
+                audioFileForUpdate.AuthorOfText = audioFileForEditing.AuthorOfText.Trim();
 
                 #endregion
 
                 #region Название текста аудиофайла
 
-                _ = audioFileForEditing.CaptionOfTextInAudioFile.Trim();
+                audioFileForUpdate.CaptionOfTextInAudioFile = audioFileForEditing.CaptionOfTextInAudioFile.Trim();
 
                 #endregion
 
                 #region Папка аудиофайла
 
-                _ = audioFileForEditing.FolderForAudioFile.Trim();
+                audioFileForUpdate.FolderForAudioFile = audioFileForEditing.FolderForAudioFile.Trim();
 
                 #endregion
 
                 #region Transcript - GUID файла с текстом
 
-                _ = audioFileForEditing.TextInfoModelId;
+                audioFileForUpdate.TextInfoModelId = audioFileForEditing.TextInfoModelId;
 
                 #endregion
 
                 #region Аудиокнига
 
-                _ = audioFileForEditing.AudioBookModelId;
+                audioFileForUpdate.AudioBookModelId = audioFileForEditing.AudioBookModelId;
 
                 #endregion
 
                 #region Номер по порядку - Значение для сортировки
 
-                _ = audioFileForEditing.SequenceNumber;
+                audioFileForUpdate.SequenceNumber = audioFileForEditing.SequenceNumber;
 
-                audioFileForEditing.SortOfAudioFile = audioFileForEditing.SequenceNumber ?? 0;
+                audioFileForUpdate.SortOfAudioFile = audioFileForUpdate.SequenceNumber ?? 0;
 
                 #endregion
 
                 #region Ссылки на файл в интернете
 
-                _ = audioFileForEditing.InternetRefToAudioFile;
-                _ = audioFileForEditing.PodsterFmRefToAudioFile;
-                _ = audioFileForEditing.YandexDiskRefToAudioFile;
+                audioFileForUpdate.InternetRefToAudioFile = audioFileForEditing.InternetRefToAudioFile;
+                audioFileForUpdate.PodsterFmRefToAudioFile = audioFileForEditing.PodsterFmRefToAudioFile;
+                audioFileForUpdate.YandexDiskRefToAudioFile = audioFileForEditing.YandexDiskRefToAudioFile;
+
+                #endregion
+
+                #region Код плейера
+
+                audioFileForUpdate.PlayerPodsterFm = audioFileForEditing.PlayerPodsterFm;
 
                 #endregion
 
                 #region Автоматическое определение значений
 
-                #region Продолжительность (время воспроизведения)
-
-                string audioFile = string.Empty;
-
-                //if (audioFileForAdding.ChooseAudioFile != null)
-                //{
-                //    var tempFile = Path.GetTempFileName();
-
-                //    using FileStream stream = new(tempFile, FileMode.Open, FileAccess.ReadWrite, FileShare.None, Int16.MaxValue, FileOptions.DeleteOnClose);
-
-                //    await audioFileForEditing.ChooseAudioFile.CopyToAsync(stream);
-
-                //    Mp3FileReader mp3File = new(tempFile);
-
-                //    audioFileForEditing.AudioFileDuration = mp3File.TotalTime;
-                //}
-
                 if (audioFileForEditing.ChooseAudioFile != null)
                 {
-                    audioFile = Path.Combine(audioFileForEditing.FolderForAudioFile, audioFileForEditing.ChooseAudioFile.FileName);
+                    #region Продолжительность (время воспроизведения)
+
+                    //string audioFile = string.Empty;
+
+                    //if (audioFileForAdding.ChooseAudioFile != null)
+                    //{
+                    //    var tempFile = Path.GetTempFileName();
+
+                    //    using FileStream stream = new(tempFile, FileMode.Open, FileAccess.ReadWrite, FileShare.None, Int16.MaxValue, FileOptions.DeleteOnClose);
+
+                    //    await audioFileForEditing.ChooseAudioFile.CopyToAsync(stream);
+
+                    //    Mp3FileReader mp3File = new(tempFile);
+
+                    //    audioFileForEditing.AudioFileDuration = mp3File.TotalTime;
+                    //}
+
+                    string audioFile = Path.Combine(audioFileForEditing.FolderForAudioFile, audioFileForEditing.ChooseAudioFile.FileName);
 
                     Mp3FileReader mp3File = new(audioFile);
 
-                    audioFileForEditing.AudioFileDuration = mp3File.TotalTime;
-                }
+                    audioFileForUpdate.AudioFileDuration = mp3File.TotalTime;
 
-                #endregion
+                    #endregion
 
-                IReadOnlyList<MetadataExtractor.Directory> audioDirectories = ImageMetadataReader.ReadMetadata(audioFile);
+                    IReadOnlyList<MetadataExtractor.Directory> audioDirectories = ImageMetadataReader.ReadMetadata(audioFile);
 
-                foreach (var audioDirectory in audioDirectories)
-                {
-                    foreach (var tag in audioDirectory.Tags)
+                    foreach (var audioDirectory in audioDirectories)
                     {
-                        #region Битрейт аудиофайла
-
-                        if (audioDirectory.Name == "MP3" && tag.Name == "Bitrate")
+                        foreach (var tag in audioDirectory.Tags)
                         {
-                            if (string.IsNullOrEmpty(tag.Description))
+                            #region Битрейт аудиофайла
+
+                            if (audioDirectory.Name == "MP3" && tag.Name == "Bitrate")
                             {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileBitRate", "Битрейт аудиофайла равен 0");
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileBitRate", "Битрейт аудиофайла равен 0");
 
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
 
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
 
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
 
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
 
-                                return View(audioFileForEditing);
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileBitRate = int.Parse(tag.Description);
+                                }
                             }
-                            else
+
+                            #endregion
+
+                            #region Частота аудиофайла
+
+                            if (audioDirectory.Name == "MP3" && tag.Name == "Frequency")
                             {
-                                audioFileForEditing.AudioFileBitRate = int.Parse(tag.Description);
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileFrequency", "Частота аудиофайла равен 0");
+
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileFrequency = int.Parse(tag.Description);
+                                }
                             }
+
+                            #endregion
+
+                            #region Размер аудиофайла
+
+                            if (audioDirectory.Name == "File" && tag.Name == "File Size")
+                            {
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileFrequency", "Размер аудиофайла равен 0");
+
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileSize = int.Parse(tag.Description[..tag.Description.IndexOf(' ')]);
+                                }
+                            }
+
+                            #endregion
+
+                            #region MIME Type аудиофайла
+
+                            if (audioDirectory.Name == "File Type" && tag.Name == "Detected MIME Type")
+                            {
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileMimeType", "MIME Type не определен");
+
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileMimeType = tag.Description;
+                                }
+                            }
+
+                            #endregion
+
+                            #region Расширение аудиофайла
+
+                            if (audioDirectory.Name == "File Type" && tag.Name == "Expected File Name Extension")
+                            {
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileType", "Расширение файла не определено");
+
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileType = tag.Description;
+                                }
+                            }
+
+                            #endregion
+
+                            #region Имя аудиофайла
+
+                            if (audioDirectory.Name == "File" && tag.Name == "File Name")
+                            {
+                                if (string.IsNullOrEmpty(tag.Description))
+                                {
+                                    ModelState.AddModelError("audioFileForEditing.AudioFileName", "Имя файла не определено");
+
+                                    // Список аудиокниг
+                                    ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
+
+                                    // Список страниц сайта
+                                    ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
+
+                                    // Список текстовых файлов
+                                    ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
+
+                                    // Список папок для аудиофайлов
+                                    ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
+
+                                    return View(audioFileForEditing);
+                                }
+                                else
+                                {
+                                    audioFileForUpdate.AudioFileName = tag.Description;
+                                }
+                            }
+
+                            #endregion
                         }
-
-                        #endregion
-
-                        #region Частота аудиофайла
-
-                        if (audioDirectory.Name == "MP3" && tag.Name == "Frequency")
-                        {
-                            if (string.IsNullOrEmpty(tag.Description))
-                            {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileFrequency", "Частота аудиофайла равен 0");
-
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
-
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
-
-                                return View(audioFileForEditing);
-                            }
-                            else
-                            {
-                                audioFileForEditing.AudioFileFrequency = int.Parse(tag.Description);
-                            }
-                        }
-
-                        #endregion
-
-                        #region Размер аудиофайла
-
-                        if (audioDirectory.Name == "File" && tag.Name == "File Size")
-                        {
-                            if (string.IsNullOrEmpty(tag.Description))
-                            {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileFrequency", "Размер аудиофайла равен 0");
-
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
-
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
-
-                                return View(audioFileForEditing);
-                            }
-                            else
-                            {
-                                audioFileForEditing.AudioFileSize = int.Parse(tag.Description[..tag.Description.IndexOf(' ')]);
-                            }
-                        }
-
-                        #endregion
-
-                        #region MIME Type аудиофайла
-
-                        if (audioDirectory.Name == "File Type" && tag.Name == "Detected MIME Type")
-                        {
-                            if (string.IsNullOrEmpty(tag.Description))
-                            {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileMimeType", "MIME Type не определен");
-
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
-
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
-
-                                return View(audioFileForEditing);
-                            }
-                            else
-                            {
-                                audioFileForEditing.AudioFileMimeType = tag.Description;
-                            }
-                        }
-
-                        #endregion
-
-                        #region Расширение аудиофайла
-
-                        if (audioDirectory.Name == "File Type" && tag.Name == "Expected File Name Extension")
-                        {
-                            if (string.IsNullOrEmpty(tag.Description))
-                            {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileType", "Расширение файла не определено");
-
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
-
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
-
-                                return View(audioFileForEditing);
-                            }
-                            else
-                            {
-                                audioFileForEditing.AudioFileType = tag.Description;
-                            }
-                        }
-
-                        #endregion
-
-                        #region Имя аудиофайла
-
-                        if (audioDirectory.Name == "File" && tag.Name == "File Name")
-                        {
-                            if (string.IsNullOrEmpty(tag.Description))
-                            {
-                                ModelState.AddModelError("audioFileForAdding.AudioFileName", "Имя файла не определено");
-
-                                // Список аудиокниг
-                                ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                                // Список страниц сайта
-                                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
-                                // Список текстовых файлов
-                                ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
-
-                                // Список папок для аудиофайлов
-                                ViewData["AudioFileFolders"] = new SelectList(System.IO.Directory.GetDirectories(DataConfig.AudioFoldersPath, "*", SearchOption.AllDirectories));
-
-                                return View(audioFileForEditing);
-                            }
-                            else
-                            {
-                                audioFileForEditing.AudioFileName = tag.Description;
-                            }
-                        }
-
-                        #endregion
                     }
                 }
 
@@ -748,7 +790,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #region Открытие параметров измененного аудиофайла
 
-                return RedirectToAction(nameof(DetailsAudioFile), new { audioFileId = audioFileForEditing.AudioInfoModelId });
+                return RedirectToAction(nameof(DetailsAudioFile), new { audioFileId = audioFileForUpdate.AudioInfoModelId });
 
                 #endregion
             }
