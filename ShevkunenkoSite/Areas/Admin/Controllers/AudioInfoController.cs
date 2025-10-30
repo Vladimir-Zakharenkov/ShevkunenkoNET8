@@ -22,7 +22,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
             if (!searchString.IsNullOrEmpty())
             {
-                allAudioFiles = [.. allAudioFiles.AudioFileSearch(searchString).OrderBy(audioBook => audioBook.CaptionOfTextInAudioFile)];
+                allAudioFiles = [.. allAudioFiles.AudioFileSearch(searchString).OrderBy(audioBook => audioBook.AudioFileName)];
             }
 
             return View(new ItemsListViewModel
@@ -31,11 +31,17 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                      .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
                      .Take(DataConfig.NumberOfItemsPerPage)],
 
-                CurrentPage = pageNumber,
+                #region Свойства PagingInfoViewModel
+
+                TotalItems = allAudioFiles.Count,
+
                 ItemsPerPage = DataConfig.NumberOfItemsPerPage,
-                TotalItems = allAudioFiles.Count(),
+
+                CurrentPage = pageNumber,
 
                 SearchString = searchString ?? string.Empty
+
+                #endregion
             });
         }
 
@@ -102,13 +108,16 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [DisableRequestSizeLimit]
+        [RequestSizeLimit(5_268_435_456)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
         public async Task<IActionResult> AddAudioFile(
             [Bind("ChooseAudioFile," +
                     "FolderForAudioFile," +
                     "AuthorOfText," +
                     "CaptionOfTextInAudioFile," +
-                    "TextInfoModelId" +
-                    ",AudioFileDescription," +
+                    "TextInfoModelId," +
+                    "AudioFileDescription," +
                     "InternetRefToAudioFile," +
                     "PodsterFmRefToAudioFile," +
                     "YandexDiskRefToAudioFile," +
@@ -480,14 +489,17 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [DisableRequestSizeLimit]
+        [RequestSizeLimit(5_268_435_456)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
         public async Task<IActionResult> EditAudioFile(
             [Bind( "AudioInfoModelId," +
                     "ChooseAudioFile," +
                     "FolderForAudioFile," +
                     "AuthorOfText," +
                     "CaptionOfTextInAudioFile," +
-                    "TextInfoModelId" +
-                    ",AudioFileDescription," +
+                    "TextInfoModelId," +
+                    "AudioFileDescription," +
                     "InternetRefToAudioFile," +
                     "PodsterFmRefToAudioFile," +
                     "YandexDiskRefToAudioFile," +
@@ -507,8 +519,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-               AudioInfoModel audioFileForUpdate = await audioFileContext.AudioFiles
-                    .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileForEditing.AudioInfoModelId);
+                AudioInfoModel audioFileForUpdate = await audioFileContext.AudioFiles
+                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileForEditing.AudioInfoModelId);
 
                 #region Автор текста
 
@@ -519,6 +531,12 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 #region Название текста аудиофайла
 
                 audioFileForUpdate.CaptionOfTextInAudioFile = audioFileForEditing.CaptionOfTextInAudioFile.Trim();
+
+                #endregion
+
+                #region Содержание аудиофайла
+
+                audioFileForUpdate.AudioFileDescription = audioFileForEditing.AudioFileDescription.Trim();
 
                 #endregion
 

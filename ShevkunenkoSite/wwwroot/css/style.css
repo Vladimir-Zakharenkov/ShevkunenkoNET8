@@ -12928,7 +12928,7 @@ li#yandex-search * {
 }
 
 .minwidth40px {
-  min-width: 40px;
+  min-width: 40px !important;
 }
 
 .minwidth50px {
@@ -12937,6 +12937,10 @@ li#yandex-search * {
 
 .minwidth100px {
   min-width: 100px;
+}
+
+.minwidth300px {
+  min-width: 300px;
 }
 
 .maxwidth40px {

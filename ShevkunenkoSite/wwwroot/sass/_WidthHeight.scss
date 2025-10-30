@@ -64,7 +64,7 @@
     min-width: 180px;
 }
 .minwidth40px {
-    min-width: 40px;
+    min-width: 40px !important;
 }
 
 .minwidth50px {
@@ -73,6 +73,10 @@
 
 .minwidth100px {
     min-width: 100px;
+}
+
+.minwidth300px {
+    min-width: 300px;
 }
 
 .maxwidth40px {

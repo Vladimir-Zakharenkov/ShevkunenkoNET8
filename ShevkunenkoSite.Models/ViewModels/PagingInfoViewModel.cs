@@ -20,7 +20,7 @@ public class PagingInfoViewModel
 
     #endregion
 
-    #region Полное количество страниц
+    #region Количество страниц (вычисляемое свойство)
 
     public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
 

@@ -108,9 +108,9 @@
 					<tr class="d-flex table-secondary text-center">
 
 						<th scope="col" class="col-9 col-sm-4 col-lg-3 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Файл</th>
-                        <th scope="col" class="d-none d-sm-table-cell col-sm-6 col-lg-5 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Описание</th>
-                        <th scope="col" class="d-none d-lg-table-cell col-lg-3 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Расположение</th>
-						<th scope="col" class="col-3 col-sm-2 col-lg-1"></th>
+						<th scope="col" class="d-none d-sm-table-cell col-sm-6 col-lg-4 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Описание</th>
+						<th scope="col" class="d-none d-lg-table-cell col-lg-3 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Расположение</th>
+						<th scope="col" class="col-3 col-sm-2 col-lg-2"></th>
 
 					</tr>
 
@@ -118,56 +118,56 @@
 
 				<tbody>
 
-                    @foreach (var audioFIle in Model.AllAudioFiles ?? [])
-                    {
-                        <tr class="d-flex text-start">
+					@foreach (var audioFIle in Model.AllAudioFiles ?? [])
+					{
+						<tr class="d-flex text-start">
 
-                            <td scope="col" class="col-9 col-sm-4 col-lg-3 align-content-center text_shadow">@audioFIle.AudioFileName</td>
+							<td scope="col" class="col-9 col-sm-4 col-lg-3 align-content-center text_shadow">@audioFIle.AudioFileName</td>
 
-                            <td scope="col" class="d-none d-sm-table-cell col-sm-6 col-lg-5 align-content-center text_shadow">@audioFIle.CaptionOfTextInAudioFile</td>
+							<td scope="col" class="d-none d-sm-table-cell col-sm-6 col-lg-4 align-content-center text_shadow">@audioFIle.CaptionOfTextInAudioFile</td>
 
-                            <td scope="col" class="d-none d-lg-table-cell col-lg-3 align-content-center text_shadow">@audioFIle.FolderForAudioFile</td>
+							<td scope="col" class="d-none d-lg-table-cell col-lg-3 align-content-center text_shadow">@audioFIle.FolderForAudioFile</td>
 
-                            @* Кнопки Информация - Изменить - Удалить*@
-                            <td scope="col" class="col-3 col-sm-2 col-lg-1 align-content-center text-center">
+							@* Кнопки Информация - Изменить - Удалить*@
+							<td scope="col" class="col-3 col-sm-2 col-lg-2 align-content-center text-center">
 
-                                <a class="btn btn-outline-primary p-1 m-1 shadw minwidth40px"
-                                   asp-area="Admin"
-                                   asp-controller="AudioInfo"
-                                   asp-action="DetailsAudioFile"
-                                   asp-route-audioFileId="@audioFIle.AudioInfoModelId"
-                                   title="информация об аудиофайле">
+								<a class="btn btn-outline-primary p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="AudioInfo"
+								   asp-action="DetailsAudioFile"
+								   asp-route-audioFileId="@audioFIle.AudioInfoModelId"
+								   title="информация об аудиофайле">
 
-                                    Info
+									Info
 
-                                </a>
+								</a>
 
-                                <a class="btn btn-outline-success p-1 m-1 shadw minwidth40px"
-                                   asp-area="Admin"
-                                   asp-controller="AudioInfo"
-                                   asp-action="EditAudioFile"
-                                   asp-route-audioFileId="@audioFIle.AudioInfoModelId"
-                                   title="изменить аудиофайл">
+								<a class="btn btn-outline-success p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="AudioInfo"
+								   asp-action="EditAudioFile"
+								   asp-route-audioFileId="@audioFIle.AudioInfoModelId"
+								   title="изменить аудиофайл">
 
-                                    Edit
+									Edit
 
-                                </a>
+								</a>
 
-                                <a class="btn btn-outline-danger p-1 m-1 shadw minwidth40px"
-                                   asp-area="Admin"
-                                   asp-controller="AudioBook"
-                                   asp-action="DeleteAudioFile"
-                                   asp-route-audioFileId="@audioFIle.AudioBookModelId"
-                                   title="удалить аудиофайл">
+								<a class="btn btn-outline-danger p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="AudioBook"
+								   asp-action="DeleteAudioFile"
+								   asp-route-audioFileId="@audioFIle.AudioBookModelId"
+								   title="удалить аудиофайл">
 
-                                    Del
+									Del
 
-                                </a>
+								</a>
 
-                            </td>
+							</td>
 
-                        </tr>
-                    }
+						</tr>
+					}
 
 				</tbody>
 
@@ -178,3 +178,9 @@
 	</div>
 
 </div>
+
+@* Разбивка на страницы *@
+@if (Model.TotalItems > DataConfig.NumberOfItemsPerPage)
+{
+	<div pagination="@Model"></div>
+}
