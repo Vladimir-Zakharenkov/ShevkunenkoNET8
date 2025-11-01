@@ -62,14 +62,21 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                             .ThenInclude(p => p!.PageInfoModel)
                                 .ThenInclude(i => i!.ImageFileModel)
                     .Include(a => a.PageInfoModel)
-                    .Include(a => a.TextInfoModel)
-                        .ThenInclude(b => b!.BooksAndArticlesModel)
                     .AsNoTracking()
                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);
 
-                if (audioInfoModel.TextInfoModel != null)
+                if (audioInfoModel.TextInfoModelId != null
+                        && await textsOfSiteContext.Texts
+                            .Where(text => text.TextInfoModelId == audioInfoModel.TextInfoModelId)
+                            .AnyAsync())
                 {
-                    using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + audioInfoModel.TextInfoModel.FolderForText + audioInfoModel.TextInfoModel.TxtFileName);
+                    var transcript = await textsOfSiteContext.Texts
+                        .Include(text => text.BooksAndArticlesModel)
+                        .FirstAsync(text => text.TextInfoModelId == audioInfoModel.TextInfoModelId);
+
+                    audioInfoModel.TextInfoModel = transcript;
+
+                    using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + transcript.FolderForText + transcript.TxtFileName);
 
                     audioInfoModel.ClearText = clearText.ReadToEnd();
                 }

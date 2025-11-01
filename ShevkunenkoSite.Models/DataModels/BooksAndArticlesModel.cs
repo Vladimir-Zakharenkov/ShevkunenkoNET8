@@ -24,7 +24,8 @@ public class BooksAndArticlesModel
         [
             "web",
             "book",
-            "article"
+            "article",
+            "audiobook"
         ];
 
     #endregion

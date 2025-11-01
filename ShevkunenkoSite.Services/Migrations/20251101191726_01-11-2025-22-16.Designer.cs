@@ -12,15 +12,15 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20250712213748_13-07-2025-00-36")]
-    partial class _130720250036
+    [Migration("20251101191726_01-11-2025-22-16")]
+    partial class _011120252216
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,6 +42,135 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasKey("AccessModelId");
 
                     b.ToTable("Access");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioBookModel", b =>
+                {
+                    b.Property<Guid>("AudioBookModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AudioBookId");
+
+                    b.Property<string>("ActorOfAudioBook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AudioBookDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("BookForAudioBookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CaptionOfAudioBook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfFiles")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PageInfoModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AudioBookModelId");
+
+                    b.HasIndex("BookForAudioBookId")
+                        .IsUnique()
+                        .HasFilter("[BookForAudioBookId] IS NOT NULL");
+
+                    b.HasIndex("PageInfoModelId")
+                        .IsUnique()
+                        .HasFilter("[PageInfoModelId] IS NOT NULL");
+
+                    b.ToTable("AudioBookModel");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
+                {
+                    b.Property<Guid>("AudioInfoModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AudioInfoId");
+
+                    b.Property<Guid?>("AudioBookModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AudioFileBitRate")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AudioFileDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("AudioFileDuration")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("AudioFileFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AudioFileMimeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AudioFileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AudioFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AudioFileType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AudioFileUploadDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AuthorOfText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CaptionOfTextInAudioFile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FolderForAudioFile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternetRefToAudioFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PageInfoModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PlayerPodsterFm")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PodsterFmRefToAudioFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SequenceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOfAudioFile")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TextInfoModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("YandexDiskRefToAudioFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AudioInfoModelId");
+
+                    b.HasIndex("AudioBookModelId");
+
+                    b.HasIndex("PageInfoModelId")
+                        .IsUnique()
+                        .HasFilter("[PageInfoModelId] IS NOT NULL");
+
+                    b.ToTable("AudioInfoModel");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BackgroundFileModel", b =>
@@ -847,6 +976,10 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PagePathNickName2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PagePathNickNameWithData")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
@@ -913,6 +1046,12 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TextInfoId");
 
+                    b.Property<Guid?>("AudioFileForTextAudioInfoModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AudioFileForTextId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("BooksAndArticlesModelId")
                         .HasColumnType("uniqueidentifier");
 
@@ -942,6 +1081,8 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TextInfoModelId");
+
+                    b.HasIndex("AudioFileForTextAudioInfoModelId");
 
                     b.HasIndex("BooksAndArticlesModelId");
 
@@ -979,6 +1120,36 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasKey("TopicMovieModelId");
 
                     b.ToTable("TopicMovie");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioBookModel", b =>
+                {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BookForAudioBook")
+                        .WithOne("AudioBook")
+                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "BookForAudioBookId");
+
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
+                        .WithOne("AudioBook")
+                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "PageInfoModelId");
+
+                    b.Navigation("BookForAudioBook");
+
+                    b.Navigation("PageInfoModel");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
+                {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioBookModel", "AudioBookModel")
+                        .WithMany()
+                        .HasForeignKey("AudioBookModelId");
+
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
+                        .WithOne("AudioFile")
+                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "PageInfoModelId");
+
+                    b.Navigation("AudioBookModel");
+
+                    b.Navigation("PageInfoModel");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
@@ -1080,15 +1251,30 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
                 {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioFileForText")
+                        .WithMany()
+                        .HasForeignKey("AudioFileForTextAudioInfoModelId");
+
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BooksAndArticlesModel")
                         .WithMany()
                         .HasForeignKey("BooksAndArticlesModelId");
 
+                    b.Navigation("AudioFileForText");
+
                     b.Navigation("BooksAndArticlesModel");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
+                {
+                    b.Navigation("AudioBook");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
+                    b.Navigation("AudioBook");
+
+                    b.Navigation("AudioFile");
+
                     b.Navigation("BooksAndArticles");
 
                     b.Navigation("MovieFile");

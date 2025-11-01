@@ -8,7 +8,8 @@
 <div>
 
 	<p class="fs-5 mb-3">
-		<span class="text-primary">AudioInfoModelId:</span><br />
+		<span class="text-primary">AudioInfoModelId :</span>
+		<br />
 		<span class="text_shadow">
 			@Model.AudioInfoModelId
 		</span>
@@ -151,9 +152,10 @@
 
 		</div>
 
-		@* Параметры файла *@
-		<div id="accordionFileProperties" class="accordion">
+		@* Аккордион *@
+		<div id="accordionForAudioFile" class="accordion">
 
+			@* Параметры файла *@
 			<div class="accordion-item my-3 shadw">
 
 				@* Заголовок группы «параметры файла» *@
@@ -163,7 +165,7 @@
 					</button>
 				</h2>
 
-				<div id="FileProperties" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingFileProperties" data-bs-parent="#accordionFileProperties">
+				<div id="FileProperties" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingFileProperties" data-bs-parent="#accordionForAudioFile">
 
 					@* Дата загрузки на сайт *@
 					<div>
@@ -293,11 +295,7 @@
 
 			</div>
 
-		</div>
-
-		@* Ссылки на аудиофайл в интернете*@
-		<div id="accordionRefToAudioFile" class="accordion mb-3">
-
+			@* Ссылки на аудиофайл в интернете*@
 			<div class="accordion-item mb-3 shadw">
 
 				@* Заголовок группы «текст аудиофайла» *@
@@ -307,7 +305,7 @@
 					</button>
 				</h2>
 
-				<div id="RefToAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingRefToAudioFile" data-bs-parent="#accordionRefToAudioFile">
+				<div id="RefToAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingRefToAudioFile" data-bs-parent="#accordionForAudioFile">
 
 					@* Ссылка на sergeyshef.ru *@
 					<div>
@@ -401,11 +399,7 @@
 
 			</div>
 
-		</div>
-
-		@* Плейер для аудиофайла*@
-		<div id="accordionPlayerForAudioFile" class="accordion mb-3">
-
+			@* Плейер для аудиофайла*@
 			<div class="accordion-item mb-3 shadw">
 
 				@* Заголовок группы «плейер для аудиофайла» *@
@@ -415,7 +409,7 @@
 					</button>
 				</h2>
 
-				<div id="PlayerForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPlayerForAudioFile" data-bs-parent="#accordionPlayerForAudioFile">
+				<div id="PlayerForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPlayerForAudioFile" data-bs-parent="#accordionForAudioFile">
 
 					@if (string.IsNullOrEmpty(Model.PlayerPodsterFm))
 					{
@@ -437,11 +431,7 @@
 
 			</div>
 
-		</div>
-
-		@* Текст аудиофайла *@
-		<div id="accordionTextForAudioFile" class="accordion mb-3">
-
+			@* Текст аудиофайла *@
 			<div class="accordion-item mb-3 shadw">
 
 				@* Заголовок группы «текст аудиофайла» *@
@@ -451,9 +441,9 @@
 					</button>
 				</h2>
 
-				<div id="TextForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingTextForAudioFile" data-bs-parent="#accordionTextForAudioFile">
+				<div id="TextForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingTextForAudioFile" data-bs-parent="#accordionForAudioFile">
 
-					@if (Model.TextInfoModel != null)
+					@if (Model.TextInfoModelId != null)
 					{
 						@* Идентификатор в базе данных *@
 						<h2 class="lh-1 mt-2">
@@ -469,16 +459,16 @@
 						</h2>
 
 						@* Информация о связанной книге статье *@
-						<div class="@(Model.TextInfoModel.BooksAndArticlesModelId != null ? "d-block" : "d-none")">
+						<div class="@(Model.AudioBookModel?.BookForAudioBook != null ? "d-block" : "d-none")">
 
 							<hr class="w-50 mx-auto" />
 
 							<p class="fs-5 text-center">
 								<span class="text-primary">Страница </span>
-								<span class="text_shadow">«@Model.TextInfoModel.SequenceNumber»</span>
+								<span class="text_shadow">«@Model.TextInfoModel?.SequenceNumber»</span>
 								<br class="d-xl-none" />
-								<span class="text-primary"> @(Model.TextInfoModel.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
-								<span class="text_shadow">«@Model.TextInfoModel.BooksAndArticlesModel?.CaptionOfText»</span>
+								<span class="text-primary"> @(Model.TextInfoModel?.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+								<span class="text_shadow">«@Model.TextInfoModel?.BooksAndArticlesModel?.CaptionOfText»</span>
 							</p>
 
 							<hr class="w-50 mx-auto" />
@@ -497,7 +487,7 @@
 										  readonly
 										  rows="4"
 										  aria-describedby="TextDescriptionInputHelpBlock">
-																												</textarea>
+																													</textarea>
 
 								<div id="TextDescriptionInputHelpBlock" class="form-text">
 									<span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
@@ -513,7 +503,7 @@
 
 								<label asp-for="TextInfoModel.FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
 								<br class="d-md-none" />
-								<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.TextInfoModel.FolderForText</span>
+								<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.TextInfoModel?.FolderForText</span>
 
 								<hr class="w-50 mx-auto" />
 
@@ -524,15 +514,15 @@
 
 								<label asp-for="TextInfoModel.TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
 								<br class="d-md-none" />
-								<span class="fs-5 text_shadow">@Model.TextInfoModel.TxtFileName</span>
-								<p class="fs-5 text-primary mb-2">(@Model.TextInfoModel.TxtFileSize байт)</p>
+								<span class="fs-5 text_shadow">@Model.TextInfoModel?.TxtFileName</span>
+								<p class="fs-5 text-primary mb-2">(@Model.TextInfoModel?.TxtFileSize байт)</p>
 
 								<textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
 										  asp-for="ClearText"
 										  readonly
 										  rows="10"
 										  aria-describedby="ClearTextInputHelpBlock">
-																													 </textarea>
+																														 </textarea>
 
 								<div id="ClearTextInputHelpBlock" class="form-text">
 									<span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
@@ -552,11 +542,7 @@
 
 			</div>
 
-		</div>
-
-		@* Аудиокнига - Номер файла по порядку *@
-		<div class="accordion" id="accordionAudioBook">
-
+			@* Аудиокнига - Номер файла по порядку *@
 			<div class="accordion-item my-3 shadw">
 
 				@* Заголовок группы «аудиокнига» *@
@@ -566,7 +552,7 @@
 					</button>
 				</h2>
 
-				<div id="AudioBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingAudioBook" data-bs-parent="#accordionAudioBook">
+				<div id="AudioBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingAudioBook" data-bs-parent="#accordionForAudioFile">
 
 					<label asp-for="SequenceNumber" class="col-form-label text-primary fs-5"></label>
 
@@ -607,7 +593,7 @@
 							<textarea asp-for="@Model.AudioBookModel.AudioBookDescription"
 									  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
 									  rows="5">
-																														</textarea>
+																															</textarea>
 
 							<div class="form-text">
 
@@ -696,11 +682,7 @@
 
 			</div>
 
-		</div>
-
-		@* Страница аудиофайла *@
-		<div id="accordionPageForAudioFIle" class="accordion">
-
+			@* Страница аудиофайла *@
 			<div class="accordion-item my-3 shadw">
 
 				@* Заголовок группы «страница аудиофайла» *@
@@ -710,7 +692,7 @@
 					</button>
 				</h2>
 
-				<div id="PageForAudioFIle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForAudioFIle" data-bs-parent="#accordionPageForAudioFIle">
+				<div id="PageForAudioFIle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForAudioFIle" data-bs-parent="#accordionForAudioFile">
 
 					@if (Model.PageInfoModel != null)
 					{

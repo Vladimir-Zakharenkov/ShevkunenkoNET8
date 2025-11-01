@@ -1,0 +1,11 @@
+﻿@model AudioBookModel
+
+<h1 class="text_shadow">
+	<span class="fs-2">@Model.BookForAudioBook?.AuthorOfText</span>
+	<br />
+	<span class="fs-1">«@Model.CaptionOfAudioBook»</span>
+</h1>
+
+<h2 class="fs-4 mt-4 text_shadow">АУДИОКНИГА</h2>
+
+<p class="fs-4 text-danger">( читает @Model.ActorOfAudioBook )</p>

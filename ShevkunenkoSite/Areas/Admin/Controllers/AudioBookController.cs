@@ -106,7 +106,8 @@ public class AudioBookController(
 
             #region Открытие параметров добавленной аудиокниги
 
-            var newAudioBook = await audioBookContext.AudioBooks.FirstAsync(audioBook => audioBook.CaptionOfAudioBook == addAudioBook.CaptionOfAudioBook & audioBook.ActorOfAudioBook == addAudioBook.ActorOfAudioBook);
+            var newAudioBook = await audioBookContext.AudioBooks
+                .FirstAsync(audioBook => audioBook.CaptionOfAudioBook == addAudioBook.CaptionOfAudioBook & audioBook.ActorOfAudioBook == addAudioBook.ActorOfAudioBook);
 
             return RedirectToAction(nameof(DetailsAudioBook), new { audioBookId = newAudioBook.AudioBookModelId });
 

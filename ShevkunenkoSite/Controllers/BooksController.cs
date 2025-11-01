@@ -5,6 +5,7 @@ public class BooksController(
     ITextInfoRepository textContext,
     IPageInfoRepository pageContext,
     IImageFileRepository imageFileContext,
+    IAudioBookRepository audioBookContext,
     IWebHostEnvironment hostEnvironment) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
@@ -143,6 +144,15 @@ public class BooksController(
         {
             return RedirectToAction(nameof(Index));
         }
+    }
+
+    public async Task<IActionResult> AudioBook(string? audioBookCaption, int? audioBookPart)
+    {
+        AudioBookModel audioBook = await audioBookContext.AudioBooks
+            .Include(include => include.BookForAudioBook)
+            .FirstAsync(audioBook => audioBook.CaptionOfAudioBook == audioBookCaption);
+
+        return View(audioBook);
     }
 
     public async Task<IActionResult> PhotoAlbum(Guid? imageId, string? albumCaption, int pageNumber = 1)

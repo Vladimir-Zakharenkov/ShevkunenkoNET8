@@ -48,28 +48,19 @@ public class TextInfoController(
         {
             var textItem = await textContext.Texts
                 .Include(book => book.BooksAndArticlesModel)
+                .Include(audiofile => audiofile.AudioFileForText)
                 .AsNoTracking()
                 .FirstAsync(p => p.TextInfoModelId == textId);
 
             using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.TxtFileName);
 
+            textItem.ClearText = clearText.ReadToEnd();
+
             using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.HtmlFileName);
 
-            return View(new DetailsTextViewModel
-            {
-                TextInfoModelId = textItem.TextInfoModelId,
-                TextDescription = textItem.TextDescription,
-                FolderForText = textItem.FolderForText,
-                TxtFileName = textItem.TxtFileName,
-                HtmlFileName = textItem.HtmlFileName,
-                TxtFileSize = textItem.TxtFileSize,
-                HtmlFileSize = textItem.HtmlFileSize,
-                BooksAndArticlesModelId = textItem.BooksAndArticlesModelId,
-                BooksAndArticlesModel = textItem.BooksAndArticlesModel,
-                SequenceNumber = textItem.SequenceNumber,
-                ClearText = clearText.ReadToEnd(),
-                HtmlText = htmlText.ReadToEnd()
-            });
+            textItem.HtmlText = htmlText.ReadToEnd();
+
+            return View(textItem);
         }
         else
         {

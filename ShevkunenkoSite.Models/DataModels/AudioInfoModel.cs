@@ -31,14 +31,6 @@ public class AudioInfoModel
 
     #endregion
 
-    #region Transcript - guid файла с текстом
-
-    [Display(Name = "Текст :")]
-    public Guid? TextInfoModelId { get; set; }
-    public TextInfoModel? TextInfoModel { get; set; }
-
-    #endregion
-
     #region Описание содержания аудиофайла
 
     [Required(ErrorMessage = "Добавьте описание аудиофайла")]
@@ -127,7 +119,7 @@ public class AudioInfoModel
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Код плейера :")]
-    public string? PlayerPodsterFm {  get; set; }
+    public string? PlayerPodsterFm { get; set; }
 
     #endregion
 
@@ -137,6 +129,13 @@ public class AudioInfoModel
     [DataType(DataType.Date)]
     [Display(Name = "Дата публикации :")]
     public DateTime AudioFileUploadDate { get; set; } = DateTime.Today;
+
+    #endregion
+
+    #region Transcript - GUID текста аудиофайла
+
+    [Display(Name = "Transcript :")]
+    public Guid? TextInfoModelId { get; set; }
 
     #endregion
 
@@ -153,6 +152,13 @@ public class AudioInfoModel
 
     [NotMapped]
     public string? ClearText { get; set; }
+
+    #endregion
+
+    #region TextInfoModel для текста аудиофайла (NotMapped)
+
+    [NotMapped]
+    public TextInfoModel? TextInfoModel { get; set; }
 
     #endregion
 

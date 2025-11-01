@@ -13,18 +13,6 @@ public class DetailsTextViewModel : TextInfoModel
 
     #endregion
 
-    #region Текст без разметки
-
-    public string? ClearText { get; set; }
-
-    #endregion
-
-    #region Текст с разметкой
-
-    public string? HtmlText { get; set; }
-
-    #endregion
-
     #region Связанная книга (статья)
 
     [DataType(DataType.Text)]

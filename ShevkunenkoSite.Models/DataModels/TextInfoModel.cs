@@ -52,17 +52,40 @@ public class TextInfoModel
 
     #endregion
 
+    #region Номер страницы книги (статьи)
+
+    [Display(Name = "Номер страницы :")]
+    [Range(0, 3000)]
+    public int? SequenceNumber { get; set; }
+
+    #endregion
+
     #region Связанные книга или статья
 
-    // идентификатор книги (статьи)
     [Display(Name = "Связанная книга (статья) :")]
     public Guid? BooksAndArticlesModelId { get; set; }
     public BooksAndArticlesModel? BooksAndArticlesModel { get; set; }
 
-    // номер страницы книги (статьи)
-    [Display(Name = "Номер страницы :")]
-    [Range(0, 3000)]
-    public int? SequenceNumber { get; set; }
+    #endregion
+
+    #region Связанный аудиофайл
+
+    public Guid? AudioFileForTextId { get; set; }
+    public AudioInfoModel? AudioFileForText { get; set; }
+
+    #endregion
+
+    #region Текст аудиофайла без разметки (NotMapped)
+
+    [NotMapped]
+    public string? ClearText { get; set; }
+
+    #endregion
+
+    #region Текст аудиофайла с разметкой (NotMapped)
+
+    [NotMapped]
+    public string? HtmlText { get; set; }
 
     #endregion
 }
