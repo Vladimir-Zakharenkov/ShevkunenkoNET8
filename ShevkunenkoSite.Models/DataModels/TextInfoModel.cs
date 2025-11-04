@@ -70,22 +70,70 @@ public class TextInfoModel
 
     #region Связанный аудиофайл
 
+    [Display(Name = "Аудиофайл :")]
     public Guid? AudioFileForTextId { get; set; }
     public AudioInfoModel? AudioFileForText { get; set; }
 
     #endregion
 
-    #region Текст аудиофайла без разметки (NotMapped)
+    #region Текст без разметки TXT (NotMapped)
 
     [NotMapped]
     public string? ClearText { get; set; }
 
     #endregion
 
-    #region Текст аудиофайла с разметкой (NotMapped)
+    #region Текст с разметкой HTML (NotMapped)
 
     [NotMapped]
     public string? HtmlText { get; set; }
+
+    #endregion
+
+    #region Новый каталог для текста (NotMapped)
+
+    [NotMapped]
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Новый каталог :")]
+    public string NewTextFolder { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Текущий каталог для текста (NotMapped)
+
+    [NotMapped]
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
+    [DataType(DataType.Text)]
+    [Display(Name = "Текущий каталог :")]
+    public string CurrentTextFolder { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Выбрать файл TXT (NotMapped)
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Файл (txt) :")]
+    public IFormFile? TxtFileFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать файл HTML (NotMapped)
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Файл (html) :")]
+    public IFormFile? HtmlFileFormFile { get; set; }
+
+    #endregion
+
+    #region Сообщение о ссылках на текст (NotMapped)
+
+    [NotMapped]
+    public string? RefInMovies { get; set; }
 
     #endregion
 }

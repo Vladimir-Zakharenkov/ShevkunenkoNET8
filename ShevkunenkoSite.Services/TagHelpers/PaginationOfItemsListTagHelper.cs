@@ -19,7 +19,7 @@ public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : T
             IUrlHelper urlHelper = helperFactory.GetUrlHelper(ViewContext);
 
             TagBuilder divForPagination = new("div");
-            divForPagination.AddCssClass("flex-wrap btn-group btn-group-sm my-3 p-2 maxwidthcontent mx-auto");
+            divForPagination.AddCssClass("flex-wrap justify-content-center my-3 p-2 maxwidth90percent mx-auto");
 
             for (int i = 1; i <= Pagination.TotalPages; i++)
             {
@@ -40,7 +40,7 @@ public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : T
                     }
                 }
 
-                newRef.AddCssClass("btn border border-1 border-secondary rounded ten minwidth50px maxwidth100px mx-auto me-2");
+                newRef.AddCssClass("btn border border-1 border-secondary rounded ten minwidth50px maxwidth100px me-2 mb-3 py-0 mx-auto");
                 newRef.AddCssClass(i == Pagination.CurrentPage ? "btn-danger" : "btn-outline-dark");
 
                 newRef.InnerHtml.Append(i.ToString());

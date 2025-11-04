@@ -471,7 +471,7 @@
 
 				</div>
 
-				@* Плейер для аудиофайла*@
+				@* плейер для аудиофайла*@
 				<div class="accordion-item mb-3 mt-2 shadw">
 
 					@* Заголовок группы «плейер для аудиофайла» *@
@@ -652,15 +652,20 @@
 
 				<button type="submit" class="btn btn-outline-success mt-2 me-3 text-center shadw"
 						title="Сохранить">
+
 					Сохранить
+
 				</button>
 
 				<a class="btn btn-outline-danger mt-2 shadw"
 				   asp-area="Admin"
 				   asp-controller="AudioInfo"
 				   asp-action="Index"
+				   asp-route-audioFileId="@Model.AudioInfoModelId"
 				   title="Отменить">
+
 					Отменить
+
 				</a>
 
 			</div>

@@ -1,77 +1,77 @@
-﻿     @model TextInfoViewModel
+﻿@model ItemsListViewModel
 
 @* Значение строки поиска *@
 <div>
-    @if (!String.IsNullOrEmpty(Model.TextSearchString))
-    {
-        <div class="row mb-0">
-            <p class="col-12 fs-5 text-primary">
-                Поиск по строке: <span class="text-black text_shadow">@Model.TextSearchString</span>
-            </p>
-        </div>
-    }
+	@if (!String.IsNullOrEmpty(Model.SearchString))
+	{
+		<div class="row mb-0">
+			<p class="col-12 fs-5 text-primary">
+				Поиск по строке: <span class="text-black text_shadow">@Model.SearchString</span>
+			</p>
+		</div>
+	}
 </div>
 
 @* Количество текстов *@
 <div>
 
-    @if (Model.PagingInfo.TotalItems == 0)
-    {
-        <div class="row">
-            <div class="col text-center p-2">
-                <p class="fs-5 text_shadow mb-0">В базе данных нет текстов</p>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-12 text-center">
-                <p class="fs-5 text-primary mb-0">Количество текстов:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
-            </div>
-        </div>
-    }
+	@if (Model.TotalItems == 0)
+	{
+		<div class="row">
+			<div class="col text-center p-2">
+				<p class="fs-5 text_shadow mb-0">В базе данных нет текстов</p>
+			</div>
+		</div>
+	}
+	else
+	{
+		<div class="row">
+			<div class="col-12 text-center">
+				<p class="fs-5 text-primary mb-0">Количество текстов:&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span></p>
+			</div>
+		</div>
+	}
 
-    <hr class="liniya" />
+	<hr class="liniya" />
 
 </div>
 
 @* Добавить текст - Поиск текста *@
 <div class="row">
 
-    <div class="col-12 col-md-3">
-        <a class="btn btn-outline-danger shadw py-1 mt-2"
-           asp-area="Admin"
-           asp-controller="TextInfo"
-           asp-action="AddText"
-           title="добавить текст">
-            Добавить
-        </a>
-    </div>
+	<div class="col-12 col-md-3">
+		<a class="btn btn-outline-danger shadw py-1 mt-2"
+		   asp-area="Admin"
+		   asp-controller="TextInfo"
+		   asp-action="AddText"
+		   title="добавить текст">
+			Добавить
+		</a>
+	</div>
 
-    <hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
+	<hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
 
-    <div class="col-12 col-md-9 mb-2">
+	<div class="col-12 col-md-9 mb-2">
 
-        <form method="get" class="text-center text-md-end mt-md-2"
-              asp-area="Admin"
-              asp-controller="TextInfo"
-              asp-action="Index">
+		<form method="get" class="text-center text-md-end mt-md-2"
+			  asp-area="Admin"
+			  asp-controller="TextInfo"
+			  asp-action="Index">
 
-            <input type="text" class="d-inline-block align-middle mt-1 w-50" asp-for="TextSearchString" />
+			<input type="text" class="d-inline-block align-middle mt-1 w-50" asp-for="SearchString" />
 
-            <input type="submit" class="btn btn-outline-success shadw py-1 me-md-3" value="Поиск" title="поиск текста" />
+			<input type="submit" class="btn btn-outline-success shadw py-1 me-md-3" value="Поиск" title="поиск текста" />
 
-        </form>
+		</form>
 
-    </div>
+	</div>
 
-    <hr class="liniya" />
+	<hr class="liniya" />
 
 </div>
 
 @* Страницы *@
-<div>
+@* <div>
 
     @if (Model.PagingInfo.TotalPages > 1)
     {
@@ -93,109 +93,92 @@
         </div>
     }
 
-</div>
+</div> *@
 
 @* Таблица данных *@
 <div class="row">
 
-    <div class="col m-1 shadw">
+	<div class="col m-1 shadw">
 
-        <div class="table-responsive">
+		<div class="table-responsive">
 
-            <table class="table table-sm table-hover caption-top align-middle">
+			<table class="table table-sm table-hover caption-top align-middle">
 
-                <thead>
+				<thead>
 
-                    <tr class="table-secondary text-start">
-                        <th scope="col" class="text-primary">Описание</th>
-                        <th scope="col" class="text-primary d-none d-md-table-cell">Файл</th>
-                        <th scope="col" class="text-primary text-center d-none d-md-table-cell">Размер (байт)</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
+					<tr class="d-flex table-secondary text-center">
 
-                </thead>
+						<th scope="col" class="col-9 col-sm-4 col-lg-3 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Файл</th>
+						<th scope="col" class="d-none d-sm-table-cell col-sm-6 col-xxl-7 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Описание</th>
+						<th scope="col" class="col-3 col-sm-2 col-lg-3 col-xxl-2"></th>
 
-                <tbody>
+					</tr>
 
-                    @foreach (var text in Model.AllTexts)
-                    {
-                        <tr class="text-start">
+				</thead>
 
-                            <td scope="col" class="text-start text_shadow">@text.TextDescription</td>
+				<tbody>
 
-                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@text.TxtFileName</td>
+					@foreach (var text in Model.AllTextFiles!)
+					{
+						<tr class="d-flex text-start">
 
-                            <td scope="col" class="text-center text_shadow d-none d-md-table-cell">@text.TxtFileSize</td>
+							<td scope="col" class="col-9 col-sm-4 col-lg-3 align-content-center text_shadow">@text.TxtFileName</td>
 
-                            <td scope="col" title="информация">
-                                <a class="btn btn-outline-primary py-1 px-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="TextInfo"
-                                   asp-action="DetailsText"
-                                   asp-route-textId="@text.TextInfoModelId"
-                                   title="информация о тексте">
-                                    Info
-                                </a>
-                            </td>
+							<td scope="col" class="d-none d-sm-table-cell col-sm-6 col-xxl-7 align-content-center text_shadow">@text.TextDescription</td>
 
-                            <td scope="col" title="редактировать">
-                                <a class="btn btn-outline-success py-1 px-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="TextInfo"
-                                   asp-action="EditText"
-                                   asp-route-textId="@text.TextInfoModelId"
-                                   title="изменить текст">
-                                    Edit
-                                </a>
-                            </td>
+							@* Кнопки Информация - Изменить - Удалить*@
+							<td scope="col" class="col-3 col-sm-2 col-lg-3 col-xxl-2 align-content-center text-center">
 
-                            <td scope="col" title="удалить">
-                                <a class="btn btn-outline-danger py-1 px-1 shadw"
-                                   asp-area="Admin"
-                                   asp-controller="TextInfo"
-                                   asp-action="DeleteText"
-                                   asp-route-textId="@text.TextInfoModelId"
-                                   title="удалить текст">
-                                    Del
-                                </a>
-                            </td>
+								<a class="btn btn-outline-primary p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="TextInfo"
+								   asp-action="DetailsText"
+								   asp-route-textId="@text.TextInfoModelId"
+								   title="информация о тексте">
 
-                        </tr>
-                    }
+									Info
 
-                </tbody>
+								</a>
 
-            </table>
+								<a class="btn btn-outline-success p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="TextInfo"
+								   asp-action="EditText"
+								   asp-route-textId="@text.TextInfoModelId"
+								   title="изменить текст">
 
-        </div>
+									Edit
 
-    </div>
+								</a>
 
-</div>
+								<a class="btn btn-outline-danger p-1 m-1 shadw minwidth40px"
+								   asp-area="Admin"
+								   asp-controller="TextInfo"
+								   asp-action="DeleteText"
+								   asp-route-textId="@text.TextInfoModelId"
+								   title="удалить текст">
 
-@* Страницы *@
-<div>
+									Del
 
-    @if (Model.PagingInfo.TotalPages > 1)
-    {
-        <div class="row p-2 m-2">
+								</a>
 
-            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-                 page-model="@Model.PagingInfo"
-                 text-search="@Model"
-                 page-action="Index"
-                 page-classes-enabled="true"
-                 page-class="btn"
-                 page-class-normal="btn-outline-dark"
-                 page-class-selected="btn-danger"
-                 data-toggle="buttons"
-                 role="group"
-                 aria-label="картинки сайта">
-            </div>
+							</td>
 
-        </div>
-    }
+						</tr>
+					}
+
+				</tbody>
+
+			</table>
+
+		</div>
+
+	</div>
 
 </div>
+
+@* Разбивка на страницы *@
+@if (Model.TotalItems > DataConfig.NumberOfItemsPerPage)
+{
+	<div pagination="@Model"></div>
+}

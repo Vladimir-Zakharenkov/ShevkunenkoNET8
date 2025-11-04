@@ -1,4 +1,4 @@
-﻿@model AddTextInfoViewModel
+﻿@model TextInfoModel
 
 @{
 	string cssForLabel = "col-form-label text-primary fs-5 me-2";
@@ -116,6 +116,65 @@
 								@if (Context.Request.Method == "POST")
 								{
 									<span asp-validation-for="HtmlFileFormFile" class="text-danger"></span>
+								}
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* выбрать аудиофайл *@
+				<div class="accordion-item mb-3 mt-2 shadw">
+
+					@* заголовок группы «Выбрать аудиофайл» *@
+					<h2 id="headingAudioFile" class="accordion-header">
+
+						<button class="accordion-button collapsed pb-1 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#AudioFile"
+								aria-expanded="true"
+								aria-controls="AudioFile">
+
+							<span class="form-label fs-5">Аудиофайл :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="AudioFile"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingAudioFile"
+						 data-bs-parent="#accordionAddTextFile">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							@* Папка файла*@
+							<div class="form-group mb-2">
+
+								<label asp-for="AudioFileForTextId" class="@cssForLabel"></label>
+
+								<select asp-for="AudioFileForTextId"
+										asp-items="ViewBag.AudioFiles"
+										class="col-12 col-sm-7 col-lg-6"
+										aria-describedby="AudioFileInputHelpBlock">
+
+									<option selected value="@null">no-audio</option>
+
+								</select>
+
+								<div id="AudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
+
+									<span class="fs-6 text-success">выбрать аудиофайл</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="AudioFileForTextId" class="text-danger"></span>
 								}
 
 							</div>
@@ -408,7 +467,9 @@
 				   asp-controller="TextInfo"
 				   asp-action="Index"
 				   title="Отменить">
+
 					Отменить
+
 				</a>
 
 			</div>

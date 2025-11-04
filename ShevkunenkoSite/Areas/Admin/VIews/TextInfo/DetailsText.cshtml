@@ -97,7 +97,7 @@
 				<label asp-for="FolderForText" class="@cssForLabel"></label>
 
 				<p class="text_shadow text-indent-0 text-center fs-5">
-					@DataConfig.TextsFolderPath@Model.FolderForText
+					@DataConfig.TextsFolderPath.Replace('\\', '/')@Model.FolderForText
 				</p>
 
 				<hr class="w-25 mx-auto" />

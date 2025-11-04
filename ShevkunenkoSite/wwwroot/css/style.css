@@ -12864,7 +12864,7 @@ li#yandex-search * {
 }
 
 .height400 {
-  height: 400px;
+  height: 400px !important;
 }
 
 .height600 {

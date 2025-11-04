@@ -13,4 +13,11 @@ public class ItemsListViewModel : PagingInfoViewModel
     public AudioInfoModel[]? AllAudioFiles { get; set; }
 
     #endregion
+
+    #region Тексты
+
+    public TextInfoModel[]? AllTextFiles { get; set; }
+
+    #endregion
+
 }
