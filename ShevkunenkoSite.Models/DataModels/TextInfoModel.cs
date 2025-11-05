@@ -71,8 +71,8 @@ public class TextInfoModel
     #region Связанный аудиофайл
 
     [Display(Name = "Аудиофайл :")]
-    public Guid? AudioFileForTextId { get; set; }
-    public AudioInfoModel? AudioFileForText { get; set; }
+    public Guid? AudioInfoModelId { get; set; }
+    public AudioInfoModel? AudioInfoModel { get; set; }
 
     #endregion
 

@@ -227,8 +227,9 @@
 
 					<div id="AudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingAudioFile" data-bs-parent="#accordionForTextFile">
 
-						@if (Model.AudioFileForText != null)
+						@if (Model.AudioInfoModelId != null)
 						{
+							@Model.AudioInfoModel.AudioFileName
 						}
 						else
 						{

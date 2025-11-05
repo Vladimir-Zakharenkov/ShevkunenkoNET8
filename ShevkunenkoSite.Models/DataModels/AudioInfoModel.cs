@@ -135,8 +135,9 @@ public class AudioInfoModel
     #region Transcript - GUID текста аудиофайла
 
     [Display(Name = "Transcript :")]
-    public Guid? TextInfoModelId { get; set; }
-
+    public Guid? TranscriptId { get; set; }
+    [NotMapped]
+    public TextInfoModel? Transcript { get; set; }
     #endregion
 
     #region Связанная страница сайта
@@ -152,13 +153,6 @@ public class AudioInfoModel
 
     [NotMapped]
     public string? ClearText { get; set; }
-
-    #endregion
-
-    #region TextInfoModel для текста аудиофайла (NotMapped)
-
-    [NotMapped]
-    public TextInfoModel? TextInfoModel { get; set; }
 
     #endregion
 

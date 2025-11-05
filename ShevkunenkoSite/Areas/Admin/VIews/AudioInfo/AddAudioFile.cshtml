@@ -260,9 +260,9 @@
 							@* Текст аудиофайла*@
 							<div class="form-group">
 
-								<label asp-for="TextInfoModelId" class="@cssForLabel"></label>
+								<label asp-for="TranscriptId" class="@cssForLabel"></label>
 
-								<select asp-for="TextInfoModelId"
+								<select asp-for="TranscriptId"
 										asp-items="ViewBag.TextFIles"
 										class="col-12 col-sm-7 col-lg-6"
 										aria-describedby="TextForAudioFileInputHelpBlock">
@@ -279,7 +279,7 @@
 
 								@if (Context.Request.Method == "POST")
 								{
-									<span asp-validation-for="TextInfoModelId" class="text-danger"></span>
+									<span asp-validation-for="TranscriptId" class="text-danger"></span>
 								}
 
 							</div>

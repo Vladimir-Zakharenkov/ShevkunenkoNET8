@@ -6,32 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShevkunenkoSite.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class _011120252216 : Migration
+    public partial class _051120252134 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Guid>(
-                name: "AudioFileForTextAudioInfoModelId",
-                table: "TextFile",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "AudioFileForTextId",
+                name: "AudioInfoModelId",
                 table: "TextFile",
                 type: "uniqueidentifier",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TextFile_AudioFileForTextAudioInfoModelId",
+                name: "IX_TextFile_AudioInfoModelId",
                 table: "TextFile",
-                column: "AudioFileForTextAudioInfoModelId");
+                column: "AudioInfoModelId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TextFile_AudioInfoModel_AudioFileForTextAudioInfoModelId",
+                name: "FK_TextFile_AudioInfoModel_AudioInfoModelId",
                 table: "TextFile",
-                column: "AudioFileForTextAudioInfoModelId",
+                column: "AudioInfoModelId",
                 principalTable: "AudioInfoModel",
                 principalColumn: "AudioInfoId");
         }
@@ -40,19 +34,15 @@ namespace ShevkunenkoSite.Services.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_TextFile_AudioInfoModel_AudioFileForTextAudioInfoModelId",
+                name: "FK_TextFile_AudioInfoModel_AudioInfoModelId",
                 table: "TextFile");
 
             migrationBuilder.DropIndex(
-                name: "IX_TextFile_AudioFileForTextAudioInfoModelId",
+                name: "IX_TextFile_AudioInfoModelId",
                 table: "TextFile");
 
             migrationBuilder.DropColumn(
-                name: "AudioFileForTextAudioInfoModelId",
-                table: "TextFile");
-
-            migrationBuilder.DropColumn(
-                name: "AudioFileForTextId",
+                name: "AudioInfoModelId",
                 table: "TextFile");
         }
     }

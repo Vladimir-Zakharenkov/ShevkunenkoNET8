@@ -153,7 +153,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("SortOfAudioFile")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TextInfoModelId")
+                    b.Property<Guid?>("TranscriptId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("YandexDiskRefToAudioFile")
@@ -1043,10 +1043,7 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TextInfoId");
 
-                    b.Property<Guid?>("AudioFileForTextAudioInfoModelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AudioFileForTextId")
+                    b.Property<Guid?>("AudioInfoModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BooksAndArticlesModelId")
@@ -1079,7 +1076,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("TextInfoModelId");
 
-                    b.HasIndex("AudioFileForTextAudioInfoModelId");
+                    b.HasIndex("AudioInfoModelId");
 
                     b.HasIndex("BooksAndArticlesModelId");
 
@@ -1248,15 +1245,15 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
                 {
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioFileForText")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioInfoModel")
                         .WithMany()
-                        .HasForeignKey("AudioFileForTextAudioInfoModelId");
+                        .HasForeignKey("AudioInfoModelId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BooksAndArticlesModel")
                         .WithMany()
                         .HasForeignKey("BooksAndArticlesModelId");
 
-                    b.Navigation("AudioFileForText");
+                    b.Navigation("AudioInfoModel");
 
                     b.Navigation("BooksAndArticlesModel");
                 });

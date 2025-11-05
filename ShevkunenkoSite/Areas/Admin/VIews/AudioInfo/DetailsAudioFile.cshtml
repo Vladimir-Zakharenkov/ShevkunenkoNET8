@@ -443,7 +443,7 @@
 
 				<div id="TextForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingTextForAudioFile" data-bs-parent="#accordionForAudioFile">
 
-					@if (Model.TextInfoModelId != null)
+					@if (Model.TranscriptId != null)
 					{
 						@* Идентификатор в базе данных *@
 						<h2 class="lh-1 mt-2">
@@ -451,7 +451,7 @@
 								TextInfoModelId :<br />
 							</span>
 							<span class="fs-5 text_shadow">
-								@Model.TextInfoModelId<br />
+								@Model.TranscriptId<br />
 							</span>
 							<span class="fs-6 form-text text-success px-2">
 								идентификатор (GUID)
@@ -465,10 +465,10 @@
 
 							<p class="fs-5 text-center">
 								<span class="text-primary">Страница </span>
-								<span class="text_shadow">«@Model.TextInfoModel?.SequenceNumber»</span>
+								<span class="text_shadow">«@Model.Transcript?.SequenceNumber»</span>
 								<br class="d-xl-none" />
-								<span class="text-primary"> @(Model.TextInfoModel?.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
-								<span class="text_shadow">«@Model.TextInfoModel?.BooksAndArticlesModel?.CaptionOfText»</span>
+								<span class="text-primary"> @(Model.Transcript?.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+								<span class="text_shadow">«@Model.Transcript?.BooksAndArticlesModel?.CaptionOfText»</span>
 							</p>
 
 							<hr class="w-50 mx-auto" />
@@ -481,9 +481,9 @@
 							@* Описание текста *@
 							<div>
 
-								<label asp-for="TextInfoModel.TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+								<label asp-for="Transcript.TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
 								<textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
-										  asp-for="TextInfoModel.TextDescription"
+										  asp-for="Transcript.TextDescription"
 										  readonly
 										  rows="4"
 										  aria-describedby="TextDescriptionInputHelpBlock">
@@ -501,9 +501,9 @@
 							@* Каталог текста *@
 							<div>
 
-								<label asp-for="TextInfoModel.FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
+								<label asp-for="Transcript.FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
 								<br class="d-md-none" />
-								<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.TextInfoModel?.FolderForText</span>
+								<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.Transcript?.FolderForText</span>
 
 								<hr class="w-50 mx-auto" />
 
@@ -512,10 +512,10 @@
 							@* Файл TXT *@
 							<div>
 
-								<label asp-for="TextInfoModel.TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
+								<label asp-for="Transcript.TxtFileName" class="col-form-label text-primary fs-5 me-2"></label>
 								<br class="d-md-none" />
-								<span class="fs-5 text_shadow">@Model.TextInfoModel?.TxtFileName</span>
-								<p class="fs-5 text-primary mb-2">(@Model.TextInfoModel?.TxtFileSize байт)</p>
+								<span class="fs-5 text_shadow">@Model.Transcript?.TxtFileName</span>
+								<p class="fs-5 text-primary mb-2">(@Model.Transcript?.TxtFileSize байт)</p>
 
 								<textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
 										  asp-for="ClearText"

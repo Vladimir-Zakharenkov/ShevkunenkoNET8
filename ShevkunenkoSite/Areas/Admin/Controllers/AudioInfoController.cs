@@ -65,16 +65,16 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     .AsNoTracking()
                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);
 
-                if (audioInfoModel.TextInfoModelId != null
+                if (audioInfoModel.TranscriptId != null
                         && await textsOfSiteContext.Texts
-                            .Where(text => text.TextInfoModelId == audioInfoModel.TextInfoModelId)
+                            .Where(text => text.TextInfoModelId == audioInfoModel.TranscriptId)
                             .AnyAsync())
                 {
                     var transcript = await textsOfSiteContext.Texts
                         .Include(text => text.BooksAndArticlesModel)
-                        .FirstAsync(text => text.TextInfoModelId == audioInfoModel.TextInfoModelId);
+                        .FirstAsync(text => text.TextInfoModelId == audioInfoModel.TranscriptId);
 
-                    audioInfoModel.TextInfoModel = transcript;
+                    audioInfoModel.Transcript = transcript;
 
                     using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + transcript.FolderForText + transcript.TxtFileName);
 
@@ -176,7 +176,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #region Transcript - GUID файла с текстом
 
-                _ = audioFileForAdding.TextInfoModelId;
+                _ = audioFileForAdding.TranscriptId;
 
                 #endregion
 
@@ -555,7 +555,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #region Transcript - GUID файла с текстом
 
-                audioFileForUpdate.TextInfoModelId = audioFileForEditing.TextInfoModelId;
+                audioFileForUpdate.TranscriptId = audioFileForEditing.TranscriptId;
 
                 #endregion
 

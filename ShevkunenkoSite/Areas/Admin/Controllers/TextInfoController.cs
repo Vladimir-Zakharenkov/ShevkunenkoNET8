@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.IdentityModel.Tokens;
-using System.IO;
 using System.Text;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
@@ -54,11 +52,13 @@ public class TextInfoController(
 
     public async Task<IActionResult> DetailsText(Guid? textId)
     {
-        if (textId.HasValue & await textContext.Texts.Where(p => p.TextInfoModelId == textId).AnyAsync())
+        if (textId.HasValue & await textContext.Texts
+                .Where(p => p.TextInfoModelId == textId)
+                .AnyAsync())
         {
             var textItem = await textContext.Texts
                 .Include(book => book.BooksAndArticlesModel)
-                .Include(audiofile => audiofile.AudioFileForText)
+                .Include(audiofile => audiofile.AudioInfoModel)
                 .AsNoTracking()
                 .FirstAsync(p => p.TextInfoModelId == textId);
 
@@ -438,7 +438,7 @@ public class TextInfoController(
 
             #region Аудиофайл для текста
 
-            _ = addText.AudioFileForTextId;
+            _ = addText.AudioInfoModelId;
 
             #endregion
 
@@ -732,7 +732,7 @@ public class TextInfoController(
 
             TextInfoModel textInfoForEditing = await textContext.Texts
                 .Include(book => book.BooksAndArticlesModel)
-                .Include(audioFile => audioFile.AudioFileForText)
+                .Include(audioFile => audioFile.AudioInfoModel)
                 .FirstAsync(i => i.TextInfoModelId == textId);
 
             #region Текущий каталог
@@ -776,7 +776,7 @@ public class TextInfoController(
                     "SequenceNumber," +
                     "BooksAndArticlesModelId," +
                     "BooksAndArticlesModel," +
-                    "AudioFileForTextId")]
+                    "AudioInfoModelId")]
         TextInfoModel textInfoForEditing)
     {
         if (ModelState.IsValid)
@@ -1364,7 +1364,7 @@ public class TextInfoController(
 
             #region Аудиофайл 
 
-            textForUpdate.AudioFileForTextId = textInfoForEditing.AudioFileForTextId;
+            textForUpdate.AudioInfoModelId = textInfoForEditing.AudioInfoModelId;
 
             #endregion
 
@@ -1429,19 +1429,13 @@ public class TextInfoController(
 
             using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + deleteText.FolderForText + deleteText.TxtFileName);
 
+            deleteText.ClearText = clearText.ReadToEnd();
+
             using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.FolderForText + deleteText.HtmlFileName);
 
-            return View(new DetailsTextViewModel
-            {
-                TextInfoModelId = deleteText.TextInfoModelId,
-                TextDescription = deleteText.TextDescription,
-                TxtFileName = deleteText.TxtFileName,
-                HtmlFileName = deleteText.HtmlFileName,
-                TxtFileSize = deleteText.TxtFileSize,
-                HtmlFileSize = deleteText.HtmlFileSize,
-                ClearText = clearText.ReadToEnd(),
-                HtmlText = htmlText.ReadToEnd()
-            });
+            deleteText.HtmlText = htmlText.ReadToEnd();
+
+            return View(deleteText);
         }
         else
         {
@@ -1463,18 +1457,9 @@ public class TextInfoController(
 
                 using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + deleteText.HtmlFileName);
 
-                return View(new DetailsTextViewModel
-                {
-                    TextInfoModelId = deleteText.TextInfoModelId,
-                    TextDescription = deleteText.TextDescription,
-                    TxtFileName = deleteText.TxtFileName,
-                    HtmlFileName = deleteText.HtmlFileName,
-                    TxtFileSize = deleteText.TxtFileSize,
-                    HtmlFileSize = deleteText.HtmlFileSize,
-                    ClearText = clearText.ReadToEnd(),
-                    HtmlText = htmlText.ReadToEnd(),
-                    RefInMovies = "Ссылка на файл в базе фильмов сайта!"
-                });
+                deleteText.RefInMovies = "Ссылка на файл в базе фильмов сайта!";
+
+                return View(deleteText);
 
             }
 

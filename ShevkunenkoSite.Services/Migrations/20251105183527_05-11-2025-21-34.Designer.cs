@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20251101191726_01-11-2025-22-16")]
-    partial class _011120252216
+    [Migration("20251105183527_05-11-2025-21-34")]
+    partial class _051120252134
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,7 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("SortOfAudioFile")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TextInfoModelId")
+                    b.Property<Guid?>("TranscriptId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("YandexDiskRefToAudioFile")
@@ -1046,10 +1046,7 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TextInfoId");
 
-                    b.Property<Guid?>("AudioFileForTextAudioInfoModelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AudioFileForTextId")
+                    b.Property<Guid?>("AudioInfoModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BooksAndArticlesModelId")
@@ -1082,7 +1079,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("TextInfoModelId");
 
-                    b.HasIndex("AudioFileForTextAudioInfoModelId");
+                    b.HasIndex("AudioInfoModelId");
 
                     b.HasIndex("BooksAndArticlesModelId");
 
@@ -1251,15 +1248,15 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
                 {
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioFileForText")
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioInfoModel")
                         .WithMany()
-                        .HasForeignKey("AudioFileForTextAudioInfoModelId");
+                        .HasForeignKey("AudioInfoModelId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BooksAndArticlesModel")
                         .WithMany()
                         .HasForeignKey("BooksAndArticlesModelId");
 
-                    b.Navigation("AudioFileForText");
+                    b.Navigation("AudioInfoModel");
 
                     b.Navigation("BooksAndArticlesModel");
                 });
