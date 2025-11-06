@@ -100,7 +100,6 @@ public class TextInfoController(
 
         ViewData["BooksAndArticles"] = new SelectList(
             bookContext.BooksAndArticles
-                .Where(book => book.TypeOfText == "book")
                     .OrderBy(book => book.CaptionOfText),
             "BooksAndArticlesModelId",
             "CaptionOfText");
@@ -158,7 +157,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -205,7 +203,6 @@ public class TextInfoController(
 
                     ViewData["BooksAndArticles"] = new SelectList(
                         bookContext.BooksAndArticles
-                            .Where(book => book.TypeOfText == "book")
                                 .OrderBy(book => book.CaptionOfText),
                         "BooksAndArticlesModelId",
                         "CaptionOfText");
@@ -244,7 +241,6 @@ public class TextInfoController(
 
                     ViewData["BooksAndArticles"] = new SelectList(
                         bookContext.BooksAndArticles
-                            .Where(book => book.TypeOfText == "book")
                                 .OrderBy(book => book.CaptionOfText),
                         "BooksAndArticlesModelId",
                         "CaptionOfText");
@@ -287,7 +283,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -332,7 +327,6 @@ public class TextInfoController(
 
                     ViewData["BooksAndArticles"] = new SelectList(
                         bookContext.BooksAndArticles
-                            .Where(book => book.TypeOfText == "book")
                                 .OrderBy(book => book.CaptionOfText),
                         "BooksAndArticlesModelId",
                         "CaptionOfText");
@@ -371,7 +365,6 @@ public class TextInfoController(
 
                     ViewData["BooksAndArticles"] = new SelectList(
                         bookContext.BooksAndArticles
-                            .Where(book => book.TypeOfText == "book")
                                 .OrderBy(book => book.CaptionOfText),
                         "BooksAndArticlesModelId",
                         "CaptionOfText");
@@ -414,7 +407,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -479,7 +471,6 @@ public class TextInfoController(
 
                     ViewData["BooksAndArticles"] = new SelectList(
                         bookContext.BooksAndArticles
-                            .Where(book => book.TypeOfText == "book")
                                 .OrderBy(book => book.CaptionOfText),
                         "BooksAndArticlesModelId",
                         "CaptionOfText");
@@ -592,7 +583,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -713,7 +703,6 @@ public class TextInfoController(
 
             ViewData["BooksAndArticles"] = new SelectList(
                 bookContext.BooksAndArticles
-                    .Where(book => book.TypeOfText == "book")
                         .OrderBy(book => book.CaptionOfText),
                 "BooksAndArticlesModelId",
                 "CaptionOfText");
@@ -950,7 +939,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -995,7 +983,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -1034,7 +1021,6 @@ public class TextInfoController(
 
                 ViewData["BooksAndArticles"] = new SelectList(
                     bookContext.BooksAndArticles
-                        .Where(book => book.TypeOfText == "book")
                             .OrderBy(book => book.CaptionOfText),
                     "BooksAndArticlesModelId",
                     "CaptionOfText");
@@ -1393,7 +1379,6 @@ public class TextInfoController(
 
             ViewData["BooksAndArticles"] = new SelectList(
                 bookContext.BooksAndArticles
-                    .Where(book => book.TypeOfText == "book")
                         .OrderBy(book => book.CaptionOfText),
                 "BooksAndArticlesModelId",
                 "CaptionOfText");

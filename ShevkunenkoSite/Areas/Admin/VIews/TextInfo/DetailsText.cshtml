@@ -229,11 +229,32 @@
 
 						@if (Model.AudioInfoModelId != null)
 						{
-							@Model.AudioInfoModel.AudioFileName
+							<p class="d-sm-none my-2 text_shadow ">
+								плейер отображается при разрешении от 576px
+							</p>
+
+							<div class="d-none d-sm-flex my-2">
+
+								@Html.Raw(Model.AudioInfoModel?.PlayerPodsterFm)
+
+							</div>
+
+							<a class="btn btn-outline-primary minwidth100px m-2 shadw"
+							   asp-area="Admin"
+							   asp-controller="AudioInfo"
+							   asp-action="DetailsAudioFile"
+							   asp-route-audioFileId="@Model.AudioInfoModel?.AudioInfoModelId"
+							   title="инфо об аудиофайле">
+
+								Инфо
+
+							</a>
 						}
 						else
 						{
-							<p class="text_shadow fs-4 mt-2">аудиофайл для текста не задан</p>
+							<p class="text_shadow fs-4 mt-2">
+								аудиофайл для текста не задан
+							</p>
 						}
 
 					</div>
