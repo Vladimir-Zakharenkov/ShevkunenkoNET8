@@ -241,7 +241,7 @@ app.MapControllerRoute(
     defaults: new { Controller = "Books", Action = "Book" });
 
 app.MapControllerRoute(
-    name: "pages_of_book",
+    name: "pages_of_book_content",
     pattern: "Книга/{bookCaption}",
     defaults: new { Controller = "Books", Action = "Book", pageNumber = 0 });
 

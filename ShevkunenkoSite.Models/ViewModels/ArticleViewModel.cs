@@ -14,6 +14,12 @@ public class ArticleViewModel
 
     #endregion
 
+    #region Экземпляр текста
+
+    public TextInfoModel? TextForBookOrArticle { get; set; }
+
+    #endregion
+
     #region Текст с разметкой
 
     public string? HtmlText { get; set; }
@@ -32,9 +38,15 @@ public class ArticleViewModel
 
     #endregion
 
+    #region Аудиофайл
+
+    public bool? Audio { get; set; }
+
+    #endregion
+
     #region Кадры слева и справа от текста
 
-    public FramesAroundMainContentModel FramesAroundMainContent { get; set; } = new();
+    public FramesAroundMainContentModel? FramesAroundMainContent { get; set; }
 
     #endregion
 

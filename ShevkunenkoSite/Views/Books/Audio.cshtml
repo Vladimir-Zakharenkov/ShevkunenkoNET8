@@ -16,7 +16,15 @@
 	@* выбор картинки для книги *@
 	<span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
 
-		@if (Model.BookOrArticle.LogoOfArticle != null)
+		@if (Model.BookOrArticle.ScanOfArticle != null)
+		{
+			<meta itemprop="caption" content="@Model.BookOrArticle.ScanOfArticle.ImageCaption">
+			<link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebImageFileName">
+			<link itemprop="thumbnailUrl" href="https://@Context.Request.Host@Model.BookOrArticle.ScanOfArticle.ImagePath/@Model.BookOrArticle.ScanOfArticle.WebIconFileName">
+			<meta itemprop="width" content="@Model.BookOrArticle.ScanOfArticle.WebImageWidth">
+			<meta itemprop="height" content="@Model.BookOrArticle.ScanOfArticle.WebImageHeight">
+		}
+		else if (Model.BookOrArticle.LogoOfArticle != null)
 		{
 			<meta itemprop="caption" content="@Model.BookOrArticle.LogoOfArticle.ImageCaption">
 			<link itemprop="contentUrl url" href="https://@Context.Request.Host@Model.BookOrArticle.LogoOfArticle.ImagePath/@Model.BookOrArticle.LogoOfArticle.WebImageFileName">
@@ -38,19 +46,51 @@
 	@* заголовок книги *@
 	<header itemprop="headline" class="d-block col col-md-8 my-3 mx-auto maxwidth700px">
 
-		<h1 class="lay1 p-2 lh-1 times-new-roman">
-
-			<span class="fs-2 fw-bold d-inline-block h1_print">
-				@Model.BookOrArticle.AuthorOfText
-			</span>
-			<span class="d-block mt-2 fs-2 fw-bold">
-				«@Model.BookOrArticle.CaptionOfText»
-			</span>
-			<span class="@(Model.PageNumber == 0 ? "d-block fs-5 mt-3 text_shadow" : "d-none")">
-				@Model.BookOrArticle.TheSubtitle
-			</span>
-
-		</h1>
+		@if (Context.Request.QueryString.ToString().Contains("pagenumber=0"))
+		{
+			<h1 class="lay1 p-2 lh-1 times-new-roman">
+				<span class="fs-2 fw-bold d-inline-block mb-1 h1_print" itemprop="name">
+					@Model.BookOrArticle.AuthorOfText
+				</span>
+				<span itemprop="url" class="d-none">
+					https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+				</span>
+				<br />
+				<span class="fs-2 fw-bold">
+					«@Model.BookOrArticle.CaptionOfText»
+				</span>
+				@if (!string.IsNullOrEmpty(Model.BookOrArticle.TheSubtitle))
+				{
+					<br />
+					<span class="fs-5 text_shadow">
+						@Model.BookOrArticle.TheSubtitle
+					</span>
+				}
+			</h1>
+		}
+		else
+		{
+			<h1 class="fs-4 fw-bold px-0 pb-2 pt-1 lh-1 lay1 times-new-roman text_shadow">
+				<span class="d-inline-block h1_print" itemprop="name">
+					@Model.BookOrArticle.AuthorOfText
+				</span>
+				<span itemprop="url" class="d-none">
+					https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString
+				</span>
+				<br class="d-lg-none" />
+				<span>
+					«@Model.BookOrArticle.CaptionOfText»
+				</span>
+				@if (Model.Audio == true)
+				{
+					<br />
+					<br />
+					<span class="fs-3 fw-normal">
+						Аудиокнига
+					</span>
+				}
+			</h1>
+		}
 
 	</header>
 
@@ -58,10 +98,10 @@
 	<div class="row">
 
 		@* кадры слева *@
-		<div class="d-none d-md-block col-2 mx-auto overflow-y-auto overflow-x-hidden height1000">
+		@if (Model.FramesAroundMainContent.FramesOnTheLeft.Length > 0)
+		{
+			<div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
 
-			@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheLeft != null)
-			{
 				@foreach (var item in Model.FramesAroundMainContent.FramesOnTheLeft)
 				{
 					@* Вывод фотографии в отдельное окно *@
@@ -83,27 +123,33 @@
 
 					</a>
 				}
-			}
 
-		</div>
+			</div>
+		}
+		else
+		{
+			<div class="col-2 d-none d-md-block"></div>
+		}
+
 
 		@* текст *@
-		<div class="col col-md-8 mx-auto article_page paragraph shadw
-						@(Model.PageNumber == 0 ? "px-0 px-sm-2 px-md-3" : "")"
+		<div class="col col-md-8 article_page mx-auto paragraph shadw
+						@(Context.Request.QueryString.ToString().Contains("pagenumber=0") ? "px-0 px-sm-2 px-md-3" : "")
+						@(Model.Scan == true ? "mt-4 overflow-y-auto overflow-x-hidden height1000" : "")"
 			 itemprop="articleBody text">
 
 			@* инфо вверху страницы *@
-			<div class="@((Model.PageNumber == 0 || Model.Audio == true) ? "d-none" : "")">
+			<div class="@((Model.PageNumber != 0 && Model.Audio != true && Model.Scan != true) ? "" : "d-none")">
 
 				<div class="mb-4 top_page d-print-none">
 
 					@* иконка аудио *@
-					<a class="@((Model.TextForBookOrArticle != null && Model.TextForBookOrArticle.AudioInfoModel != null) ? "" : "d-none")"
+					<a class="@(Model.TextForBookOrArticle!.AudioInfoModel != null ? "" : "d-none")"
 					   asp-area=""
 					   asp-controller="Books"
 					   asp-action="Book"
 					   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText"
-					   asp-route-pageNumber="@Model.TextForBookOrArticle?.AudioInfoModel?.SequenceNumber"
+					   asp-route-pageNumber="@Model.TextForBookOrArticle.AudioInfoModel?.SequenceNumber"
 					   asp-route-audio="true"
 					   title="аудиокнига">
 
@@ -113,8 +159,9 @@
 
 					</a>
 
+
 					@* иконка видео *@
-					<a class="@(Model.BookOrArticle.VideoForBookOrArticle == null ? "d-none" : "")"
+					<a class="@(Model.BookOrArticle.VideoForBookOrArticle != null ? "" : "d-none")"
 					   asp-area=""
 					   asp-controller="AllVideo"
 					   asp-action="Movie"
@@ -150,9 +197,25 @@
 			</div>
 
 			@* текст статьи *@
-			<div class="minheight900 times-new-roman">
+			<div class="@(Model.Audio == false ? "minheight900 times-new-roman" : "d-none") ">
 
 				@Html.Raw(Model.HtmlText)
+
+			</div>
+
+			@* аудиокнига *@
+			<div class="@(Model.Audio == true ? "minheight900 times-new-roman" : "d-none") ">
+
+				@* <p class="@(string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel?.CaptionOfTextInAudioFile) ? "d-none" : "text-center fs-3 fw-bold")">
+					@Model.TextForBookOrArticle.AudioInfoModel?.CaptionOfTextInAudioFile
+				</p>
+
+				<p class="@(Model.TextForBookOrArticle.AudioInfoModel.AudioBookModel != null ? "d-none" : "text-center fs-3 fw-bold")">
+					читает @Model.TextForBookOrArticle.AudioInfoModel.AudioBookModel.ActorOfAudioBook
+				</p> *@
+
+
+
 
 			</div>
 
@@ -160,12 +223,12 @@
 			<footer class="@((Model.Scan == true || Model.PageNumber == 0) ? "d-none" : "mt-3 footer_page")">
 
 				@* иконка аудио *@
-				<a class="@((Model.TextForBookOrArticle != null && Model.TextForBookOrArticle.AudioInfoModel != null) ? "" : "d-none")"
+				<a class="@(Model.TextForBookOrArticle!.AudioInfoModel != null ? "d-print-none" : "d-none")"
 				   asp-area=""
 				   asp-controller="Books"
 				   asp-action="Book"
 				   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText"
-				   asp-route-pageNumber="@Model.TextForBookOrArticle?.AudioInfoModel?.SequenceNumber"
+				   asp-route-pageNumber="@Model.TextForBookOrArticle.AudioInfoModel?.SequenceNumber"
 				   asp-route-audio="true"
 				   title="аудиокнига">
 
@@ -176,7 +239,7 @@
 				</a>
 
 				@* иконка видео *@
-				<a class="@(Model.BookOrArticle.VideoForBookOrArticle == null ? "d-none" : "")"
+				<a class="@(Model.BookOrArticle.VideoForBookOrArticle != null ? "d-print-none" : "d-none")"
 				   asp-area=""
 				   asp-controller="AllVideo"
 				   asp-action="Movie"
@@ -192,7 +255,7 @@
 				</a>
 
 				@* иконка принтера *@
-				<a class=""
+				<a class="d-print-none"
 				   href="javascript:window.print(); void 0;"
 				   title="распечатать страницу">
 
@@ -212,10 +275,10 @@
 		</div>
 
 		@* кадры справа *@
-		<div class="d-none d-md-block col-2 mx-auto overflow-y-auto overflow-x-hidden height1000">
+		@if (Model.FramesAroundMainContent.FramesOnTheRight.Length > 0)
+		{
+			<div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
 
-			@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheRight != null)
-			{
 				@foreach (var item in Model.FramesAroundMainContent.FramesOnTheRight)
 				{
 					@* Вывод фотографии в отдельное окно *@
@@ -237,9 +300,14 @@
 
 					</a>
 				}
-			}
 
-		</div>
+			</div>
+		}
+		else
+		{
+			<div class="col-2 d-none d-md-block"></div>
+		}
+
 
 	</div>
 
@@ -247,7 +315,7 @@
 	<div class="@(Model.PageNumber == 0 ? "d-none" : "col col-md-8 maxwidth700px mt-4 mb-0 mx-auto clearfix d-print-none")">
 
 		@* переход к предыдущей странице*@
-		<a class="@((Model.PageNumber > 1) ? " btn btn-outline-primary py-1 float-start shadw" : "d-none")"
+		<a class="@((Model.PageNumber > 1 && Model.Scan != true) ? " btn btn-outline-primary py-1 float-start shadw" : "d-none")"
 		   asp-area=""
 		   asp-controller="Books"
 		   asp-action="Book"
@@ -263,7 +331,7 @@
 		</a>
 
 		@* переход к следующей странице*@
-		<a class="@((Model.PageNumber < Model.BookOrArticle.NumberOfPages) ? "btn btn-outline-primary py-1 float-end shadw" : "d-none")"
+		<a class="@((Model.PageNumber < Model.BookOrArticle.NumberOfPages && Model.Scan != true) ? "btn btn-outline-primary py-1 float-end shadw" : "d-none")"
 		   asp-area=""
 		   asp-controller="Books"
 		   asp-action="Book"
@@ -282,7 +350,7 @@
 
 	@* раскрывающиеся поля *@
 	<div id="accordionForBook"
-		 class="@(Model.PageNumber == 0 ? "d-none" : "accordion maxwidth700px mx-auto mt-4 d-print-none")">
+		 class="@(Model.PageNumber == 0 || Model.Audio == true ? "d-none" : "accordion maxwidth700px mx-auto mt-4 d-print-none")">
 
 		@* страницы книги *@
 		<div class="accordion-item my-3 shadw">
@@ -298,10 +366,7 @@
 
 			</h2>
 
-			<div id="PagesOfBook"
-				 class="accordion-collapse collapse p-2 py-3"
-				 aria-labelledby="headingPagesOfBook"
-				 data-bs-parent="#accordionForBook">
+			<div id="PagesOfBook" class="accordion-collapse collapse p-2 py-3" aria-labelledby="headingPagesOfBook" data-bs-parent="#accordionForBook">
 
 				@for (int i = 0; i < Model.BookOrArticle.NumberOfPages; i++)
 				{
@@ -310,7 +375,7 @@
 					   asp-action="Book"
 					   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
 					   asp-route-pagenumber="@(i+1)"
-					   class="ref-to-page rounded ten @(Model.PageNumber == (i+1) ? "border border-primary border-2" : "border border-1 border-secondary")"
+					   class="ref-to-page shadw @(Model.PageNumber == (i+1) ? "text-primary border border-danger" : "")"
 					   title="страница @(i + 1)"
 					   itemprop="url">
 
@@ -359,40 +424,58 @@
 					<div class="row row-cols-3 g-1 g-sm-2 justify-content-center">
 
 						@* текст в формате word *@
-						<a class="@(Model.BookOrArticle.RefToWordDoc == null ? "d-none" : "")"
-						   href="@Model.BookOrArticle.RefToWordDoc"
-						   title="скачать в формате word"
-						   onClick="this.target='_blank'">
+						@if (Model.BookOrArticle.RefToWordDoc != null)
+						{
+							<a href="@Model.BookOrArticle.RefToWordDoc"
+							   title="скачать в формате word"
+							   onClick="this.target='_blank'">
 
-							<vc:view-image image-id="562a0cbc-54fb-4059-1187-08dd8ec59a70"
-										   css-class="col shadw imageref"
-										   icon-type="webicon300" />
+								<vc:view-image image-id="562a0cbc-54fb-4059-1187-08dd8ec59a70"
+											   css-class="col shadw imageref"
+											   icon-type="webicon300" />
 
-						</a>
+							</a>
+						}
+						else
+						{
+						}
+
 
 						@* текст в формате pdf *@
-						<a class="@(Model.BookOrArticle.RefToPdf == null ? "d-none" : "")"
-						   href="@Model.BookOrArticle.RefToPdf"
-						   title="скачать в формате pdf"
-						   onClick="this.target='_blank'">
+						@if (Model.BookOrArticle.RefToPdf != null)
+						{
+							<a href="@Model.BookOrArticle.RefToPdf"
+							   title="скачать в формате pdf"
+							   onClick="this.target='_blank'">
 
-							<vc:view-image image-id="63b93d4a-6f6f-43f9-1188-08dd8ec59a70"
-										   css-class="col shadw imageref"
-										   icon-type="webicon300" />
+								<vc:view-image image-id="63b93d4a-6f6f-43f9-1188-08dd8ec59a70"
+											   css-class="col shadw imageref"
+											   icon-type="webicon300" />
 
-						</a>
+							</a>
+						}
+						else
+						{
+						}
+
 
 						@* аудиокнига *@
-						<a class="@(Model.BookOrArticle.RefToAudio == null ? "d-none" : "")"
-						   href="@Model.BookOrArticle.RefToAudio"
-						   title="скачать аудиокнигу"
-						   onClick="this.target='_blank'">
+						@if (Model.BookOrArticle.RefToAudio != null)
+						{
+							<a href="@Model.BookOrArticle.RefToAudio"
+							   title="скачать аудиокнигу"
+							   onClick="this.target='_blank'">
 
-							<vc:view-image image-id="84c9851e-7b45-4bd1-1189-08dd8ec59a70"
-										   css-class="col shadw imageref"
-										   icon-type="webicon300" />
+								<vc:view-image image-id="84c9851e-7b45-4bd1-1189-08dd8ec59a70"
+											   css-class="col shadw imageref"
+											   icon-type="webicon300" />
 
-						</a>
+							</a>
+						}
+						else
+						{
+						}
+
 
 					</div>
 
@@ -406,31 +489,23 @@
 		<div class="@((Model.ListOfPictures != null && Model.ListOfPictures.Count > 0) ? "accordion-item my-3 shadw" : "d-none")">
 
 			@* заголовок группы «фото из книги» *@
-			<h2 id="headingPhoto" class="accordion-header">
+			<h2 class="accordion-header" id="headingPhoto">
 
-				<button class="accordion-button collapsed py-1 stranicy"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#Photo"
-						aria-expanded="true"
-						aria-controls="Photo">
+				<button class="accordion-button collapsed py-1 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#Photo" aria-expanded="true" aria-controls="Photo">
 
 					<span class="d-none d-sm-block me-2">Фото из книги :</span>
 
-					@if (Model.ListOfPictures != null && Model.ListOfPictures.Count > 0)
+					@do
 					{
-						@do
-						{
-							Random rnd = new();
-							int rndIndex = rnd.Next(Model.ListOfPictures.Count);
+						Random rnd = new();
+						int rndIndex = rnd.Next(Model.ListOfPictures.Count);
 
-							<vc:view-image image-id="@Model.ListOfPictures[rndIndex].ImageFileModelId"
-										   css-class="maxwidth40px p-0 me-2"
-										   icon-type="webicon100" />
-							n++;
-						}
-						while (n < Model.ListOfPictures.Count && n < 5);
+						<vc:view-image image-id="@Model.ListOfPictures[rndIndex].ImageFileModelId"
+									   css-class="maxwidth40px p-0 me-2"
+									   icon-type="webicon100" />
+						n++;
 					}
+					while (n < Model.ListOfPictures.Count && n < 5);
 
 				</button>
 
@@ -443,23 +518,19 @@
 					@* <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-2 pb-2 justify-content-center"> - для «webicon200» *@
 					<div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4 pb-2 justify-content-center">
 
-						@if (Model.ListOfPictures != null)
+						@foreach (var item in Model.ListOfPictures)
 						{
+							<a asp-area=""
+							   asp-controller="Books"
+							   asp-action="PhotoAlbum"
+							   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
+							   asp-route-imageId="@item.ImageFileModelId"
+							   class="col w-auto rounded-3 text-center">
 
-							@foreach (var item in Model.ListOfPictures)
-							{
-								<a asp-area=""
-								   asp-controller="Books"
-								   asp-action="PhotoAlbum"
-								   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
-								   asp-route-imageId="@item.ImageFileModelId"
-								   class="col w-auto rounded-3 text-center">
-
-									<vc:view-image image-id="@item.ImageFileModelId.ToString()"
-												   css-class="rounded-3 shadw imageref"
-												   icon-type="webicon100" />
-								</a>
-							}
+								<vc:view-image image-id="@item.ImageFileModelId.ToString()"
+											   css-class="rounded-3 shadw imageref"
+											   icon-type="webicon100" />
+							</a>
 						}
 
 					</div>
@@ -471,9 +542,7 @@
 		</div>
 
 		@* аудио *@
-		<div class="@((Model.TextForBookOrArticle != null
-									   && Model.TextForBookOrArticle.AudioInfoModel != null
-									   && !string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel.PlayerPodsterFm)) ? "accordion-item my-3 shadw" : "d-none")">
+		<div class="@(Model.TextForBookOrArticle?.AudioInfoModel == null ? "d-none" : "accordion-item my-3 shadw")">
 
 			@* заголовок группы «Аудио» *@
 			<h2 class="accordion-header" id="headingAudioForPage">

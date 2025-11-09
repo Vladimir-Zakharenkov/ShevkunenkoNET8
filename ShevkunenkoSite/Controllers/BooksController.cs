@@ -12,137 +12,130 @@ public class BooksController(
 
     public IActionResult Index() => View();
 
-    public async Task<IActionResult> Book(string? bookCaption, int? pageNumber, bool? scan)
+    public async Task<IActionResult> Book(string? bookCaption, int? pageNumber, bool? audio)
     {
-        if (scan == null)
+        #region Если параметр audio = null
+
+        if (audio == null) audio = false;
+
+        #endregion
+
+        ArticleViewModel articleViewModel = new();
+
+        #region Audio
+
+        articleViewModel.Audio = audio;
+
+        #endregion
+
+        if (audio == true)
         {
-            scan = false;
+            return View("Audio", articleViewModel);
         }
-
-        if (bookCaption != null
-            && await articleContext.BooksAndArticles.Where(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).AnyAsync()
-            && pageNumber > -1
-            && pageNumber <= articleContext.BooksAndArticles.First(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).NumberOfPages
-            )
+        else
         {
-            var bookModel = await articleContext.BooksAndArticles.FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
-
-            #region Если есть только скан
-
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId).AnyAsync() & scan == true)
+            if (bookCaption != null
+                && await articleContext.BooksAndArticles
+                        .Where(article => article.CaptionOfText == bookCaption.Replace('-', ' '))
+                        .AnyAsync()
+                && pageNumber > -1
+                && pageNumber <= articleContext.BooksAndArticles
+                        .First(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).NumberOfPages
+                )
             {
-                ArticleViewModel scanForArticle = new()
-                {
-                    BookOrArticle = await articleContext.BooksAndArticles
-                       .Include(logo => logo.LogoOfArticle)
-                       .Include(scan => scan.ScanOfArticle)
-                       .Include(movie => movie.VideoForBookOrArticle)
-                       .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' ')),
+                #region Экземпляр книги (статьи)
 
-                    PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
-
-                    HtmlText = null,
-
-                    PageNumber = null,
-
-                    Scan = true
-                };
-
-                return View("Book", scanForArticle);
-            }
-
-            #endregion
-
-            #region Если для статьи или книги отсутствует текст
-
-            if (!await textContext.Texts.Where(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId & text.SequenceNumber == pageNumber).AnyAsync())
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            var textForBookOrArticle = await textContext.Texts.FirstAsync(text => text.BooksAndArticlesModelId == bookModel.BooksAndArticlesModelId & text.SequenceNumber == pageNumber);
-
-            if (!System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            #endregion
-
-            #region Экземпляр  книги или статьи
-
-            var bookOrArticleItem = await articleContext.BooksAndArticles
+                articleViewModel.BookOrArticle = await articleContext.BooksAndArticles
                         .Include(logo => logo.LogoOfArticle)
                         .Include(scan => scan.ScanOfArticle)
                         .Include(movie => movie.VideoForBookOrArticle)
                         .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
 
-            #endregion
+                #endregion
 
-            #region Html текст
+                #region Экземпляр текста
 
-            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textForBookOrArticle.FolderForText + textForBookOrArticle.HtmlFileName);
+                if (await textContext.Texts
+                    .Where(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber)
+                    .AnyAsync())
+                {
+                    articleViewModel.TextForBookOrArticle = await textContext.Texts
+                        .Include(audio => audio.AudioInfoModel)
+                        .FirstAsync(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber);
 
-            var textWithMarkUp = htmlText.ReadToEnd();
+                    #region HTML текст
 
-            #endregion
+                    if (System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName))
+                    {
+                        using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName);
 
-            #region Кадры слева и справа
+                        articleViewModel.HtmlText = htmlText.ReadToEnd();
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
 
-            FramesAroundMainContentModel framesAroundMainContent = new();
+                    #endregion
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
 
-            var imageItems = await imageFileContext.ImageFiles
-                .Where(img => img.SearchFilter.ToLower().Contains(bookOrArticleItem.CaptionOfText.Replace(' ', '-').ToLower()))
-                .ToArrayAsync();
+                #endregion
 
-            imageItems = [.. imageItems.Shuffle()];
+                #region Фото из книги - фото слева и справа от текста
 
-            if (imageItems.Length > 1)
-            {
-                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                if (await imageFileContext.ImageFiles
+                    .Where(img => img.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
+                    .AnyAsync())
+                {
+                    var listOfPictures = from m in imageFileContext.ImageFiles
+                       .Where(p => p.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
+                       .OrderBy(p => p.SortOfPicture)
+                                         select m;
+
+                    articleViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
+
+                    if (articleViewModel.ListOfPictures.Count > 1)
+                    {
+                        articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. articleViewModel.ListOfPictures.Take(articleViewModel.ListOfPictures.Count / 2)],
+                            FramesOnTheRight = [.. articleViewModel.ListOfPictures.Skip(articleViewModel.ListOfPictures.Count / 2)]
+                        };
+                    }
+                    else
+                    {
+                        articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. articleViewModel.ListOfPictures],
+                            FramesOnTheRight = [.. articleViewModel.ListOfPictures]
+                        };
+                    }
+                }
+
+                #endregion
+
+                #region Номер текущей страницы
+
+                articleViewModel.PageNumber = pageNumber;
+
+                #endregion
+
+                #region Информация о старнице
+
+                articleViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
+
+                #endregion
+
+                return View("Book", articleViewModel);
             }
-
-            #endregion
-
-            #region Фото из книги
-
-            List<ImageFileModel>? listOfPictures = null;
-
-            if (await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).AnyAsync())
+            else
             {
-                //listOfPictures = await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(bookOrArticleItem.CaptionOfText)).ToListAsync();
-
-                var listOfPictures2 = from m in imageFileContext.ImageFiles
-                   .Where(p => p.SearchFilter.Contains(bookOrArticleItem.CaptionOfText.Replace(' ', '-') + "#album#"))
-                   .OrderBy(p => p.SortOfPicture)
-                                      select m;
-
-                listOfPictures = [.. listOfPictures2.AsEnumerable()];
+                return RedirectToAction(nameof(Index));
             }
-
-            #endregion
-
-            #region ViewModel
-
-            ArticleViewModel bookOrArticle = new()
-            {
-                BookOrArticle = bookOrArticleItem,
-                PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext),
-                HtmlText = textWithMarkUp,
-                PageNumber = pageNumber,
-                Scan = scan,
-                FramesAroundMainContent = framesAroundMainContent,
-                ListOfPictures = listOfPictures
-            };
-
-            #endregion
-
-            return View("Book", bookOrArticle);
-        }
-        else
-        {
-            return RedirectToAction(nameof(Index));
         }
     }
 
