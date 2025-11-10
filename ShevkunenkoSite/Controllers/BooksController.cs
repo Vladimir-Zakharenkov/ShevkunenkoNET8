@@ -6,140 +6,138 @@ public class BooksController(
     IPageInfoRepository pageContext,
     IImageFileRepository imageFileContext,
     IAudioBookRepository audioBookContext,
+    IAudioInfoRepository audioFileContext,
     IWebHostEnvironment hostEnvironment) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
 
     public IActionResult Index() => View();
 
-    public async Task<IActionResult> Book(string? bookCaption, int? pageNumber, bool? audio)
+    public async Task<IActionResult> Book(string? bookCaption, int? pageNumber)
     {
-        #region Если параметр audio = null
+        #region Проверка наличия книги с таким названием
 
-        if (audio == null) audio = false;
+        if (bookCaption == null
+            || bookCaption is not string
+            || !await articleContext.BooksAndArticles
+                        .Where(article => article.CaptionOfText == bookCaption.Replace('-', ' '))
+                        .AnyAsync())
+        {
+            return RedirectToAction(nameof(Index));
+        }
 
         #endregion
+
+        #region Инициализация ViewModel
 
         ArticleViewModel articleViewModel = new();
 
-        #region Audio
+        #endregion
 
-        articleViewModel.Audio = audio;
+        #region Экземпляр книги (статьи)
+
+        articleViewModel.BookOrArticle = await articleContext.BooksAndArticles
+                .Include(logo => logo.LogoOfArticle)
+                .Include(scan => scan.ScanOfArticle)
+                .Include(movie => movie.VideoForBookOrArticle)
+                .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
 
         #endregion
 
-        if (audio == true)
+        #region Если страница указана не верно
+
+        if (pageNumber == null
+            || pageNumber is not int
+            || pageNumber < 0
+            || pageNumber > articleViewModel.BookOrArticle.NumberOfPages)
         {
-            return View("Audio", articleViewModel);
+            return RedirectToAction(nameof(Book), new { bookCaption, pageNumber = 0 });
+        }
+
+        #endregion
+
+        #region Номер текущей страницы
+
+        articleViewModel.PageNumber = pageNumber;
+
+        #endregion
+
+        #region Экземпляр текста для текущей страницы
+
+        if (await textContext.Texts
+            .Where(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber)
+            .AnyAsync())
+        {
+            articleViewModel.TextForBookOrArticle = await textContext.Texts
+                .Include(audio => audio.AudioInfoModel)
+                .FirstAsync(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber);
         }
         else
         {
-            if (bookCaption != null
-                && await articleContext.BooksAndArticles
-                        .Where(article => article.CaptionOfText == bookCaption.Replace('-', ' '))
-                        .AnyAsync()
-                && pageNumber > -1
-                && pageNumber <= articleContext.BooksAndArticles
-                        .First(article => article.CaptionOfText == bookCaption.Replace('-', ' ')).NumberOfPages
-                )
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region HTML текст
+
+        if (System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName))
+        {
+            using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName);
+
+            articleViewModel.HtmlText = htmlText.ReadToEnd();
+        }
+        else
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Информация о старнице сайта
+
+        articleViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
+
+        #endregion
+
+        #region Фото из книги - Фото слева и справа от текста
+
+        if (await imageFileContext.ImageFiles
+            .Where(img => img.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
+            .AnyAsync())
+        {
+            var listOfPictures = from m in imageFileContext.ImageFiles
+               .Where(p => p.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
+               .OrderBy(p => p.SortOfPicture)
+                                 select m;
+
+            articleViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
+
+            if (articleViewModel.ListOfPictures.Count > 1)
             {
-                #region Экземпляр книги (статьи)
-
-                articleViewModel.BookOrArticle = await articleContext.BooksAndArticles
-                        .Include(logo => logo.LogoOfArticle)
-                        .Include(scan => scan.ScanOfArticle)
-                        .Include(movie => movie.VideoForBookOrArticle)
-                        .FirstAsync(article => article.CaptionOfText == bookCaption.Replace('-', ' '));
-
-                #endregion
-
-                #region Экземпляр текста
-
-                if (await textContext.Texts
-                    .Where(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber)
-                    .AnyAsync())
+                articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
                 {
-                    articleViewModel.TextForBookOrArticle = await textContext.Texts
-                        .Include(audio => audio.AudioInfoModel)
-                        .FirstAsync(text => text.BooksAndArticlesModelId == articleViewModel.BookOrArticle.BooksAndArticlesModelId & text.SequenceNumber == pageNumber);
-
-                    #region HTML текст
-
-                    if (System.IO.File.Exists(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName))
-                    {
-                        using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + articleViewModel.TextForBookOrArticle.FolderForText + articleViewModel.TextForBookOrArticle.HtmlFileName);
-
-                        articleViewModel.HtmlText = htmlText.ReadToEnd();
-                    }
-                    else
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-
-                    #endregion
-                }
-                else
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                #endregion
-
-                #region Фото из книги - фото слева и справа от текста
-
-                if (await imageFileContext.ImageFiles
-                    .Where(img => img.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
-                    .AnyAsync())
-                {
-                    var listOfPictures = from m in imageFileContext.ImageFiles
-                       .Where(p => p.SearchFilter.Contains(articleViewModel.BookOrArticle.CaptionOfText.Replace(' ', '-') + "#album#"))
-                       .OrderBy(p => p.SortOfPicture)
-                                         select m;
-
-                    articleViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
-
-                    if (articleViewModel.ListOfPictures.Count > 1)
-                    {
-                        articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
-                        {
-                            FramesOnTheLeft = [.. articleViewModel.ListOfPictures.Take(articleViewModel.ListOfPictures.Count / 2)],
-                            FramesOnTheRight = [.. articleViewModel.ListOfPictures.Skip(articleViewModel.ListOfPictures.Count / 2)]
-                        };
-                    }
-                    else
-                    {
-                        articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
-                        {
-                            FramesOnTheLeft = [.. articleViewModel.ListOfPictures],
-                            FramesOnTheRight = [.. articleViewModel.ListOfPictures]
-                        };
-                    }
-                }
-
-                #endregion
-
-                #region Номер текущей страницы
-
-                articleViewModel.PageNumber = pageNumber;
-
-                #endregion
-
-                #region Информация о старнице
-
-                articleViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
-
-                #endregion
-
-                return View("Book", articleViewModel);
+                    FramesOnTheLeft = [.. articleViewModel.ListOfPictures.Take(articleViewModel.ListOfPictures.Count / 2)],
+                    FramesOnTheRight = [.. articleViewModel.ListOfPictures.Skip(articleViewModel.ListOfPictures.Count / 2)]
+                };
             }
             else
             {
-                return RedirectToAction(nameof(Index));
+                articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+                {
+                    FramesOnTheLeft = [.. articleViewModel.ListOfPictures],
+                    FramesOnTheRight = [.. articleViewModel.ListOfPictures]
+                };
             }
         }
+
+        #endregion
+
+        return View("Book", articleViewModel);
+
     }
 
-    public async Task<IActionResult> AudioBook(string? audioBookCaption, int? audioBookPart)
+    public async Task<IActionResult> AudioBook(string? audioBookCaption, int? audioBookPart, string? audioActor)
     {
         AudioBookModel audioBook = await audioBookContext.AudioBooks
             .Include(include => include.BookForAudioBook)

@@ -80,14 +80,14 @@
 				<br class="d-lg-none" />
 				<span>
 					«@Model.BookOrArticle.CaptionOfText»
-				</span>
+				@* </span>
 				@if (Model.Audio == true)
 				{
 					<br />
 					<br />
 					<span class="fs-3 fw-normal">
 						Аудиокнига
-					</span>
+					</span> *@
 				}
 			</h1>
 		}
@@ -139,7 +139,7 @@
 			 itemprop="articleBody text">
 
 			@* инфо вверху страницы *@
-			<div class="@((Model.PageNumber != 0 && Model.Audio != true && Model.Scan != true) ? "" : "d-none")">
+			<@* div class="@((Model.PageNumber != 0 && Model.Audio != true && Model.Scan != true) ? "" : "d-none")"> *@
 
 				<div class="mb-4 top_page d-print-none">
 
@@ -197,14 +197,14 @@
 			</div>
 
 			@* текст статьи *@
-			<div class="@(Model.Audio == false ? "minheight900 times-new-roman" : "d-none") ">
+			@* <div class="@(Model.Audio == false ? "minheight900 times-new-roman" : "d-none") "> *@
 
 				@Html.Raw(Model.HtmlText)
 
 			</div>
 
 			@* аудиокнига *@
-			<div class="@(Model.Audio == true ? "minheight900 times-new-roman" : "d-none") ">
+			@* <div class="@(Model.Audio == true ? "minheight900 times-new-roman" : "d-none") "> *@
 
 				@* <p class="@(string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel?.CaptionOfTextInAudioFile) ? "d-none" : "text-center fs-3 fw-bold")">
 					@Model.TextForBookOrArticle.AudioInfoModel?.CaptionOfTextInAudioFile
@@ -350,7 +350,7 @@
 
 	@* раскрывающиеся поля *@
 	<div id="accordionForBook"
-		 class="@(Model.PageNumber == 0 || Model.Audio == true ? "d-none" : "accordion maxwidth700px mx-auto mt-4 d-print-none")">
+		 class="@* @(Model.PageNumber == 0 || Model.Audio == true ? "d-none" : "accordion maxwidth700px mx-auto mt-4 d-print-none") *@">
 
 		@* страницы книги *@
 		<div class="accordion-item my-3 shadw">

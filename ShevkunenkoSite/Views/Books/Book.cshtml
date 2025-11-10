@@ -93,7 +93,7 @@
 			 itemprop="articleBody text">
 
 			@* инфо вверху страницы *@
-			<div class="@((Model.PageNumber == 0 || Model.Audio == true) ? "d-none" : "")">
+			<div class="@(Model.PageNumber == 0 ? "d-none" : "")">
 
 				<div class="mb-4 top_page d-print-none">
 
@@ -157,7 +157,7 @@
 			</div>
 
 			@* инфо внизу страницы *@
-			<footer class="@((Model.Scan == true || Model.PageNumber == 0) ? "d-none" : "mt-3 footer_page")">
+			<footer class="@(Model.PageNumber == 0 ? "d-none" : "mt-3 footer_page")">
 
 				@* иконка аудио *@
 				<a class="@((Model.TextForBookOrArticle != null && Model.TextForBookOrArticle.AudioInfoModel != null) ? "" : "d-none")"

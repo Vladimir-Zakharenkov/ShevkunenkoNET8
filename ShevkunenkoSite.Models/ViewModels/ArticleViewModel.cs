@@ -20,6 +20,24 @@ public class ArticleViewModel
 
     #endregion
 
+    #region Экземпляр Аудиокниги
+
+    public AudioBookModel? AudioBook { get; set; }
+
+    #endregion
+
+    #region Исполнитель Аудиокниги
+
+    public string? AudioActor { get; set; }
+
+    #endregion
+
+    #region Список аудиофайлов к Аудиокниге
+
+    public List<AudioInfoModel>? AudioFilesForAudioBook { get; set; }
+
+    #endregion
+
     #region Текст с разметкой
 
     public string? HtmlText { get; set; }
@@ -32,15 +50,15 @@ public class ArticleViewModel
 
     #endregion
 
-    #region Скан статьи
+    #region Номер аудиофайла
 
-    public bool? Scan { get; set; }
+    public int? AudioNumber { get; set; }
 
     #endregion
 
-    #region Аудиофайл
+    #region Скан статьи
 
-    public bool? Audio { get; set; }
+    public bool? Scan { get; set; }
 
     #endregion
 
@@ -52,7 +70,7 @@ public class ArticleViewModel
 
     #region Фото из книги
 
-    public List<ImageFileModel>? ListOfPictures {get; set;}
+    public List<ImageFileModel>? ListOfPictures { get; set; }
 
     #endregion
 }
