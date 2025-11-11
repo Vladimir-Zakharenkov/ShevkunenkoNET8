@@ -32,9 +32,9 @@ public class ArticleViewModel
 
     #endregion
 
-    #region Список аудиофайлов к Аудиокниге
+    #region Аудиофайл к экземпляру текста
 
-    public List<AudioInfoModel>? AudioFilesForAudioBook { get; set; }
+    public AudioInfoModel? AudioFileForText { get; set; }
 
     #endregion
 

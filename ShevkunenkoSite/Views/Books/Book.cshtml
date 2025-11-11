@@ -98,13 +98,13 @@
 				<div class="mb-4 top_page d-print-none">
 
 					@* иконка аудио *@
-					<a class="@((Model.TextForBookOrArticle != null && Model.TextForBookOrArticle.AudioInfoModel != null) ? "" : "d-none")"
+					<a class="@((Model.AudioFileForText != null && Model.AudioFileForText.AudioBookModel != null) ? "" : "d-none")"
 					   asp-area=""
 					   asp-controller="Books"
-					   asp-action="Book"
-					   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText"
-					   asp-route-pageNumber="@Model.TextForBookOrArticle?.AudioInfoModel?.SequenceNumber"
-					   asp-route-audio="true"
+					   asp-action="AudioBook"
+					   asp-route-audioBookCaption="@Model.AudioFileForText?.AudioBookModel?.CaptionOfAudioBook"
+					   asp-route-audioBookPart="@Model.AudioFileForText?.SequenceNumber"
+					   asp-route-audioActor="@Model.AudioFileForText?.AudioBookModel?.ActorOfAudioBook"
 					   title="аудиокнига">
 
 						<vc:view-image image-id="2b306319-5e41-424c-f80c-08ddf7c913e1"
@@ -160,13 +160,13 @@
 			<footer class="@(Model.PageNumber == 0 ? "d-none" : "mt-3 footer_page")">
 
 				@* иконка аудио *@
-				<a class="@((Model.TextForBookOrArticle != null && Model.TextForBookOrArticle.AudioInfoModel != null) ? "" : "d-none")"
+				<a class="@((Model.AudioFileForText != null && Model.AudioFileForText.AudioBookModel != null) ? "" : "d-none")"
 				   asp-area=""
 				   asp-controller="Books"
-				   asp-action="Book"
-				   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText"
-				   asp-route-pageNumber="@Model.TextForBookOrArticle?.AudioInfoModel?.SequenceNumber"
-				   asp-route-audio="true"
+				   asp-action="AudioBook"
+				   asp-route-audioBookCaption="@Model.AudioFileForText?.AudioBookModel?.CaptionOfAudioBook"
+				   asp-route-audioBookPart="@Model.AudioFileForText?.SequenceNumber"
+				   asp-route-audioActor="@Model.AudioFileForText?.AudioBookModel?.ActorOfAudioBook"
 				   title="аудиокнига">
 
 					<vc:view-image image-id="2b306319-5e41-424c-f80c-08ddf7c913e1"

@@ -233,7 +233,7 @@ app.MapControllerRoute(
 
 #endregion
 
-#region Страницы книги
+#region Страницы книги и аудиокниги
 
 app.MapControllerRoute(
     name: "pages_of_book",
@@ -241,9 +241,9 @@ app.MapControllerRoute(
     defaults: new { Controller = "Books", Action = "Book" });
 
 app.MapControllerRoute(
-    name: "pages_of_book_content",
-    pattern: "Книга/{bookCaption}",
-    defaults: new { Controller = "Books", Action = "Book", pageNumber = 0 });
+    name: "pages_of_audiobook",
+    pattern: "Аудиокнига/{audioBookCaption}/Часть-{audioBookPart}/Читает-{audioActor}",
+    defaults: new { Controller = "Books", Action = "AudioBook" });
 
 #endregion
 

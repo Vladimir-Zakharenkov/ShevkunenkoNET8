@@ -94,6 +94,22 @@ public class BooksController(
 
         #endregion
 
+        #region Аудиофайл (аудиокнига) связанная с экземпляром текста
+
+        if (articleViewModel.TextForBookOrArticle.AudioInfoModelId != null)
+        {
+            if (await audioFileContext.AudioFiles
+                .Where(audio => audio.AudioInfoModelId == articleViewModel.TextForBookOrArticle.AudioInfoModelId)
+                .AnyAsync())
+            {
+                articleViewModel.AudioFileForText = await audioFileContext.AudioFiles
+                    .Include(abook => abook.AudioBookModel)
+                    .FirstAsync(audio => audio.AudioInfoModelId == articleViewModel.TextForBookOrArticle.AudioInfoModelId);
+            }
+        }
+
+        #endregion
+
         #region Информация о старнице сайта
 
         articleViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
