@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Controllers;
+﻿using ShevkunenkoSite.Models.ViewModels;
+
+namespace ShevkunenkoSite.Controllers;
 
 public class BooksController(
     IBooksAndArticlesRepository articleContext,
@@ -12,6 +14,8 @@ public class BooksController(
     private readonly string rootPath = hostEnvironment.WebRootPath;
 
     public IActionResult Index() => View();
+
+    public IActionResult AudioBookIndex() => View(); // TODO: Написать страницу списка аудиокниг аудиокниг
 
     public async Task<IActionResult> Book(string? bookCaption, int? pageNumber)
     {
@@ -146,6 +150,14 @@ public class BooksController(
                 };
             }
         }
+        else
+        {
+            articleViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+            {
+                FramesOnTheLeft = [],
+                FramesOnTheRight = []
+            };
+        }
 
         #endregion
 
@@ -153,13 +165,168 @@ public class BooksController(
 
     }
 
-    public async Task<IActionResult> AudioBook(string? audioBookCaption, int? audioBookPart, string? audioActor)
+    public async Task<IActionResult> AudioBook(string? audioBookCaption, string? audioActor, int? audioBookPart)
     {
-        AudioBookModel audioBook = await audioBookContext.AudioBooks
-            .Include(include => include.BookForAudioBook)
-            .FirstAsync(audioBook => audioBook.CaptionOfAudioBook == audioBookCaption);
+        #region Проверка наличия аудиокниги с таким названием
 
-        return View(audioBook);
+        if (audioBookCaption == null
+            || audioBookCaption is not string
+            || !await audioBookContext.AudioBooks
+                        .Where(abook => abook.CaptionOfAudioBook == audioBookCaption)
+                        .AnyAsync())
+        {
+            return RedirectToAction(nameof(AudioBookIndex));
+        }
+
+        #endregion
+
+        #region Проверка наличия актера в базе аудиокниг
+
+        if (audioActor == null
+           || audioActor is not string
+           || !await audioBookContext.AudioBooks
+                       .Where(abook => abook.ActorOfAudioBook == audioActor)
+                       .AnyAsync())
+        {
+            return RedirectToAction(nameof(AudioBookIndex));
+        }
+
+        #endregion
+
+        #region Инициализация ViewModel
+
+        ArticleViewModel audioBookViewModel = new();
+
+        #endregion
+
+        #region Экземпляр аудиокниги по названию и актеру
+
+        if (await audioBookContext.AudioBooks
+            .Where(abook => abook.CaptionOfAudioBook == audioBookCaption & abook.ActorOfAudioBook == audioActor)
+            .AnyAsync())
+        {
+            audioBookViewModel.AudioBook = await audioBookContext.AudioBooks
+                .Include(abook => abook.BookForAudioBook)
+                .FirstAsync(abook => abook.CaptionOfAudioBook == audioBookCaption & abook.ActorOfAudioBook == audioActor);
+        }
+        else
+        {
+            return RedirectToAction(nameof(AudioBookIndex));
+        }
+
+        #endregion
+
+        #region Экемпляр связанной книги
+
+        if (audioBookViewModel.AudioBook.BookForAudioBook != null)
+        {
+            audioBookViewModel.BookOrArticle = audioBookViewModel.AudioBook.BookForAudioBook;
+        }
+
+        #endregion
+
+        #region Экземпляр аудиофайла для текущей страницы
+
+        if (audioBookPart is not int
+            || audioBookPart < 1
+            || audioBookPart > audioBookViewModel.AudioBook.NumberOfFiles)
+        {
+            RedirectToAction(nameof(AudioBook), new { audioBookCaption, audioActor, audioBookPart = 1 });
+        }
+        else
+        {
+            audioBookViewModel.AudioNumber = audioBookPart;
+
+            if (await audioFileContext.AudioFiles
+                .Where(audioFile => audioFile.AudioBookModelId == audioBookViewModel.AudioBook.AudioBookModelId
+                                                & audioFile.SequenceNumber == audioBookPart)
+                .AnyAsync())
+            {
+                audioBookViewModel.AudioFileForText = await audioFileContext.AudioFiles
+                    .FirstAsync(audioFile =>
+                                                    audioFile.AudioBookModelId == audioBookViewModel.AudioBook.AudioBookModelId
+                                                    & audioFile.SequenceNumber == audioBookPart);
+            }
+            else
+            {
+                return RedirectToAction(nameof(AudioBookIndex));
+            }
+        }
+
+        #endregion
+
+        #region Информация о старнице сайта
+
+        audioBookViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
+
+        #endregion
+
+        #region Фото из книги - Фото слева и справа от текста
+
+        if (audioBookViewModel.AudioBook.BookForAudioBook != null && await imageFileContext.ImageFiles
+            .Where(img => img.SearchFilter.Contains(audioBookViewModel.AudioBook.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+            .AnyAsync())
+        {
+            var listOfPictures = from m in imageFileContext.ImageFiles
+               .Where(p => p.SearchFilter.Contains(audioBookViewModel.AudioBook.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+               .OrderBy(p => p.SortOfPicture)
+                                 select m;
+
+            audioBookViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
+
+            if (audioBookViewModel.ListOfPictures.Count > 1)
+            {
+                audioBookViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+                {
+                    FramesOnTheLeft = [.. audioBookViewModel.ListOfPictures.Take(audioBookViewModel.ListOfPictures.Count / 2)],
+                    FramesOnTheRight = [.. audioBookViewModel.ListOfPictures.Skip(audioBookViewModel.ListOfPictures.Count / 2)]
+                };
+            }
+            else
+            {
+                audioBookViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+                {
+                    FramesOnTheLeft = [.. audioBookViewModel.ListOfPictures],
+                    FramesOnTheRight = [.. audioBookViewModel.ListOfPictures]
+                };
+            }
+        }
+        else
+        {
+            audioBookViewModel.FramesAroundMainContent = new FramesAroundMainContentModel
+            {
+                FramesOnTheLeft = [],
+                FramesOnTheRight = []
+            };
+        }
+
+        #endregion
+
+        #region Ссылка на текстовую страницу
+
+        // Список текстов ссылающихся на текущий аудиофайл
+        List<TextInfoModel> listOfTexts = [];
+
+        if (await textContext.Texts
+            .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId)
+            .AnyAsync())
+        {
+            listOfTexts = await textContext.Texts
+                .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId)
+                .ToListAsync();
+
+            var firstNumberInTextList = listOfTexts.Any() ? listOfTexts.Min(text => text.SequenceNumber) : 0;
+
+            audioBookViewModel.TextForBookOrArticle = await textContext.Texts
+                .Include(text => text.BooksAndArticlesModel)
+                .FirstAsync(text =>
+                    text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId
+                    & text.SequenceNumber == firstNumberInTextList);
+        }
+
+        #endregion
+
+        return View(audioBookViewModel);
     }
 
     public async Task<IActionResult> PhotoAlbum(Guid? imageId, string? albumCaption, int pageNumber = 1)

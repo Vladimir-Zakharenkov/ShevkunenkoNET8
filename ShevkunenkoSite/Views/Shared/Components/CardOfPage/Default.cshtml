@@ -206,7 +206,7 @@
         else
         {
             <a class="rounded-3 p-0 p-md-1"
-               href="@Url.Content(Model.PageFullPathWithData)"
+               href="@Url.Content(Model.PagePathNickNameWithData != string.Empty ? Model.PagePathNickName : Model.PageFullPathWithData)"
                title="@Model.PageTitle"
                itemprop="url">
 

@@ -1,7 +1,7 @@
 ﻿@{
-    Random randomBackground = new();
+	Random randomBackground = new();
 
-    var backgroundLeftOrRight = randomBackground.Next(100);
+	var backgroundLeftOrRight = randomBackground.Next(100);
 }
 
 <!DOCTYPE html>
@@ -13,50 +13,50 @@
 
 <body>
 
-    <div class="container-fluid container-fluid-1920">
+	<div class="container-fluid container-fluid-1920">
 
-        @* реклама сверху *@
-        <vc:reklama-top />
+		@* реклама сверху *@
+		<vc:reklama-top />
 
-        @* меню вверху сайта *@
-        <vc:menu />
+		@* меню вверху сайта *@
+		<vc:menu />
 
-        <div class="row text-center bg-light">
+		<div class="row text-center bg-light">
 
-            @* фотопленка слева *@
-            <vc:background-foto background=@backgroundLeftOrRight />
+			@* фотопленка слева *@
+			<vc:background-foto background=@backgroundLeftOrRight />
 
-            <main itemprop="mainContentOfPage" class="col pb-3 text-center mx-auto shadw">
+			<main itemprop="mainContentOfPage" class="col pb-3 text-center mx-auto shadw">
 
-                <div class="container-fluid px-0">
+				<div class="container-fluid px-0">
 
-                    @* заголовок и картинка в шапке страницы *@
-                    <vc:page-heading />
+					@* заголовок и картинка в шапке страницы *@
+					<vc:page-heading />
 
-                    @RenderBody()
+					@RenderBody()
 
-                </div>
+				</div>
 
-                @* ссылки на связанные по теме страницы *@
-                <vc:ref-pages />
+				@* ссылки на связанные по теме страницы, книги, фильмы *@
+				<vc:ref-pages />
 
-            </main>
+			</main>
 
-            @* фотопленка справа *@
-            <vc:background-foto background=@backgroundLeftOrRight+1 />
+			@* фотопленка справа *@
+			<vc:background-foto background=@backgroundLeftOrRight + 1 />
 
-        </div>
+		</div>
 
-        <vc:counters />
+		<vc:counters />
 
-        @* реклама снизу *@
-        <vc:reklama-bottom />
+		@* реклама снизу *@
+		<vc:reklama-bottom />
 
-    </div>
+	</div>
 
-    <partial name="_FooterScriptsPartial" />
+	<partial name="_FooterScriptsPartial" />
 
-    @await RenderSectionAsync("Scripts", required: false)
+	@await RenderSectionAsync("Scripts", required: false)
 
 </body>
 

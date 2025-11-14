@@ -4,7 +4,7 @@ namespace ShevkunenkoSite.Models.DataModels;
 
 public class PageInfoModel
 {
-    #region Список областей (Area)
+    #region Список областей (Area) (NotMapped)
 
     [NotMapped]
     public string[] AreaItems =
@@ -223,6 +223,26 @@ public class PageInfoModel
 
     #region Связанные фотографии, страницы и видео
 
+    #region Ссылки на страницы
+
+    #region Включить ссылки на страницы по текстовому фильтру
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки на страницы :")]
+    public bool PageLinksByFilters { get; set; } = false;
+
+    #endregion
+
+    #region Строка фильтров страниц сайта, для формирования ссылок на них
+
+    [Display(Name = "Фильтры поиска страниц :")]
+    [DataType(DataType.Text)]
+    public string? PageFilterOut { get; set; }
+
+    #endregion
+
+    #endregion
+
     #region Ссылки на связанные фото
 
     #region Включить ссылки на фото
@@ -233,55 +253,11 @@ public class PageInfoModel
 
     #endregion
 
-    #region Список фильтров фото, для формирования ссылок на них
+    #region Строка фильтров фото, для формирования ссылок на них
 
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Фильтры поиска фото :")]
     [DataType(DataType.Text)]
-    public string PhotoFilterOut { get; set; } = string.Empty;
-
-    #endregion
-
-    #endregion
-
-    #region Ссылки по списку GUID1
-
-    #region Включить ссылки по GUID1
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки по GUID (1) :")]
-    public bool PageLinks { get; set; } = false;
-
-    #endregion
-
-    #region Список GUID1 страниц
-
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки по GUID (1) :")]
-    public string RefPages { get; set; } = string.Empty;
-
-    #endregion
-
-    #endregion
-
-    #region Ссылки по GUID2
-
-    #region Включить ссылки по GUID2
-
-    [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки по GUID (2) :")]
-    public bool PageLinks2 { get; set; } = false;
-
-    #endregion
-
-    #region Список GUID2 страниц
-
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Ссылки по GUID (2) :")]
-    public string RefPages2 { get; set; } = string.Empty;
+    public string? PhotoFilterOut { get; set; }
 
     #endregion
 
@@ -297,35 +273,49 @@ public class PageInfoModel
 
     #endregion
 
-    #region Список фильтров видео, для формирования ссылок на них
+    #region Строка фильтров видео, для формирования ссылок на них
 
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Фильтры поиска видео :")]
     [DataType(DataType.Text)]
-    public string VideoFilterOut { get; set; } = string.Empty;
+    public string? VideoFilterOut { get; set; }
 
     #endregion
 
     #endregion
 
-    #region Ссылки на страницы
+    #region Ссылки GUID1
 
-    #region Включить ссылки на страницы по текстовому фильтру
+    #region Включить ссылки по GUID1
 
     [Required(ErrorMessage = "Выберите значение")]
-    [Display(Name = "Ссылки на страницы :")]
-    public bool PageLinksByFilters { get; set; } = false;
+    [Display(Name = "Ссылки по GUID (1) :")]
+    public bool PageLinks { get; set; } = false;
 
     #endregion
 
-    #region Список фильтров страниц сайта, для формирования ссылок на них
+    #region Строка GUID1 страниц
 
-    [Required(AllowEmptyStrings = true)]
-    [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтры поиска страниц :")]
-    [DataType(DataType.Text)]
-    public string PageFilterOut { get; set; } = string.Empty;
+    [Display(Name = "Ссылки по GUID (1) :")]
+    public string? RefPages { get; set; }
+
+    #endregion
+
+    #endregion
+
+    #region Ссылки по GUID2
+
+    #region Включить ссылки по GUID2
+
+    [Required(ErrorMessage = "Выберите значение")]
+    [Display(Name = "Ссылки по GUID (2) :")]
+    public bool PageLinks2 { get; set; } = false;
+
+    #endregion
+
+    #region Строка GUID2 страниц
+
+    [Display(Name = "Ссылки по GUID (2) :")]
+    public string? RefPages2 { get; set; }
 
     #endregion
 

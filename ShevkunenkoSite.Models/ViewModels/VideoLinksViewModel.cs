@@ -8,7 +8,7 @@ public class VideoLinksViewModel
 
     #endregion
 
-    #region ВИд изображения ссылки (true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео)
+    #region Вид изображения ссылки (true -> картинку для видео, false -> постер для видео, null -> картинка для страницы видео)
 
     public bool? IsImage { get; set; }
 
