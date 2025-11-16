@@ -179,6 +179,24 @@
         }
 
 
+        @if (Model.OgType == "audiobook")
+        {
+            <span itemscope itemtype="http://schema.org/Audiobook">
+
+                <meta itemprop="author" content="@Model.AudioInfo?.AuthorOfText.">
+                <meta itemprop="name" content="Москва бандитская. Вместо предисловия">
+                <meta itemprop="transcript" content="Аудиокнига Николая Модестова Москва бандитская. Вместо предисловия">
+                <meta itemprop="duration" content="T00H07M55S">
+                <meta itemprop="bitrate" content="96 kbps">
+                <meta itemprop="contentSize" content="5.43 MB">
+                <meta itemprop="encodingFormat" content="mp3">
+                <meta itemprop="uploadDate" content="2019-04-18">
+                <meta itemprop="description" content="Книга российского журналиста Николая Модестова - попытка приоткрыть завесу над преступной деятельностью самых известных бандитских группировок 90-х годов. История чеченской группировки. Банда ступинских &quot;беспредельщиков&quot;. Кто убивает воров в законе? Куда идет Россия? Криминальный прогноз.">
+                <link itemprop="contentUrl" href="http://vladimirz.asuscomm.com/vrt-audio/modestov1/predislovie.mp3">
+
+            </span>
+        }
+
         @if (Model.OgType == "book" && Model.BooksAndArticles != null)
         {
             <a asp-area=""

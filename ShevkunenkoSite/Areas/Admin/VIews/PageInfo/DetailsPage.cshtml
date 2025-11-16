@@ -1048,19 +1048,31 @@
             <div class="accordion-item mb-3 shadw">
 
                 <h2 id="headingPageFilter" class="accordion-header shadw">
-                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageFilter" aria-expanded="true" aria-controls="PageFilter">
+
+                    <button class="accordion-button collapsed py-0 stranicy" 
+                            type="button" 
+                            data-bs-toggle="collapse"
+                            data-bs-target="#PageFilter" 
+                            aria-expanded="true" 
+                            aria-controls="PageFilter">
+
                         <span class="form-label fs-5">
-                            <span class="d-lg-none">
-                                Ref-In Filters
+                            <span>
+                                Фильтры поиска
                             </span>
                             <span class="d-none d-lg-inline">
-                                Фильтры поиска текущей страницы
+                                текущей страницы
                             </span> :
                         </span>
+
                     </button>
+
                 </h2>
 
-                <div id="PageFilter" class="accordion-collapse collapse" aria-labelledby="headingPageFilter" data-bs-parent="#accordionDetailsPage">
+                <div id="PageFilter" 
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPageFilter" 
+                    data-bs-parent="#accordionDetailsPage">
 
                     <div class="accordion-body accordion-body-nointend">
 
@@ -1084,13 +1096,12 @@
                                 </span>
                             </p>
 
-                            <h2 class="text_shadow my-2 text-center fluid-font-size">
+                            <h2 class="text_shadow my-3 text-center fluid-font-size">
                                 Страницы, ссылающиеся на текущую
                             </h2>
 
                             @if (Model.DictionaryOfOutPages.Count > 0)
                             {
-
                                 <div id="accordionFiltersOfPage" class="accordion">
 
                                     @foreach (var (caption, listOfPages) in Model.DictionaryOfOutPages)
@@ -1099,15 +1110,28 @@
                                         {
                                             innerAccordion++;
 
-                                            <div class="accordion-item mb-2">
+                                            <div class="accordion-item mb-2 shadw">
 
                                                 <h2 class="accordion-header">
-                                                    <button class="accordion-button stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_@innerAccordion" aria-expanded="true" aria-controls="collapseOne_@innerAccordion">
-                                                        <span class="fluid-font-size"># @caption</span>
+
+                                                    <button class="accordion-button stranicy" 
+                                                            type="button" 
+                                                            data-bs-toggle="collapse" 
+                                                            data-bs-target="#collapseOne_@innerAccordion" 
+                                                            aria-expanded="true" 
+                                                            aria-controls="collapseOne_@innerAccordion">
+
+                                                        <span class="fluid-font-size">
+                                                            # @caption
+                                                        </span>
+
                                                     </button>
+                                               
                                                 </h2>
 
-                                                <div id="collapseOne_@innerAccordion" class="accordion-collapse collapse" data-bs-parent="#accordionFiltersOfPage">
+                                                <div id="collapseOne_@innerAccordion" 
+                                                    class="accordion-collapse collapse" 
+                                                    data-bs-parent="#accordionFiltersOfPage">
 
                                                     <div class="accordion-body p-1">
 
@@ -1131,9 +1155,8 @@
                                                                         <div class="card p-0 rounded-3 shadw" title="@item.PageTitle">
 
                                                                             <vc:view-image image-id="@item.ImageFileModelId"
-                                                                                           css-class="card-img-top rounded-3 p-0"
+                                                                                           css-class="d-flex card-img-top rounded-3 p-0"
                                                                                            icon-type="webicon300" />
-
 
                                                                             <div class="d-none d-sm-flex card-body p-1 justify-content-center">
 
@@ -1335,13 +1358,26 @@
             @* Ссылки на страницы *@
             <div class="accordion-item mb-3 shadw">
 
-                <h2 id="headingPageLinksByFilters" class="accordion-header">
-                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageLinksByFilters" aria-expanded="true" aria-controls="PageLinksByFilters">
-                        <span class="form-label fs-5">Ссылки на страницы :</span>
+                <h2 id="headingPageLinksByFilters" class="accordion-header shadw">
+
+                    <button class="accordion-button collapsed py-0 stranicy" 
+                        type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#PageLinksByFilters" 
+                        aria-expanded="true" 
+                        aria-controls="PageLinksByFilters">
+                        
+                        <span class="form-label fs-5">
+                            Ссылки на страницы :
+                         </span>
+                    
                     </button>
+                
                 </h2>
 
-                <div id="PageLinksByFilters" class="accordion-collapse collapse" aria-labelledby="headingPageLinksByFilters" data-bs-parent="#accordionDetailsPage">
+                <div id="PageLinksByFilters" 
+                    class="accordion-collapse collapse" 
+                    aria-labelledby="headingPageLinksByFilters" 
+                    data-bs-parent="#accordionDetailsPage">
 
                     <div class="accordion-body accordion-body-nointend text-center">
 
@@ -1351,12 +1387,26 @@
                             <div class="accordion-item mb-3 shadw">
 
                                 <h2 id="headingSwitchPageLinks" class="accordion-header shadw">
-                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchPage" aria-expanded="true" aria-controls="SwitchPage">
-                                        <span class="form-label fs-5">Состояние :</span>
+
+                                    <button class="accordion-button collapsed py-0 stranicy" 
+                                        type="button" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#SwitchPage" 
+                                        aria-expanded="true" 
+                                        aria-controls="SwitchPage">
+                                        
+                                        <span class="form-label fs-5">
+                                            Состояние :
+                                        </span>
+                                    
                                     </button>
+                                
                                 </h2>
 
-                                <div id="SwitchPage" class="accordion-collapse collapse" aria-labelledby="headingSwitchPageLinks" data-bs-parent="#switchForPageLinks">
+                                <div id="SwitchPage" 
+                                    class="accordion-collapse collapse" 
+                                    aria-labelledby="headingSwitchPageLinks" 
+                                    data-bs-parent="#switchForPageLinks">
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
@@ -1384,12 +1434,26 @@
 
                                 @* Заголовок группы *@
                                 <h2 id="headingPageLinkFilters" class="accordion-header shadw">
-                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageLinkFilters" aria-expanded="true" aria-controls="PageLinkFilters">
-                                        <span class="form-label fs-5">Фильтры выбора :</span>
+
+                                    <button class="accordion-button collapsed py-0 stranicy" 
+                                        type="button" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#PageLinkFilters" 
+                                        aria-expanded="true" 
+                                        aria-controls="PageLinkFilters">
+                                        
+                                        <span class="form-label fs-5">
+                                            Фильтры выбора :
+                                        </span>
+                                    
                                     </button>
+                                
                                 </h2>
 
-                                <div id="PageLinkFilters" class="accordion-collapse collapse" aria-labelledby="headingPageLinkFilters" data-bs-parent="#switchForPageLinks">
+                                <div id="PageLinkFilters" 
+                                    class="accordion-collapse collapse" 
+                                    aria-labelledby="headingPageLinkFilters" 
+                                    data-bs-parent="#switchForPageLinks">
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 

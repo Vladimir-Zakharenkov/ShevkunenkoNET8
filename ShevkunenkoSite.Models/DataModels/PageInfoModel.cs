@@ -343,7 +343,7 @@ public class PageInfoModel
 
     #region Навигационное свойство аудиофайла
 
-    public AudioInfoModel? AudioFile { get; set; }
+    public AudioInfoModel? AudioInfo { get; set; }
 
     #endregion
 }

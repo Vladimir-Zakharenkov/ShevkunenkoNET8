@@ -49,9 +49,9 @@ public class RefPages(
                 {
                     for (int i = 0; i < pageFilterOut.Length; i++)
                     {
-                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i] + ',')).AnyAsync())
+                        if (await pageInfoContext.PagesInfo.Where(sitePage => sitePage.PageFilter.Contains((pageFilterOut[i] + ',').Trim())).AnyAsync())
                         {
-                            var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilterOut[i] + ',')).ToListAsync();
+                            var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains((pageFilterOut[i] + ',').Trim())).ToListAsync();
 
                             _ = listOfFilterOut.Distinct();
 

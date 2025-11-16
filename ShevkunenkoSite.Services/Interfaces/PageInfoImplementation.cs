@@ -3,11 +3,14 @@
 public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoRepository
 {
     public IQueryable<PageInfoModel> PagesInfo => siteContext.PageInfo
-        .Include(i => i.ImageFileModel)
-        .Include(b => b.BackgroundFileModel)
-        .Include(m => m.MovieFile).ThenInclude(mi => mi!.ImageFileModel)
-        .Include(m => m.MovieFile).ThenInclude(mi => mi!.MoviePoster)
-        .Include(a => a.BooksAndArticles).ThenInclude(l => l!.LogoOfArticle);
+        .Include(image => image.ImageFileModel)
+        .Include(background => background.BackgroundFileModel)
+        .Include(audioFile => audioFile.AudioInfo)
+        .Include(audioBook => audioBook.AudioBook)
+        // TODO: убрать nullable для картинки фильма 
+        .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
+        .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
+        .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle);
 
     #region Определить страницу в базе данных по запросу
 
@@ -18,10 +21,10 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
         IQueryCollection pageQuery = httpContext.Request.Query;
 
         string pageQueryString = httpContext.Request.QueryString.ToString();
-        
+
         string routData = string.Empty;
 
-        if (pageQuery.Count >0)
+        if (pageQuery.Count > 0)
         {
             foreach (var item in pageQuery)
             {
@@ -84,7 +87,7 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
             {
                 var pageInfo = await PagesInfo.FirstAsync(p => p.PageFullPath == pagePath);
 
-                if (!string.IsNullOrEmpty(pageInfo.RoutData)) 
+                if (!string.IsNullOrEmpty(pageInfo.RoutData))
                 {
                     return await PagesInfo.FirstAsync(p => p.PageFullPath == "/shevkunenko/error404");
                 }

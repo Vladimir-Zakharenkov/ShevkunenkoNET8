@@ -807,6 +807,12 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #endregion
 
+                #region Связанная страница сайта
+
+                audioFileForUpdate.PageInfoModelId = audioFileForEditing.PageInfoModelId;
+
+                #endregion
+
                 #region Изменить в БД
 
                 await audioFileContext.SaveChangesInAudioFileAsync();

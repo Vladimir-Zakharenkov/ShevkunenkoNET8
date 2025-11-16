@@ -696,6 +696,9 @@
 
 					@if (Model.PageInfoModel != null)
 					{
+						<label asp-for="PageInfoModelId" class="col-form-label text-primary fs-5"></label>
+
+						<p class="text_shadow fs-4 mt-2">@Model.PageInfoModelId.ToString()</p>
 					}
 					else
 					{

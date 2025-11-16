@@ -101,9 +101,14 @@ public class PageInfoController(
             #region Инициализация экземпляра страницы
 
             var pageItem = await pageInfoContext.PagesInfo
-                .Include(page => page.ImagePageHeading)
-                .Include(page => page.ImageFileModel)
-                .Include(page => page.BackgroundFileModel)
+                .Include(image => image.ImageFileModel)
+                .Include(background => background.BackgroundFileModel)
+                .Include(audioFile => audioFile.AudioInfo)
+                .Include(audioBook => audioBook.AudioBook)
+                // TODO: убрать nullable для картинки фильма 
+                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
+                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
+                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
                 .AsNoTracking()
                 .FirstAsync(p => p.PageInfoModelId == pageId);
 
@@ -121,7 +126,8 @@ public class PageInfoController(
             }
             else
             {
-                iconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
+                iconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
             #endregion
@@ -158,10 +164,10 @@ public class PageInfoController(
 
             #region Ссылки на текущую страницу по фильтру PageFilter
 
+            Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
+
             if (!string.IsNullOrEmpty(pageItem.PageFilter))
             {
-                Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
-
                 string[] pageFilters = pageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (pageFilters.Length > 0)
@@ -249,9 +255,13 @@ public class PageInfoController(
                 {
                     for (int i = 0; i < pageFiltersOut.Length; i++)
                     {
-                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).AnyAsync())
+                        if (await pageInfoContext.PagesInfo
+                                .Where(p => p.PageFilter.Contains((pageFiltersOut[i] +',').Trim()))
+                                .AnyAsync())
                         {
-                            var pages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).ToListAsync();
+                            var pages = await pageInfoContext.PagesInfo
+                                .Where(p => p.PageFilter.Contains((pageFiltersOut[i] + ',').Trim()))
+                                .ToListAsync();
 
                             _ = pages.OrderBy(p => p.SortOfPage);
 
@@ -392,7 +402,7 @@ public class PageInfoController(
                 LinksToPagesByGuid2 = linksToPagesByGuid2,
                 LinksFromPagesByGuid = linksFromPagesByGuid,
                 LinksFromPagesByGuid2 = linksFromPagesByGuid2,
-                DictionaryOfOutPages = [],
+                DictionaryOfOutPages = dictionaryOfOutPages,
                 FramesAroundMainContent = framesAroundMainContent,
                 DictionaryOfLinksByVideoFilterOut = dictionaryOfLinksByVideoFilterOut,
                 DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut,
@@ -973,30 +983,39 @@ public class PageInfoController(
     {
         EditPageViewModel editPage = new();
 
-        if (pageId.HasValue)
+        if (pageId.HasValue
+            && await pageInfoContext.PagesInfo
+                .Where(page => page.PageInfoModelId == pageId)
+                .AnyAsync())
         {
             #region Инициализация экземпляра страницы
 
-            if (await pageInfoContext.PagesInfo.Where(i => i.PageInfoModelId == pageId).AnyAsync())
-            {
-                editPage.PageItem = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == pageId);
-            }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            editPage.PageItem = await pageInfoContext.PagesInfo
+                .Include(image => image.ImageFileModel)
+                .Include(background => background.BackgroundFileModel)
+                .Include(audioFile => audioFile.AudioInfo)
+                .Include(audioBook => audioBook.AudioBook)
+                // TODO: убрать nullable для картинки фильма 
+                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
+                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
+                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
+                .FirstAsync(i => i.PageInfoModelId == pageId);
 
             #endregion
 
             #region Инициализация иконки страницы
 
-            if (await iconContext.IconFiles.Where(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem).AnyAsync())
+            if (await iconContext.IconFiles
+                .Where(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem)
+                .AnyAsync())
             {
-                editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
+                editPage.IconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
             }
             else
             {
-                editPage.IconItem = await iconContext.IconFiles.FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
+                editPage.IconItem = await iconContext.IconFiles
+                    .FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
             #endregion
@@ -1281,7 +1300,16 @@ public class PageInfoController(
         {
             #region Инициализация экземпляра страницы
 
-            PageInfoModel pageUpdate = await pageInfoContext.PagesInfo.FirstAsync(i => i.PageInfoModelId == editPage.PageItem.PageInfoModelId);
+            PageInfoModel pageUpdate = await pageInfoContext.PagesInfo
+                .Include(image => image.ImageFileModel)
+                .Include(background => background.BackgroundFileModel)
+                .Include(audioFile => audioFile.AudioInfo)
+                .Include(audioBook => audioBook.AudioBook)
+                // TODO: убрать nullable для картинки фильма 
+                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
+                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
+                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
+                .FirstAsync(page => page.PageInfoModelId == editPage.PageItem.PageInfoModelId);
 
             #endregion
 
@@ -1718,7 +1746,7 @@ public class PageInfoController(
             // поиск связанных страниц по фильтру
             pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
 
-            if (editPage.PageItem.PageFilterOut != null)
+            if (!string.IsNullOrEmpty(editPage.PageItem.PageFilterOut))
             {
                 pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim();
             }
