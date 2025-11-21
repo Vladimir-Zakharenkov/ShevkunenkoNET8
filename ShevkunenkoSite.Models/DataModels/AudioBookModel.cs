@@ -60,4 +60,6 @@ public class AudioBookModel
     public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
+
+    // TODO: добавить свойство ссылки(Uri) на аудиокнигу
 }

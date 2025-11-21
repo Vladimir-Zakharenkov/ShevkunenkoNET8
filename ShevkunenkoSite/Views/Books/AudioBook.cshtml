@@ -2,6 +2,17 @@
 
 @{
 	int n = 0; // количество миниатюр фотографий
+
+	string contentSize = string.Empty; // размер аудиофайла в мегабайтах
+
+	string uploadDate = string.Empty; // дата загрузки аудиофайла
+
+	if (Model.AudioFileForText != null)
+	{
+		contentSize = ((double)Model.AudioFileForText.AudioFileSize / (double)1048576).ToString("0.00", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+
+		uploadDate = Model.AudioFileForText.AudioFileUploadDate.ToString("yyyy-MM-dd");
+	}
 }
 
 <div class="mx-auto fluid-font-size" itemscope itemtype="https://schema.org/Book">
@@ -38,7 +49,7 @@
 	@* заголовок книги *@
 	<header itemprop="headline" class="d-block col col-md-8 my-3 mx-auto maxwidth700px">
 
-		<h1 class="lay1 p-2 lh-1 times-new-roman">
+		<h1 class="lay1 p-2 lh-1 times-new-roman text_shadow">
 
 			<span class="fs-2 fw-bold d-inline-block h1_print">
 				@Model.BookOrArticle.AuthorOfText
@@ -46,19 +57,29 @@
 			<span class="d-block mt-2 fs-2 fw-bold">
 				«@Model.BookOrArticle.CaptionOfText»
 			</span>
-			<span class="@(Model.PageNumber == 0 ? "d-block fs-5 mt-3 text_shadow" : "d-none")">
-				@Model.BookOrArticle.TheSubtitle
+			<span class="d-block mt-3 fs-4">
+				АУДИОКНИГА
 			</span>
 
 		</h1>
 
 	</header>
 
-	@* статья и кадры *@
-	<div class="row">
+	@* аудиоплейер и кадры слева-справа  *@
+	<div class="row" itemscope itemtype="http://schema.org/AudioBook">
+
+		<meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText">
+		<meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
+		<meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+		@if (Model.AudioBook != null)
+		{
+			<meta itemprop="readBy" content="@Model.AudioBook?.ActorOfAudioBook">
+		}
+		<meta itemprop="contentUrl" content="">
+		<meta itemprop="duration" content="">
 
 		@* кадры слева *@
-		<div class="d-none d-md-block col-2 mx-auto overflow-y-auto overflow-x-hidden height1000">
+		<div class="d-none d-lg-block col-2 mx-auto overflow-y-auto overflow-x-hidden height400">
 
 			@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheLeft != null)
 			{
@@ -87,33 +108,60 @@
 
 		</div>
 
-		@* текст *@
-		<div class="col col-md-8 mx-auto article_page paragraph shadw
-						@(Model.PageNumber == 0 ? "px-0 px-sm-2 px-md-3" : "")"
-			 itemprop="articleBody text">
+		@* аудиоплейер и инфо под плейером *@
+		<div class="col col-lg-8 mx-auto article_page shadw">
 
-			@* инфо вверху страницы *@
-			<div class="@(Model.PageNumber == 0 ? "d-none" : "")">
+			@* аудиоплейер *@
+			<div class="times-new-roman" itemprop="audio" itemscope itemtype="http://schema.org/AudioObject">
 
-				<div class="mb-4 top_page d-print-none">
+				<span>
+					@if (Model.AudioFileForText != null)
+					{
+						<meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText">
+						<meta itemprop="name" content="@Model.BookOrArticle.CaptionOfText - @Model.AudioFileForText.CaptionOfTextInAudioFile">
+						@if (Model.Transcript != null)
+						{
+							<meta itemprop="transcript" content="@Model.Transcript">
+						}
+						<meta itemprop="duration" content="@Model.AudioFileForText.AudioFileDuration.ToString(@"\Thh\Mmm\Sss")">
+						<meta itemprop="bitrate" content="@Model.AudioFileForText.AudioFileBitRate kbps">
+						<meta itemprop="contentSize" content="@contentSize MB">
+						<meta itemprop="encodingFormat" content="@Model.AudioFileForText.AudioFileType">
+						<meta itemprop="encodingFormat" content="@Model.AudioFileForText.AudioFileMimeType" />
+						<meta itemprop="uploadDate" content="@uploadDate">
+						<meta itemprop="description" content="@Model.AudioFileForText.AudioFileDescription">
+						<link itemprop="contentUrl" href="@Model.AudioFileForText.InternetRefToAudioFile">
+					}
+				</span>
 
-					@* иконка аудио *@
-					<a class="@((Model.AudioFileForText != null && Model.AudioFileForText.AudioBookModel != null) ? "" : "d-none")"
-					   asp-area=""
-					   asp-controller="Books"
-					   asp-action="AudioBook"
-					   asp-route-audioBookCaption="@Model.AudioFileForText?.AudioBookModel?.CaptionOfAudioBook"
-					   asp-route-audioBookPart="@Model.AudioFileForText?.SequenceNumber"
-					   asp-route-audioActor="@Model.AudioFileForText?.AudioBookModel?.ActorOfAudioBook"
-					   title="аудиокнига">
+				@if (Model.AudioFileForText != null)
+				{
+					<p class="fs-1 fw-bold">@Model.AudioFileForText.CaptionOfTextInAudioFile</p>
 
-						<vc:view-image image-id="2b306319-5e41-424c-f80c-08ddf7c913e1"
-									   css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
-									   icon-type="webicon100" />
+					<div class="d-none d-sm-block mt-4">
 
-					</a>
+						@Html.Raw(Model.AudioFileForText.PlayerPodsterFm)
 
-					@* иконка видео *@
+					</div>
+
+					<p class="d-sm-none fs-6 text_shadow">
+						<span>Аудиоплейер не отображается при низком разрешении экрана</span>
+						<br />
+						<span> (меньше 576px)</span>
+					</p>
+				}
+				else
+				{
+					<p class="text-danger">АУДИОФАЙЛ НЕ НАЙДЕН</p>
+				}
+
+			</div>
+
+			@* инфо под плейером *@
+			<footer class="mt-3 footer_page">
+
+				@* иконка видео *@
+				<span>
 					<a class="@(Model.BookOrArticle.VideoForBookOrArticle == null ? "d-none" : "")"
 					   asp-area=""
 					   asp-controller="AllVideo"
@@ -124,87 +172,74 @@
 					   title="видео к тексту">
 
 						<vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
-									   css-class="float-start me-2 maxwidth40px shadw imageref"
+									   css-class="float-start me-2 maxwidth40px shadw imageref maxwidth60px"
 									   icon-type="webicon100" />
 
 					</a>
+				</span>
 
-					@* иконка принтера *@
-					<a class=""
-					   href="javascript:window.print(); void 0;"
-					   title="распечатать страницу">
+				@* иконка текста *@
+				<span>
+					@if (Model.TextForBookOrArticle != null)
+					{
+						<a class=""
+						   asp-area=""
+						   asp-controller="Books"
+						   asp-action="Book"
+						   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
+						   asp-route-pageNumber="@Model.TextForBookOrArticle.SequenceNumber"
+						   title="текст аудиокниги">
 
-						<vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
-									   css-class="float-start maxwidth40px shadw imageref  d-print-none"
-									   icon-type="webicon100" />
+							<vc:view-image image-id="a0cec2ec-4afc-4637-e39a-08de252a5fd0"
+										   css-class="float-start me-2 shadw imageref maxwidth60px"
+										   icon-type="webicon100" />
 
-					</a>
+						</a>
+					}
+				</span>
 
-					@* номер страницы *@
-					<p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">
-						@Model.PageNumber
-					</p>
+				@* иконка MP3 *@
+				<span>
+					@if (Model.AudioFileForText != null && Model.AudioFileForText.InternetRefToAudioFile != null)
+					{
+						<a class=""
+						   href="@Model.AudioFileForText.InternetRefToAudioFile"
+						   title="файл MP3"
+						   onclick="this.target='_blank'">
 
-				</div>
+							<vc:view-image image-id="a814cb3c-6c23-4842-e39b-08de252a5fd0"
+										   css-class="float-start me-2 shadw imageref maxwidth60px"
+										   icon-type="webicon100" />
 
-			</div>
+						</a>
+					}
+				</span>
 
-			@* текст статьи *@
-			<div class="minheight900 times-new-roman">
+				@* иконка яндекс-диска *@
+				<span>
+					@if (Model.AudioFileForText != null && Model.AudioFileForText.YandexDiskRefToAudioFile != null)
+					{
+						<a class=""
+						   href="@Model.AudioFileForText.YandexDiskRefToAudioFile"
+						   title="Yandex Disk"
+						   onclick="this.target='_blank'">
 
-				@Html.Raw(Model.HtmlText)
+							<vc:view-image image-id="4c047241-d660-41fd-b7d5-08db0bad8e49"
+										   css-class="float-start me-2 shadw imageref maxwidth60px"
+										   icon-type="webicon100" />
 
-			</div>
-
-			@* инфо внизу страницы *@
-			<footer class="@(Model.PageNumber == 0 ? "d-none" : "mt-3 footer_page")">
-
-				@* иконка аудио *@
-				<a class="@((Model.AudioFileForText != null && Model.AudioFileForText.AudioBookModel != null) ? "" : "d-none")"
-				   asp-area=""
-				   asp-controller="Books"
-				   asp-action="AudioBook"
-				   asp-route-audioBookCaption="@Model.AudioFileForText?.AudioBookModel?.CaptionOfAudioBook"
-				   asp-route-audioBookPart="@Model.AudioFileForText?.SequenceNumber"
-				   asp-route-audioActor="@Model.AudioFileForText?.AudioBookModel?.ActorOfAudioBook"
-				   title="аудиокнига">
-
-					<vc:view-image image-id="2b306319-5e41-424c-f80c-08ddf7c913e1"
-								   css-class="float-start me-2 maxwidth40px shadw imageref d-print-none"
-								   icon-type="webicon100" />
-
-				</a>
-
-				@* иконка видео *@
-				<a class="@(Model.BookOrArticle.VideoForBookOrArticle == null ? "d-none" : "")"
-				   asp-area=""
-				   asp-controller="AllVideo"
-				   asp-action="Movie"
-				   asp-route-movieId="@Model.BookOrArticle.VideoForBookOrArticleId"
-				   asp-route-pageOfSeries="true"
-				   asp-route-videohosting="@Model.BookOrArticle.VideoForBookOrArticle?.MovieVkVideo"
-				   title="видео к тексту">
-
-					<vc:view-image image-id="b386f45b-fc84-4748-bc75-08dd67cfc8ed"
-								   css-class="float-start me-2 maxwidth40px shadw imageref"
-								   icon-type="webicon100" />
-
-				</a>
-
-				@* иконка принтера *@
-				<a class=""
-				   href="javascript:window.print(); void 0;"
-				   title="распечатать страницу">
-
-					<vc:view-image image-id="f271cf6f-a66e-4c55-9d5e-08dc1058c236"
-								   css-class="float-start maxwidth40px shadw imageref  d-print-none"
-								   icon-type="webicon100" />
-
-				</a>
+						</a>
+					}
+				</span>
 
 				@* номер страницы *@
-				<p class="float-end text-primary mt-2 mt-lg-1 nomstr fluid-font-size">
-					@Model.PageNumber
+				<p class="float-end text-primary mt-2 mt-lg-1 charst fluid-font-size fw-bold">
+
+					@if (Model.AudioFileForText != null)
+					{
+						@Model.AudioFileForText.SequenceNumber
+					}
+
 				</p>
 
 			</footer>
@@ -212,7 +247,7 @@
 		</div>
 
 		@* кадры справа *@
-		<div class="d-none d-md-block col-2 mx-auto overflow-y-auto overflow-x-hidden height1000">
+		<div class="d-none d-lg-block col-2 mx-auto overflow-y-auto overflow-x-hidden height400">
 
 			@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheRight != null)
 			{
@@ -244,39 +279,51 @@
 	</div>
 
 	@* навигация по статье *@
-	<div class="@(Model.PageNumber == 0 ? "d-none" : "col col-md-8 maxwidth700px mt-4 mb-0 mx-auto clearfix d-print-none")">
+	<div class="col col-md-8 maxwidth700px mt-4 mb-0 mx-auto clearfix d-print-none">
 
 		@* переход к предыдущей странице*@
-		<a class="@((Model.PageNumber > 1) ? " btn btn-outline-primary py-1 float-start shadw" : "d-none")"
-		   asp-area=""
-		   asp-controller="Books"
-		   asp-action="Book"
-		   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
-		   asp-route-pageNumber="@(Model.PageNumber - 1)"
-		   title="предыдущая странице"
-		   itemprop="url">
+		<span>
+			@if (Model.AudioFileForText != null && Model.AudioBook != null)
+			{
+				<a class="@((Model.AudioFileForText.SequenceNumber > 1) ? " btn btn-outline-primary py-1 float-start shadw" : "d-none")"
+				   asp-area=""
+				   asp-controller="Books"
+				   asp-action="AudioBook"
+				   asp-route-audioBookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
+				   asp-route-audioActor="@(Model.AudioBook.ActorOfAudioBook)"
+				   asp-route-audioBookPart="@(Model.AudioFileForText.SequenceNumber - 1)"
+				   title="предыдущая часть"
+				   itemprop="url">
 
-			<span class="nomstr fluid-font-size">
-				@(Model.PageNumber - 1)
-			</span>
+					<span class="charst fluid-font-size">
+						@(Model.AudioFileForText.SequenceNumber - 1)
+					</span>
 
-		</a>
+				</a>
+			}
+		</span>
 
 		@* переход к следующей странице*@
-		<a class="@((Model.PageNumber < Model.BookOrArticle.NumberOfPages) ? "btn btn-outline-primary py-1 float-end shadw" : "d-none")"
-		   asp-area=""
-		   asp-controller="Books"
-		   asp-action="Book"
-		   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
-		   asp-route-pageNumber="@(Model.PageNumber + 1)"
-		   title="следующая странице"
-		   itemprop="url">
+		<span>
+			@if (Model.AudioFileForText != null && Model.AudioBook != null)
+			{
+				<a class="@((Model.AudioFileForText.SequenceNumber < Model.AudioBook.NumberOfFiles) ? "btn btn-outline-primary py-1 float-end shadw" : "d-none")"
+				   asp-area=""
+				   asp-controller="Books"
+				   asp-action="AudioBook"
+				   asp-route-audioBookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
+				   asp-route-audioActor="@(Model.AudioBook.ActorOfAudioBook)"
+				   asp-route-audioBookPart="@(Model.AudioFileForText.SequenceNumber + 1)"
+				   title="следующая часть"
+				   itemprop="url">
 
-			<span class="nomstr fluid-font-size">
-				@(Model.PageNumber + 1)
-			</span>
+					<span class="charst fluid-font-size">
+						@(Model.AudioFileForText.SequenceNumber + 1)
+					</span>
 
-		</a>
+				</a>
+			}
+		</span>
 
 	</div>
 
@@ -309,7 +356,7 @@
 					   asp-controller="Books"
 					   asp-action="Book"
 					   asp-route-bookCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
-					   asp-route-pagenumber="@(i+1)"
+					   asp-route-pageNumber="@(i+1)"
 					   class="ref-to-page rounded ten @(Model.PageNumber == (i+1) ? "border border-primary border-2" : "border border-1 border-secondary")"
 					   title="страница @(i + 1)"
 					   itemprop="url">
@@ -461,50 +508,6 @@
 								</a>
 							}
 						}
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		@* аудио *@
-		<div class="@((Model.TextForBookOrArticle != null
-									   	   && Model.TextForBookOrArticle.AudioInfoModel != null
-									   	   && !string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel.PlayerPodsterFm)) ? "accordion-item my-3 shadw" : "d-none")">
-
-			@* заголовок группы «Аудио» *@
-			<h2 class="accordion-header" id="headingAudioForPage">
-
-				<button class="accordion-button collapsed py-1 stranicy"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#AudioForPage"
-						aria-expanded="true"
-						aria-controls="AudioForPage">
-
-					<span class="d-inline-block w-100 fs-5">Аудиокнига :</span>
-
-				</button>
-
-			</h2>
-
-			<div id="AudioForPage"
-				 class="accordion-collapse collapse p-2 py-3"
-				 aria-labelledby="headingAudioForPage"
-				 data-bs-parent="#accordionForBook">
-
-				<div class="accordion-body accordion-body-nointend">
-
-					<p class="d-sm-none my-2 text_shadow ">
-						плейер отображается при разрешении от 576px
-					</p>
-
-					<div class="d-none d-sm-flex my-2">
-
-						@Html.Raw(Model.TextForBookOrArticle?.AudioInfoModel?.PlayerPodsterFm)
 
 					</div>
 

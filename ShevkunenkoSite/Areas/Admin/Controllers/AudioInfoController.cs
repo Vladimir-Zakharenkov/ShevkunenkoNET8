@@ -101,9 +101,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
             // Список аудиокниг
             ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
 
-            // Список страниц сайта
-            ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
             // Список текстовых файлов
             ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
 
@@ -131,8 +128,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     "PlayerPodsterFm," +
                     "AudioFileUploadDate," +
                     "AudioBookModelId," +
-                    "SequenceNumber," +
-                    "PageInfoModelId")]
+                    "SequenceNumber")]
             AudioInfoModel audioFileForAdding)
         {
             if (ModelState.IsValid)
@@ -446,9 +442,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 // Список аудиокниг
                 ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
 
-                // Список страниц сайта
-                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
-
                 // Список текстовых файлов
                 ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");
 
@@ -520,8 +513,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     "AudioFileSize," +
                     "AudioFileMimeType," +
                     "AudioFileType," +
-                    "AudioFileName," +
-                    "PageInfoModelId")]
+                    "AudioFileName")]
             AudioInfoModel audioFileForEditing)
         {
             if (ModelState.IsValid)
@@ -807,12 +799,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 
                 #endregion
 
-                #region Связанная страница сайта
-
-                audioFileForUpdate.PageInfoModelId = audioFileForEditing.PageInfoModelId;
-
-                #endregion
-
                 #region Изменить в БД
 
                 await audioFileContext.SaveChangesInAudioFileAsync();
@@ -829,9 +815,6 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
             {
                 // Список аудиокниг
                 ViewData["AudioBooks"] = new SelectList(audioBookContext.AudioBooks, "AudioBookModelId", "CaptionOfAudioBook");
-
-                // Список страниц сайта
-                ViewData["PagesOfSite"] = new SelectList(pagesOfSiteContext.PagesInfo.OrderBy(page => page.PageTitle), "PageInfoModelId", "PageTitle");
 
                 // Список текстовых файлов
                 ViewData["TextFIles"] = new SelectList(textsOfSiteContext.Texts, "TextInfoModelId", "TxtFileName");

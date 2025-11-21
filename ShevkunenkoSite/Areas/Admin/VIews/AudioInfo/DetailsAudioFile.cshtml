@@ -682,33 +682,6 @@
 
 			</div>
 
-			@* Страница аудиофайла *@
-			<div class="accordion-item my-3 shadw">
-
-				@* Заголовок группы «страница аудиофайла» *@
-				<h2 id="headingPageForAudioFIle" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageForAudioFIle" aria-expanded="true" aria-controls="PageForAudioFIle">
-						<span class="form-label fs-5">Страница файла :</span>
-					</button>
-				</h2>
-
-				<div id="PageForAudioFIle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForAudioFIle" data-bs-parent="#accordionForAudioFile">
-
-					@if (Model.PageInfoModel != null)
-					{
-						<label asp-for="PageInfoModelId" class="col-form-label text-primary fs-5"></label>
-
-						<p class="text_shadow fs-4 mt-2">@Model.PageInfoModelId.ToString()</p>
-					}
-					else
-					{
-						<p class="text_shadow fs-4 mt-2">страница аудиофайла не задана</p>
-					}
-
-				</div>
-
-			</div>
-
 		</div>
 
 		@* Кнопки «список», «изменить», «удалить» *@

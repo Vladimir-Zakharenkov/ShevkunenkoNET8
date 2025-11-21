@@ -1,7 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-namespace ShevkunenkoSite.Services.TagHelpers;
+﻿namespace ShevkunenkoSite.Services.TagHelpers;
 
 [HtmlTargetElement("div", Attributes = "pagination")]
 public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : TagHelper

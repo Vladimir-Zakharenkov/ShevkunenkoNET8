@@ -5,12 +5,13 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
     public IQueryable<PageInfoModel> PagesInfo => siteContext.PageInfo
         .Include(image => image.ImageFileModel)
         .Include(background => background.BackgroundFileModel)
+        .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
         .Include(audioFile => audioFile.AudioInfo)
         .Include(audioBook => audioBook.AudioBook)
-        // TODO: убрать nullable для картинки фильма 
+         // TODO: убрать nullable для картинки фильма
         .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
         .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
-        .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle);
+        ;
 
     #region Определить страницу в базе данных по запросу
 
@@ -96,7 +97,8 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
             }
             else if (await PagesInfo.Where(p => p.PagePathNickName == pagePath).AnyAsync())
             {
-                return await PagesInfo.FirstAsync(p => p.PagePathNickName == pagePath);
+                return await PagesInfo
+                                    .FirstAsync(p => p.PagePathNickName == pagePath);
             }
             else if (await PagesInfo.Where(p => p.PagePathNickName2 == pagePath).AnyAsync())
             {

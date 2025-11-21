@@ -27,8 +27,8 @@ public class PageInfoModel
 
     #region Адрес страницы
 
-    [Required(ErrorMessage = "Выберите тип MVC или RazorPage")]
-    [Display(Name = "Тип MVC или RazorPage :")]
+    [Required(ErrorMessage = "Выберите MVC или RazorPages")]
+    [Display(Name = "MVC или RazorPages :")]
     public bool PageAsRazorPage { get; set; } = false;
 
     [Required(AllowEmptyStrings = true)]
@@ -79,7 +79,7 @@ public class PageInfoModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Адрес страницы :")]
+    [Display(Name = "Адрес для RazorPages :")]
     [DataType(DataType.Text)]
     public string PageLoc { get; set; } = string.Empty;
 
@@ -182,7 +182,14 @@ public class PageInfoModel
     public string PageCardText { get; set; } = string.Empty;
 
     #endregion
+    
+    #region Связанный аудиофайл
 
+    public Guid? AudioInfoId { get; set; }
+    public AudioInfoModel? AudioInfo { get; set; }
+
+    #endregion
+    
     #region Заголовок, картинка и текст страницы
 
     [Required(AllowEmptyStrings = true)]
@@ -221,7 +228,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Связанные фотографии, страницы и видео
+    #region Фотографии, страницы и видео внизу страницы
 
     #region Ссылки на страницы
 
@@ -232,7 +239,7 @@ public class PageInfoModel
     public bool PageLinksByFilters { get; set; } = false;
 
     #endregion
-
+    
     #region Строка фильтров страниц сайта, для формирования ссылок на них
 
     [Display(Name = "Фильтры поиска страниц :")]
@@ -280,7 +287,7 @@ public class PageInfoModel
     public string? VideoFilterOut { get; set; }
 
     #endregion
-
+    
     #endregion
 
     #region Ссылки GUID1
@@ -341,9 +348,39 @@ public class PageInfoModel
 
     #endregion
 
-    #region Навигационное свойство аудиофайла
+    #region Выбрать файл картинки
 
-    public AudioInfoModel? AudioInfo { get; set; }
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Картинка страницы :")]
+    public IFormFile? ImageFileFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать файл фона (фотопленки)
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Фон страницы :")]
+    public IFormFile? BackgroundFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать аудиофайл
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Аудиофайл страницы :")]
+    public IFormFile? AudioInfoFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать файл картинки (картинка под верним заголовком)
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Картинка под заголовком :")]
+    public IFormFile? ImagePageHeadingFormFile { get; set; }
 
     #endregion
 }

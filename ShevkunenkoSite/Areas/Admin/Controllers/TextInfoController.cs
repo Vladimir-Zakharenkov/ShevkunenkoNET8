@@ -53,8 +53,8 @@ public class TextInfoController(
     public async Task<IActionResult> DetailsText(Guid? textId)
     {
         if (textId.HasValue & await textContext.Texts
-                .Where(p => p.TextInfoModelId == textId)
-                .AnyAsync())
+                                        .Where(p => p.TextInfoModelId == textId)
+                                        .AnyAsync())
         {
             var textItem = await textContext.Texts
                 .Include(book => book.BooksAndArticlesModel)
@@ -920,7 +920,7 @@ public class TextInfoController(
             {
                 textForUpdate.SequenceNumber = null;
             }
-            else if (textInfoForEditing.BooksAndArticlesModelId != null & textInfoForEditing.SequenceNumber == null)
+            else if (textForUpdate.SequenceNumber != null & textInfoForEditing.BooksAndArticlesModelId != null & textInfoForEditing.SequenceNumber == null)
             {
                 ModelState.AddModelError("SequenceNumber", $"Если указана книга (статья), нужно указать страницу");
 

@@ -165,7 +165,7 @@ public class BooksController(
 
     }
 
-    public async Task<IActionResult> AudioBook(string? audioBookCaption, string? audioActor, int? audioBookPart) 
+    public async Task<IActionResult> AudioBook(string? audioBookCaption, string? audioActor, int? audioBookPart)
     {
         #region Проверка наличия аудиокниги с таким названием
 
@@ -207,7 +207,7 @@ public class BooksController(
         {
             audioBookViewModel.AudioBook = await audioBookContext.AudioBooks
                 .Include(abook => abook.BookForAudioBook)
-                .Include(t => t.PageInfoModel)
+                //.Include(t => t.PageInfoModel)
                 .FirstAsync(abook => abook.CaptionOfAudioBook == audioBookCaption & abook.ActorOfAudioBook == audioActor);
         }
         else
@@ -226,7 +226,7 @@ public class BooksController(
 
         #endregion
 
-        #region Экземпляр аудиофайла для текущей страницы
+        #region Экземпляр аудиофайла по аудиокниге и номеру части
 
         if (audioBookPart is not int
             || audioBookPart < 1
@@ -246,6 +246,8 @@ public class BooksController(
                 .AnyAsync())
             {
                 audioBookViewModel.AudioFileForText = await audioFileContext.AudioFiles
+                    .Include(audioBook => audioBook.AudioBookModel)
+                    .Include(pageForAudio => pageForAudio.PageInfoModel)
                     .FirstAsync(audioFile =>
                                                     audioFile.AudioBookModelId == audioBookViewModel.AudioBook.AudioBookModelId
                                                     & audioFile.SequenceNumber == audioBookPart);
@@ -305,26 +307,41 @@ public class BooksController(
 
         #endregion
 
-        #region Ссылка на текстовую страницу
+        #region Ссылка на текст для аудиофайла (страница текста и транскрипт)
 
-        // Список текстов ссылающихся на текущий аудиофайл
-        List<TextInfoModel> listOfTexts = [];
-
-        if (await textContext.Texts
-            .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId)
-            .AnyAsync())
+        if (audioBookViewModel.AudioFileForText != null)
         {
-            listOfTexts = await textContext.Texts
-                .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId)
-                .ToListAsync();
+            // Список текстов ссылающихся на текущий аудиофайл
+            List<TextInfoModel> listOfTexts = [];
 
-            var firstNumberInTextList = listOfTexts.Any() ? listOfTexts.Min(text => text.SequenceNumber) : 0;
+            if (await textContext.Texts
+                .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText.AudioInfoModelId)
+                .AnyAsync())
+            {
+                listOfTexts = await textContext.Texts
+                    .Where(text => text.AudioInfoModelId == audioBookViewModel.AudioFileForText.AudioInfoModelId)
+                    .ToListAsync();
 
-            audioBookViewModel.TextForBookOrArticle = await textContext.Texts
-                .Include(text => text.BooksAndArticlesModel)
-                .FirstAsync(text =>
-                    text.AudioInfoModelId == audioBookViewModel.AudioFileForText!.AudioInfoModelId
-                    & text.SequenceNumber == firstNumberInTextList);
+                var firstNumberInTextList = listOfTexts.Any() ? listOfTexts.Min(text => text.SequenceNumber) : 0;
+
+                var transcriptTextSize = listOfTexts.Max(text => text.TxtFileSize);
+
+                audioBookViewModel.TextForBookOrArticle = await textContext.Texts
+                    .Include(text => text.BooksAndArticlesModel)
+                    .FirstAsync(text =>
+                        text.AudioInfoModelId == audioBookViewModel.AudioFileForText.AudioInfoModelId
+                        & text.SequenceNumber == firstNumberInTextList);
+
+                var textInfoForTranscript = await textContext.Texts
+                   .Include(text => text.BooksAndArticlesModel)
+                   .FirstAsync(text =>
+                       text.AudioInfoModelId == audioBookViewModel.AudioFileForText.AudioInfoModelId
+                       & text.TxtFileSize == transcriptTextSize);
+
+                using StreamReader transcriptText = new(rootPath + DataConfig.TextsFolderPath + textInfoForTranscript.FolderForText + textInfoForTranscript.TxtFileName);
+
+                audioBookViewModel.Transcript = transcriptText.ReadToEnd();
+            }
         }
 
         #endregion

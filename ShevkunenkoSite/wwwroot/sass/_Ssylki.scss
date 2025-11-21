@@ -46,11 +46,11 @@ a:active, .dropdown:active {
     display: inline-block;
     color: black;
     text-align: center;
-    width: 2.3rem;
+    width: 3rem;
     height: 1.5rem;
     margin: .2rem .1rem .2rem 0;
     font-size: 1rem;
-    /*background-image: url(/images/admin/audio.webp);*/
+    transition: all 1s ease;
 }
 
 .ref-to-page:hover {

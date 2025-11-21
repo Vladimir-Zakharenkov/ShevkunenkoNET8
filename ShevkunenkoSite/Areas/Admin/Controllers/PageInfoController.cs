@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Areas.Admin.Controllers;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 // Имена методов не начинать со слова Page
 [Area("Admin")]
@@ -9,7 +11,8 @@ public class PageInfoController(
     IIconFileRepository iconContext,
     IImageFileRepository imageContext,
     IBackgroundFotoRepository backgroundContext,
-    IBooksAndArticlesRepository bookAndArticleContext
+    IBooksAndArticlesRepository bookAndArticleContext,
+    IAudioInfoRepository audioFileContext
     ) : Controller
 {
     #region Список страниц сайта
@@ -256,7 +259,7 @@ public class PageInfoController(
                     for (int i = 0; i < pageFiltersOut.Length; i++)
                     {
                         if (await pageInfoContext.PagesInfo
-                                .Where(p => p.PageFilter.Contains((pageFiltersOut[i] +',').Trim()))
+                                .Where(p => p.PageFilter.Contains((pageFiltersOut[i] + ',').Trim()))
                                 .AnyAsync())
                         {
                             var pages = await pageInfoContext.PagesInfo
@@ -424,93 +427,323 @@ public class PageInfoController(
     [HttpGet]
     public ViewResult AddPage()
     {
-        AddPageViewModel newPage = new();
+        PageInfoModel newPage = new();
+
+        // Список картинок сайта
+        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+        // Список картинок для фона (фотопленка)
+        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+        // Список аудиофайлов
+        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
         return View(newPage);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddPage(AddPageViewModel addPage)
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
+    public async Task<IActionResult> AddPage(
+        [Bind("PageIconPath," +
+                "BrowserConfig," +
+                "BrowserConfigFolder," +
+                "Manifest," +
+                "PageAsRazorPage," +
+                "ImageFileModelId," +
+                "ImageFileFormFile," +
+                "BackgroundFileModelId," +
+                "BackgroundFormFile," +
+                "AudioInfoId," +
+                "AudioInfoFormFile," +
+                "PageCardText," +
+                "SortOfPage," +
+                "PageArea," +
+                "Controller," +
+                "Action," +
+                "RoutData," +
+                "PageLoc," +
+                "PagePathNickName," +
+                "PagePathNickName2," +
+
+
+
+
+                "SequenceNumber")]
+        PageInfoModel addPage)
     {
         if (ModelState.IsValid)
         {
+            #region MVC или RazorPage
+
+            _ = addPage.PageAsRazorPage;
+
+            #endregion
+
             #region Добавить картинку для страницы
 
-            if (addPage.ImageFileFormFile != null)
+            if (addPage.ImageFileModelId != Guid.Empty)
             {
-                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                _ = addPage.ImageFileModelId;
+            }
+            else
+            {
+                if (addPage.ImageFileFormFile != null)
                 {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addPage.ImageFileFormFile.FileName);
+                    if (!addPage.ImageFileFormFile.FileName.EndsWith(".webp") | !addPage.ImageFileFormFile.FileName.EndsWith(".png"))
+                    {
+                        ModelState.AddModelError("ImageFileFormFile", $"Выбран некорректный файл «{addPage.ImageFileFormFile.FileName}»");
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addPage.ImageFileFormFile.FileName);
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName);
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName);
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName);
+                        return View();
+                    }
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName);
+                    if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName);
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName);
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName);
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addPage.ImageFileFormFile.FileName);
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addPage.ImageFileFormFile.FileName);
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName);
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addPage.ImageFileFormFile.FileName);
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName);
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addPage.ImageFileFormFile.FileName);
 
-                    addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addPage.ImageFileFormFile.FileName);
+
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addPage.ImageFileFormFile.FileName);
+
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addPage.ImageFileFormFile.FileName);
+
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addPage.ImageFileFormFile.FileName);
+
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addPage.ImageFileFormFile.FileName);
+
+                        addPage.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{addPage.ImageFileFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{addPage.ImageFileFormFile.FileName}» в базу данных");
+                    ModelState.AddModelError("ImageFileFormFile", $"Выберите файл картинки");
+
+                    ModelState.AddModelError("ImageFileModelId", $"Выберите картинку");
+
+                    // Список картинок сайта
+                    ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                    // Список картинок для фона (фотопленка)
+                    ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                    // Список аудиофайлов
+                    ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
                     return View();
                 }
             }
+
+            #endregion
+
+            #region Добавить фон для страницы
+
+            if (addPage.BackgroundFileModelId != Guid.Empty)
+            {
+                _ = addPage.BackgroundFileModelId;
+            }
             else
             {
-                ModelState.AddModelError("ImageFileFormFile", $"Выберите картинку");
+                if (addPage.BackgroundFormFile != null)
+                {
+                    if (!addPage.BackgroundFormFile.FileName.EndsWith(".webp") | !addPage.BackgroundFormFile.FileName.EndsWith(".png"))
+                    {
+                        ModelState.AddModelError("BackgroundFormFile", $"Выбран некорректный файл «{addPage.BackgroundFormFile.FileName}»");
 
-                return View();
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View();
+                    }
+
+                    if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName);
+
+                        addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName);
+
+                        addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName);
+
+                        addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName);
+
+                        addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("BackgroundFormFile", $"Добавьте фон «{addPage.BackgroundFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("BackgroundFormFile", $"Выберите файл фона");
+
+                    ModelState.AddModelError("BackgroundFileModelId", $"Выберите фон");
+
+                    // Список картинок сайта
+                    ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                    // Список картинок для фона (фотопленка)
+                    ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                    // Список аудиофайлов
+                    ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                    return View();
+                }
+            }
+
+            #endregion
+
+            #region Добавить аудиофайл
+
+            if (addPage.AudioInfoId != Guid.Empty)
+            {
+                _ = addPage.AudioInfoId;
+            }
+            else
+            {
+                if (addPage.AudioInfoFormFile != null)
+                {
+                    if (!addPage.AudioInfoFormFile.FileName.EndsWith(".mp3"))
+                    {
+                        ModelState.AddModelError("AudioInfoFormFile", $"Выбран некорректный файл «{addPage.AudioInfoFormFile.FileName}»");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View();
+                    }
+
+                    if (await audioFileContext.AudioFiles.Where(audioFile => audioFile.AudioFileName == addPage.AudioInfoFormFile.FileName).AnyAsync())
+                    {
+                        var newAudioFile = await audioFileContext.AudioFiles.FirstAsync(audioFile => audioFile.AudioFileName == addPage.AudioInfoFormFile.FileName);
+
+                        addPage.AudioInfoId = newAudioFile.AudioBookModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("AudioInfoFormFile", $"Добавьте аудиофайл «{addPage.AudioInfoFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View();
+                    }
+                }
+                else
+                {
+                    addPage.AudioInfoId = null;
+                }
             }
 
             #endregion
@@ -523,53 +756,13 @@ public class PageInfoController(
 
             #region Индекс сортировки страницы
 
-            addPage.SortOfPage = addPage.SortOfPage;
+            _ = addPage.SortOfPage;
 
             #endregion
 
-            #region Добавить фон для страницы
 
-            if (addPage.BackgroundFormFile != null)
-            {
-                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == addPage.BackgroundFormFile.FileName);
 
-                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == addPage.BackgroundFormFile.FileName);
 
-                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName);
-
-                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == addPage.BackgroundFormFile.FileName);
-
-                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka.webp");
-
-                    addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-            }
-            else
-            {
-                var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == "FotoPlenka-right.webp");
-
-                addPage.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-            }
-
-            #endregion
 
             #region Заголовок страницы (тег <head>)
 
@@ -711,12 +904,6 @@ public class PageInfoController(
             {
                 addPage.PageArea = "/" + addPage.PageArea.Trim().Trim('/').ToLower();
             }
-
-            #endregion
-
-            #region MVC или RazorPage
-
-            addPage.PageAsRazorPage = addPage.PageAsRazorPage;
 
             #endregion
 

@@ -586,65 +586,6 @@
 
 				</div>
 
-				@* страница аудиофайла на сайте *@
-				<div class="accordion-item mb-3 mt-2 shadw">
-
-					@* заголовок группы «Страница аудиофайла на сайте» *@
-					<h2 id="headingPageForAudioFile" class="accordion-header">
-
-						<button class="accordion-button collapsed py-0 stranicy"
-								type="button"
-								data-bs-toggle="collapse"
-								data-bs-target="#PageForAudioFile"
-								aria-expanded="true"
-								aria-controls="PageForAudioFile">
-
-							<span class="form-label fs-5">Страница аудиофайла :</span>
-
-						</button>
-
-					</h2>
-
-					<div id="PageForAudioFile"
-						 class="accordion-collapse collapse"
-						 aria-labelledby="headingPageForAudioFile"
-						 data-bs-parent="#accordionEditAudioFile">
-
-						<div class="accordion-body accordion-body-nointend text-center">
-
-							@* Страница аудиофайла*@
-							<div class="form-group mb-2">
-
-								<label asp-for="PageInfoModelId" class="@cssForLabel"></label>
-
-								<select asp-for="PageInfoModelId"
-										asp-items="ViewBag.PagesOfSite"
-										class="col-12 col-sm-7 col-lg-6"
-										aria-describedby="PageForAudioFileInputHelpBlock">
-
-									<option selected value="@null">no-page</option>
-
-								</select>
-
-								<div id="PageForAudioFileInputHelpBlock" class="form-text bg-light mt-sm-0">
-
-									<span class="fs-6 text-success">страница сайта</span>
-
-								</div>
-
-								@if (Context.Request.Method == "POST")
-								{
-									<span asp-validation-for="PageInfoModelId" class="text-danger"></span>
-								}
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
 			</div>
 
 			@* Сохранить - Отменить *@

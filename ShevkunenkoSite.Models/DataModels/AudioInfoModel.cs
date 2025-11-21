@@ -140,11 +140,11 @@ public class AudioInfoModel
     public TextInfoModel? Transcript { get; set; }
     #endregion
 
-    #region Связанная страница сайта
+    #region Навигационное свойство страницы сайта
 
     // идентификатор страницы сайта
-    [Display(Name = "Страница аудиофайла :")]
-    public Guid? PageInfoModelId { get; set; }
+    //[Display(Name = "Страница аудиофайла :")]
+    //public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion

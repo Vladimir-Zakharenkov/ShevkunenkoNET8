@@ -38,6 +38,12 @@ public class ArticleViewModel
 
     #endregion
 
+    #region Транскрипт для аудиофайла к экземпляру текста
+
+    public string? Transcript { get; set; }
+
+    #endregion
+
     #region Текст с разметкой
 
     public string? HtmlText { get; set; }
