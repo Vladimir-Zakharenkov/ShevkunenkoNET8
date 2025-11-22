@@ -20,4 +20,10 @@ public class ItemsListViewModel : PagingInfoViewModel
 
     #endregion
 
+    #region Страницы сайта
+
+    public PageInfoModel[]? AllSitePages { get; set; }
+
+    #endregion
+
 }

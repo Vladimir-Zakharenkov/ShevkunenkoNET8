@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -17,76 +18,45 @@ public class PageInfoController(
 {
     #region Список страниц сайта
 
-    public int pagesPerPage = 10;
-
     private static readonly char[] separator = [','];
 
-    public async Task<ViewResult> Index(string? pageTitleSearchString, string? pageDescriptionSearchString, string? keyWordSearchString, bool pageCard = false, int pageNumber = 1)
+    public async Task<ViewResult> Index(string? searchString, int pageNumber = 1, bool pageCard = false)
     {
-        var allPages = from p in pageInfoContext.PagesInfo
-                       select p;
+        var allSitePages = await pageInfoContext.PagesInfo.ToListAsync();
 
-        if (!string.IsNullOrEmpty(pageTitleSearchString))
+        if (!searchString.IsNullOrEmpty())
         {
-            allPages = allPages.Where(s => s.PageTitle.Contains(pageTitleSearchString));
+            allSitePages = [.. allSitePages.PageSearch(searchString).OrderBy(sitePage => sitePage.PageTitle)];
         }
 
-        if (!string.IsNullOrEmpty(pageDescriptionSearchString))
+        ItemsListViewModel itemList = new()
         {
-            allPages = allPages.Where(s => s.PageDescription.Contains(pageDescriptionSearchString));
-        }
+            AllSitePages = [.. allSitePages
+                     .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                     .Take(DataConfig.NumberOfItemsPerPage)],
 
-        if (!string.IsNullOrEmpty(keyWordSearchString))
-        {
-            allPages = allPages.Where(s => s.PageDescription.Contains(keyWordSearchString));
-        }
+            #region Свойства PagingInfoViewModel
+
+            TotalItems = allSitePages.Count,
+
+            ItemsPerPage = DataConfig.NumberOfItemsPerPage,
+
+            CurrentPage = pageNumber,
+
+            SearchString = searchString ?? string.Empty,
+
+            PageCard = pageCard
+
+            #endregion
+        };
 
         if (pageCard == false)
         {
-            return View(new PagesListViewModel
-            {
-                Pages = await allPages
-                    .Skip((pageNumber - 1) * pagesPerPage)
-                    .Take(pagesPerPage)
-                    .ToArrayAsync(),
-
-                PagingInfo = new PagingInfoViewModel
-                {
-                    CurrentPage = pageNumber,
-                    ItemsPerPage = pagesPerPage,
-                    TotalItems = allPages.Count()
-                },
-
-                PageTitleSearchString = pageTitleSearchString ?? string.Empty,
-                PageDescriptionSearchString = pageDescriptionSearchString ?? string.Empty,
-                KeyWordSearchString = keyWordSearchString ?? string.Empty,
-                PageCard = false,
-                PageNumber = pageNumber
-            });
+            return View(itemList);
         }
         else
         {
-            return View("PageCardList", new PagesListViewModel
-            {
-                Pages = await allPages
-                    .Skip((pageNumber - 1) * pagesPerPage)
-                    .Take(pagesPerPage)
-                    .ToArrayAsync(),
-
-                PagingInfo = new PagingInfoViewModel
-                {
-                    CurrentPage = pageNumber,
-                    ItemsPerPage = pagesPerPage,
-                    TotalItems = allPages.Count()
-                },
-
-                PageTitleSearchString = pageTitleSearchString ?? string.Empty,
-                PageDescriptionSearchString = pageDescriptionSearchString ?? string.Empty,
-                KeyWordSearchString = keyWordSearchString ?? string.Empty,
-                PageCard = true,
-                PageNumber = pageNumber
-            });
-
+            return View("PageCardList", itemList);
         }
     }
 

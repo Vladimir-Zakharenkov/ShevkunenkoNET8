@@ -1,247 +1,202 @@
-﻿@model PagesListViewModel
+﻿@model ItemsListViewModel
+
+@* Значение строки поиска *@
+<div>
+
+	@if (!String.IsNullOrEmpty(Model.SearchString))
+	{
+		<div class="row mb-0">
+
+			<p class="col-12 fs-5 text-primary">
+				Поиск по строке: <span class="text-black text_shadow">@Model.SearchString</span>
+			</p>
+
+		</div>
+	}
+</div>
+
+@* Сообщение о количестве страниц *@
+<div>
+
+	@if (Model.TotalItems == 0)
+	{
+		<div class="row">
+
+			<div class="col text-center p-2">
+
+				<p class="fs-5 text_shadow mb-0">
+					В базе данных нет страниц
+				</p>
+
+			</div>
+
+		</div>
+	}
+	else
+	{
+		<div class="row">
+
+			<div class="col-12 text-center">
+
+				<p class="fs-5 text-primary mb-0">
+					Количество страниц :&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span>
+				</p>
+
+			</div>
+
+		</div>
+	}
+
+	<hr class="liniya" />
+
+</div>
+
+@* Добавить страницу - Иконки страниц - Поиск страницы *@
+<div class="row">
+
+	<div class="col-12 col-md-6 col-lg-4">
+
+		<a asp-area="Admin"
+		   asp-controller="PageInfo"
+		   asp-action="AddPage"
+		   class="btn btn-outline-danger shadw py-1 mt-2 me-3 minwidth100px"
+		   title="добавить страницу">
+
+			Добавить
+
+		</a>
+
+		<a asp-area="Admin"
+		   asp-controller="PageInfo"
+		   asp-action="Index"
+		   asp-route-pageCard="true"
+		   class="btn btn-outline-primary shadw py-1 mt-2 minwidth100px"
+		   title="карточки страниц">
+
+			Иконки
+
+		</a>
+
+	</div>
+
+	<hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
+
+	<div class="col-12 col-md-6 col-lg-8 mb-2">
+
+		<form method="get"
+			  asp-area="Admin"
+			  asp-controller="PageInfo"
+			  asp-action="Index"
+			  asp-route-pageCard="false"
+			  class="text-center text-md-end mt-md-2">
+
+			<input asp-for="SearchString"
+				   class="d-inline-block align-middle mt-1 w-50"
+				   type="text" />
+
+			<input class="btn btn-outline-success shadw py-1 me-md-3"
+				   type="submit"
+				   value="Поиск"
+				   title="поиск страницы" />
+
+		</form>
+
+	</div>
+
+	<hr class="liniya" />
+
+</div>
 
 <div class="row">
 
-    @if (!String.IsNullOrEmpty(Model.PageTitleSearchString))
-    {
-        <p class="fs-5 text-primary mb-0">
-            Поиск в заголовке по строке: <span class="text-black text_shadow">@Model.PageTitleSearchString</span>
-        </p>
-    }
+	<div class="col m-1 shadw">
 
-    @if (!String.IsNullOrEmpty(Model.PageDescriptionSearchString))
-    {
-        <p class="fs-5 text-primary mb-0">Поиск в описании по строке: <span class="text-black text_shadow">@Model.PageDescriptionSearchString</span></p>
-    }
+		<div class="table-responsive">
 
-    @if (!String.IsNullOrEmpty(Model.KeyWordSearchString))
-    {
-        <p class="fs-5 text-primary mb-0">Поиск по ключевому слову:  <span class="text-black text_shadow">@Model.KeyWordSearchString</span></p>
-    }
+			<table class="table table-sm table-hover caption-top align-middle">
 
-</div>
+				<thead>
 
-@if (Model.PagingInfo.TotalItems == 0)
-{
-    <div class="row">
+					<tr class="d-flex table-secondary text-center">
 
-        <div class="col text-center p-2">
+						<th scope="col" class="col-9 col-lg-10 col-xl-5 align-content-center text-primary">Заголовок</th>
+						<th scope="col" class="d-none d-xl-table-cell col-xl-5 text-start text-primary">Адрес</th>
+						<th scope="col" class="col-3 col-lg-2 align-content-center text-center"></th>
 
-            <p class="fs-5 text_shadow mb-0">В базе данных нет страниц</p>
+					</tr>
 
-        </div>
+				</thead>
 
-    </div>
-}
-else
-{
-    <div class="row">
+				<tbody>
 
-        <div class="col-12 text-center">
+					@foreach (var pageInfo in Model.AllSitePages ?? Enumerable.Empty<PageInfoModel>())
+					{
+						<tr class="d-flex text-start">
 
-            <p class="fs-5 text-primary mb-0">Количество страниц:&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+							<td scope="col" class="col-9 col-lg-10 col-xl-5 align-content-center text-start text_shadow">@pageInfo.PageTitle</td>
+							<td scope="col" class="d-none d-xl-table-cell col-xl-5 align-content-center text-start text_shadow">@pageInfo.PageFullPathWithData</td>
 
-        </div>
+							@* Кнопки Информация - Изменить - Удалить - Смотреть*@
+							<td scope="col" class="col-3 col-lg-2 align-content-center text-center">
 
-    </div>
-}
+								<a asp-area="Admin"
+								   asp-controller="PageInfo"
+								   asp-action="DetailsPage"
+								   asp-route-pageId="@pageInfo.PageInfoModelId"
+								   class="btn btn-outline-info px-1 py-0 m-1 shadw minwidth40px"
+								   title="подробно">
 
-<hr class="liniya" />
+									Info
 
-<div class="row row-cols-2 row-cols-md-3 justify-content-center px-2">
+								</a>
 
-    <div class="col-6 col-md-2">
-        <a asp-area="Admin" asp-controller="PageInfo" asp-action="AddPage" class="btn btn-outline-danger me-4 shadw" title="добавить страницу">Добавить</a>
-    </div>
+								<a asp-area="Admin"
+								   asp-controller="PageInfo"
+								   asp-action="EditPage"
+								   asp-route-pageId="@pageInfo.PageInfoModelId"
+								   class="btn btn-outline-dark px-1 py-0 m-1 shadw minwidth40px"
+								   title="редактировать">
 
-    <div class="col-6 col-md-2">
-        <a class="btn btn-outline-primary me-4 shadw"
-           asp-area="Admin"
-           asp-controller="PageInfo"
-           asp-action="Index"
-           asp-route-pageCard="true"
-           asp-route-pageTitleSearchString=@Model.PageTitleSearchString
-           asp-route-pageDescriptionSearchString=@Model.PageDescriptionSearchString
-           asp-route-keyWordSearchString=@Model.KeyWordSearchString
-           asp-route-pageNumber=@Model.PageNumber
-           title="иконки страниц">
-            Иконки
-        </a>
-    </div>
+									Edit
 
-    <div class="col-12 col-md-8 mt-3 mt-md-0 gx-2">
+								</a>
 
-        <div class="accordion" id="pageSearch">
+								<a href="@Url.Content(pageInfo.PageFullPathWithData)"
+								   class="btn btn-outline-primary px-1 py-0 m-1 shadw minwidth40px"
+								   title="просмотр">
 
-            <div class="accordion-item shadw">
+									Run
 
-                <h2 class="accordion-header" id="heading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
-                        Поиск:
-                    </button>
-                </h2>
+								</a>
 
-                <div id="collapse" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#pageSearch">
+								<a asp-area="Admin"
+								   asp-controller="PageInfo"
+								   asp-action="DeletePage"
+								   asp-route-pageId="@pageInfo.PageInfoModelId"
+								   class="btn btn-outline-danger px-1 py-0 m-1 shadw minwidth40px"
+								   title="удалить">
 
-                    <div class="accordion-body p-1">
+									Del
 
-                        <div class="table-responsive border border-primary shadw">
+								</a>
 
-                            <form asp-area="Admin" asp-controller="PageInfo" asp-action="Index" asp-route-pageCard="false" method="get">
+							</td>
 
-                                <input asp-for="PageCard" type="hidden" value="false" />
-                                <input asp-for="PageNumber" type="hidden" />
+						</tr>
+					}
 
-                                <table class="table table-hover table-borderless">
-                                    <tbody>
+				</tbody>
 
-                                        <tr>
-                                            <td scope="row" class="text-end">
-                                                <span class="fs-6 text-primary">Title:</span><br />
-                                            </td>
-                                            <td class="text-start">
-                                                <input type="text" asp-for="PageTitleSearchString" /><br />
-                                            </td>
-                                        </tr>
+			</table>
 
-                                        <tr>
-                                            <td scope="row" class="text-end">
-                                                <span class="fs-6 text-primary">Description:</span><br />
-                                            </td>
-                                            <td class="text-start">
-                                                <input type="text" asp-for="PageDescriptionSearchString" /><br />
-                                            </td>
-                                        </tr>
+		</div>
 
-                                        <tr>
-                                            <td scope="row" class="text-end">
-                                                <span class="fs-6 text-primary">KeyWords:</span><br />
-                                            </td>
-                                            <td class="text-start">
-                                                <input type="text" asp-for="KeyWordSearchString" /><br />
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-
-                                <p class="text-center pb-3">
-
-                                    <input type="submit" value="ПОИСК" class="btn btn-outline-danger py-1 shadw" />
-
-                                </p>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+	</div>
 
 </div>
 
-<hr class="liniya" />
-
-@if (Model.PagingInfo.TotalPages > 1)
+@* Разбивка на страницы *@
+@if (Model.TotalItems > DataConfig.NumberOfItemsPerPage)
 {
-    <div class="row p-2 m-2">
-
-        <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-             page-model="@Model.PagingInfo"
-             page-search="@Model"
-             page-action="Index"
-             page-classes-enabled="true"
-             page-class="btn"
-             page-class-normal="btn-outline-dark"
-             page-class-selected="btn-danger" data-toggle="buttons" role="group" aria-label="страницы сайта">
-        </div>
-
-    </div>
-}
-
-<div class="table-responsive">
-
-    <table class="table table-hover caption-top align-middle">
-
-        <thead>
-
-            <tr class="table-secondary">
-                <th scope="col" class="d-none d-xl-table-cell text-start text-primary">ID страницы</th>
-                <th scope="col" class="d-none d-xxl-table-cell text-start text-primary">Адрес</th>
-                <th scope="col" class="text-start text-primary">Заголовок</th>
-                <th scope="col"></th>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            @foreach (var pageInfo in Model?.Pages ?? Enumerable.Empty<PageInfoModel>())
-            {
-                <tr>
-
-                    <td scope="col" class="d-none d-xl-table-cell text-start text_shadow">@pageInfo.PageInfoModelId</td>
-                    <td scope="col" class="d-none d-xxl-table-cell text-start text_shadow">@pageInfo.PageFullPathWithData</td>
-                    <td scope="col" class="text-start text_shadow">@pageInfo.PageTitle</td>
-
-                    <td scope="col" class="text-end">
-
-                        <a asp-area="Admin"
-                           asp-controller="PageInfo"
-                           asp-action="DetailsPage"
-                           asp-route-pageId="@pageInfo.PageInfoModelId"
-                           class="btn btn-outline-info py-0 px-2 mb-1 ms-1 shadw"
-                           title="подробно">
-                            Info
-                        </a>
-                        <a asp-area="Admin"
-                           asp-controller="PageInfo"
-                           asp-action="EditPage"
-                           asp-route-pageId="@pageInfo.PageInfoModelId"
-                           class="btn btn-outline-dark py-0 px-2 mb-1 ms-1 shadw"
-                           title="редактировать">
-                            Edit
-                        </a>
-                        <a href="@Url.Content(pageInfo.PageFullPathWithData)"
-                           class="btn btn-outline-primary py-0 px-2 mb-1 ms-1 shadw"
-                           title="просмотр">
-                            Run
-                        </a>
-                        <a asp-area="Admin"
-                           asp-controller="PageInfo"
-                           asp-action="DeletePage"
-                           asp-route-pageId="@pageInfo.PageInfoModelId"
-                           class="btn btn-outline-danger py-0 px-2 mb-1 ms-1 shadw"
-                           title="удалить">
-                            Del
-                        </a>
-
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-
-</div>
-
-@if (Model!.PagingInfo.TotalPages > 1)
-{
-    <div class="row p-2 m-2">
-
-        <div page-model="@Model.PagingInfo" page-search="@Model" page-action="Index" page-classes-enabled="true"
-             page-class="btn" page-class-normal="btn-outline-dark"
-             page-class-selected="btn-danger" class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten" data-toggle="buttons" role="group" aria-label="страницы сайта">
-        </div>
-
-    </div>
+	<div pagination="@Model"></div>
 }

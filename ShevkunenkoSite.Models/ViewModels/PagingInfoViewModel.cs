@@ -31,4 +31,10 @@ public class PagingInfoViewModel
     public string? SearchString { get; set; }
 
     #endregion
+
+    #region Карточка объекта
+
+    public bool PageCard { get; set; }
+
+    #endregion
 }

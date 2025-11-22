@@ -29,8 +29,9 @@ public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : T
                         newRef.Attributes["href"] = urlHelper.Action(actionValue.ToString(),
                             new
                             {
+                                searchString = ViewContext.HttpContext.Request.Query["searchString"].ToString() ?? string.Empty,
                                 pageNumber = i,
-                                searchString = ViewContext.HttpContext.Request.Query["searchString"].ToString() ?? string.Empty
+                                pageCard = Pagination.PageCard
                             });
 
                         newRef.Attributes["title"] = "страница " + i;
