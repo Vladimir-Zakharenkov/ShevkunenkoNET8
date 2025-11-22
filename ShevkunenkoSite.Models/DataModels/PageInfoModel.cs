@@ -17,6 +17,20 @@ public class PageInfoModel
 
     #endregion
 
+    #region Список типов  (OgType) (NotMapped)
+
+    [NotMapped]
+    public string[] OgTypeItems =
+    [
+        "movie",
+        "article",
+        "book",
+        "audiobook",
+        "website"
+    ];
+
+    #endregion
+
     #region Идентификатор страницы в базе данных
 
     [Display(Name = "PageInfoId:")]
@@ -214,7 +228,7 @@ public class PageInfoModel
 
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
-    [Display(Name = "Фильтр поиска :")]
+    [Display(Name = "Фильтры поиска :")]
     [DataType(DataType.Text)]
     public string PageFilter { get; set; } = string.Empty;
 
