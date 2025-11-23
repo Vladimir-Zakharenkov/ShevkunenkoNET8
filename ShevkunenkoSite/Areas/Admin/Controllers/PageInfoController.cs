@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
-using ShevkunenkoSite.Models.ViewModels;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -441,6 +440,7 @@ public class PageInfoController(
                 "PageTitle," +
                 "PageDescription," +
                 "PageKeyWords," +
+                "OgType," +
                 "PageIconPath," +
                 "BrowserConfig," +
                 "BrowserConfigFolder," +
@@ -1624,6 +1624,7 @@ public class PageInfoController(
                 "PageTitle," +
                 "PageDescription," +
                 "PageKeyWords," +
+                "OgType," +
                 "PageIconPath," +
                 "BrowserConfig," +
                 "BrowserConfigFolder," +
@@ -1634,6 +1635,7 @@ public class PageInfoController(
                 "PageHeading," +
                 "ImagePageHeadingFormFile," +
                 "ImagePageHeadingId," +
+                "PageFilter," +
                 "TextOfPage," +
                 "PageFilterOut," +
                 "PageLinksByFilters," +
@@ -2043,14 +2045,15 @@ public class PageInfoController(
 
             #endregion
 
-
-
-
             #region Изменить заголовок страницы теги title, description, keywords
 
             pageUpdate.PageTitle = editPage.PageTitle.Trim();
             pageUpdate.PageDescription = editPage.PageDescription.Trim();
             pageUpdate.PageKeyWords = editPage.PageKeyWords.Trim();
+
+            #endregion
+
+            #region OgType - PageIconPath - BrowserConfig - BrowserConfigFolder - Manifest
 
             if (editPage.OgType == "website")
             {
@@ -2086,108 +2089,143 @@ public class PageInfoController(
 
             #endregion
 
+            #region Изменить данные для Sitemap
+
+            pageUpdate.PageLastmod = DateTime.Now;
+            pageUpdate.Changefreq = editPage.Changefreq.Trim();
+            pageUpdate.Priority = editPage.Priority.Trim();
+
+            #endregion
+
+            #region Содержание страницы
+
             #region Изменить оформление заголовка страницы
 
             pageUpdate.PageHeading = editPage.PageHeading.Trim();
 
             #endregion
 
-            #region Изменить текст страницы
-
-            pageUpdate.TextOfPage = editPage.TextOfPage;
-
-            #endregion
-
             #region Изменить картинку для  заголовка страницы
 
-            if (editPage.ImagePageHeadingFormFile != null)
+            if (editPage.ImagePageHeadingId != Guid.Empty & editPage.ImagePageHeadingFormFile == null)
             {
-                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                pageUpdate.ImagePageHeadingId = editPage.ImagePageHeadingId;
+            }
+            else
+            {
+                if (editPage.ImagePageHeadingFormFile != null)
                 {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName);
+                    if (!(editPage.ImagePageHeadingFormFile.FileName.EndsWith(".webp") || editPage.ImagePageHeadingFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("ImagePageHeadingId", $"Выбран некорректный файл «{editPage.ImagePageHeadingFormFile.FileName}»");
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName);
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName);
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName);
+                        return View(editPage);
+                    }
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName);
+                    if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImagePageHeadingFormFile.FileName);
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName);
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImagePageHeadingFormFile.FileName);
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName);
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImagePageHeadingFormFile.FileName);
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName);
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImagePageHeadingFormFile.FileName);
 
-                    pageUpdate.ImagePageHeadingId = newImage.ImageFileModelId;
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImagePageHeadingFormFile.FileName);
+
+                        pageUpdate.ImagePageHeadingId = imageFile.ImageFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{editPage.ImagePageHeadingFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{editPage.ImagePageHeadingFormFile.FileName}» в базу данных");
-
-                    return View(nameof(EditPage), new EditPageViewModel
-                    {
-                        PageItem = pageUpdate,
-                        IconItem = editPageiconItem
-                    });
+                    pageUpdate.ImagePageHeadingId = null;
                 }
             }
 
             #endregion
 
-            #region Изменить фильтр поиска текущей страницы
+            #region Изменить текст страницы
 
-            pageUpdate.PageFilter = editPage.PageFilter.Trim();
+            pageUpdate.TextOfPage = editPage.TextOfPage.Trim();
 
             #endregion
 
-            #region Изменить данные для Sitemap
+            #endregion
 
-            pageUpdate.PageLastmod = DateTime.Now;
-            pageUpdate.Changefreq = editPage.Changefreq.Trim();
-            pageUpdate.Priority = editPage.Priority.Trim();
-            pageUpdate.OgType = editPage.OgType.Trim();
+            #region Изменить фильтры поиска текущей страницы
+
+            pageUpdate.PageFilter = editPage.PageFilter.Trim();
 
             #endregion
 
@@ -2269,7 +2307,7 @@ public class PageInfoController(
         }
         else
         {
-            return View();
+            return View(editPage);
         }
     }
 

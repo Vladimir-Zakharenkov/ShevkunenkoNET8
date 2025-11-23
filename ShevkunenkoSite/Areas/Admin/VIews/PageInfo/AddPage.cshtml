@@ -1080,25 +1080,6 @@
 
 								<hr class="w-50 mx-auto" />
 
-								<label class="@cssForLabel" asp-for="ImagePageHeadingFormFile"></label>
-
-								<input asp-for="ImagePageHeadingFormFile" id="ImagePageHeadingFormFileInput" class="form-control mt-2 w-50 mx-auto" aria-describedby="ImagePageHeadingFormFileInputHelpBlock" />
-
-								<div id="ImagePageHeadingInputHelpBlock" class="form-text">
-
-									<span class="fs-6 text-success">
-										картинка под заголовком страницы
-									</span>
-
-								</div>
-
-								@if (Context.Request.Method == "POST")
-								{
-									<span asp-validation-for="ImagePageHeadingFormFile" class="text-danger"></span>
-								}
-
-								<hr class="w-50 mx-auto" />
-
 							</div>
 
 							@* Текст страницы в теге <article> ... </article> *@
@@ -1108,7 +1089,7 @@
 
 								<textarea asp-for="TextOfPage"
 										  id="TextOfPageInput"
-										  class="form-control text-start fordetails px-3"
+										  class="form-control text-start fordetails px-3 border border-1 border-black"
 										  rows="15"
 										  aria-describedby="TextOfPageInputHelpBlock">
 								</textarea>
@@ -1125,7 +1106,6 @@
 								{
 									<span asp-validation-for="TextOfPage" class="text-danger"></span>
 								}
-								<hr class="w-50 mx-auto" />
 
 							</div>
 
