@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Loc Lastmod Changefreq Og
 
+using ShevkunenkoSite.Models.ViewModels;
+
 namespace ShevkunenkoSite.Models.DataModels;
 
 public class PageInfoModel
@@ -395,6 +397,90 @@ public class PageInfoModel
     [DataType(DataType.Upload)]
     [Display(Name = "Картинка под заголовком :")]
     public IFormFile? ImagePageHeadingFormFile { get; set; }
+
+    #endregion
+
+    #region Экземпляр иконки странницы
+
+    [NotMapped]
+    public IconFileModel? IconItem { get; set; }
+
+    #endregion
+
+    #region Список ссылок на страницы по GUID (1)
+
+    [NotMapped]
+    public List<PageInfoModel>? LinksToPagesByGuid { get; set; }
+
+    #endregion
+
+    #region Список ссылок на страницы по GUID (2)
+
+    [NotMapped]
+    public List<PageInfoModel>? LinksToPagesByGuid2 { get; set; }
+
+    #endregion
+
+    #region Список ссылок на видео по фильтру
+
+    [NotMapped]
+    public List<VideoLinksViewModel>? LinksToVideosByFilterOut { get; set; }
+
+    #endregion
+
+    #region Список списков видео
+
+    [NotMapped]
+    public List<List<MovieFileModel>>? ListsMoviesFileModel { get; set; }
+
+    #endregion
+
+    #region Список ссылок на текущую страницу по GUID (1)
+
+    [NotMapped]
+    public List<PageInfoModel>? LinksFromPagesByGuid { get; set; }
+
+    #endregion
+
+    #region Список ссылок на текущую страницу по GUID (2)
+
+    [NotMapped]
+    public List<PageInfoModel>? LinksFromPagesByGuid2 { get; set; }
+
+    #endregion
+
+    #region Словарь страниц ссылающихся на текущую по текстовым фильтрам
+
+    [NotMapped]
+    public Dictionary<string, List<PageInfoModel>>? DictionaryOfOutPages { get; set; }
+
+    #endregion
+
+    #region Словарь ссылок на видео по текстовым фильтрам
+
+    [NotMapped]
+    public Dictionary<string, VideoLinksViewModel>? DictionaryOfLinksByVideoFilterOut { get; set; }
+
+    #endregion
+
+    #region Словарь ссылок на страницы по текстовым фильтрам
+
+    [NotMapped]
+    public Dictionary<string, List<PageInfoModel>>? DictionaryOfLinksByPageFilterOut { get; set; }
+
+    #endregion
+
+    #region Словарь ссылок на картинки по текстовым фильтрам
+
+    [NotMapped]
+    public Dictionary<string, ImageListViewModel>? DictionaryOfLinksByFotoFilterOut { get; set; }
+
+    #endregion
+
+    #region Кадры слева и справа от текста
+
+    [NotMapped]
+    public FramesAroundMainContentModel? FramesAroundMainContent { get; set; }
 
     #endregion
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using ShevkunenkoSite.Models.ViewModels;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -1210,7 +1211,7 @@ public class PageInfoController(
     [HttpGet]
     public async Task<IActionResult> EditPage(Guid? pageId)
     {
-        EditPageViewModel editPage = new();
+        PageInfoModel editPage = new();
 
         if (pageId.HasValue
             && await pageInfoContext.PagesInfo
@@ -1219,7 +1220,7 @@ public class PageInfoController(
         {
             #region Инициализация экземпляра страницы
 
-            editPage.PageItem = await pageInfoContext.PagesInfo
+            editPage = await pageInfoContext.PagesInfo
                 .Include(image => image.ImageFileModel)
                 .Include(background => background.BackgroundFileModel)
                 .Include(audioFile => audioFile.AudioInfo)
@@ -1235,11 +1236,11 @@ public class PageInfoController(
             #region Инициализация иконки страницы
 
             if (await iconContext.IconFiles
-                .Where(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem)
+                .Where(icon => icon.IconPath == editPage.PageIconPath && icon.IconFileName == DataConfig.IconItem)
                 .AnyAsync())
             {
                 editPage.IconItem = await iconContext.IconFiles
-                    .FirstAsync(icon => icon.IconPath == editPage.PageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
+                    .FirstAsync(icon => icon.IconPath == editPage.PageIconPath && icon.IconFileName == DataConfig.IconItem);
             }
             else
             {
@@ -1256,7 +1257,7 @@ public class PageInfoController(
 #pragma warning disable CA1862
             linksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
-                    .Where(p => p.RefPages != null && p.RefPages.ToLower().Contains(editPage.PageItem.PageInfoModelId.ToString().ToLower()))
+                    .Where(p => p.RefPages != null && p.RefPages.ToLower().Contains(editPage.PageInfoModelId.ToString().ToLower()))
                     .ToArrayAsync());
 #pragma warning restore CA1862
 
@@ -1271,7 +1272,7 @@ public class PageInfoController(
 #pragma warning disable CA1862
             linksFromPagesByGuid2
                 .AddRange(await pageInfoContext.PagesInfo
-                    .Where(p => p.RefPages2 != null && p.RefPages2.ToLower().Contains(editPage.PageItem.PageInfoModelId.ToString().ToLower()))
+                    .Where(p => p.RefPages2 != null && p.RefPages2.ToLower().Contains(editPage.PageInfoModelId.ToString().ToLower()))
                 .ToArrayAsync());
 #pragma warning restore CA1862
 
@@ -1281,7 +1282,7 @@ public class PageInfoController(
 
             #region Ссылки на текущую страницу по фильтру PageFilter
 
-            string[] pageFilters = editPage.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            string[] pageFilters = editPage.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
             Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
 
@@ -1308,9 +1309,9 @@ public class PageInfoController(
 
             List<PageInfoModel> linksToPagesByGuid = [];
 
-            if (editPage.PageItem.RefPages != null && editPage.PageItem.RefPages != string.Empty)
+            if (editPage.RefPages != null && editPage.RefPages != string.Empty)
             {
-                string[] pageIdOut = editPage.PageItem.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                string[] pageIdOut = editPage.RefPages.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (pageIdOut.Length > 0)
                 {
@@ -1337,9 +1338,9 @@ public class PageInfoController(
 
             List<PageInfoModel> linksToPagesByGuid2 = [];
 
-            if (editPage.PageItem.RefPages2 != null && editPage.PageItem.RefPages2 != string.Empty)
+            if (editPage.RefPages2 != null && editPage.RefPages2 != string.Empty)
             {
-                string[] pageIdOut2 = editPage.PageItem.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                string[] pageIdOut2 = editPage.RefPages2.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (pageIdOut2.Length > 0)
                 {
@@ -1366,9 +1367,9 @@ public class PageInfoController(
 
             Dictionary<string, List<PageInfoModel>> dictionaryOfLinksByPageFilterOut = [];
 
-            if (editPage.PageItem.PageFilterOut != null && editPage.PageItem.PageFilterOut != string.Empty)
+            if (editPage.PageFilterOut != null && editPage.PageFilterOut != string.Empty)
             {
-                string[] pageFiltersOut = editPage.PageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                string[] pageFiltersOut = editPage.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (pageFiltersOut.Length > 0)
                 {
@@ -1394,9 +1395,9 @@ public class PageInfoController(
 
             Dictionary<string, VideoLinksViewModel> dictionaryOfLinksByVideoFilterOut = [];
 
-            if (editPage.PageItem.VideoFilterOut != null && editPage.PageItem.VideoFilterOut != string.Empty)
+            if (editPage.VideoFilterOut != null && editPage.VideoFilterOut != string.Empty)
             {
-                string[] videoFilterOut = editPage.PageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                string[] videoFilterOut = editPage.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (videoFilterOut.Length > 0)
                 {
@@ -1432,9 +1433,9 @@ public class PageInfoController(
 
             Dictionary<string, ImageListViewModel> dictionaryOfLinksByFotoFilterOut = [];
 
-            if (editPage.PageItem.PhotoFilterOut != null && editPage.PageItem.PhotoFilterOut != string.Empty)
+            if (editPage.PhotoFilterOut != null && editPage.PhotoFilterOut != string.Empty)
             {
-                string[] pictureFiltersOut = editPage.PageItem.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                string[] pictureFiltersOut = editPage.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                 if (pictureFiltersOut.Length > 0)
                 {
@@ -1458,13 +1459,56 @@ public class PageInfoController(
 
             #region Кадры слева и справа от текста
 
-            FramesAroundMainContentModel framesAroundMainContent = new();
-
-            if (editPage.PageItem.OgType == "book")
+            if (editPage.AudioInfoId != null && await audioFileContext.AudioFiles.Where(audio => audio.AudioInfoModelId == editPage.AudioInfoId).AnyAsync())
             {
-                if (editPage.PageItem.RoutData.Contains("bookid", StringComparison.CurrentCultureIgnoreCase))
+                var audioForPage = await audioFileContext.AudioFiles
+                    .Include(aBook => aBook.AudioBookModel)
+                    .FirstAsync(audio => audio.AudioInfoModelId == editPage.AudioInfoId);
+
+                if (audioForPage.AudioBookModel != null
+                        && audioForPage.AudioBookModel.BookForAudioBook != null
+                        && await imageContext.ImageFiles
+                                       .Where(img => img.SearchFilter.Contains(audioForPage.AudioBookModel.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+                                       .AnyAsync())
                 {
-                    string[] routData = editPage.PageItem.RoutData[1..].Split('&');
+                    var listOfPictures = await imageContext.ImageFiles
+                       .Where(p => p.SearchFilter.Contains(audioForPage.AudioBookModel.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+                       .ToArrayAsync(); ;
+
+                    listOfPictures = [.. listOfPictures.Shuffle()];
+
+                    if (listOfPictures.Length > 1)
+                    {
+                        editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. listOfPictures.Take(listOfPictures.Length / 2)],
+                            FramesOnTheRight = [.. listOfPictures.Skip(listOfPictures.Length / 2)]
+                        };
+                    }
+                    else
+                    {
+                        editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. listOfPictures],
+                            FramesOnTheRight = [.. listOfPictures]
+                        };
+                    }
+                }
+                else
+                {
+                    editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                    {
+                        FramesOnTheLeft = [],
+                        FramesOnTheRight = []
+                    };
+                }
+            }
+
+            if (editPage.OgType == "book")
+            {
+                if (editPage.RoutData.Contains("bookid", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    string[] routData = editPage.RoutData[1..].Split('&');
 
                     var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
 
@@ -1482,18 +1526,27 @@ public class PageInfoController(
 
                             if (imageItems.Length > 1)
                             {
-                                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
-
-                                editPage.FramesAroundMainContent = framesAroundMainContent;
+                                editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                                {
+                                    FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
+                                    FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
+                                };
+                            }
+                            else
+                            {
+                                editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                                {
+                                    FramesOnTheLeft = [.. imageItems],
+                                    FramesOnTheRight = [.. imageItems]
+                                };
                             }
                         }
                     }
                 }
 
-                if (editPage.PageItem.RoutData.Contains("bookcaption", StringComparison.CurrentCultureIgnoreCase))
+                if (editPage.RoutData.Contains("bookcaption", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    string[] routData = editPage.PageItem.RoutData[1..].Split('&');
+                    string[] routData = editPage.RoutData[1..].Split('&');
 
                     var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
 
@@ -1505,13 +1558,33 @@ public class PageInfoController(
 
                     if (imageItems.Length > 1)
                     {
-                        framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                        framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                        editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
+                            FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
+                        };
+                    }
+                    else
+                    {
+                        editPage.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. imageItems],
+                            FramesOnTheRight = [.. imageItems]
+                        };
                     }
                 }
             }
 
             #endregion
+
+            // Список картинок сайта
+            ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+            // Список картинок для фона (фотопленка)
+            ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+            // Список аудиофайлов
+            ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
             return View(editPage);
         }
@@ -1522,23 +1595,64 @@ public class PageInfoController(
     }
 
     [HttpPost]
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPage(EditPageViewModel editPage)
+    public async Task<IActionResult> EditPage(
+        [Bind("PageInfoModelId," +
+                "PageIconPath," +
+                "BrowserConfig," +
+                "BrowserConfigFolder," +
+                "Manifest," +
+                "PageAsRazorPage," +
+                "ImageFileModelId," +
+                "ImageFileFormFile," +
+                "BackgroundFileModelId," +
+                "BackgroundFormFile," +
+                "AudioInfoId," +
+                "AudioInfoFormFile," +
+                "PageCardText," +
+                "SortOfPage," +
+                "PageArea," +
+                "Controller," +
+                "Action," +
+                "RoutData," +
+                "PageLoc," +
+                "PagePathNickName," +
+                "PagePathNickName2," +
+                "PageTitle," +
+                "PageDescription," +
+                "PageKeyWords," +
+                "PageIconPath," +
+                "BrowserConfig," +
+                "BrowserConfigFolder," +
+                "Manifest," +
+                "PageLastmod," +
+                "Changefreq," +
+                "Priority," +
+                "PageHeading," +
+                "ImagePageHeadingFormFile," +
+                "ImagePageHeadingId," +
+                "TextOfPage," +
+                "PageFilterOut," +
+                "PageLinksByFilters," +
+                "VideoFilterOut," +
+                "VideoLinks," +
+                "RefPages," +
+                "PageLinks," +
+                "RefPages2," +
+                "PageLinks2," +
+                "PhotoLinks," +
+                "PhotoFilterOut")]
+        PageInfoModel editPage)
     {
         if (ModelState.IsValid)
         {
             #region Инициализация экземпляра страницы
 
-            PageInfoModel pageUpdate = await pageInfoContext.PagesInfo
-                .Include(image => image.ImageFileModel)
-                .Include(background => background.BackgroundFileModel)
-                .Include(audioFile => audioFile.AudioInfo)
-                .Include(audioBook => audioBook.AudioBook)
-                // TODO: убрать nullable для картинки фильма 
-                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
-                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
-                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
-                .FirstAsync(page => page.PageInfoModelId == editPage.PageItem.PageInfoModelId);
+            var pageUpdate = await pageInfoContext.PagesInfo
+                .FirstAsync(page => page.PageInfoModelId == editPage.PageInfoModelId);
 
             #endregion
 
@@ -1560,113 +1674,366 @@ public class PageInfoController(
 
             #endregion
 
-            #region Изменить адрес страницы
-
             #region MVC или RazorPage
 
-            pageUpdate.PageAsRazorPage = editPage.PageItem.PageAsRazorPage;
+            pageUpdate.PageAsRazorPage = editPage.PageAsRazorPage;
 
             #endregion
 
+            #region Изменить картинку для страницы
+
+            if (editPage.ImageFileModelId != Guid.Empty & editPage.ImageFileFormFile == null)
+            {
+                pageUpdate.ImageFileModelId = editPage.ImageFileModelId;
+            }
+            else
+            {
+                if (editPage.ImageFileFormFile != null)
+                {
+                    if (!(editPage.ImageFileFormFile.FileName.EndsWith(".webp") || editPage.ImageFileFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("ImageFileFormFile", $"Выбран некорректный файл «{editPage.ImageFileFormFile.FileName}»");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+
+                    if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
+                    {
+                        var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName);
+
+                        pageUpdate.ImageFileModelId = imageFile.ImageFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{editPage.ImageFileFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+                }
+                else
+                {
+                    pageUpdate.ImageFileModelId = editPage.ImageFileModelId;
+                }
+            }
+
+            #endregion
+
+            #region Изменить фон для страницы
+
+            if (editPage.BackgroundFileModelId != Guid.Empty & editPage.BackgroundFormFile == null)
+            {
+                pageUpdate.BackgroundFileModelId = editPage.BackgroundFileModelId;
+            }
+            else
+            {
+                if (editPage.BackgroundFormFile != null)
+                {
+                    if (!(editPage.BackgroundFormFile.FileName.EndsWith(".webp") | editPage.BackgroundFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("BackgroundFormFile", $"Выбран некорректный файл «{editPage.BackgroundFormFile.FileName}»");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+
+                    if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName);
+
+                        pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName);
+
+                        pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName);
+
+                        pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
+                    {
+                        var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName);
+
+                        pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("BackgroundFormFile", $"Добавьте фон «{editPage.BackgroundFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+                }
+                else
+                {
+                    pageUpdate.BackgroundFileModelId = editPage.BackgroundFileModelId;
+                }
+            }
+
+            #endregion
+
+            #region Изменить аудиофайл
+
+            if (editPage.AudioInfoId != Guid.Empty & editPage.AudioInfoFormFile == null)
+            {
+                pageUpdate.AudioInfoId = editPage.AudioInfoId;
+            }
+            else if (editPage.AudioInfoId == Guid.Empty & editPage.AudioInfoFormFile == null)
+            {
+                pageUpdate.AudioInfoId = null;
+            }
+            else
+            {
+                if (editPage.AudioInfoFormFile != null)
+                {
+                    if (!editPage.AudioInfoFormFile.FileName.EndsWith(".mp3"))
+                    {
+                        ModelState.AddModelError("AudioInfoFormFile", $"Выбран некорректный файл «{editPage.AudioInfoFormFile.FileName}»");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+
+                    if (await audioFileContext.AudioFiles.Where(audioFile => audioFile.AudioFileName == editPage.AudioInfoFormFile.FileName).AnyAsync())
+                    {
+                        var newAudioFile = await audioFileContext.AudioFiles.FirstAsync(audioFile => audioFile.AudioFileName == editPage.AudioInfoFormFile.FileName);
+
+                        pageUpdate.AudioInfoId = newAudioFile.AudioInfoModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("AudioInfoFormFile", $"Добавьте аудиофайл «{editPage.AudioInfoFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+                }
+                else
+                {
+                    pageUpdate.AudioInfoId = editPage.AudioInfoId;
+                }
+            }
+
+            #endregion
+
+            #region Текст карточки страницы
+
+            pageUpdate.PageCardText = editPage.PageCardText.Trim().ToUpper();
+
+            #endregion
+
+
+
+
+            #region Изменить адрес страницы
+
             #region Area
 
-            if (string.IsNullOrEmpty(editPage.PageItem.PageArea.Trim()) || editPage.PageItem.PageArea == "Root")
+            if (string.IsNullOrEmpty(editPage.PageArea.Trim()) || editPage.PageArea == "Root")
             {
                 pageUpdate.PageArea = string.Empty;
             }
             else
             {
-                pageUpdate.PageArea = "/" + editPage.PageItem.PageArea.Trim().Trim('/').ToLower();
+                pageUpdate.PageArea = "/" + editPage.PageArea.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region Controller
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.Controller) || string.IsNullOrEmpty(editPage.PageItem.Controller) || editPage.PageItem.PageAsRazorPage)
+            if (string.IsNullOrWhiteSpace(editPage.Controller) || string.IsNullOrEmpty(editPage.Controller) || editPage.PageAsRazorPage)
             {
                 pageUpdate.Controller = string.Empty;
             }
             else
             {
-                pageUpdate.Controller = "/" + editPage.PageItem.Controller.Trim().Trim('/').ToLower();
+                pageUpdate.Controller = "/" + editPage.Controller.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region Action
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.Action) || string.IsNullOrEmpty(editPage.PageItem.Action) || editPage.PageItem.PageAsRazorPage)
+            if (string.IsNullOrWhiteSpace(editPage.Action) || string.IsNullOrEmpty(editPage.Action) || editPage.PageAsRazorPage)
             {
                 pageUpdate.Action = string.Empty;
             }
             else
             {
-                pageUpdate.Action = "/" + editPage.PageItem.Action.Trim().Trim('/').ToLower();
+                pageUpdate.Action = "/" + editPage.Action.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region QueryString
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.RoutData) || string.IsNullOrEmpty(editPage.PageItem.RoutData))
+            if (string.IsNullOrWhiteSpace(editPage.RoutData) || string.IsNullOrEmpty(editPage.RoutData))
             {
                 pageUpdate.RoutData = string.Empty;
             }
             else
             {
-                pageUpdate.RoutData = "?" + editPage.PageItem.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
+                pageUpdate.RoutData = "?" + editPage.RoutData.Trim().Trim('/').TrimStart('?').ToLower();
             }
 
             #endregion
 
             #region Адрес (для RazorPage) или Действие (для MVC)
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.PageLoc) || string.IsNullOrEmpty(editPage.PageItem.PageLoc))
+            if (string.IsNullOrWhiteSpace(editPage.PageLoc) || string.IsNullOrEmpty(editPage.PageLoc))
             {
                 pageUpdate.PageLoc = string.Empty;
             }
-            else if (editPage.PageItem.PageLoc == "/")
+            else if (editPage.PageLoc == "/")
             {
                 pageUpdate.PageLoc = "/";
             }
             else
             {
-                pageUpdate.PageLoc = "/" + editPage.PageItem.PageLoc.Trim().Trim('/').ToLower();
+                pageUpdate.PageLoc = "/" + editPage.PageLoc.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region Псевдоним адреса (1)
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName))
+            if (string.IsNullOrWhiteSpace(editPage.PagePathNickName) || string.IsNullOrEmpty(editPage.PagePathNickName))
             {
                 pageUpdate.PagePathNickName = string.Empty;
             }
-            else if (editPage.PageItem.PagePathNickName == "/")
+            else if (editPage.PagePathNickName == "/")
             {
                 pageUpdate.PagePathNickName = "/";
             }
             else
             {
-                pageUpdate.PagePathNickName = "/" + editPage.PageItem.PagePathNickName.Trim().Trim('/').ToLower();
+                pageUpdate.PagePathNickName = "/" + editPage.PagePathNickName.Trim().Trim('/').ToLower();
             }
 
             #endregion
 
             #region Псевдоним адреса (2)
 
-            if (string.IsNullOrWhiteSpace(editPage.PageItem.PagePathNickName2) || string.IsNullOrEmpty(editPage.PageItem.PagePathNickName2))
+            if (string.IsNullOrWhiteSpace(editPage.PagePathNickName2) || string.IsNullOrEmpty(editPage.PagePathNickName2))
             {
                 pageUpdate.PagePathNickName2 = string.Empty;
             }
-            else if (editPage.PageItem.PagePathNickName2 == "/")
+            else if (editPage.PagePathNickName2 == "/")
             {
                 pageUpdate.PagePathNickName2 = "/";
             }
             else
             {
-                pageUpdate.PagePathNickName2 = "/" + editPage.PageItem.PagePathNickName2.Trim().Trim('/').ToLower();
+                pageUpdate.PagePathNickName2 = "/" + editPage.PagePathNickName2.Trim().Trim('/').ToLower();
             }
 
             #endregion
@@ -1675,139 +2042,17 @@ public class PageInfoController(
 
             #region Изменить индекс сортировки
 
-            pageUpdate.SortOfPage = editPage.PageItem.SortOfPage;
-
-            #endregion
-
-            #region Изменить картинку для страницы
-
-            if (editPage.ImageFileFormFile != null)
-            {
-                if (await imageContext.ImageFiles.Where(i => i.ImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.IconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName).AnyAsync())
-                {
-                    var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == editPage.ImageFileFormFile.FileName);
-
-                    pageUpdate.ImageFileModelId = newImage.ImageFileModelId;
-                }
-                else
-                {
-                    ModelState.AddModelError("ImageFileFormFile", $"Добавьте картинку «{editPage.ImageFileFormFile.FileName}» в базу данных");
-
-                    return View(nameof(EditPage), new EditPageViewModel
-                    {
-                        PageItem = pageUpdate,
-                        IconItem = editPageiconItem
-                    });
-                }
-            }
-
-            #endregion
-
-            #region Изменить текст карточки страницы
-
-            pageUpdate.PageCardText = editPage.PageItem.PageCardText.Trim().ToUpper();
-
-            #endregion
-
-            #region Изменить фон страницы
-
-            if (editPage.BackgroundFormFile != null)
-            {
-                if (await backgroundContext.BackgroundFiles.Where(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.LeftBackground == editPage.BackgroundFormFile.FileName);
-
-                    pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == editPage.BackgroundFormFile.FileName);
-
-                    pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebLeftBackground == editPage.BackgroundFormFile.FileName);
-
-                    pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName).AnyAsync())
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.WebRightBackground == editPage.BackgroundFormFile.FileName);
-
-                    pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-                else
-                {
-                    var newBackground = await backgroundContext.BackgroundFiles.FirstAsync(bk => bk.RightBackground == "FotoPlenka.png");
-
-                    pageUpdate.BackgroundFileModelId = newBackground.BackgroundFileModelId;
-                }
-            }
+            pageUpdate.SortOfPage = editPage.SortOfPage;
 
             #endregion
 
             #region Изменить заголовок страницы теги title, description, keywords
 
-            pageUpdate.PageTitle = editPage.PageItem.PageTitle.Trim();
-            pageUpdate.PageDescription = editPage.PageItem.PageDescription.Trim();
-            pageUpdate.PageKeyWords = editPage.PageItem.PageKeyWords.Trim();
+            pageUpdate.PageTitle = editPage.PageTitle.Trim();
+            pageUpdate.PageDescription = editPage.PageDescription.Trim();
+            pageUpdate.PageKeyWords = editPage.PageKeyWords.Trim();
 
-            if (editPage.PageItem.OgType == "website")
+            if (editPage.OgType == "website")
             {
                 pageUpdate.OgType = "website";
                 pageUpdate.PageIconPath = "main/";
@@ -1815,7 +2060,7 @@ public class PageInfoController(
                 pageUpdate.BrowserConfigFolder = "/main";
                 pageUpdate.Manifest = "main.json";
             }
-            else if (editPage.PageItem.OgType == "movie")
+            else if (editPage.OgType == "movie")
             {
                 pageUpdate.OgType = "movie";
                 pageUpdate.PageIconPath = "movie/";
@@ -1843,13 +2088,13 @@ public class PageInfoController(
 
             #region Изменить оформление заголовка страницы
 
-            pageUpdate.PageHeading = editPage.PageItem.PageHeading.Trim();
+            pageUpdate.PageHeading = editPage.PageHeading.Trim();
 
             #endregion
 
             #region Изменить текст страницы
 
-            pageUpdate.TextOfPage = editPage.PageItem.TextOfPage;
+            pageUpdate.TextOfPage = editPage.TextOfPage;
 
             #endregion
 
@@ -1933,79 +2178,79 @@ public class PageInfoController(
 
             #region Изменить фильтр поиска текущей страницы
 
-            pageUpdate.PageFilter = editPage.PageItem.PageFilter.Trim();
+            pageUpdate.PageFilter = editPage.PageFilter.Trim();
 
             #endregion
 
             #region Изменить данные для Sitemap
 
             pageUpdate.PageLastmod = DateTime.Now;
-            pageUpdate.Changefreq = editPage.PageItem.Changefreq.Trim();
-            pageUpdate.Priority = editPage.PageItem.Priority.Trim();
-            pageUpdate.OgType = editPage.PageItem.OgType.Trim();
+            pageUpdate.Changefreq = editPage.Changefreq.Trim();
+            pageUpdate.Priority = editPage.Priority.Trim();
+            pageUpdate.OgType = editPage.OgType.Trim();
 
             #endregion
 
             #region Изменить группы связанных ссылок
 
             // поиск связанных страниц по GUID (1)
-            pageUpdate.PageLinks = editPage.PageItem.PageLinks;
+            pageUpdate.PageLinks = editPage.PageLinks;
 
-            if (editPage.PageItem.RefPages != null)
+            if (editPage.RefPages != null)
             {
-                pageUpdate.RefPages = editPage.PageItem.RefPages.Trim().ToLower();
+                pageUpdate.RefPages = editPage.RefPages.Trim().ToLower();
             }
             else
             {
-                editPage.PageItem.RefPages = null;
+                editPage.RefPages = null;
             }
 
             // поиск связанных страниц по GUID (2)
-            pageUpdate.PageLinks2 = editPage.PageItem.PageLinks2;
+            pageUpdate.PageLinks2 = editPage.PageLinks2;
 
-            if (editPage.PageItem.RefPages2 != null)
+            if (editPage.RefPages2 != null)
             {
-                pageUpdate.RefPages2 = editPage.PageItem.RefPages2.Trim().ToLower();
+                pageUpdate.RefPages2 = editPage.RefPages2.Trim().ToLower();
             }
             else
             {
-                editPage.PageItem.RefPages2 = null;
+                editPage.RefPages2 = null;
             }
 
             // поиск связанных страниц по фильтру
-            pageUpdate.PageLinksByFilters = editPage.PageItem.PageLinksByFilters;
+            pageUpdate.PageLinksByFilters = editPage.PageLinksByFilters;
 
-            if (!string.IsNullOrEmpty(editPage.PageItem.PageFilterOut))
+            if (!string.IsNullOrEmpty(editPage.PageFilterOut))
             {
-                pageUpdate.PageFilterOut = editPage.PageItem.PageFilterOut.Trim();
+                pageUpdate.PageFilterOut = editPage.PageFilterOut.Trim();
             }
             else
             {
-                editPage.PageItem.PageFilterOut = null;
+                editPage.PageFilterOut = null;
             }
 
             // поиск связанных видео
-            pageUpdate.VideoLinks = editPage.PageItem.VideoLinks;
+            pageUpdate.VideoLinks = editPage.VideoLinks;
 
-            if (editPage.PageItem.VideoFilterOut != null)
+            if (editPage.VideoFilterOut != null)
             {
-                pageUpdate.VideoFilterOut = editPage.PageItem.VideoFilterOut.Trim();
+                pageUpdate.VideoFilterOut = editPage.VideoFilterOut.Trim();
             }
             else
             {
-                editPage.PageItem.VideoFilterOut = null;
+                editPage.VideoFilterOut = null;
             }
 
             // альбом картинок
-            pageUpdate.PhotoLinks = editPage.PageItem.PhotoLinks;
+            pageUpdate.PhotoLinks = editPage.PhotoLinks;
 
-            if (editPage.PageItem.PhotoFilterOut != null)
+            if (editPage.PhotoFilterOut != null)
             {
-                pageUpdate.PhotoFilterOut = editPage.PageItem.PhotoFilterOut.Trim();
+                pageUpdate.PhotoFilterOut = editPage.PhotoFilterOut.Trim();
             }
             else
             {
-                editPage.PageItem.PhotoFilterOut = null;
+                editPage.PhotoFilterOut = null;
             }
 
             #endregion

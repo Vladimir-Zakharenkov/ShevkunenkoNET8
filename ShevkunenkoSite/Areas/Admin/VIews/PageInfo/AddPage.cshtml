@@ -282,13 +282,13 @@
 								aria-expanded="true"
 								aria-controls="AudioForPage">
 
-							<span class="form-label fs-5">Аудиофайл для страницы :</span>
+							<span class="form-label fs-5">Аудиофайл страницы :</span>
 
 						</button>
 
 					</h2>
 
-					@* выбрать фон*@
+					@* выбрать аудиофайл*@
 					<div id="AudioForPage"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingAudioForPage"
@@ -328,7 +328,6 @@
 									<option value="@Guid.Empty" selected>Аудиофайл не выбран</option>
 
 								</select>
-
 
 								@if (Context.Request.Method == "POST")
 								{

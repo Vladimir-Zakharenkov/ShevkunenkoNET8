@@ -142,9 +142,6 @@ public class AudioInfoModel
 
     #region Навигационное свойство страницы сайта
 
-    // идентификатор страницы сайта
-    //[Display(Name = "Страница аудиофайла :")]
-    //public Guid? PageInfoModelId { get; set; }
     public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
