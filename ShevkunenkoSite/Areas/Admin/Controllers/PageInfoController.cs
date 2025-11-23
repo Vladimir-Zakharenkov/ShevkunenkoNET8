@@ -238,7 +238,7 @@ public class PageInfoController(
 
                             _ = pages.OrderBy(p => p.SortOfPage);
 
-                            dictionaryOfLinksByPageFilterOut[pageFiltersOut[i]] = pages;
+                            dictionaryOfLinksByPageFilterOut[pageFiltersOut[i].Trim()] = pages;
                         }
                     }
                 }
@@ -1305,6 +1305,34 @@ public class PageInfoController(
 
             #endregion
 
+            #region Ссылки на страницы сайта по фильтрам (PageFilterOut)
+
+            Dictionary<string, List<PageInfoModel>> dictionaryOfLinksByPageFilterOut = [];
+
+            if (editPage.PageFilterOut != null && editPage.PageFilterOut != string.Empty)
+            {
+                string[] pageFiltersOut = editPage.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (pageFiltersOut.Length > 0)
+                {
+                    for (int i = 0; i < pageFiltersOut.Length; i++)
+                    {
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim())).AnyAsync())
+                        {
+                            var pages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i].Trim())).ToListAsync();
+
+                            _ = pages.OrderBy(p => p.SortOfPage);
+
+                            dictionaryOfLinksByPageFilterOut[pageFiltersOut[i].Trim()] = pages;
+
+                            editPage.DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut;
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
             #region Ссылки на страницы сайта по GUID1
 
             List<PageInfoModel> linksToPagesByGuid = [];
@@ -1356,34 +1384,6 @@ public class PageInfoController(
 
                                 editPage.LinksToPagesByGuid2 = linksToPagesByGuid2;
                             }
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region Ссылки на страницы сайта по фильтрам (PageFilterOut)
-
-            Dictionary<string, List<PageInfoModel>> dictionaryOfLinksByPageFilterOut = [];
-
-            if (editPage.PageFilterOut != null && editPage.PageFilterOut != string.Empty)
-            {
-                string[] pageFiltersOut = editPage.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-                if (pageFiltersOut.Length > 0)
-                {
-                    for (int i = 0; i < pageFiltersOut.Length; i++)
-                    {
-                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).AnyAsync())
-                        {
-                            var pages = await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFiltersOut[i])).ToListAsync();
-
-                            _ = pages.OrderBy(p => p.SortOfPage);
-
-                            dictionaryOfLinksByPageFilterOut[pageFiltersOut[i]] = pages;
-
-                            editPage.DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut;
                         }
                     }
                 }

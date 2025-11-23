@@ -1209,152 +1209,6 @@
 
             </div>
 
-            @* Ссылки на видео *@
-            <div class="accordion-item mb-3 shadw">
-
-                <h2 id="headingVideoLinks" class="accordion-header shadw">
-                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#VideoLinks" aria-expanded="true" aria-controls="VideoLinks">
-                        <span class="form-label fs-5">Ссылки на видео :</span>
-                    </button>
-                </h2>
-
-                <div id="VideoLinks" class="accordion-collapse collapse" aria-labelledby="headingVideoLinks" data-bs-parent="#accordionDetailsPage">
-
-                    <div class="accordion-body accordion-body-nointend text-center">
-
-                        <div id="switchForVideoLinks" class="accordion">
-
-                            @* Состояние (включено или выключено) *@
-                            <div class="accordion-item mb-3 shadw">
-
-                                <h2 id="headingSwitchVideoLinks" class="accordion-header shadw">
-                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchVideo" aria-expanded="true" aria-controls="SwitchVideo">
-                                        <span class="form-label fs-5">Состояние :</span>
-                                    </button>
-                                </h2>
-
-                                <div id="SwitchVideo" class="accordion-collapse collapse" aria-labelledby="headingSwitchVideoLinks" data-bs-parent="#switchForVideoLinks">
-
-                                    <div class="accordion-body accordion-body-nointend text-center">
-
-                                        @if (Model.PageItem.VideoLinks)
-                                        {
-                                            <p class="fs-4 mb-2 text_shadow">
-                                                <span>включено</span>
-                                            </p>
-                                        }
-                                        else
-                                        {
-                                            <p class="fs-4 mb-2 text_shadow">
-                                                <span>выключено</span>
-                                            </p>
-                                        }
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            @* Фильтры связанных видео *@
-                            <div class="accordion-item mb-3 shadw">
-
-                                @* Заголовок группы *@
-                                <h2 id="headingPageVideoFilters" class="accordion-header shadw">
-                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageVideoFilters" aria-expanded="true" aria-controls="PageVideoFilters">
-                                        <span class="form-label fs-5">Фильтры для видео :</span>
-                                    </button>
-                                </h2>
-
-                                <div id="PageVideoFilters" class="accordion-collapse collapse" aria-labelledby="headingPageVideoFilters" data-bs-parent="#switchForVideoLinks">
-
-                                    <div class="accordion-body accordion-body-nointend text-center">
-
-                                        @if (!string.IsNullOrEmpty(Model.PageItem.VideoFilterOut))
-                                        {
-                                            string[] videoFilterOut = Model.PageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-                                            @for (int sf = 0; sf < videoFilterOut.Count(); sf++)
-                                            {
-                                                <p class="text-start text_shadow fluid-font-size border-bottom pb-2">
-                                                    # @videoFilterOut[sf]
-                                                </p>
-                                            }
-
-                                            <p class="fs-6 form-text text-success text-center">
-                                                <span class="d-sm-none">
-                                                    фильтры поиска
-                                                </span>
-                                                <span class="d-none d-sm-inline">
-                                                    фильтры поиска видео
-                                                </span>
-                                            </p>
-
-                                            <h2 class="text_shadow my-3 text-center fluid-font-size">
-                                                Видео по фильтрам
-                                            </h2>
-
-                                            @if (Model.DictionaryOfLinksByVideoFilterOut.Count > 0)
-                                            {
-                                                <div id="accordionFiltersOfVideo" class="accordion">
-
-                                                    @foreach (var (caption, modelForVideoLinks) in Model.DictionaryOfLinksByVideoFilterOut)
-                                                    {
-                                                        innerAccordion++;
-
-                                                        <div class="accordion-item mb-3 shadw">
-
-                                                            @* Заголовок группы *@
-                                                            <h2 id="headingFiltersOfVideo" class="accordion-header shadw">
-                                                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_@innerAccordion" aria-expanded="false" aria-controls="collapseOne_@innerAccordion">
-                                                                    <span class="form-label fs-5">@caption :</span>
-                                                                </button>
-                                                            </h2>
-
-                                                            <div id="collapseOne_@innerAccordion" class="accordion-collapse collapse" aria-labelledby="headingFiltersOfVideo" data-bs-parent="#accordionFiltersOfVideo">
-
-                                                                <div class="accordion-body accordion-body-nointend text-center">
-
-                                                                    <vc:video-links movies-list="@modelForVideoLinks" link-to-info-about-movie="true" />
-
-                                                                </div>
-
-                                                            </div>
-
-
-                                                        </div>
-                                                    }
-
-                                                </div>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <p class="fs-6 form-text text-success text-center">
-                                                <span class="d-sm-none">
-                                                    фильтры не заданы
-                                                </span>
-                                                <span class="d-none d-sm-inline">
-                                                    фильтры поиска не заданы
-                                                </span>
-                                            </p>
-                                        }
-
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
             @* Ссылки на страницы *@
             <div class="accordion-item mb-3 shadw">
 
@@ -1560,6 +1414,152 @@
                                                                 </div>
 
                                                             </div>
+
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-6 form-text text-success text-center">
+                                                <span class="d-sm-none">
+                                                    фильтры не заданы
+                                                </span>
+                                                <span class="d-none d-sm-inline">
+                                                    фильтры поиска не заданы
+                                                </span>
+                                            </p>
+                                        }
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Ссылки на видео *@
+            <div class="accordion-item mb-3 shadw">
+
+                <h2 id="headingVideoLinks" class="accordion-header shadw">
+                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#VideoLinks" aria-expanded="true" aria-controls="VideoLinks">
+                        <span class="form-label fs-5">Ссылки на видео :</span>
+                    </button>
+                </h2>
+
+                <div id="VideoLinks" class="accordion-collapse collapse" aria-labelledby="headingVideoLinks" data-bs-parent="#accordionDetailsPage">
+
+                    <div class="accordion-body accordion-body-nointend text-center">
+
+                        <div id="switchForVideoLinks" class="accordion">
+
+                            @* Состояние (включено или выключено) *@
+                            <div class="accordion-item mb-3 shadw">
+
+                                <h2 id="headingSwitchVideoLinks" class="accordion-header shadw">
+                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchVideo" aria-expanded="true" aria-controls="SwitchVideo">
+                                        <span class="form-label fs-5">Состояние :</span>
+                                    </button>
+                                </h2>
+
+                                <div id="SwitchVideo" class="accordion-collapse collapse" aria-labelledby="headingSwitchVideoLinks" data-bs-parent="#switchForVideoLinks">
+
+                                    <div class="accordion-body accordion-body-nointend text-center">
+
+                                        @if (Model.PageItem.VideoLinks)
+                                        {
+                                            <p class="fs-4 mb-2 text_shadow">
+                                                <span>включено</span>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="fs-4 mb-2 text_shadow">
+                                                <span>выключено</span>
+                                            </p>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            @* Фильтры связанных видео *@
+                            <div class="accordion-item mb-3 shadw">
+
+                                @* Заголовок группы *@
+                                <h2 id="headingPageVideoFilters" class="accordion-header shadw">
+                                    <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageVideoFilters" aria-expanded="true" aria-controls="PageVideoFilters">
+                                        <span class="form-label fs-5">Фильтры для видео :</span>
+                                    </button>
+                                </h2>
+
+                                <div id="PageVideoFilters" class="accordion-collapse collapse" aria-labelledby="headingPageVideoFilters" data-bs-parent="#switchForVideoLinks">
+
+                                    <div class="accordion-body accordion-body-nointend text-center">
+
+                                        @if (!string.IsNullOrEmpty(Model.PageItem.VideoFilterOut))
+                                        {
+                                            string[] videoFilterOut = Model.PageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                                            @for (int sf = 0; sf < videoFilterOut.Count(); sf++)
+                                            {
+                                                <p class="text-start text_shadow fluid-font-size border-bottom pb-2">
+                                                    # @videoFilterOut[sf]
+                                                </p>
+                                            }
+
+                                            <p class="fs-6 form-text text-success text-center">
+                                                <span class="d-sm-none">
+                                                    фильтры поиска
+                                                </span>
+                                                <span class="d-none d-sm-inline">
+                                                    фильтры поиска видео
+                                                </span>
+                                            </p>
+
+                                            <h2 class="text_shadow my-3 text-center fluid-font-size">
+                                                Видео по фильтрам
+                                            </h2>
+
+                                            @if (Model.DictionaryOfLinksByVideoFilterOut.Count > 0)
+                                            {
+                                                <div id="accordionFiltersOfVideo" class="accordion">
+
+                                                    @foreach (var (caption, modelForVideoLinks) in Model.DictionaryOfLinksByVideoFilterOut)
+                                                    {
+                                                        innerAccordion++;
+
+                                                        <div class="accordion-item mb-3 shadw">
+
+                                                            @* Заголовок группы *@
+                                                            <h2 id="headingFiltersOfVideo" class="accordion-header shadw">
+                                                                <button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_@innerAccordion" aria-expanded="false" aria-controls="collapseOne_@innerAccordion">
+                                                                    <span class="form-label fs-5">@caption :</span>
+                                                                </button>
+                                                            </h2>
+
+                                                            <div id="collapseOne_@innerAccordion" class="accordion-collapse collapse" aria-labelledby="headingFiltersOfVideo" data-bs-parent="#accordionFiltersOfVideo">
+
+                                                                <div class="accordion-body accordion-body-nointend text-center">
+
+                                                                    <vc:video-links movies-list="@modelForVideoLinks" link-to-info-about-movie="true" />
+
+                                                                </div>
+
+                                                            </div>
+
 
                                                         </div>
                                                     }

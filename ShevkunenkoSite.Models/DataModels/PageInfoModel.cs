@@ -458,17 +458,17 @@ public class PageInfoModel
 
     #endregion
 
-    #region Словарь ссылок на видео по текстовым фильтрам
-
-    [NotMapped]
-    public Dictionary<string, VideoLinksViewModel>? DictionaryOfLinksByVideoFilterOut { get; set; }
-
-    #endregion
-
     #region Словарь ссылок на страницы по текстовым фильтрам
 
     [NotMapped]
     public Dictionary<string, List<PageInfoModel>>? DictionaryOfLinksByPageFilterOut { get; set; }
+
+    #endregion
+
+    #region Словарь ссылок на видео по текстовым фильтрам
+
+    [NotMapped]
+    public Dictionary<string, VideoLinksViewModel>? DictionaryOfLinksByVideoFilterOut { get; set; }
 
     #endregion
 

@@ -61,7 +61,7 @@
 	@* Кадры слева *@
 	@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheLeft != null)
 	{
-		<div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden height1000">
+		<div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden height850">
 
 			@foreach (var item in Model.FramesAroundMainContent.FramesOnTheLeft)
 			{
@@ -1330,7 +1330,7 @@
 
 					</h2>
 
-					@* текст карточки страницы *@
+					@* фильтры поиска текущей страницы *@
 					<div id="SearchCurrentPage"
 						 class="accordion-collapse collapse"
 						 aria-labelledby="headingSearchCurrentPage"
@@ -1362,6 +1362,115 @@
 									<span asp-validation-for="PageFilter" class="text-danger"></span>
 								}
 
+							</div>
+
+							@* страницы ссылающиеся на текущую страницу *@
+							<div>
+
+								<h2 class="text_shadow my-3 text-center fluid-font-size">
+									Страницы, ссылающиеся на текущую
+								</h2>
+
+								@if (Model.DictionaryOfOutPages != null && Model.DictionaryOfOutPages.Count > 0)
+								{
+									<div id="accordionFiltersOfPage" class="accordion">
+
+										@foreach (var (caption, listOfPages) in Model.DictionaryOfOutPages)
+										{
+											if (listOfPages.Count > 0)
+											{
+												innerAccordion++;
+
+												<div class="accordion-item mb-2 shadw">
+
+													<h2 class="accordion-header">
+
+														<button class="accordion-button stranicy"
+																type="button"
+																data-bs-toggle="collapse"
+																data-bs-target="#collapseOne_@innerAccordion"
+																aria-expanded="true"
+																aria-controls="collapseOne_@innerAccordion">
+
+															<span class="fluid-font-size">
+																# @caption
+															</span>
+
+														</button>
+
+													</h2>
+
+													<div id="collapseOne_@innerAccordion"
+														 class="accordion-collapse collapse"
+														 data-bs-parent="#accordionFiltersOfPage">
+
+														<div class="accordion-body p-1">
+
+															<div class="row mt-1 justify-content-center g-1
+																			            @(listOfPages.Count < 4 ? "row-cols-3" : "")
+																			            @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+																			            @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+
+																@foreach (var item in listOfPages)
+																{
+																	<div class="col">
+
+																		<a asp-area="Admin"
+																		   asp-controller="PageInfo"
+																		   asp-action="DetailsPage"
+																		   asp-route-pageid="@item.PageInfoModelId"
+																		   class="d-block rounded-3 p-1 imageref"
+																		   onclick="this.target='_blank'"
+																		   title="данные о странице">
+
+																			<div class="card p-0 rounded-3 shadw" title="@item.PageTitle">
+
+																				<vc:view-image image-id="@item.ImageFileModelId"
+																							   css-class="d-flex card-img-top rounded-3 p-0"
+																							   icon-type="webicon300" />
+
+																				<div class="d-none d-sm-flex card-body p-1 justify-content-center">
+
+																					@if (!string.IsNullOrEmpty(@item.PageCardText))
+																					{
+																						<p class="card-text px-2 text-indent-0 arial fontadaptive shadw">
+																							@item.PageCardText
+																						</p>
+																					}
+																					else
+																					{
+																						<p class="card-text fs-6 px-2 text-indent-0 arial fontadaptive shadw">
+																							БЕЗ ТЕКСТА
+																						</p>
+																					}
+
+																				</div>
+
+																			</div>
+
+																		</a>
+
+																	</div>
+																}
+
+															</div>
+
+														</div>
+
+													</div>
+
+												</div>
+											}
+										}
+
+									</div>
+								}
+								else
+								{
+									<p class="fs-6 form-text text-success text-center">
+										фильтры поиска не заданы
+									</p>
+								}
 							</div>
 
 						</div>
@@ -1453,7 +1562,7 @@
 										  class="form-control fordetails col-11 border border-1 border-black"
 										  rows="3"
 										  aria-describedby="PageFilterOutInputHelpBlock">
-								</textarea>
+									</textarea>
 
 								<div id="PageFilterOutInputHelpBlock" class="form-text">
 
@@ -1470,12 +1579,120 @@
 
 							</div>
 
+							<div>
+
+								<h2 class="text_shadow my-3 text-center fluid-font-size">
+									Сылки на страницы
+								</h2>
+
+								@if (Model.DictionaryOfLinksByPageFilterOut != null && Model.DictionaryOfLinksByPageFilterOut.Count > 0)
+								{
+									<div id="accordionFiltersOfPage" class="accordion">
+
+										@foreach (var (caption, modelForPageLinks) in Model.DictionaryOfLinksByPageFilterOut)
+										{
+											innerAccordion++;
+
+											<div class="accordion-item mb-3 shadw">
+
+												@* Заголовок группы *@
+												<h2 id="headingFiltersOfPage" class="accordion-header shadw">
+
+													<button class="accordion-button collapsed py-0 stranicy"
+															type="button"
+															data-bs-toggle="collapse"
+															data-bs-target="#collapseOne_@innerAccordion"
+															aria-expanded="false"
+															aria-controls="collapseOne_@innerAccordion">
+
+														<span class="form-label fs-5">@caption :</span>
+
+													</button>
+
+												</h2>
+
+												<div id="collapseOne_@innerAccordion" class="accordion-collapse collapse" aria-labelledby="headingFiltersOfPage" data-bs-parent="#accordionFiltersOfPage">
+
+													<div class="accordion-body accordion-body-nointend text-center">
+
+														<div class="row mt-1 justify-content-center g-1
+																					@(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+																					@((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+																					@((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+
+															@foreach (var item in modelForPageLinks)
+															{
+																<div class="col">
+
+																	<a asp-area="Admin"
+																	   asp-controller="PageInfo"
+																	   asp-action="DetailsPage"
+																	   asp-route-pageid="@item.PageInfoModelId"
+																	   class="d-block rounded-3 p-1 imageref"
+																	   onclick="this.target='_blank'"
+																	   title="данные о странице">
+
+																		<div class="card p-0 rounded-3 shadw" title="@item.PageTitle">
+
+																			<vc:view-image image-id="@item.ImageFileModelId"
+																						   css-class="card-img-top rounded-3 p-0"
+																						   icon-type="webicon300" />
+
+
+																			<div class="d-none d-sm-flex card-body p-1 justify-content-center">
+
+																				@if (!string.IsNullOrEmpty(@item.PageCardText))
+																				{
+																					<p class="card-text px-2 text-indent-0 arial fontadaptive shadw">
+																						@item.PageCardText
+																					</p>
+																				}
+																				else
+																				{
+																					<p class="card-text px-2 fs-6 text-indent-0 arial fontadaptive shadw">
+																						БЕЗ ТЕКСТА
+																					</p>
+																				}
+
+																			</div>
+
+																		</div>
+
+																	</a>
+
+																</div>
+															}
+
+														</div>
+
+													</div>
+
+												</div>
+
+											</div>
+										}
+
+									</div>
+								}
+								else
+								{
+									<p class="fs-6 form-text text-success text-center">
+										<span class="d-sm-none">
+											фильтры не заданы
+										</span>
+										<span class="d-none d-sm-inline">
+											фильтры поиска не заданы
+										</span>
+									</p>
+								}
+
+							</div>
+
 						</div>
 
 					</div>
 
 				</div>
-
 
 				@* Ссылки на видео сайта*@
 				<div class="accordion-item mb-3 shadw">
@@ -1550,7 +1767,7 @@
 											<label asp-for="VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
 
 											<textarea id="PageVideoFilterOutt" asp-for="VideoFilterOut" rows="4" class="form-control fs-5 fordetails" aria-describedby="PageVideoFilterOutInputHelpBlock">
-                                                </textarea>
+	                                                </textarea>
 
 											@if (!string.IsNullOrEmpty(Model.VideoFilterOut))
 											{
@@ -1710,7 +1927,7 @@
 											<label asp-for="RefPages" class="form-label text-primary fs-5 fw-bold"></label>
 
 											<textarea asp-for="RefPages" id="RefPagesInput" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock">
-                                                </textarea>
+	                                                </textarea>
 
 											<span asp-validation-for="RefPages" class="text-danger"></span>
 
@@ -1889,7 +2106,7 @@
 											<label asp-for="RefPages2" class="form-label text-primary fs-5 fw-bold"></label>
 
 											<textarea asp-for="RefPages2" id="RefPagesInput2" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock2">
-                                                </textarea>
+	                                                </textarea>
 
 											<span asp-validation-for="RefPages" class="text-danger"></span>
 
@@ -2068,7 +2285,7 @@
 											<label asp-for="PhotoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
 
 											<textarea asp-for="PhotoFilterOut" id="PhotoFilterInput" rows="4" class="form-control text-start fordetails px-3" aria-describedby="PhotoFilterInputHelpBlock">
-                                                </textarea>
+	                                                </textarea>
 
 											<span asp-validation-for="PhotoFilterOut" class="text-danger"></span>
 
@@ -2141,7 +2358,7 @@
 	@* кадры справа *@
 	@if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheRight != null)
 	{
-		<div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden height1000">
+		<div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden hei height850">
 
 			@foreach (var item in Model.FramesAroundMainContent.FramesOnTheRight)
 			{
