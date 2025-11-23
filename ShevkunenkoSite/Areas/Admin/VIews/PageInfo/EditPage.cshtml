@@ -1407,9 +1407,9 @@
 														<div class="accordion-body p-1">
 
 															<div class="row mt-1 justify-content-center g-1
-																			            @(listOfPages.Count < 4 ? "row-cols-3" : "")
-																			            @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-																			            @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																																																									            @(listOfPages.Count < 4 ? "row-cols-3" : "")
+																																																																									            @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+																																																																									            @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 																@foreach (var item in listOfPages)
 																{
@@ -1616,9 +1616,9 @@
 													<div class="accordion-body accordion-body-nointend text-center">
 
 														<div class="row mt-1 justify-content-center g-1
-																					@(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-																					@((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-																					@((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																																									@(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+																																																									@((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+																																																									@((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 															@foreach (var item in modelForPageLinks)
 															{
@@ -1698,12 +1698,23 @@
 				<div class="accordion-item mb-3 shadw">
 
 					<h2 id="headingPageVideoLinks" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#PageVideoLinks" aria-expanded="true" aria-controls="PageVideoLinks">
+
+						<button class="accordion-button collapsed py-0"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#PageVideoLinks"
+								aria-expanded="true" aria-controls="PageVideoLinks">
+
 							<span class="form-label fs-5">Ссылки на видео :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="PageVideoLinks" class="accordion-collapse collapse" aria-labelledby="headingPageVideoLinks" data-bs-parent="#accordionEditPage">
+					<div id="PageVideoLinks"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingPageVideoLinks"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -1713,12 +1724,24 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingSwitchPageVideoLinks" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchPageVideoLinks" aria-expanded="true" aria-controls="SwitchPageVideoLinks">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#SwitchPageVideoLinks"
+												aria-expanded="true"
+												aria-controls="SwitchPageVideoLinks">
+
 											<span class="form-label fs-5"><span class="d-sm-none">On - Off</span><span class="d-none d-sm-inline">Показать - Скрыть</span> :</span>
+
 										</button>
+
 									</h2>
 
-									<div id="SwitchPageVideoLinks" class="accordion-collapse collapse" aria-labelledby="headingSwitchPageVideoLinks" data-bs-parent="#PageVideoLinks_accordion">
+									<div id="SwitchPageVideoLinks"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingSwitchPageVideoLinks"
+										 data-bs-parent="#PageVideoLinks_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
@@ -1730,6 +1753,7 @@
 														<input asp-for="VideoLinks" id="inlineRadio1" class="form-check-input" type="radio" value="true" autocomplete="off">
 														<label asp-for="VideoLinks" class="form-check-label">Показать</label>
 													</div>
+
 													<div class="form-check form-check-inline">
 														<input asp-for="VideoLinks" id="inlineRadio2" class="form-check-input" type="radio" value="false" autocomplete="off">
 														<label asp-for="VideoLinks" class="form-check-label">Скрыть</label>
@@ -1741,9 +1765,12 @@
 													ссылки на видео сайта
 												</p>
 
-												<span asp-validation-for="VideoLinks" class="text-danger"></span>
+												@if (Context.Request.Method == "POST")
+													{
+														<span asp-validation-for="VideoLinks" class="text-danger"></span>
+													}
 
-											</div>
+												</div>
 
 										</div>
 
@@ -1764,10 +1791,14 @@
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
-											<label asp-for="VideoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+											<label asp-for="VideoFilterOut" class="@cssForLabel"></label>
 
-											<textarea id="PageVideoFilterOutt" asp-for="VideoFilterOut" rows="4" class="form-control fs-5 fordetails" aria-describedby="PageVideoFilterOutInputHelpBlock">
-	                                                </textarea>
+											<textarea asp-for="VideoFilterOut"
+													  id="PageVideoFilterOutt"
+													  rows="4"
+													  class="form-control fs-5 fordetails"
+													  aria-describedby="PageVideoFilterOutInputHelpBlock">
+	                                        </textarea>
 
 											@if (!string.IsNullOrEmpty(Model.VideoFilterOut))
 											{
@@ -1838,7 +1869,10 @@
 												</p>
 											}
 
-											<span asp-validation-for="VideoFilterOut" class="text-danger"></span>
+											@if (Context.Request.Method == "POST")
+											{
+												<span asp-validation-for="VideoFilterOut" class="text-danger"></span>
+											}
 
 										</div>
 
@@ -1858,12 +1892,24 @@
 				<div class="accordion-item mb-3 shadw">
 
 					<h2 id="headingLinksToPagesByGuid1" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#LinksToPagesByGuid1" aria-expanded="true" aria-controls="LinksToPagesByGuid1">
+
+						<button class="accordion-button collapsed py-0"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#LinksToPagesByGuid1"
+								aria-expanded="true"
+								aria-controls="LinksToPagesByGuid1">
+
 							<span class="form-label fs-5">Ссылки по GUID1 :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="LinksToPagesByGuid1" class="accordion-collapse collapse" aria-labelledby="headingLinksToPagesByGuid1" data-bs-parent="#accordionEditPage">
+					<div id="LinksToPagesByGuid1"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingLinksToPagesByGuid1"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -1873,12 +1919,24 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingSwitchLinksToPagesByGuid1" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchLinksToPagesByGuid1" aria-expanded="true" aria-controls="SwitchLinksToPagesByGuid1">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#SwitchLinksToPagesByGuid1"
+												aria-expanded="true"
+												aria-controls="SwitchLinksToPagesByGuid1">
+
 											<span class="form-label fs-5"><span class="d-sm-none">On - Off</span><span class="d-none d-sm-inline">Показать - Скрыть</span> :</span>
+
 										</button>
+
 									</h2>
 
-									<div id="SwitchLinksToPagesByGuid1" class="accordion-collapse collapse" aria-labelledby="headingSwitchLinksToPagesByGuid1" data-bs-parent="#LinksToPagesByGuid1_accordion">
+									<div id="SwitchLinksToPagesByGuid1"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingSwitchLinksToPagesByGuid1"
+										 data-bs-parent="#LinksToPagesByGuid1_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
@@ -1890,6 +1948,7 @@
 														<input asp-for="PageLinks" id="inlineRadio3" class="form-check-input" type="radio" value="true" autocomplete="off">
 														<label asp-for="PageLinks" class="form-check-label">Показать</label>
 													</div>
+
 													<div class="form-check form-check-inline">
 														<input asp-for="PageLinks" id="inlineRadio4" class="form-check-input" type="radio" value="false" autocomplete="off">
 														<label asp-for="PageLinks" class="form-check-label">Скрыть</label>
@@ -1901,7 +1960,10 @@
 													ссылки по GUID1
 												</p>
 
-												<span asp-validation-for="PageLinks" class="text-danger"></span>
+												@if (Context.Request.Method == "POST")
+												{
+													<span asp-validation-for="PageLinks" class="text-danger"></span>
+												}
 
 											</div>
 
@@ -1915,21 +1977,40 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingRefPages" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#RefPages" aria-expanded="true" aria-controls="RefPages">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#RefPages"
+												aria-expanded="true"
+												aria-controls="RefPages">
+
 											<span class="form-label fs-5">Страницы по GUID1 :</span>
+
 										</button>
+
 									</h2>
 
-									<div id="RefPages" class="accordion-collapse collapse" aria-labelledby="headingRefPages" data-bs-parent="#LinksToPagesByGuid1_accordion">
+									<div id="RefPages"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingRefPages"
+										 data-bs-parent="#LinksToPagesByGuid1_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
-											<label asp-for="RefPages" class="form-label text-primary fs-5 fw-bold"></label>
+											<label asp-for="RefPages" class="@cssForLabel"></label>
 
-											<textarea asp-for="RefPages" id="RefPagesInput" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock">
-	                                                </textarea>
+											<textarea asp-for="RefPages"
+													  id="RefPagesInput"
+													  class="form-control fs-5 text-start fordetails"
+													  rows="3"
+													  aria-describedby="RefPagesInputHelpBlock">
+	                                        </textarea>
 
-											<span asp-validation-for="RefPages" class="text-danger"></span>
+											@if (Context.Request.Method == "POST")
+											{
+												<span asp-validation-for="RefPages" class="text-danger"></span>
+											}
 
 											@if (!string.IsNullOrEmpty(Model.RefPages))
 											{
@@ -2037,12 +2118,24 @@
 				<div class="accordion-item mb-3 shadw">
 
 					<h2 id="headingLinksToPagesByGuid2" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#LinksToPagesByGuid2" aria-expanded="true" aria-controls="LinksToPagesByGuid2">
+
+						<button class="accordion-button collapsed py-0"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#LinksToPagesByGuid2"
+								aria-expanded="true"
+								aria-controls="LinksToPagesByGuid2">
+
 							<span class="form-label fs-5">Ссылки по GUID2 :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="LinksToPagesByGuid2" class="accordion-collapse collapse" aria-labelledby="headingLinksToPagesByGuid2" data-bs-parent="#accordionEditPage">
+					<div id="LinksToPagesByGuid2"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingLinksToPagesByGuid2"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -2052,12 +2145,24 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingSwitchLinksToPagesByGuid2" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchLinksToPagesByGuid2" aria-expanded="true" aria-controls="SwitchLinksToPagesByGuid2">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#SwitchLinksToPagesByGuid2"
+												aria-expanded="true"
+												aria-controls="SwitchLinksToPagesByGuid2">
+
 											<span class="form-label fs-5"><span class="d-sm-none">On - Off</span><span class="d-none d-sm-inline">Показать - Скрыть</span> :</span>
+
 										</button>
+
 									</h2>
 
-									<div id="SwitchLinksToPagesByGuid2" class="accordion-collapse collapse" aria-labelledby="headingSwitchLinksToPagesByGuid2" data-bs-parent="#LinksToPagesByGuid2_accordion">
+									<div id="SwitchLinksToPagesByGuid2"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingSwitchLinksToPagesByGuid2"
+										 data-bs-parent="#LinksToPagesByGuid2_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
@@ -2069,6 +2174,7 @@
 														<input asp-for="PageLinks2" id="inlineRadio3" class="form-check-input" type="radio" value="true" autocomplete="off">
 														<label asp-for="PageLinks2" class="form-check-label">Показать</label>
 													</div>
+
 													<div class="form-check form-check-inline">
 														<input asp-for="PageLinks2" id="inlineRadio4" class="form-check-input" type="radio" value="false" autocomplete="off">
 														<label asp-for="PageLinks2" class="form-check-label">Скрыть</label>
@@ -2080,7 +2186,10 @@
 													ссылки по GUID2
 												</p>
 
-												<span asp-validation-for="PageLinks2" class="text-danger"></span>
+												@if (Context.Request.Method == "POST")
+												{
+													<span asp-validation-for="PageLinks2" class="text-danger"></span>
+												}
 
 											</div>
 
@@ -2094,21 +2203,40 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingRefPages2" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#RefPages2" aria-expanded="true" aria-controls="RefPages2">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#RefPages2"
+												aria-expanded="true"
+												aria-controls="RefPages2">
+
 											<span class="form-label fs-5">Страницы по GUID2:</span>
+
 										</button>
+
 									</h2>
 
-									<div id="RefPages2" class="accordion-collapse collapse" aria-labelledby="headingRefPages2" data-bs-parent="#LinksToPagesByGuid2_accordion">
+									<div id="RefPages2"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingRefPages2"
+										 data-bs-parent="#LinksToPagesByGuid2_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
-											<label asp-for="RefPages2" class="form-label text-primary fs-5 fw-bold"></label>
+											<label asp-for="RefPages2" class="@cssForLabel"></label>
 
-											<textarea asp-for="RefPages2" id="RefPagesInput2" rows="3" class="form-control fs-5 text-start fordetails" aria-describedby="RefPagesInputHelpBlock2">
-	                                                </textarea>
+											<textarea asp-for="RefPages2"
+													  id="RefPagesInput2"
+													  rows="3"
+													  class="form-control fs-5 text-start fordetails"
+													  aria-describedby="RefPagesInputHelpBlock2">
+	                                        </textarea>
 
-											<span asp-validation-for="RefPages" class="text-danger"></span>
+											@if (Context.Request.Method == "POST")
+											{
+												<span asp-validation-for="RefPages" class="text-danger"></span>
+											}
 
 											@if (!string.IsNullOrEmpty(Model.RefPages2))
 											{
@@ -2216,12 +2344,24 @@
 				<div class="accordion-item mb-3 shadw">
 
 					<h2 id="headingPictures" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#Pictures" aria-expanded="true" aria-controls="Pictures">
+
+						<button class="accordion-button collapsed py-0"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#Pictures"
+								aria-expanded="true"
+								aria-controls="Pictures">
+
 							<span class="form-label fs-5">Картинки :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="Pictures" class="accordion-collapse collapse" aria-labelledby="headingPictures" data-bs-parent="#accordionEditPage">
+					<div id="Pictures"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingPictures"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -2231,9 +2371,18 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingSwitchPictures" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SwitchPictures" aria-expanded="true" aria-controls="SwitchPictures">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#SwitchPictures"
+												aria-expanded="true"
+												aria-controls="SwitchPictures">
+
 											<span class="form-label fs-5"><span class="d-sm-none">On - Off</span><span class="d-none d-sm-inline">Показать - Скрыть</span> :</span>
+
 										</button>
+
 									</h2>
 
 									<div id="SwitchPictures" class="accordion-collapse collapse" aria-labelledby="headingSwitchPictures" data-bs-parent="#Pictures_accordion">
@@ -2248,6 +2397,7 @@
 														<input asp-for="PhotoLinks" id="inlineRadio3" class="form-check-input" type="radio" value="true" autocomplete="off">
 														<label asp-for="PhotoLinks" class="form-check-label">Показать</label>
 													</div>
+
 													<div class="form-check form-check-inline">
 														<input asp-for="PhotoLinks" id="inlineRadio4" class="form-check-input" type="radio" value="false" autocomplete="off">
 														<label asp-for="PhotoLinks" class="form-check-label">Скрыть</label>
@@ -2259,7 +2409,10 @@
 													картинки
 												</p>
 
-												<span asp-validation-for="PhotoLinks" class="text-danger"></span>
+												@if (Context.Request.Method == "POST")
+												{
+													<span asp-validation-for="PhotoLinks" class="text-danger"></span>
+												}
 
 											</div>
 
@@ -2273,21 +2426,40 @@
 								<div class="accordion-item mb-3 shadw">
 
 									<h2 id="headingListOfPictures" class="accordion-header shadw">
-										<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#ListOfPictures" aria-expanded="true" aria-controls="ListOfPictures">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#ListOfPictures"
+												aria-expanded="true"
+												aria-controls="ListOfPictures">
+
 											<span class="form-label fs-5">Картинки :</span>
+
 										</button>
+
 									</h2>
 
-									<div id="ListOfPictures" class="accordion-collapse collapse" aria-labelledby="headingListOfPictures" data-bs-parent="#Pictures_accordion">
+									<div id="ListOfPictures"
+										 class="accordion-collapse collapse"
+										 aria-labelledby="headingListOfPictures"
+										 data-bs-parent="#Pictures_accordion">
 
 										<div class="accordion-body accordion-body-nointend text-center">
 
-											<label asp-for="PhotoFilterOut" class="form-label text-primary fs-5 fw-bold"></label>
+											<label asp-for="PhotoFilterOut" class="@cssForLabel"></label>
 
-											<textarea asp-for="PhotoFilterOut" id="PhotoFilterInput" rows="4" class="form-control text-start fordetails px-3" aria-describedby="PhotoFilterInputHelpBlock">
-	                                                </textarea>
+											<textarea asp-for="PhotoFilterOut"
+													  id="PhotoFilterInput"
+													  class="form-control text-start fordetails px-3"
+													  rows="4"
+													  aria-describedby="PhotoFilterInputHelpBlock">
+	                                        </textarea>
 
-											<span asp-validation-for="PhotoFilterOut" class="text-danger"></span>
+											@if (Context.Request.Method == "POST")
+											{
+												<span asp-validation-for="PhotoFilterOut" class="text-danger"></span>
+											}
 
 											@if (!string.IsNullOrEmpty(Model.PhotoFilterOut))
 											{
@@ -2338,7 +2510,9 @@
 				<button type="submit"
 						class="btn btn-outline-success p-1 m-2 text-center shadw minwidth100px"
 						title="сохранить изменения">
+
 					Сохранить
+
 				</button>
 
 				<a asp-area="Admin"
@@ -2346,7 +2520,9 @@
 				   asp-action="Index"
 				   class="btn btn-outline-danger d-inline-block p-1 m-2 shadw minwidth100px"
 				   title="отменить">
+
 					Отмена
+
 				</a>
 
 			</div>
