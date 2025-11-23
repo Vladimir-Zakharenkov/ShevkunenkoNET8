@@ -77,11 +77,13 @@ public class PageInfoModel
     [DataType(DataType.Text)]
     public string PageFullPathWithData { get; set; } = string.Empty;
 
+    [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Псевдоним адреса (1) :")]
     [DataType(DataType.Text)]
     public string PagePathNickName { get; set; } = string.Empty;
 
+    [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Псевдоним адреса (2) :")]
     [DataType(DataType.Text)]

@@ -1930,8 +1930,11 @@ public class PageInfoController(
 
             #endregion
 
+            #region Изменить индекс сортировки
 
+            pageUpdate.SortOfPage = editPage.SortOfPage;
 
+            #endregion
 
             #region Изменить адрес страницы
 
@@ -2040,11 +2043,8 @@ public class PageInfoController(
 
             #endregion
 
-            #region Изменить индекс сортировки
 
-            pageUpdate.SortOfPage = editPage.SortOfPage;
 
-            #endregion
 
             #region Изменить заголовок страницы теги title, description, keywords
 

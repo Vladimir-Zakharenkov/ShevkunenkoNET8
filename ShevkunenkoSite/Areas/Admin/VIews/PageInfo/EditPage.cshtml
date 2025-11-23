@@ -566,233 +566,60 @@
 
 				</div>
 
+				@* индекс сортировки страницы *@
+				<div class="accordion-item mb-3 mt-2 shadw">
 
+					@* заголовок группы «Индекс сортировки страницы» *@
+					<h2 id="headingIndexOfSorting" class="accordion-header">
 
-				@* Адрес страницы *@
-				<div class="accordion-item mb-3 shadw">
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#IndexOfSorting"
+								aria-expanded="true"
+								aria-controls="IndexOfSorting">
 
-					<h2 id="headingPageAddress" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageAddress" aria-expanded="true" aria-controls="PageAddress">
-							<span class="form-label fs-5">Адрес страницы :</span>
+							<span class="form-label fs-5">Индекс сортировки :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="PageAddress" class="accordion-collapse collapse" aria-labelledby="headingPageAddress" data-bs-parent="#accordionEditPage">
+					@* индекс сортировки страницы *@
+					<div id="IndexOfSorting"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingIndexOfSorting"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
-							@* Область (Area) *@
-							<div>
+							<div class="row g-2 justify-content-center mb-2">
 
-								<div class="row g-2 justify-content-center">
-
-									<div class="col-12 col-lg-auto">
-
-										<label asp-for="@Model.PageArea" class="col-form-label text-primary fs-5 fw-bold"></label>
-
-									</div>
-
-									<div class="col-12 col-lg-auto" aria-describedby="PageAreaInputHelpBlock">
-
-										<select id="AreaInput" asp-for="PageArea" class="form-select">
-
-											@for (int i = 0; i < Model.AreaItems.Count(); i++)
-											{
-												if (Model.AreaItems[i].ToLower() == Model.PageArea.Trim('/'))
-												{
-													<option value="@Model.AreaItems[i]" selected>@Model.AreaItems[i]</option>
-												}
-												else
-												{
-													<option value="@Model.AreaItems[i]">@Model.AreaItems[i]</option>
-												}
-											}
-
-										</select>
-
-									</div>
-
-									<p id="PageAreaInputHelpBlock" class="fs-6 form-text text-success">
-										область (Area)<br />
-									</p>
-
+								<div class="col-auto">
+									<label asp-for="SortOfPage" class="@cssForLabel"></label>
 								</div>
 
-								<span asp-validation-for="PageArea" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* Контроллер (Controller) *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12 col-lg-auto">
-
-									<label asp-for="Controller" class="form-label text-primary fs-5 fw-bold"></label>
-
+								<div class="col-5 col-sm-3">
+									<input asp-for="SortOfPage"
+										   id="SortOfPageInput"
+										   class="form-control text-center"
+										   aria-describedby="SortOfPageInputHelpBlock" />
 								</div>
 
-								<div class="col-12 col-lg-auto">
-
-									<input asp-for="Controller" id="ControllerInput" class="form-control  justify-content-start" aria-describedby="ControllerInputHelpBlock" />
-
-								</div>
-
-								<p id="ControllerInputHelpBlock" class="fs-6 form-text text-success">
-									контроллер (для MVC)
-								</p>
-
-								<span asp-validation-for="Controller" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* Действие (Action) *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12 col-lg-auto">
-
-									<label asp-for="Action" class="form-label text-primary fs-5 fw-bold"></label>
-
-								</div>
-
-								<div class="col-12 col-lg-auto">
-
-									<input asp-for="Action" id="ActionInput" class="form-control  justify-content-start" aria-describedby="ActionInputHelpBlock" />
-
-								</div>
-
-								<p id="ActionInputHelpBlock" class="fs-6 form-text text-success">
-									действие (для MVC)
-								</p>
-
-								<span asp-validation-for="Action" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* RoutData *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12">
-
-									<label asp-for="RoutData" class="form-label text-primary fs-5 fw-bold"></label>
-
-								</div>
-
-								<div class="col-12">
-
-									<input asp-for="RoutData" id="RoutDataInput" class="form-control justify-content-start" aria-describedby="RoutDataInputHelpBlock" />
-
-								</div>
-
-								<p id="RoutDataInputHelpBlock" class="fs-6 form-text text-success">
-									данные адреса (QueryString)
-								</p>
-
-								<span asp-validation-for="RoutData" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* Адрес для RazorPage *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12 col-lg-auto">
-
-									<label asp-for="PageLoc" class="form-label text-primary fs-5 fw-bold"></label>
-
-								</div>
-
-								<div class="col-12 col-lg-auto">
-
-									<input id="PageLocInput" asp-for="PageLoc" class="form-control justify-content-start" aria-describedby="PageLocInputHelpBlock" />
-
-								</div>
-
-								<p id="PageLocInputHelpBlock" class="fs-6 form-text text-success">
-									адрес (для RazorPage)
-									<br />
-									действие (для MVC)
-								</p>
-
-								<span asp-validation-for="PageLoc" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* Псевдоним адреса (1) *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12">
-
-									<label asp-for="PagePathNickName"
-										   class="form-label text-primary fs-5 fw-bold">
-									</label>
-
-								</div>
-
-								<div class="col-12">
-
-									<input id="PagePathNickNameInput"
-										   asp-for="PagePathNickName"
-										   class="form-control justify-content-start"
-										   aria-describedby="PagePathNickNameInputHelpBlock" />
-
-									<hr class="w-75 mx-auto" />
-
-									<span class="text_shadow">
-										@Uri.UnescapeDataString(Model.PagePathNickName)
+								<div id="SortOfPageInputHelpBlock" class="form-text">
+									<span class="fs-6 text-success">
+										порядок сортировки -
 									</span>
-
-								</div>
-
-								<p id="PagePathNickNameInputHelpBlock" class="fs-6 form-text text-success">
-									псевдоним адреса (1)
-								</p>
-
-								<span asp-validation-for="PagePathNickName" class="text-danger"></span>
-
-								<hr class="w-75 mx-auto" />
-
-							</div>
-
-							@* Псевдоним адреса (2) *@
-							<div class="row g-2 justify-content-center">
-
-								<div class="col-12">
-
-									<label asp-for="PagePathNickName2"
-										   class="form-label text-primary fs-5 fw-bold">
-									</label>
-
-								</div>
-
-								<div class="col-12">
-
-									<input id="PagePathNickName2Input"
-										   asp-for="PagePathNickName2"
-										   class="form-control justify-content-start"
-										   aria-describedby="PagePathNickName2InputHelpBlock" />
-
-									<hr class="w-75 mx-auto" />
-
-									<span class="text_shadow">
-										@Uri.UnescapeDataString(Model.PagePathNickName2)
+									<br class="d-inline-block d-md-none" />
+									<span class="fs-6 text-danger">
+										обязательное поле
 									</span>
-
 								</div>
 
-								<p id="PagePathNickName2InputHelpBlock" class="fs-6 form-text text-success">
-									псевдоним адреса (2)
-								</p>
-
-								<span asp-validation-for="PagePathNickName2" class="text-danger"></span>
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="SortOfPage" class="text-danger"></span>
+								}
 
 							</div>
 
@@ -802,38 +629,207 @@
 
 				</div>
 
-				@* Индекс сортировки *@
-				<div class="accordion-item mb-3 shadw">
+				@* адрес и псевдонимы  страницы  *@
+				<div class="accordion-item mb-3 mt-2 shadw">
 
-					<h2 id="headingSortingPage" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#SortingPage" aria-expanded="true" aria-controls="SortingPage">
-							<span class="form-label fs-5">Индекс сортировки :</span>
+					@* заголовок группы «Адрес и псевдонимы  страницы» *@
+					<h2 id="headingPageAdress" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#PageAdress"
+								aria-expanded="true"
+								aria-controls="PageAdress">
+
+							<span class="form-label fs-5">Адрес и псевдонимы :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="SortingPage" class="accordion-collapse collapse" aria-labelledby="headingSortingPage" data-bs-parent="#accordionEditPage">
+					@* адрес и псевдонимы *@
+					<div id="PageAdress"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingPageAdress"
+						 data-bs-parent="#accordionAddPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
+							@* Выбор области Area *@
 							<div class="row g-2 justify-content-center">
 
-								<div class="col-12 col-lg-auto">
+								<label asp-for="PageArea" class="@cssForLabel col-auto"></label>
 
-									<label asp-for="SortOfPage" class="form-label text-primary fs-5 fw-bold"></label>
+								<div class="col-auto" aria-describedby="PageAreaInputHelpBlock">
+
+									<select asp-for="PageArea" id="AreaInput" class="form-select">
+
+										@for (int i = 0; i < Model.AreaItems.Count(); i++)
+										{
+											<option value="@Model.AreaItems[i]">@Model.AreaItems[i]</option>
+										}
+
+									</select>
 
 								</div>
 
-								<div class="col-12 col-lg-auto">
+								<div id="PageAreaInputHelpBlock" class="form-text">
 
-									<input asp-for="SortOfPage" id="SortingPageInput" class="form-control w-50 mx-auto" aria-describedby="SortingPageInputHelpBlock" />
+									<span class="fs-6 text-success">
+										область «Area»
+									</span>
 
 								</div>
 
-								<p id="SortingPageInputHelpBlock" class="fs-6 form-text text-success">
-									индекс сортировки
-								</p>
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PageArea" class="text-danger"></span>
+								}
 
-								<span asp-validation-for="SortOfPage" class="text-danger"></span>
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Выбор контроллера *@
+							<div>
+
+								<label asp-for="Controller" class="@cssForLabel"></label>
+
+								<input asp-for="Controller" id="ControllerInput" class="text-center col-11 col-lg-6" aria-describedby="ControllerInputHelpBlock" />
+
+								<div id="ControllerInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">
+										Controller для страницы MVC
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="Controller" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Выбор действия *@
+							<div>
+
+								<label asp-for="Action" class="@cssForLabel"></label>
+
+								<input asp-for="Action" id="ActionInput" class="text-center col-11 col-lg-6" aria-describedby="ActionInputHelpBlock" />
+
+								<div id="ActionInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">
+										Action для страницы MVC
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="Action" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Данные адреса *@
+							<div>
+
+								<label asp-for="RoutData" class="@cssForLabel"></label>
+
+								<input asp-for="RoutData" id="RoutDataInput" class="col-11 text-start" aria-describedby="RoutDataInputHelpBlock" />
+
+								<div id="ActionInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">
+										Данные запроса (QweryString)
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="RoutData" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Адрес для RazorPage *@
+							<div>
+
+								<label asp-for="PageLoc" class="@cssForLabel"></label>
+
+								<input asp-for="PageLoc" id="PageLocInput" class="col-11 text-start" aria-describedby="PageLocInputHelpBlock" />
+
+								<div id="PageLocInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-danger">
+										указывать только для RazorPages
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PageLoc" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Псевдоним адреса (1) *@
+							<div>
+
+								<label asp-for="PagePathNickName" class="@cssForLabel"></label>
+
+								<input asp-for="PagePathNickName" id="PagePathNickNameInput" class="col-11 text-start" aria-describedby="PagePathNickNameInputHelpBlock" />
+
+								<div id="PagePathNickNameInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">
+										псевдоним страницы (1)
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PagePathNickName" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Псевдоним адреса (2) *@
+							<div>
+
+								<label asp-for="PagePathNickName2" class="@cssForLabel"></label>
+
+								<input asp-for="PagePathNickName2" id="PagePathNickName2Input" class="col-11 text-start" aria-describedby="PagePathNickName2InputHelpBlock" />
+
+								<div id="PagePathNickName2InputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">
+										псевдоним страницы (2)
+									</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PagePathNickName2" class="text-danger"></span>
+								}
 
 							</div>
 
@@ -847,12 +843,24 @@
 				<div class="accordion-item mb-3 shadw">
 
 					<h2 id="headingPageIcon" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageIcon" aria-expanded="true" aria-controls="PageIcon">
+
+						<button class="accordion-button collapsed py-0 stranicy" 
+							type="button" 
+							data-bs-toggle="collapse" 
+							data-bs-target="#PageIcon" 
+							aria-expanded="true" 
+							aria-controls="PageIcon">
+
 							<span class="form-label fs-5">Иконка страницы :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="PageIcon" class="accordion-collapse collapse" aria-labelledby="headingPageIcon" data-bs-parent="#accordionEditPage">
+					<div id="PageIcon" 
+						class="accordion-collapse collapse" 
+						aria-labelledby="headingPageIcon" 
+						data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
@@ -879,28 +887,111 @@
 
 				</div>
 
-				@* Тег «title» *@
-				<div class="accordion-item mb-3 shadw">
+				@* Title-Description-KeyWords  *@
+				<div class="accordion-item mb-3 mt-2 shadw">
 
-					<h2 id="headingPageTitle" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageTitle" aria-expanded="true" aria-controls="PageTitle">
-							<span class="form-label fs-5">Тег « title » :</span>
+					@* заголовок группы «Title-Description-KeyWords» *@
+					<h2 id="headingTitleDescriptionKeyWords" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#TitleDescriptionKeyWords"
+								aria-expanded="true"
+								aria-controls="TitleDescriptionKeyWords">
+
+							<span class="form-label fs-5">Title-Description-KeyWord :</span>
+
 						</button>
+
 					</h2>
 
-					<div id="PageTitle" class="accordion-collapse collapse" aria-labelledby="headingPageTitle" data-bs-parent="#accordionEditPage">
+					@* Title-Description-KeyWords *@
+					<div id="TitleDescriptionKeyWords"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingTitleDescriptionKeyWords"
+						 data-bs-parent="#accordionEditPage">
 
 						<div class="accordion-body accordion-body-nointend text-center">
 
-							<label asp-for="PageTitle" class="form-label text-primary fs-5 fw-bold"></label>
+							@* Тег «title» *@
+							<div>
 
-							<input asp-for="PageTitle" id="PageTitleInput" class="form-control text-center" aria-describedby="PageTitleInputHelpBlock" />
+								<label asp-for="PageTitle" class="@cssForLabel"></label>
 
-							<p id="PageTitleInputHelpBlock" class="form-text fs-6 text-success">
-								тег «title» - <span class="text-danger">обязательное поле</span>
-							</p>
+								<input asp-for="PageTitle" id="PageTitleInput" class="col-11 text-start" aria-describedby="PageTitleInputHelpBlock" />
 
-							<span asp-validation-for="PageTitle" class="text-danger"></span>
+								<div id="PageTitleInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">тег «title»</span>
+									<span class="fs-6 text-danger"> - обязательное поле</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PageTitle" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Тег «description» *@
+							<div class="col-11 mx-auto">
+
+								<label asp-for="PageDescription" class="@cssForLabel"></label>
+
+								<textarea asp-for="PageDescription"
+										  id="PageDescriptionInput"
+										  class="form-control fordetails col-11 border border-1 border-black text-start"
+										  rows="5"
+										  aria-describedby="PageDescriptionInputHelpBlock">
+								</textarea>
+
+								<div id="PageDescriptionInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">тег «description» - </span>
+									<br class="d-sm-none" />
+									<span class="fs-6 text-danger">обязательное поле</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PageDescription" class="text-danger"></span>
+								}
+
+								<hr class="w-50 mx-auto" />
+
+							</div>
+
+							@* Тег «keywords» *@
+							<div class="col-11 mx-auto">
+
+								<label asp-for="PageKeyWords" class="@cssForLabel"></label>
+
+								<textarea asp-for="PageKeyWords"
+										  id="PageKeyWordsInput"
+										  class="form-control fordetails col-11 border border-1 border-black text-start"
+										  rows="5"
+										  aria-describedby="PageKeyWordsInputHelpBlock">
+								</textarea>
+
+								<div id="PageKeyWordsInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">тег «keywords» - </span>
+									<br class="d-sm-none" />
+									<span class="fs-6 text-danger">обязательное поле</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="PageKeyWords" class="text-danger"></span>
+								}
+
+							</div>
 
 						</div>
 
@@ -908,65 +999,8 @@
 
 				</div>
 
-				@* Тег «description» *@
-				<div class="accordion-item mb-3 shadw">
 
-					<h2 id="headingPageDescription" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageDescription" aria-expanded="true" aria-controls="PageDescription">
-							<span class="form-label fs-5">Тег « description » :</span>
-						</button>
-					</h2>
 
-					<div id="PageDescription" class="accordion-collapse collapse" aria-labelledby="headingPageDescription" data-bs-parent="#accordionEditPage">
-
-						<div class="accordion-body accordion-body-nointend text-center">
-
-							<label asp-for="PageDescription" class="form-label text-primary fs-5 fw-bold"></label>
-
-							<textarea asp-for="PageDescription" rows="4" id="PageDescriptionInput" class="form-control fordetails" aria-describedby="PageDescriptionInputHelpBlock">
-                                </textarea>
-
-							<p id="PageDescriptionInputHelpBlock" class="form-text fs-6 text-success">
-								тег «description»<span class="d-none d-sm-inline text-danger"> - обязательное поле</span>
-							</p>
-
-							<span asp-validation-for="PageDescription" class="text-danger"></span>
-
-						</div>
-
-					</div>
-
-				</div>
-
-				@* Тег «keywords» *@
-				<div class="accordion-item mb-3 shadw">
-
-					<h2 id="headingPageKeywords" class="accordion-header shadw">
-						<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PageKeywords" aria-expanded="true" aria-controls="PageKeywords">
-							<span class="form-label fs-5">Тег « keywords » :</span>
-						</button>
-					</h2>
-
-					<div id="PageKeywords" class="accordion-collapse collapse" aria-labelledby="headingPageKeywords" data-bs-parent="#accordionDetailsPage">
-
-						<div class="accordion-body accordion-body-nointend text-center">
-
-							<label asp-for="PageKeyWords" class="form-label text-primary fs-5 fw-bold"></label>
-
-							<textarea asp-for="PageKeyWords" rows="7" id="PageKeyWordsInput" class="form-control fordetails" aria-describedby="PageKeyWordsInputHelpBlock">
-                                </textarea>
-
-							<p id="PageKeyWordsInputHelpBlock" class="form-text fs-6 text-success">
-								тег «keywords»<span class="d-none d-sm-inline text-danger"> - обязательное поле</span>
-							</p>
-
-							<span asp-validation-for="PageKeyWords" class="text-danger"></span>
-
-						</div>
-
-					</div>
-
-				</div>
 
 				@* Заголовок страницы *@
 				<div class="accordion-item mb-3 shadw">
@@ -1321,9 +1355,9 @@
 														<div class="accordion-body p-1">
 
 															<div class="row mt-1 justify-content-center g-1
-																																																																                                            @(listOfPages.Count < 4 ? "row-cols-3" : "")
-																																																																                                            @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-																																																																                                            @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																																																				                                            @(listOfPages.Count < 4 ? "row-cols-3" : "")
+																																																																				                                            @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+																																																																				                                            @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 																@foreach (var item in listOfPages)
 																{
@@ -1729,9 +1763,9 @@
 																	<div class="accordion-body accordion-body-nointend text-center">
 
 																		<div class="row mt-1 justify-content-center g-1
-																																																									                                                                                                                                                                                                                                                                                @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-																																																									                                                                                                                                                                                                                                                                                            @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-																																																									                                                                                                                                                                                                                                                                                                        @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																																												                                                                                                                                                                                                                                                                                @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+																																																												                                                                                                                                                                                                                                                                                            @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+																																																												                                                                                                                                                                                                                                                                                                        @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 																			@foreach (var item in modelForPageLinks)
 																			{
