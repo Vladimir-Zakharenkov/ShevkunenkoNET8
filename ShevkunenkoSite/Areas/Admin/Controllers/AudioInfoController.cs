@@ -61,7 +61,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                         .ThenInclude(b => b!.BookForAudioBook)
                             .ThenInclude(p => p!.PageInfoModel)
                                 .ThenInclude(i => i!.ImageFileModel)
-                    .Include(a => a.PageInfoModel)
+                    //.Include(a => a.PageInfoModel)
                     .AsNoTracking()
                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);
 
@@ -498,6 +498,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                     "FolderForAudioFile," +
                     "AuthorOfText," +
                     "CaptionOfTextInAudioFile," +
+                    "TranscriptId," +
                     "TextInfoModelId," +
                     "AudioFileDescription," +
                     "InternetRefToAudioFile," +

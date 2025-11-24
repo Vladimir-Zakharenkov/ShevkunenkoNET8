@@ -56,8 +56,8 @@ public class AudioBookModel
 
     #region Страница аудиокниги
 
-    public Guid? PageInfoModelId { get; set; }
-    public PageInfoModel? PageInfoModel { get; set; }
+    //public Guid? PageInfoModelId { get; set; }
+    //public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
 

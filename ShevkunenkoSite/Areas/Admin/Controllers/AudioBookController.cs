@@ -168,7 +168,7 @@ public class AudioBookController(
                 NumberOfFiles = editAudioBook.NumberOfFiles,
                 BookForAudioBookId = editAudioBook.BookForAudioBookId,
                 BookForAudioBook = editAudioBook.BookForAudioBook,
-                PageInfoModelId = editAudioBook.PageInfoModelId,
+                //PageInfoModelId = editAudioBook.PageInfoModelId,
                 BooksOnSite = seletListItemFromBookOnSite
             });
         }

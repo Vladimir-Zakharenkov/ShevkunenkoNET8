@@ -142,7 +142,7 @@ public class AudioInfoModel
 
     #region Навигационное свойство страницы сайта
 
-    public PageInfoModel? PageInfoModel { get; set; }
+    //public PageInfoModel? PageInfoModel { get; set; }
 
     #endregion
 

@@ -66,18 +66,11 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("NumberOfFiles")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PageInfoModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("AudioBookModelId");
 
                     b.HasIndex("BookForAudioBookId")
                         .IsUnique()
                         .HasFilter("[BookForAudioBookId] IS NOT NULL");
-
-                    b.HasIndex("PageInfoModelId")
-                        .IsUnique()
-                        .HasFilter("[PageInfoModelId] IS NOT NULL");
 
                     b.ToTable("AudioBookModel");
                 });
@@ -865,6 +858,9 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("AudioBookModelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("AudioInfoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1018,9 +1014,9 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("PageInfoModelId");
 
-                    b.HasIndex("AudioInfoId")
-                        .IsUnique()
-                        .HasFilter("[AudioInfoId] IS NOT NULL");
+                    b.HasIndex("AudioBookModelId");
+
+                    b.HasIndex("AudioInfoId");
 
                     b.HasIndex("BackgroundFileModelId");
 
@@ -1117,13 +1113,7 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithOne("AudioBook")
                         .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "BookForAudioBookId");
 
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
-                        .WithOne("AudioBook")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "PageInfoModelId");
-
                     b.Navigation("BookForAudioBook");
-
-                    b.Navigation("PageInfoModel");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
@@ -1209,9 +1199,13 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioBookModel", "AudioBook")
+                        .WithMany()
+                        .HasForeignKey("AudioBookModelId");
+
                     b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioInfo")
-                        .WithOne("PageInfoModel")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.PageInfoModel", "AudioInfoId");
+                        .WithMany()
+                        .HasForeignKey("AudioInfoId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BackgroundFileModel", "BackgroundFileModel")
                         .WithMany()
@@ -1228,6 +1222,8 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImagePageHeading")
                         .WithMany()
                         .HasForeignKey("ImagePageHeadingId");
+
+                    b.Navigation("AudioBook");
 
                     b.Navigation("AudioInfo");
 
@@ -1253,11 +1249,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("BooksAndArticlesModel");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
-                {
-                    b.Navigation("PageInfoModel");
-                });
-
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
                 {
                     b.Navigation("AudioBook");
@@ -1265,8 +1256,6 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.Navigation("AudioBook");
-
                     b.Navigation("BooksAndArticles");
 
                     b.Navigation("MovieFile");

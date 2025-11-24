@@ -207,7 +207,6 @@ public class BooksController(
         {
             audioBookViewModel.AudioBook = await audioBookContext.AudioBooks
                 .Include(abook => abook.BookForAudioBook)
-                //.Include(t => t.PageInfoModel)
                 .FirstAsync(abook => abook.CaptionOfAudioBook == audioBookCaption & abook.ActorOfAudioBook == audioActor);
         }
         else
@@ -240,14 +239,14 @@ public class BooksController(
 
             if (await audioFileContext.AudioFiles
                 .Include(audioBook => audioBook.AudioBookModel)
-                .Include(pageForAudio => pageForAudio.PageInfoModel)
+                //.Include(pageForAudio => pageForAudio.PageInfoModel)
                 .Where(audioFile => audioFile.AudioBookModelId == audioBookViewModel.AudioBook.AudioBookModelId
                                                 & audioFile.SequenceNumber == audioBookPart)
                 .AnyAsync())
             {
                 audioBookViewModel.AudioFileForText = await audioFileContext.AudioFiles
                     .Include(audioBook => audioBook.AudioBookModel)
-                    .Include(pageForAudio => pageForAudio.PageInfoModel)
+                    //.Include(pageForAudio => pageForAudio.PageInfoModel)
                     .FirstAsync(audioFile =>
                                                     audioFile.AudioBookModelId == audioBookViewModel.AudioBook.AudioBookModelId
                                                     & audioFile.SequenceNumber == audioBookPart);

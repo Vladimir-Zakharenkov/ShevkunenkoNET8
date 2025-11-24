@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -63,7 +62,7 @@ public class PageInfoController(
 
     #endregion
 
-    #region Информация о странице сайта
+     #region Информация о странице сайта
 
     public async Task<IActionResult> DetailsPage(Guid? pageId)
     {
@@ -461,51 +460,53 @@ public class PageInfoController(
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     public async Task<IActionResult> AddPage(
-        [Bind("PageIconPath," +
-                "BrowserConfig," +
-                "BrowserConfigFolder," +
-                "Manifest," +
-                "PageAsRazorPage," +
-                "ImageFileModelId," +
-                "ImageFileFormFile," +
-                "BackgroundFileModelId," +
-                "BackgroundFormFile," +
-                "AudioInfoId," +
-                "AudioInfoFormFile," +
-                "PageCardText," +
-                "SortOfPage," +
-                "PageArea," +
-                "Controller," +
-                "Action," +
-                "RoutData," +
-                "PageLoc," +
-                "PagePathNickName," +
-                "PagePathNickName2," +
-                "PageTitle," +
-                "PageDescription," +
-                "PageKeyWords," +
-                "OgType," +
-                "PageIconPath," +
-                "BrowserConfig," +
-                "BrowserConfigFolder," +
-                "Manifest," +
-                "PageLastmod," +
-                "Changefreq," +
-                "Priority," +
-                "PageHeading," +
-                "ImagePageHeadingFormFile," +
-                "ImagePageHeadingId," +
-                "TextOfPage," +
-                "PageFilterOut," +
-                "PageLinksByFilters," +
-                "VideoFilterOut," +
-                "VideoLinks," +
-                "RefPages," +
-                "PageLinks," +
-                "RefPages2," +
-                "PageLinks2," +
-                "PhotoLinks," +
-                "PhotoFilterOut")]
+        //[Bind("PageIconPath," +
+        //        "AreaItems," +
+        //        "OgTypeItems," +
+        //        "BrowserConfig," +
+        //        "BrowserConfigFolder," +
+        //        "Manifest," +
+        //        "PageAsRazorPage," +
+        //        "ImageFileModelId," +
+        //        "ImageFileFormFile," +
+        //        "BackgroundFileModelId," +
+        //        "BackgroundFormFile," +
+        //        "AudioInfoId," +
+        //        "AudioInfoFormFile," +
+        //        "PageCardText," +
+        //        "SortOfPage," +
+        //        "PageArea," +
+        //        "Controller," +
+        //        "Action," +
+        //        "RoutData," +
+        //        "PageLoc," +
+        //        "PagePathNickName," +
+        //        "PagePathNickName2," +
+        //        "PageTitle," +
+        //        "PageDescription," +
+        //        "PageKeyWords," +
+        //        "OgType," +
+        //        "PageIconPath," +
+        //        "BrowserConfig," +
+        //        "BrowserConfigFolder," +
+        //        "Manifest," +
+        //        "PageLastmod," +
+        //        "Changefreq," +
+        //        "Priority," +
+        //        "PageHeading," +
+        //        "ImagePageHeadingFormFile," +
+        //        "ImagePageHeadingId," +
+        //        "TextOfPage," +
+        //        "PageFilterOut," +
+        //        "PageLinksByFilters," +
+        //        "VideoFilterOut," +
+        //        "VideoLinks," +
+        //        "RefPages," +
+        //        "PageLinks," +
+        //        "RefPages2," +
+        //        "PageLinks2," +
+        //        "PhotoLinks," +
+        //        "PhotoFilterOut")]
         PageInfoModel addPage)
     {
         if (ModelState.IsValid)
@@ -526,7 +527,7 @@ public class PageInfoController(
             {
                 if (addPage.ImageFileFormFile != null)
                 {
-                    if (!addPage.ImageFileFormFile.FileName.EndsWith(".webp") | !addPage.ImageFileFormFile.FileName.EndsWith(".png"))
+                    if (!(addPage.ImageFileFormFile.FileName.EndsWith(".webp") || addPage.ImageFileFormFile.FileName.EndsWith(".png")))
                     {
                         ModelState.AddModelError("ImageFileFormFile", $"Выбран некорректный файл «{addPage.ImageFileFormFile.FileName}»");
 
@@ -539,7 +540,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
 
                     if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addPage.ImageFileFormFile.FileName).AnyAsync())
@@ -615,7 +616,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
                 }
                 else
@@ -633,7 +634,7 @@ public class PageInfoController(
                     // Список аудиофайлов
                     ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                    return View();
+                    return View(addPage);
                 }
             }
 
@@ -649,7 +650,7 @@ public class PageInfoController(
             {
                 if (addPage.BackgroundFormFile != null)
                 {
-                    if (!addPage.BackgroundFormFile.FileName.EndsWith(".webp") | !addPage.BackgroundFormFile.FileName.EndsWith(".png"))
+                    if (!(addPage.BackgroundFormFile.FileName.EndsWith(".webp") || addPage.BackgroundFormFile.FileName.EndsWith(".png")))
                     {
                         ModelState.AddModelError("BackgroundFormFile", $"Выбран некорректный файл «{addPage.BackgroundFormFile.FileName}»");
 
@@ -662,7 +663,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
 
                     if (await backgroundContext.BackgroundFiles.Where(bk => bk.WebLeftBackground == addPage.BackgroundFormFile.FileName).AnyAsync())
@@ -702,7 +703,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
                 }
                 else
@@ -720,7 +721,7 @@ public class PageInfoController(
                     // Список аудиофайлов
                     ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                    return View();
+                    return View(addPage);
                 }
             }
 
@@ -749,7 +750,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
 
                     if (await audioFileContext.AudioFiles.Where(audioFile => audioFile.AudioFileName == addPage.AudioInfoFormFile.FileName).AnyAsync())
@@ -771,7 +772,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
                 }
                 else
@@ -821,7 +822,7 @@ public class PageInfoController(
                 {
                     ModelState.AddModelError("PageItem.Controller", "Введите название контроллера");
 
-                    return View();
+                    return View(addPage);
                 }
                 else
                 {
@@ -843,7 +844,7 @@ public class PageInfoController(
                 {
                     ModelState.AddModelError("PageItem.Action", "Введите название метода");
 
-                    return View();
+                    return View(addPage);
                 }
                 else
                 {
@@ -861,7 +862,7 @@ public class PageInfoController(
                 {
                     ModelState.AddModelError("PageItem.PageLoc", "Введите адрес страницы без области");
 
-                    return View();
+                    return View(addPage);
                 }
                 else if (addPage.PageLoc == "/")
                 {
@@ -938,7 +939,7 @@ public class PageInfoController(
                 {
                     ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addPage.PageArea + addPage.PageLoc + addPage.RoutData}» уже существует");
 
-                    return View();
+                    return View(addPage);
                 }
             }
             else
@@ -949,7 +950,7 @@ public class PageInfoController(
                 {
                     ModelState.AddModelError("pageItem.PageLoc", $"Страница «{addPage.PageArea + addPage.Controller + addPage.Action + addPage.RoutData}» уже существует");
 
-                    return View();
+                    return View(addPage);
                 }
             }
 
@@ -957,7 +958,7 @@ public class PageInfoController(
             {
                 ModelState.AddModelError("pageItem.PagePathNickName", $"Страница с псевдонимом «{addPage.PagePathNickName}» уже существует");
 
-                return View();
+                return View(addPage);
             }
 
             #endregion
@@ -1036,7 +1037,7 @@ public class PageInfoController(
             {
                 if (addPage.ImagePageHeadingFormFile != null)
                 {
-                    if (!addPage.ImagePageHeadingFormFile.FileName.EndsWith(".webp") | !addPage.ImagePageHeadingFormFile.FileName.EndsWith(".png"))
+                    if (!(addPage.ImagePageHeadingFormFile.FileName.EndsWith(".webp") || addPage.ImagePageHeadingFormFile.FileName.EndsWith(".png")))
                     {
                         ModelState.AddModelError("ImagePageHeadingFormFile", $"Выбран некорректный файл «{addPage.ImagePageHeadingFormFile.FileName}»");
 
@@ -1049,7 +1050,7 @@ public class PageInfoController(
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-                        return View();
+                        return View(addPage);
                     }
 
                     if (addPage.ImagePageHeadingFormFile != null)
@@ -1118,13 +1119,13 @@ public class PageInfoController(
                         {
                             ModelState.AddModelError("ImagePageHeadingFormFile", $"Добавьте картинку «{addPage.ImagePageHeadingFormFile.FileName}» в базу данных");
 
-                            return View();
+                            return View(addPage);
                         }
                     }
-                    else
-                    {
-                        addPage.ImagePageHeadingId = null;
-                    }
+                }
+                else
+                {
+                    addPage.ImagePageHeadingId = null;
                 }
             }
 
@@ -1244,7 +1245,7 @@ public class PageInfoController(
             // Список аудиофайлов
             ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
-            return View();
+            return View(addPage);
         }
     }
 

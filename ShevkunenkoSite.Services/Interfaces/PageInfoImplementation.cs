@@ -6,7 +6,7 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
         .Include(image => image.ImageFileModel)
         .Include(background => background.BackgroundFileModel)
         .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
-        .Include(audioFile => audioFile.AudioInfo)
+        //.Include(audioFile => audioFile.AudioInfo)
         .Include(audioBook => audioBook.AudioBook)
          // TODO: убрать nullable для картинки фильма
         .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
