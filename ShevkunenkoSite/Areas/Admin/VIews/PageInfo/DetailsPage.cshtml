@@ -1,26 +1,23 @@
-﻿@model DetailsPageViewModel
+﻿@model PageInfoModel
 
 @{
     int i = 0;
     int innerAccordion = 0;
+    string cssForLabel = "col-form-label text-primary fs-5 me-2";
 }
 
-<h1>
-    <span class="fs-3 text_shadow">Информация о странице</span>
-</h1>
+<h1 class="fs-3 text_shadow">Информация о странице</h1>
 
 <hr class="liniya" />
 
 @* Id страницы *@
 <div>
 
+    <label asp-for="PageInfoModelId" class="@cssForLabel"></label>
+
     <p>
-        <span class="fw-bold fs-5 text-primary">
-            PageInfoModelId:
-        </span>
-        <br />
-        <span class="fs-5 text_shadow">
-            @Model.PageItem.PageInfoModelId
+        <span class="fs-5 text_shadow fluid-font-size">
+            @Model.PageInfoModelId
         </span>
         <br />
         <span class="fs-6 form-text text-success">
@@ -35,13 +32,11 @@
 @* Тег « title » *@
 <div>
 
+    <label asp-for="PageTitle" class="@cssForLabel"></label>
+
     <p>
-        <span class="fw-bold fs-5 text-primary">
-            PageTitle:
-        </span>
-        <br />
         <span class="fs-5 text_shadow">
-            @Model.PageItem.PageTitle
+            @Model.PageTitle
         </span>
         <br />
         <span class="fs-6 form-text text-success">
@@ -53,28 +48,29 @@
 
 </div>
 
-@* Карточка страницы и индекс сортировки *@
+@* Карточка страницы и индкес сортировки *@
 <div>
 
     <p>
-        <span class="fw-bold fs-5 text-primary">
+        <span class="fs-5 text-primary">
             Карточка страницы
         </span>
     </p>
 
-    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 justify-content-center">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 justify-content-center">
 
-        <vc:card-of-page page=Model.PageItem />
+        <vc:card-of-page page=Model />
 
     </div>
 
     <p class="mt-2">
-        <span class="fw-bold fs-5 text-primary">
-            Индекс сортировки :
+
+        <label asp-for="SortOfPage" class="@cssForLabel"></label>
+
+        <span class="fs-4 text-danger">
+            @Model.SortOfPage
         </span>
-        <span class="fw-bold fs-4 text-danger">
-            @Model.PageItem.SortOfPage
-        </span>
+
     </p>
 
 </div>
@@ -82,9 +78,9 @@
 <div class="row">
 
     @* кадры слева *@
-    @if (Model.FramesAroundMainContent.FramesOnTheLeft != null)
+    @if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheLeft != null)
     {
-        <div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
+        <div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden height850">
 
             @foreach (var item in Model.FramesAroundMainContent.FramesOnTheLeft)
             {
@@ -104,11 +100,11 @@
     }
     else
     {
-        <div class="col-2 d-none d-md-block"></div>
+        <div class="col-2 d-none d-lg-block"></div>
     }
 
 
-    <div class="col card w-75 mx-auto p-2 my-3">
+    <div class="col-12 col-lg-8 mx-auto p-2">
 
         @* Управление страницей *@
         <div class="card-footer border p-0 my-2">
@@ -116,25 +112,31 @@
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="EditPage"
-               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               asp-route-pageid="@Model.PageInfoModelId"
                class="btn btn-outline-dark py-1 m-2 shadw minwidth100px"
                title="редактировать данные">
+
                 Изменить
+
             </a>
 
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="DeletePage"
-               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               asp-route-pageid="@Model.PageInfoModelId"
                class="btn btn-outline-danger py-1 m-2 shadw minwidth100px"
                title="удалить страницу">
+
                 Удалить
+
             </a>
 
-            <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
+            <a href="@Url.Content(Model.PageFullPathWithData)"
                class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
                title="просмотр">
+
                 Просмотр
+
             </a>
 
             <a asp-area="Admin"
@@ -142,18 +144,22 @@
                asp-action="Index"
                class="btn btn-outline-success py-1 m-2 shadw minwidth100px"
                title="список страниц">
+
                 Список
+
             </a>
 
-            @if (Model.PageItem.MovieFile != null)
+            @if (Model.MovieFile != null)
             {
                 <a asp-area="Admin"
                    asp-controller="MovieInfo"
                    asp-action="DetailsMovie"
-                   asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
+                   asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                    class="btn btn-outline-info py-1 m-2 shadw minwidth100px"
                    title="данные фильма">
+
                     Фильм
+
                 </a>
             }
 
@@ -176,7 +182,7 @@
 
                     <div class="accordion-body accordion-body-nointend text-start">
 
-                        @if (Model.PageItem.PageAsRazorPage)
+                        @if (Model.PageAsRazorPage)
                         {
                             <p class="fs-5 mb-0">
                                 <span class="text-primary fw-bold">
@@ -193,19 +199,19 @@
                             <p class="fs-5 text-primary mb-0">
                                 Область:
                                 <span class="text-black">
-                                    «@Model.PageItem.PageArea.TrimStart('/')»
+                                    «@Model.PageArea.TrimStart('/')»
                                 </span>
                             </p>
                             <p class="fs-5 text-primary mb-0">
                                 Адрес:
                                 <span class="text-black">
-                                    «@Model.PageItem.PageArea@Model.PageItem.PageLoc»
+                                    «@Model.PageArea@Model.PageLoc»
                                 </span>
                             </p>
                             <p class="fs-5 text-primary mb-0">
                                 Псевдоним:
                                 <span class="text-black">
-                                    «@Model.PageItem.PagePathNickName»
+                                    «@Model.PagePathNickName»
                                 </span>
                             </p>
                         }
@@ -228,7 +234,7 @@
                                     Область :
                                 </span>
                                 <br class="d-sm-none" />
-                                @if (string.IsNullOrEmpty(Model.PageItem.PageArea))
+                                @if (string.IsNullOrEmpty(Model.PageArea))
                                 {
                                     <span class="text_shadow">
                                         Root
@@ -237,7 +243,7 @@
                                 else
                                 {
                                     <span class="text_shadow">
-                                        @Model.PageItem.PageArea.TrimStart('/')
+                                        @Model.PageArea.TrimStart('/')
                                     </span>
                                 }
                             </p>
@@ -250,7 +256,7 @@
                                 </span>
                                 <br class="d-sm-none" />
                                 <span class="text_shadow">
-                                    @Model.PageItem.Controller.TrimStart('/')
+                                    @Model.Controller.TrimStart('/')
                                 </span>
                             </p>
 
@@ -262,7 +268,7 @@
                                 </span>
                                 <br class="d-sm-none" />
                                 <span class="text_shadow">
-                                    @Model.PageItem.Action.TrimStart('/')
+                                    @Model.Action.TrimStart('/')
                                 </span>
                             </p>
 
@@ -273,7 +279,7 @@
                                     Данные :
                                 </span>
                                 <br class="d-sm-none" />
-                                @if (string.IsNullOrEmpty(Model.PageItem.RoutData))
+                                @if (string.IsNullOrEmpty(Model.RoutData))
                                 {
                                     <span class="fs-6 form-text text-success">
                                         данные не заданы
@@ -282,7 +288,7 @@
                                 else
                                 {
                                     <span class="text_shadow">
-                                        @Model.PageItem.RoutData
+                                        @Model.RoutData
                                     </span>
                                 }
                             </p>
@@ -295,11 +301,11 @@
                                 </span>
                                 <br class="d-sm-none" />
                                 <span class="text_shadow">
-                                    @Model.PageItem.PageFullPathWithData
+                                    @Model.PageFullPathWithData
                                 </span>
                                 <hr class="w-75 mx-auto" />
                                 <span class="text_shadow">
-                                    @Uri.UnescapeDataString(Model.PageItem.PageFullPathWithData)
+                                    @Uri.UnescapeDataString(Model.PageFullPathWithData)
                                 </span>
                             </p>
 
@@ -310,7 +316,7 @@
                                     Псевдоним (1) :
                                 </span>
                                 <br class="d-sm-none" />
-                                @if (string.IsNullOrEmpty(Model.PageItem.PagePathNickName))
+                                @if (string.IsNullOrEmpty(Model.PagePathNickName))
                                 {
                                     <span class="fs-6 form-text text-success">
                                         псевдоним (1) не задан
@@ -319,11 +325,11 @@
                                 else
                                 {
                                     <span class="text_shadow">
-                                        @Model.PageItem.PagePathNickName
+                                        @Model.PagePathNickName
                                     </span>
                                     <hr class="w-75 mx-auto" />
                                     <span class="text_shadow">
-                                        @Uri.UnescapeDataString(Model.PageItem.PagePathNickName)
+                                        @Uri.UnescapeDataString(Model.PagePathNickName)
                                     </span>
                                 }
                             </p>
@@ -335,7 +341,7 @@
                                     Псевдоним (2) :
                                 </span>
                                 <br class="d-sm-none" />
-                                @if (string.IsNullOrEmpty(Model.PageItem.PagePathNickName2))
+                                @if (string.IsNullOrEmpty(Model.PagePathNickName2))
                                 {
                                     <span class="fs-6 form-text text-success">
                                         псевдоним (2) не задан
@@ -344,11 +350,11 @@
                                 else
                                 {
                                     <span class="text_shadow">
-                                        @Model.PageItem.PagePathNickName2
+                                        @Model.PagePathNickName2
                                     </span>
                                     <hr class="w-75 mx-auto" />
                                     <span class="text_shadow">
-                                        @Uri.UnescapeDataString(Model.PageItem.PagePathNickName2)
+                                        @Uri.UnescapeDataString(Model.PagePathNickName2)
                                     </span>
                                 }
                             </p>
@@ -373,36 +379,36 @@
 
                     <div class="accordion-body accordion-body-nointend text-start text-sm-center">
 
-                        @if (Model.PageItem.ImageFileModel != null)
+                        @if (Model.ImageFileModel != null)
                         {
                             <a asp-area="Admin"
                                asp-controller="ImageInfo"
                                asp-action="DetailsImage"
-                               asp-route-imageid="@Model.PageItem.ImageFileModelId"
+                               asp-route-imageid="@Model.ImageFileModelId"
                                class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
                                title="информация о картинке"
                                onclick="this.target='_blank'">
 
-                                <vc:view-image image-id="@Model.PageItem.ImageFileModelId" 
+                                <vc:view-image image-id="@Model.ImageFileModelId" 
                                         css-class="w-100" 
                                         icon-type="webimage" />
 
                             </a>
 
-                            @if (!string.IsNullOrEmpty(Model.PageItem.ImageFileModel.WebImageFileName))
+                            @if (!string.IsNullOrEmpty(Model.ImageFileModel.WebImageFileName))
                             {
                                 <a class="fs-5 text_shadow"
-                                   href="@Url.Content($"{Model.PageItem.ImageFileModel.ImagePath}\\/{Model.PageItem.ImageFileModel.WebImageFileName}")"
+                                   href="@Url.Content($"{Model.ImageFileModel.ImagePath}\\/{Model.ImageFileModel.WebImageFileName}")"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.WebImageFileName
+                                    @Model.ImageFileModel.ImagePath/@Model.ImageFileModel.WebImageFileName
                                 </a>
                             }
                             else
                             {
                                 <a class="fs-5 text_shadow"
-                                   href="@Url.Content($"{Model.PageItem.ImageFileModel.ImagePath}\\/{Model.PageItem.ImageFileModel.WebImageFileName}")"
+                                   href="@Url.Content($"{Model.ImageFileModel.ImagePath}\\/{Model.ImageFileModel.WebImageFileName}")"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.ImageFileModel.ImagePath/@Model.PageItem.ImageFileModel.ImageFileName
+                                    @Model.ImageFileModel.ImagePath/@Model.ImageFileModel.ImageFileName
                                 </a>
                             }
                         }
@@ -419,7 +425,7 @@
                         <p class="fw-bold fs-5 text-primary mb-2">
                             Текст карточки (PageCardText) :
                         </p>
-                        @if (string.IsNullOrEmpty(Model.PageItem.PageCardText))
+                        @if (string.IsNullOrEmpty(Model.PageCardText))
                         {
                             <p class="fs-6 form-text text-success text-center">
                                 (текст не задан)
@@ -428,7 +434,7 @@
                         else
                         {
                             <p class="fordetails text-center fs-5 text_shadow">
-                                @Model.PageItem.PageCardText
+                                @Model.PageCardText
                             </p>
                         }
 
@@ -451,18 +457,21 @@
 
                     <div class="accordion-body accordion-body-nointend">
 
-                        <img itemprop="image"
-                             class="card-img-top m-3 maxwidth300px shadw d-block mx-auto"
-                             src="@DataConfig.IconsFolder/@Model.IconItem.IconPath/@Model.IconItem.IconFileName"
-                             alt="иконка страницы"
-                             title="иконка страницы" />
+                        @if (Model.IconItem != null)
+                        {
+                            <img itemprop="image"
+                                 class="card-img-top m-3 maxwidth300px shadw d-block mx-auto"
+                                 src="@DataConfig.IconsFolder/@Model.IconItem.IconPath/@Model.IconItem.IconFileName"
+                                 alt="иконка страницы"
+                                 title="иконка страницы" />
 
-                        <p class="fs-5 text_shadow text-start text-sm-center">
-                            <a href="@Url.Content($"{@DataConfig.IconsFolder}{Model.IconItem.IconPath}\\/{Model.IconItem.IconFileName}")"
-                               onclick="this.target='_blank'">
-                                @DataConfig.IconsFolder@Model.IconItem.IconPath@Model.IconItem.IconFileName
-                            </a>
-                        </p>
+                            <p class="fs-5 text_shadow text-start text-sm-center">
+                                <a href="@Url.Content($"{@DataConfig.IconsFolder}{Model.IconItem.IconPath}\\/{Model.IconItem.IconFileName}")"
+                                   onclick="this.target='_blank'">
+                                    @DataConfig.IconsFolder@Model.IconItem.IconPath@Model.IconItem.IconFileName
+                                </a>
+                            </p>
+                        }
 
                     </div>
 
@@ -484,7 +493,7 @@
                     <div class="accordion-body accordion-body-nointend text-center">
 
                         <p class="text-start fluid-font-size">
-                            @Model.PageItem.PageDescription
+                            @Model.PageDescription
                         </p>
 
                         <p class="fs-6 form-text text-success">
@@ -512,7 +521,7 @@
                     <div class="accordion-body accordion-body-nointend">
 
                         <p class="text-start fluid-font-size">
-                            @Model.PageItem.PageKeyWords
+                            @Model.PageKeyWords
                         </p>
 
                         <p class="fs-6 form-text text-success text-center">
@@ -539,10 +548,10 @@
 
                     <div class="accordion-body accordion-body-nointend text-center">
 
-                        @if (!string.IsNullOrEmpty(Model.PageItem.PageHeading))
+                        @if (!string.IsNullOrEmpty(Model.PageHeading))
                         {
                             <h1 class="text_shadow fluid-font-size">
-                                @Html.Raw(Model.PageItem.PageHeading)
+                                @Html.Raw(Model.PageHeading)
                             </h1>
                         }
                         else
@@ -576,32 +585,32 @@
 
                     <div class="accordion-body accordion-body-nointend">
 
-                        @if (Model.PageItem.ImagePageHeadingId != null)
+                        @if (Model.ImagePageHeadingId != null)
                         {
                             <a asp-area="Admin"
                                asp-controller="ImageInfo"
                                asp-action="DetailsImage"
-                               asp-route-imageid="@Model.PageItem.ImagePageHeadingId"
+                               asp-route-imageid="@Model.ImagePageHeadingId"
                                class="d-block mx-auto mb-3 maxwidth600px shadw imageref"
                                title="информация о картинке"
                                onclick="this.target='_blank'">
-                                <vc:view-image image-id="@Model.PageItem.ImagePageHeadingId" css-class="" icon-type="" />
+                                <vc:view-image image-id="@Model.ImagePageHeadingId" css-class="" icon-type="" />
                             </a>
 
-                            @if (!string.IsNullOrEmpty(Model.PageItem.ImagePageHeading!.WebImageFileName))
+                            @if (!string.IsNullOrEmpty(Model.ImagePageHeading!.WebImageFileName))
                             {
                                 <a class="fs-5 text_shadow d-block text-lg-center"
-                                   href="@Url.Content($"{Model.PageItem.ImagePageHeading.ImagePath}\\/{Model.PageItem.ImagePageHeading.WebImageFileName}")"
+                                   href="@Url.Content($"{Model.ImagePageHeading.ImagePath}\\/{Model.ImagePageHeading.WebImageFileName}")"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.ImagePageHeading.ImagePath/@Model.PageItem.ImagePageHeading.WebImageFileName
+                                    @Model.ImagePageHeading.ImagePath/@Model.ImagePageHeading.WebImageFileName
                                 </a>
                             }
                             else
                             {
                                 <a class="fs-5 text_shadow d-block text-lg-center"
-                                   href="@Url.Content($"{Model.PageItem.ImagePageHeading.ImagePath}\\/{Model.PageItem.ImagePageHeading.ImageFileName}")"
+                                   href="@Url.Content($"{Model.ImagePageHeading.ImagePath}\\/{Model.ImagePageHeading.ImageFileName}")"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.ImagePageHeading.ImagePath/@Model.PageItem.ImagePageHeading.ImageFileName
+                                    @Model.ImagePageHeading.ImagePath/@Model.ImagePageHeading.ImageFileName
                                 </a>
                             }
                         }
@@ -636,11 +645,11 @@
 
                     <div class="accordion-body accordion-body-nointend text-center">
 
-                        @if (!string.IsNullOrEmpty(Model.PageItem.TextOfPage))
+                        @if (!string.IsNullOrEmpty(Model.TextOfPage))
                         {
                             <div class="px-2 border border-secondary mb-3 paragraph fluid-font-size" itemprop="text">
 
-                                @Html.Raw(Model.PageItem.TextOfPage)
+                                @Html.Raw(Model.TextOfPage)
 
                             </div>
                         }
@@ -679,7 +688,7 @@
                             </span>
                             <br class="d-sm-none" />
                             <span class="text_shadow">
-                                @Model.PageItem.PageLastmod
+                                @Model.PageLastmod
                             </span>
                             <br />
                             <span class="fs-6 form-text text-success d-block text-center">
@@ -698,7 +707,7 @@
                             </span>
                             <br class="d-sm-none" />
                             <span class="text_shadow">
-                                @Model.PageItem.Changefreq
+                                @Model.Changefreq
                             </span>
                             <br />
                             <span class="fs-6 form-text text-success d-block text-center">
@@ -717,7 +726,7 @@
                             </span>
                             <br class="d-sm-none" />
                             <span class="text_shadow">
-                                @Model.PageItem.Priority
+                                @Model.Priority
                             </span>
                             <br />
                             <span class="fs-6 form-text text-success d-block text-center">
@@ -737,9 +746,9 @@
                             <br class="d-sm-none" />
                             <span class="text_shadow">
                                 <a class="text-black text_shadow"
-                                   href="/browserconfigs/@Model.PageItem.BrowserConfig"
+                                   href="/browserconfigs/@Model.BrowserConfig"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.BrowserConfig
+                                    @Model.BrowserConfig
                                 </a>
                             </span>
                             <br />
@@ -762,7 +771,7 @@
                             </span>
                             <br class="d-sm-none" />
                             <span class="text_shadow">
-                                @Model.PageItem.BrowserConfigFolder
+                                @Model.BrowserConfigFolder
                             </span>
                             <br />
                             <span class="fs-6 form-text text-success d-block text-center d-sm-none">
@@ -782,9 +791,9 @@
                             <br class="d-sm-none" />
                             <span class="text_shadow">
                                 <a class="text-black text_shadow"
-                                   href="/manifests/@Model.PageItem.Manifest"
+                                   href="/manifests/@Model.Manifest"
                                    onclick="this.target='_blank'">
-                                    @Model.PageItem.Manifest
+                                    @Model.Manifest
                                 </a>
                             </span>
                             <br />
@@ -804,7 +813,7 @@
                             </span>
                             <br class="d-sm-none" />
                             <span class="text_shadow">
-                                @Model.PageItem.OgType
+                                @Model.OgType
                             </span>
                             <br />
                             <span class="fs-6 form-text text-success d-block text-center d-sm-none">
@@ -841,7 +850,7 @@
 
                     <div class="accordion-body accordion-body-nointend text-start">
 
-                        @if (Model.LinksFromPagesByGuid.Count > 0)
+                        @if (Model.LinksFromPagesByGuid != null && Model.LinksFromPagesByGuid.Count > 0)
                         {
                             @foreach (var item in Model.LinksFromPagesByGuid)
                             {
@@ -953,7 +962,7 @@
 
                     <div class="accordion-body accordion-body-nointend text-start">
 
-                        @if (Model.LinksFromPagesByGuid2.Count > 0)
+                        @if (Model.LinksFromPagesByGuid2 != null && Model.LinksFromPagesByGuid2.Count > 0)
                         {
                             @foreach (var item in Model.LinksFromPagesByGuid2)
                             {
@@ -1076,9 +1085,9 @@
 
                     <div class="accordion-body accordion-body-nointend">
 
-                        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilter))
+                        @if (!string.IsNullOrEmpty(Model.PageFilter))
                         {
-                            string[] pageFilterOut = Model.PageItem.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                            string[] pageFilterOut = Model.PageFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                             @for (int sf = 0; sf < pageFilterOut.Count(); sf++)
                             {
@@ -1100,7 +1109,7 @@
                                 Страницы, ссылающиеся на текущую
                             </h2>
 
-                            @if (Model.DictionaryOfOutPages.Count > 0)
+                            @if (Model.DictionaryOfOutPages != null && Model.DictionaryOfOutPages.Count > 0)
                             {
                                 <div id="accordionFiltersOfPage" class="accordion">
 
@@ -1264,7 +1273,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (Model.PageItem.PageLinksByFilters)
+                                        @if (Model.PageLinksByFilters)
                                         {
                                             <p class="fs-4 mb-2 text_shadow">
                                                 <span>включено</span>
@@ -1311,9 +1320,9 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (!string.IsNullOrEmpty(Model.PageItem.PageFilterOut))
+                                        @if (!string.IsNullOrEmpty(Model.PageFilterOut))
                                         {
-                                            string[] pageFilterOut = Model.PageItem.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                            string[] pageFilterOut = Model.PageFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                                             @* Список фильтров *@
                                             <div>
@@ -1340,7 +1349,7 @@
                                                 Страницы по фильтрам
                                             </h2>
 
-                                            @if (Model.DictionaryOfLinksByPageFilterOut.Count > 0)
+                                            @if (Model.DictionaryOfLinksByPageFilterOut != null && Model.DictionaryOfLinksByPageFilterOut.Count > 0)
                                             {
                                                 <div id="accordionFiltersOfPage" class="accordion">
 
@@ -1476,7 +1485,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (Model.PageItem.VideoLinks)
+                                        @if (Model.VideoLinks)
                                         {
                                             <p class="fs-4 mb-2 text_shadow">
                                                 <span>включено</span>
@@ -1509,9 +1518,9 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (!string.IsNullOrEmpty(Model.PageItem.VideoFilterOut))
+                                        @if (!string.IsNullOrEmpty(Model.VideoFilterOut))
                                         {
-                                            string[] videoFilterOut = Model.PageItem.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                            string[] videoFilterOut = Model.VideoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                                             @for (int sf = 0; sf < videoFilterOut.Count(); sf++)
                                             {
@@ -1533,7 +1542,7 @@
                                                 Видео по фильтрам
                                             </h2>
 
-                                            @if (Model.DictionaryOfLinksByVideoFilterOut.Count > 0)
+                                            @if (Model.DictionaryOfLinksByVideoFilterOut != null && Model.DictionaryOfLinksByVideoFilterOut.Count > 0)
                                             {
                                                 <div id="accordionFiltersOfVideo" class="accordion">
 
@@ -1622,7 +1631,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (Model.PageItem.PageLinks)
+                                        @if (Model.PageLinks)
                                         {
                                             <p class="fs-4 mb-2 text_shadow">
                                                 <span>включено</span>
@@ -1654,7 +1663,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-start">
 
-                                        @if (Model.LinksToPagesByGuid.Count > 0)
+                                        @if (Model.LinksToPagesByGuid != null && Model.LinksToPagesByGuid.Count > 0)
                                         {
                                             @foreach (var item in Model.LinksToPagesByGuid)
                                             {
@@ -1782,7 +1791,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (Model.PageItem.PageLinks2)
+                                        @if (Model.PageLinks2)
                                         {
                                             <p class="fs-4 mb-2 text_shadow">
                                                 <span>включено</span>
@@ -1814,7 +1823,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-start">
 
-                                        @if (Model.LinksToPagesByGuid2.Count > 0)
+                                        @if (Model.LinksToPagesByGuid2 != null && Model.LinksToPagesByGuid2.Count > 0)
                                         {
                                             @foreach (var item in Model.LinksToPagesByGuid2)
                                             {
@@ -1942,7 +1951,7 @@
 
                                     <div class="accordion-body accordion-body-nointend text-center">
 
-                                        @if (Model.PageItem.PhotoLinks)
+                                        @if (Model.PhotoLinks)
                                         {
                                             <p class="fs-4 mb-2 text_shadow">
                                                 <span>включено</span>
@@ -1974,9 +1983,9 @@
 
                                     <div class="accordion-body accordion-body-nointend text-start">
 
-                                        @if (!string.IsNullOrEmpty(Model.PageItem.PhotoFilterOut))
+                                        @if (!string.IsNullOrEmpty(Model.PhotoFilterOut))
                                         {
-                                            string[] photoFilterOut = Model.PageItem.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                            string[] photoFilterOut = Model.PhotoFilterOut.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
                                             @for (int sf = 0; sf < photoFilterOut.Count(); sf++)
                                             {
@@ -2023,25 +2032,31 @@
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="EditPage"
-               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               asp-route-pageid="@Model.PageInfoModelId"
                class="btn btn-outline-dark py-1 m-2 shadw minwidth100px"
                title="редактировать данные">
+
                 Изменить
+
             </a>
 
             <a asp-area="Admin"
                asp-controller="PageInfo"
                asp-action="DeletePage"
-               asp-route-pageid="@Model.PageItem.PageInfoModelId"
+               asp-route-pageid="@Model.PageInfoModelId"
                class="btn btn-outline-danger py-1 m-2 shadw minwidth100px"
                title="удалить страницу">
+
                 Удалить
+
             </a>
 
-            <a href="@Url.Content(Model.PageItem.PageFullPathWithData)"
+            <a href="@Url.Content(Model.PageFullPathWithData)"
                class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
                title="просмотр">
+
                 Просмотр
+
             </a>
 
             <a asp-area="Admin"
@@ -2049,18 +2064,22 @@
                asp-action="Index"
                class="btn btn-outline-success py-1 m-2 shadw minwidth100px"
                title="список страниц">
+
                 Список
+
             </a>
 
-            @if (Model.PageItem.MovieFile != null)
+            @if (Model.MovieFile != null)
             {
                 <a asp-area="Admin"
                    asp-controller="MovieInfo"
                    asp-action="DetailsMovie"
-                   asp-route-movieid="@Model.PageItem.MovieFile.MovieFileModelId"
+                   asp-route-movieid="@Model.MovieFile.MovieFileModelId"
                    class="btn btn-outline-info py-1 m-2 shadw minwidth100px"
                    title="данные фильма">
+
                     Фильм
+
                 </a>
             }
 
@@ -2069,9 +2088,9 @@
     </div>
 
     @* кадры справа *@
-    @if (Model.FramesAroundMainContent.FramesOnTheRight != null)
+    @if (Model.FramesAroundMainContent != null && Model.FramesAroundMainContent.FramesOnTheRight != null)
     {
-        <div class="col-2 mx-auto d-none d-md-block overflow-y-auto overflow-x-hidden height1000">
+        <div class="col-2 mx-auto d-none d-lg-block overflow-y-auto overflow-x-hidden height850">
 
             @foreach (var item in Model.FramesAroundMainContent.FramesOnTheRight)
             {
@@ -2091,7 +2110,7 @@
     }
     else
     {
-        <div class="col-2 d-none d-md-block"></div>
+        <div class="col-2 d-none d-lg-block"></div>
     }
 
 

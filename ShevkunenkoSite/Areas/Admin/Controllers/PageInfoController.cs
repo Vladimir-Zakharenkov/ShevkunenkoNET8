@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -79,9 +80,9 @@ public class PageInfoController(
                 .Include(audioFile => audioFile.AudioInfo)
                 .Include(audioBook => audioBook.AudioBook)
                 // TODO: убрать nullable для картинки фильма 
-                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
-                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
-                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
+                .Include(movie => movie.MovieFile)
+                .Include(movie => movie.MovieFile)
+                .Include(books => books.BooksAndArticles)
                 .AsNoTracking()
                 .FirstAsync(p => p.PageInfoModelId == pageId);
 
@@ -89,17 +90,15 @@ public class PageInfoController(
 
             #region Инициализация экземпляра иконки для страницы
 
-            IconFileModel iconItem;
-
             if (await iconContext.IconFiles
                 .Where(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem).AnyAsync())
             {
-                iconItem = await iconContext.IconFiles
+                pageItem.IconItem = await iconContext.IconFiles
                     .FirstAsync(icon => icon.IconPath == pageItem.PageIconPath && icon.IconFileName == DataConfig.IconItem);
             }
             else
             {
-                iconItem = await iconContext.IconFiles
+                pageItem.IconItem = await iconContext.IconFiles
                     .FirstAsync(icon => icon.IconPath == "main/" && icon.IconFileName == DataConfig.IconItem);
             }
 
@@ -107,37 +106,33 @@ public class PageInfoController(
 
             #region Ссылки на текущую страницу по GUID (1)
 
-            List<PageInfoModel> linksFromPagesByGuid = [];
+            pageItem.LinksFromPagesByGuid = [];
 
-#pragma warning disable CA1862
-            linksFromPagesByGuid
+            pageItem.LinksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages != null && p.RefPages.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
                     .ToArrayAsync());
-#pragma warning restore CA1862
 
-            _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
+            _ = pageItem.LinksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
             #region Ссылки на текущую страницу по GUID (2)
 
-            List<PageInfoModel> linksFromPagesByGuid2 = [];
+            pageItem.LinksFromPagesByGuid2 = [];
 
-#pragma warning disable CA1862
-            linksFromPagesByGuid2
-                .AddRange(await pageInfoContext.PagesInfo
+            pageItem.LinksFromPagesByGuid2
+                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages2 != null && p.RefPages2.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
                 .ToArrayAsync());
-#pragma warning restore CA1862
 
-            _ = linksFromPagesByGuid2.Distinct().OrderBy(p => p.SortOfPage);
+            _ = pageItem.LinksFromPagesByGuid2.Distinct().OrderBy(p => p.SortOfPage);
 
             #endregion
 
             #region Ссылки на текущую страницу по фильтру PageFilter
 
-            Dictionary<string, List<PageInfoModel>> dictionaryOfOutPages = [];
+            pageItem.DictionaryOfOutPages = [];
 
             if (!string.IsNullOrEmpty(pageItem.PageFilter))
             {
@@ -147,13 +142,15 @@ public class PageInfoController(
                 {
                     for (int i = 0; i < pageFilters.Length; i++)
                     {
-                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i] + ',')).AnyAsync())
+                        if (await pageInfoContext.PagesInfo.Where(p => p.PageFilter.Contains(pageFilters[i].Trim() + ',')).AnyAsync())
                         {
-                            var listOfFilterOut = await pageInfoContext.PagesInfo.Where(p => p.PageFilterOut != null && p.PageFilterOut.Contains(pageFilters[i] + ',')).ToListAsync();
+                            var listOfFilterOut = await pageInfoContext.PagesInfo
+                                .Where(p => p.PageFilterOut != null && p.PageFilterOut.Contains(pageFilters[i].Trim() + ','))
+                                .ToListAsync();
 
                             _ = listOfFilterOut.Distinct().OrderBy(p => p.SortOfPage);
 
-                            dictionaryOfOutPages[pageFilters[i]] = listOfFilterOut;
+                            pageItem.DictionaryOfOutPages[pageFilters[i].Trim()] = listOfFilterOut;
                         }
                     }
                 }
@@ -163,7 +160,7 @@ public class PageInfoController(
 
             #region Ссылки на страницы сайта по GUID1
 
-            List<PageInfoModel> linksToPagesByGuid = [];
+            pageItem.LinksToPagesByGuid = [];
 
             if (pageItem.RefPages != null && pageItem.RefPages != string.Empty)
             {
@@ -177,9 +174,9 @@ public class PageInfoController(
                         {
                             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid).AnyAsync())
                             {
-                                linksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
+                                pageItem.LinksToPagesByGuid.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid));
 
-                                _ = linksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
+                                _ = pageItem.LinksToPagesByGuid.Distinct().OrderBy(p => p.PageCardText);
                             }
                         }
                     }
@@ -188,10 +185,9 @@ public class PageInfoController(
 
             #endregion
 
-            #region Ссылки на страницы сайта по GUID (RefPages2)
+            #region Ссылки на страницы сайта по GUID2
 
-
-            List<PageInfoModel> linksToPagesByGuid2 = [];
+            pageItem.LinksToPagesByGuid2 = [];
 
             if (pageItem.RefPages2 != null && pageItem.RefPages2 != string.Empty)
             {
@@ -205,9 +201,9 @@ public class PageInfoController(
                         {
                             if (await pageInfoContext.PagesInfo.Where(p => p.PageInfoModelId == pageGuid2).AnyAsync())
                             {
-                                linksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
+                                pageItem.LinksToPagesByGuid2.Add(await pageInfoContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == pageGuid2));
 
-                                _ = linksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
+                                _ = pageItem.LinksToPagesByGuid2.Distinct().OrderBy(p => p.PageCardText);
                             }
                         }
                     }
@@ -218,7 +214,7 @@ public class PageInfoController(
 
             #region Ссылки на страницы сайта по фильтрам (PageFilterOut)
 
-            Dictionary<string, List<PageInfoModel>> dictionaryOfLinksByPageFilterOut = [];
+            pageItem.DictionaryOfLinksByPageFilterOut = [];
 
             if (pageItem.PageFilterOut != null && pageItem.PageFilterOut != string.Empty)
             {
@@ -238,7 +234,7 @@ public class PageInfoController(
 
                             _ = pages.OrderBy(p => p.SortOfPage);
 
-                            dictionaryOfLinksByPageFilterOut[pageFiltersOut[i].Trim()] = pages;
+                            pageItem.DictionaryOfLinksByPageFilterOut[pageFiltersOut[i].Trim()] = pages;
                         }
                     }
                 }
@@ -248,7 +244,7 @@ public class PageInfoController(
 
             #region  Ссылки на видео сайта по текстовому фильтру (VideoFilterOut)
 
-            Dictionary<string, VideoLinksViewModel> dictionaryOfLinksByVideoFilterOut = [];
+            pageItem.DictionaryOfLinksByVideoFilterOut = [];
 
             if (pageItem.VideoFilterOut != null && pageItem.VideoFilterOut != string.Empty)
             {
@@ -258,9 +254,9 @@ public class PageInfoController(
                 {
                     for (int i = 0; i < videoFilterOut.Length; i++)
                     {
-                        if (await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i])).AnyAsync())
+                        if (await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i].Trim())).AnyAsync())
                         {
-                            var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i]) & p.MovieInMainList == true).ToListAsync();
+                            var movies = await movieContext.MovieFiles.Where(p => p.SearchFilter.Contains(videoFilterOut[i].Trim()) & p.MovieInMainList == true).ToListAsync();
 
                             movies.Sort((movies1, movies2) => movies1.MovieDatePublished.CompareTo(movies2.MovieDatePublished));
 
@@ -274,7 +270,7 @@ public class PageInfoController(
                                 IsPartsMoreOne = true
                             };
 
-                            dictionaryOfLinksByVideoFilterOut[videoFilterOut[i]] = videoLinksViewModel;
+                            pageItem.DictionaryOfLinksByVideoFilterOut[videoFilterOut[i].Trim()] = videoLinksViewModel;
                         }
                     }
                 }
@@ -284,7 +280,7 @@ public class PageInfoController(
 
             #region Группы картинок по фильтрам (PhotoFilterOut)
 
-            Dictionary<string, ImageListViewModel> dictionaryOfLinksByFotoFilterOut = [];
+            pageItem.DictionaryOfLinksByFotoFilterOut = [];
 
             if (pageItem.PhotoFilterOut != null && pageItem.PhotoFilterOut != string.Empty)
             {
@@ -294,13 +290,13 @@ public class PageInfoController(
                 {
                     for (int i = 0; i < pictureFiltersOut.Length; i++)
                     {
-                        if (await imageContext.ImageFiles.Where(img => img.SearchFilter.Contains(pictureFiltersOut[i])).AnyAsync())
+                        if (await imageContext.ImageFiles.Where(img => img.SearchFilter.Contains(pictureFiltersOut[i].Trim())).AnyAsync())
                         {
-                            var pictures = await imageContext.ImageFiles.Where(img => img.SearchFilter.Contains(pictureFiltersOut[i])).ToListAsync();
+                            var pictures = await imageContext.ImageFiles.Where(img => img.SearchFilter.Contains(pictureFiltersOut[i].Trim())).ToListAsync();
 
                             _ = pictures.OrderBy(p => p.ImageCaption);
 
-                            dictionaryOfLinksByFotoFilterOut[pictureFiltersOut[i]] = new();
+                            pageItem.DictionaryOfLinksByFotoFilterOut[pictureFiltersOut[i].Trim()] = new();
 
                             // TODO Сформировать ImageListViewModel для передачи в DetailsPage
                         }
@@ -312,7 +308,50 @@ public class PageInfoController(
 
             #region Кадры слева и справа от текста
 
-            FramesAroundMainContentModel framesAroundMainContent = new();
+            if (pageItem.AudioInfoId != null && await audioFileContext.AudioFiles.Where(audio => audio.AudioInfoModelId == pageItem.AudioInfoId).AnyAsync())
+            {
+                var audioForPage = await audioFileContext.AudioFiles
+                    .Include(aBook => aBook.AudioBookModel)
+                    .FirstAsync(audio => audio.AudioInfoModelId == pageItem.AudioInfoId);
+
+                if (audioForPage.AudioBookModel != null
+                        && audioForPage.AudioBookModel.BookForAudioBook != null
+                        && await imageContext.ImageFiles
+                                       .Where(img => img.SearchFilter.Contains(audioForPage.AudioBookModel.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+                                       .AnyAsync())
+                {
+                    var listOfPictures = await imageContext.ImageFiles
+                       .Where(p => p.SearchFilter.Contains(audioForPage.AudioBookModel.BookForAudioBook.CaptionOfText.Replace(' ', '-') + "#album#"))
+                       .ToArrayAsync(); ;
+
+                    listOfPictures = [.. listOfPictures.Shuffle()];
+
+                    if (listOfPictures.Length > 1)
+                    {
+                        pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. listOfPictures.Take(listOfPictures.Length / 2)],
+                            FramesOnTheRight = [.. listOfPictures.Skip(listOfPictures.Length / 2)]
+                        };
+                    }
+                    else
+                    {
+                        pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. listOfPictures],
+                            FramesOnTheRight = [.. listOfPictures]
+                        };
+                    }
+                }
+                else
+                {
+                    pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                    {
+                        FramesOnTheLeft = [],
+                        FramesOnTheRight = []
+                    };
+                }
+            }
 
             if (pageItem.OgType == "book")
             {
@@ -329,15 +368,26 @@ public class PageInfoController(
                             var bookForPage = await bookAndArticleContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookGuid);
 
                             var imageItems = await imageContext.ImageFiles
-                                    .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
-                                    .ToArrayAsync();
+                                                            .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
+                                                            .ToArrayAsync();
 
                             imageItems = [.. imageItems.Shuffle()];
 
                             if (imageItems.Length > 1)
                             {
-                                framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                                framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                                pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                                {
+                                    FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
+                                    FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
+                                };
+                            }
+                            else
+                            {
+                                pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                                {
+                                    FramesOnTheLeft = [.. imageItems],
+                                    FramesOnTheRight = [.. imageItems]
+                                };
                             }
                         }
                     }
@@ -357,32 +407,26 @@ public class PageInfoController(
 
                     if (imageItems.Length > 1)
                     {
-                        framesAroundMainContent.FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)];
-                        framesAroundMainContent.FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)];
+                        pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
+                            FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
+                        };
+                    }
+                    else
+                    {
+                        pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                        {
+                            FramesOnTheLeft = [.. imageItems],
+                            FramesOnTheRight = [.. imageItems]
+                        };
                     }
                 }
             }
 
             #endregion
 
-            #region DetailsPageViewModel
-
-            return View(new DetailsPageViewModel
-            {
-                PageItem = pageItem,
-                IconItem = iconItem,
-                LinksToPagesByGuid = linksToPagesByGuid,
-                LinksToPagesByGuid2 = linksToPagesByGuid2,
-                LinksFromPagesByGuid = linksFromPagesByGuid,
-                LinksFromPagesByGuid2 = linksFromPagesByGuid2,
-                DictionaryOfOutPages = dictionaryOfOutPages,
-                FramesAroundMainContent = framesAroundMainContent,
-                DictionaryOfLinksByVideoFilterOut = dictionaryOfLinksByVideoFilterOut,
-                DictionaryOfLinksByPageFilterOut = dictionaryOfLinksByPageFilterOut,
-                DictionaryOfLinksByFotoFilterOut = dictionaryOfLinksByFotoFilterOut
-            });
-
-            #endregion
+            return View(pageItem);
         }
         else
         {
