@@ -131,7 +131,7 @@ public class BooksController(
                .OrderBy(p => p.SortOfPicture)
                                  select m;
 
-            articleViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
+            articleViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable().Shuffle()];
 
             if (articleViewModel.ListOfPictures.Count > 1)
             {
@@ -276,7 +276,7 @@ public class BooksController(
                .OrderBy(p => p.SortOfPicture)
                                  select m;
 
-            audioBookViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable()];
+            audioBookViewModel.ListOfPictures = [.. listOfPictures.AsEnumerable().Shuffle()];
 
             if (audioBookViewModel.ListOfPictures.Count > 1)
             {

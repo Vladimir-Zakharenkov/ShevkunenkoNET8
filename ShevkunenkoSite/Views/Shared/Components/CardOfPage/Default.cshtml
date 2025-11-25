@@ -217,7 +217,7 @@
 			   asp-action="Book"
 			   asp-route-bookCaption="@Model.BooksAndArticles.CaptionOfText.Replace(' ', '-')"
 			   asp-route-pageNumber=0
-			   class="rounded-3 p-0 p-md-1">
+			   class="rounded-3 p-0">
 
 				@if (Model.ImageFileModel != null)
 				{
@@ -245,7 +245,7 @@
 		}
 		else
 		{
-			<a class="rounded-3 p-0 p-md-1"
+			<a class="rounded-3 p-0"
 			   href="@Url.Content(Model.PagePathNickNameWithData != string.Empty ? Model.PagePathNickName : Model.PageFullPathWithData)"
 			   title="@Model.PageTitle"
 			   itemprop="url">

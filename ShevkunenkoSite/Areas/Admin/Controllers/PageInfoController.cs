@@ -757,7 +757,7 @@ public class PageInfoController(
                     {
                         var newAudioFile = await audioFileContext.AudioFiles.FirstAsync(audioFile => audioFile.AudioFileName == addPage.AudioInfoFormFile.FileName);
 
-                        addPage.AudioInfoId = newAudioFile.AudioBookModelId;
+                        addPage.AudioInfoId = newAudioFile.AudioInfoModelId;
                     }
                     else
                     {
