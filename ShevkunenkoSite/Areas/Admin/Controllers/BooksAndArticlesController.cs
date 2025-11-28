@@ -6,8 +6,9 @@ public class BooksAndArticlesController(
     IBooksAndArticlesRepository bookContext,
     ITextInfoRepository textContext,
     IImageFileRepository imageContext,
-    IMovieFileRepository movieContext,
-    IPageInfoRepository pageContext) : Controller
+    IMovieFileRepository movieContext
+    //IPageInfoRepository pageContext
+    ) : Controller
 {
     #region Список книг и статей
 
@@ -46,7 +47,7 @@ public class BooksAndArticlesController(
                 .Include(inc => inc.LogoOfArticle)
                 .Include(inc2 => inc2.ScanOfArticle)
                 .Include(inc3 => inc3.VideoForBookOrArticle)
-                .Include(inc4 => inc4.PageInfoModel).ThenInclude(inc5 => inc5!.ImageFileModel)
+               // .Include(inc4 => inc4.PageInfoModel).ThenInclude(inc5 => inc5!.ImageFileModel)
                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
             return View(bookItem);
@@ -402,7 +403,7 @@ public class BooksAndArticlesController(
                 .Include(inc => inc.LogoOfArticle)
                 .Include(inc2 => inc2.ScanOfArticle)
                 .Include(inc3 => inc3.VideoForBookOrArticle)
-                .Include(inc4 => inc4.PageInfoModel).ThenInclude(inc5 => inc5!.ImageFileModel)
+          //      .Include(inc4 => inc4.PageInfoModel).ThenInclude(inc5 => inc5!.ImageFileModel)
                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
             return View(new AddAndEditArticleViewModel
@@ -431,43 +432,43 @@ public class BooksAndArticlesController(
 
             #region Страница книги (содержание) или статьи (первая страница)
 
-            if (bookItem.PageForBookOrArticle == "0")
-            {
-                bookUpdate.PageInfoModelId = null;
-            }
-            else if (!string.IsNullOrEmpty(bookItem.PageForBookOrArticle) & bookItem.PageForBookOrArticle != "0")
-            {
-                if (Guid.TryParse(bookItem.PageForBookOrArticle, out var guidForBookOrArticle))
-                {
-                    if (await pageContext.PagesInfo.Where(p => p.PageInfoModelId == guidForBookOrArticle).AnyAsync())
-                    {
-                        var newPageForBookOrArticle = await pageContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == guidForBookOrArticle);
+            //if (bookItem.PageForBookOrArticle == "0")
+            //{
+            //    bookUpdate.PageInfoModelId = null;
+            //}
+            //else if (!string.IsNullOrEmpty(bookItem.PageForBookOrArticle) & bookItem.PageForBookOrArticle != "0")
+            //{
+            //    if (Guid.TryParse(bookItem.PageForBookOrArticle, out var guidForBookOrArticle))
+            //    {
+            //        if (await pageContext.PagesInfo.Where(p => p.PageInfoModelId == guidForBookOrArticle).AnyAsync())
+            //        {
+            //            var newPageForBookOrArticle = await pageContext.PagesInfo.FirstAsync(p => p.PageInfoModelId == guidForBookOrArticle);
 
-                        bookUpdate.PageInfoModelId = newPageForBookOrArticle.PageInfoModelId;
-                    }
-                    else
-                    {
-                        bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
-                    }
-                }
-                else
-                {
-                    if (await pageContext.PagesInfo.Where(p => p.PageFullPathWithData == bookItem.PageForBookOrArticle).AnyAsync())
-                    {
-                        var newPageForBookOrArticle = await pageContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == bookItem.PageForBookOrArticle);
+            //            bookUpdate.PageInfoModelId = newPageForBookOrArticle.PageInfoModelId;
+            //        }
+            //        else
+            //        {
+            //            bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (await pageContext.PagesInfo.Where(p => p.PageFullPathWithData == bookItem.PageForBookOrArticle).AnyAsync())
+            //        {
+            //            var newPageForBookOrArticle = await pageContext.PagesInfo.FirstAsync(p => p.PageFullPathWithData == bookItem.PageForBookOrArticle);
 
-                        bookUpdate.PageInfoModelId = newPageForBookOrArticle.PageInfoModelId;
-                    }
-                    else
-                    {
-                        bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
-                    }
-                }
-            }
-            else
-            {
-                bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
-            }
+            //            bookUpdate.PageInfoModelId = newPageForBookOrArticle.PageInfoModelId;
+            //        }
+            //        else
+            //        {
+            //            bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    bookUpdate.PageInfoModelId = bookItem.BookOrArticle.PageInfoModelId;
+            //}
 
             #endregion
 

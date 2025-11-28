@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Configuration;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -13,9 +16,13 @@ public class PageInfoController(
     IImageFileRepository imageContext,
     IBackgroundFotoRepository backgroundContext,
     IBooksAndArticlesRepository bookAndArticleContext,
-    IAudioInfoRepository audioFileContext
+    IAudioInfoRepository audioFileContext,
+    ITextInfoRepository textFileContext,
+    IWebHostEnvironment hostEnvironment
     ) : Controller
 {
+    private readonly string rootPath = hostEnvironment.WebRootPath;
+
     #region Список страниц сайта
 
     private static readonly char[] separator = [','];
@@ -62,7 +69,7 @@ public class PageInfoController(
 
     #endregion
 
-     #region Информация о странице сайта
+    #region Информация о странице сайта
 
     public async Task<IActionResult> DetailsPage(Guid? pageId)
     {
@@ -75,15 +82,34 @@ public class PageInfoController(
 
             var pageItem = await pageInfoContext.PagesInfo
                 .Include(image => image.ImageFileModel)
+                .Include(text => text.TextInfo)
                 .Include(background => background.BackgroundFileModel)
                 .Include(audioFile => audioFile.AudioInfo)
                 .Include(audioBook => audioBook.AudioBook)
                 // TODO: убрать nullable для картинки фильма 
                 .Include(movie => movie.MovieFile)
                 .Include(movie => movie.MovieFile)
-                .Include(books => books.BooksAndArticles)
                 .AsNoTracking()
                 .FirstAsync(p => p.PageInfoModelId == pageId);
+
+            #endregion
+
+            #region Текстовый файл для страницы
+
+            if (pageItem.TextInfo != null)
+            {
+                var textItem = await textFileContext.Texts
+                    .AsNoTracking()
+                    .FirstAsync(p => p.TextInfoModelId == pageItem.TextInfoId);
+
+                using StreamReader clearText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.TxtFileName);
+
+                pageItem.ClearText = clearText.ReadToEnd();
+
+                using StreamReader htmlText = new(rootPath + DataConfig.TextsFolderPath + textItem.FolderForText + textItem.HtmlFileName);
+
+                pageItem.HtmlText = htmlText.ReadToEnd();
+            }
 
             #endregion
 
@@ -460,53 +486,55 @@ public class PageInfoController(
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     public async Task<IActionResult> AddPage(
-        //[Bind("PageIconPath," +
-        //        "AreaItems," +
-        //        "OgTypeItems," +
-        //        "BrowserConfig," +
-        //        "BrowserConfigFolder," +
-        //        "Manifest," +
-        //        "PageAsRazorPage," +
-        //        "ImageFileModelId," +
-        //        "ImageFileFormFile," +
-        //        "BackgroundFileModelId," +
-        //        "BackgroundFormFile," +
-        //        "AudioInfoId," +
-        //        "AudioInfoFormFile," +
-        //        "PageCardText," +
-        //        "SortOfPage," +
-        //        "PageArea," +
-        //        "Controller," +
-        //        "Action," +
-        //        "RoutData," +
-        //        "PageLoc," +
-        //        "PagePathNickName," +
-        //        "PagePathNickName2," +
-        //        "PageTitle," +
-        //        "PageDescription," +
-        //        "PageKeyWords," +
-        //        "OgType," +
-        //        "PageIconPath," +
-        //        "BrowserConfig," +
-        //        "BrowserConfigFolder," +
-        //        "Manifest," +
-        //        "PageLastmod," +
-        //        "Changefreq," +
-        //        "Priority," +
-        //        "PageHeading," +
-        //        "ImagePageHeadingFormFile," +
-        //        "ImagePageHeadingId," +
-        //        "TextOfPage," +
-        //        "PageFilterOut," +
-        //        "PageLinksByFilters," +
-        //        "VideoFilterOut," +
-        //        "VideoLinks," +
-        //        "RefPages," +
-        //        "PageLinks," +
-        //        "RefPages2," +
-        //        "PageLinks2," +
-        //        "PhotoLinks," +
-        //        "PhotoFilterOut")]
+        [Bind(
+                "PageIconPath," +
+                "AreaItems," +
+                "OgTypeItems," +
+                "BrowserConfig," +
+                "BrowserConfigFolder," +
+                "Manifest," +
+                "PageAsRazorPage," +
+                "ImageFileModelId," +
+                "ImageFileFormFile," +
+                "BackgroundFileModelId," +
+                "BackgroundFormFile," +
+                "AudioInfoId," +
+                "AudioInfoFormFile," +
+                "PageCardText," +
+                "SortOfPage," +
+                "PageArea," +
+                "Controller," +
+                "Action," +
+                "RoutData," +
+                "PageLoc," +
+                "PagePathNickName," +
+                "PagePathNickName2," +
+                "PageTitle," +
+                "PageDescription," +
+                "PageKeyWords," +
+                "OgType," +
+                "PageIconPath," +
+                "BrowserConfig," +
+                "BrowserConfigFolder," +
+                "Manifest," +
+                "PageLastmod," +
+                "Changefreq," +
+                "Priority," +
+                "PageHeading," +
+                "ImagePageHeadingFormFile," +
+                "ImagePageHeadingId," +
+                "TextOfPage," +
+                "PageFilterOut," +
+                "PageLinksByFilters," +
+                "VideoFilterOut," +
+                "VideoLinks," +
+                "RefPages," +
+                "PageLinks," +
+                "RefPages2," +
+                "PageLinks2," +
+                "PhotoLinks," +
+                "PhotoFilterOut"
+        )]
         PageInfoModel addPage)
     {
         if (ModelState.IsValid)
@@ -1267,13 +1295,12 @@ public class PageInfoController(
 
             editPage = await pageInfoContext.PagesInfo
                 .Include(image => image.ImageFileModel)
+                .Include(text => text.TextInfo).ThenInclude(book => book != null ? book.BooksAndArticlesModel : null)
                 .Include(background => background.BackgroundFileModel)
                 .Include(audioFile => audioFile.AudioInfo)
                 .Include(audioBook => audioBook.AudioBook)
-                // TODO: убрать nullable для картинки фильма 
-                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
-                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
-                .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
+                .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage != null ? movieImage.ImageFileModel : null)
+                .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster != null ? moviePoster.MoviePoster : null)
                 .FirstAsync(i => i.PageInfoModelId == pageId);
 
             #endregion
@@ -1299,12 +1326,10 @@ public class PageInfoController(
 
             List<PageInfoModel> linksFromPagesByGuid = [];
 
-#pragma warning disable CA1862
             linksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages != null && p.RefPages.ToLower().Contains(editPage.PageInfoModelId.ToString().ToLower()))
                     .ToArrayAsync());
-#pragma warning restore CA1862
 
             _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
 
@@ -1628,6 +1653,9 @@ public class PageInfoController(
             // Список картинок для фона (фотопленка)
             ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+            // Список текстовых файлов
+            ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
             // Список аудиофайлов
             ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -1645,7 +1673,8 @@ public class PageInfoController(
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPage(
-        [Bind("PageInfoModelId," +
+        [Bind(
+                "PageInfoModelId," +
                 "PageIconPath," +
                 "BrowserConfig," +
                 "BrowserConfigFolder," +
@@ -1657,6 +1686,8 @@ public class PageInfoController(
                 "BackgroundFormFile," +
                 "AudioInfoId," +
                 "AudioInfoFormFile," +
+                "TextInfoId," +
+                "TextFileFormFile," +
                 "PageCardText," +
                 "SortOfPage," +
                 "PageArea," +
@@ -1691,7 +1722,8 @@ public class PageInfoController(
                 "RefPages2," +
                 "PageLinks2," +
                 "PhotoLinks," +
-                "PhotoFilterOut")]
+                "PhotoFilterOut"
+        )]
         PageInfoModel editPage)
     {
         if (ModelState.IsValid)
@@ -1746,6 +1778,9 @@ public class PageInfoController(
 
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
 
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
@@ -1823,6 +1858,9 @@ public class PageInfoController(
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -1856,6 +1894,9 @@ public class PageInfoController(
 
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
 
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
@@ -1897,6 +1938,9 @@ public class PageInfoController(
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -1935,6 +1979,9 @@ public class PageInfoController(
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -1957,6 +2004,9 @@ public class PageInfoController(
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -1966,6 +2016,74 @@ public class PageInfoController(
                 else
                 {
                     pageUpdate.AudioInfoId = editPage.AudioInfoId;
+                }
+            }
+
+            #endregion
+
+            #region Изменить ссылку на текстовый файл
+
+            if (editPage.TextInfoId != Guid.Empty & editPage.TextFileFormFile == null)
+            {
+                pageUpdate.TextInfoId = editPage.TextInfoId;
+            }
+            else if (editPage.TextInfoId == Guid.Empty & editPage.TextFileFormFile == null)
+            {
+                pageUpdate.TextInfoId = null;
+            }
+            else
+            {
+                if (editPage.TextFileFormFile != null)
+                {
+                    if (!(editPage.TextFileFormFile.FileName.EndsWith(".html") || editPage.TextFileFormFile.FileName.EndsWith(".txt")))
+                    {
+                        ModelState.AddModelError("TextFileFormFile", $"Выбран некорректный файл «{editPage.TextFileFormFile.FileName}»");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+
+                    if (await textFileContext.Texts.Where(textFile => textFile.HtmlFileName == editPage.TextFileFormFile.FileName
+                                                                        || textFile.TxtFileName == editPage.TextFileFormFile.FileName).AnyAsync())
+                    {
+                        var newTextFile = await textFileContext.Texts.FirstAsync(textFile => textFile.HtmlFileName == editPage.TextFileFormFile.FileName
+                                                                                                        || textFile.TxtFileName == editPage.TextFileFormFile.FileName);
+
+                        pageUpdate.TextInfoId = newTextFile.TextInfoModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("TextFileFormFile", $"Добавьте текстовый файл «{editPage.TextFileFormFile.FileName}» в базу данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок для фона (фотопленка)
+                        ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
+                        // Список аудиофайлов
+                        ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                        return View(editPage);
+                    }
+                }
+                else
+                {
+                    pageUpdate.TextInfoId = editPage.TextInfoId;
                 }
             }
 
@@ -2170,6 +2288,9 @@ public class PageInfoController(
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
 
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
 
@@ -2245,6 +2366,9 @@ public class PageInfoController(
 
                         // Список картинок для фона (фотопленка)
                         ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                        // Список текстовых файлов
+                        ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
 
                         // Список аудиофайлов
                         ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");

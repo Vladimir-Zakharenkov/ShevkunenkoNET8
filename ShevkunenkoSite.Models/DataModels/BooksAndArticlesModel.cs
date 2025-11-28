@@ -135,13 +135,6 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Страница книги (оглавление) или статьи (первая страница)
-
-    public Guid? PageInfoModelId { get; set; }
-    public PageInfoModel? PageInfoModel { get; set; }
-
-    #endregion
-
     #region Ссылка на документ Word
 
     [DataType(DataType.Url)]
@@ -163,6 +156,14 @@ public class BooksAndArticlesModel
     [DataType(DataType.Url)]
     [Display(Name = "Аудиокнига : ")]
     public Uri? RefToAudio { get; set; }
+
+    #endregion
+
+    #region Навигационное свойство TextInfoModel
+
+    //public TextInfoModel? TextInfo { get; set; }
+
+    // TODO: выдает ошибку при установке
 
     #endregion
 

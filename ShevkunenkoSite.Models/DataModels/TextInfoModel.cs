@@ -76,6 +76,12 @@ public class TextInfoModel
 
     #endregion
 
+    #region Навигационное свойство страницы сайта
+
+    public PageInfoModel? PageInfo { get; set; }
+
+    #endregion
+
     #region Текст без разметки TXT (NotMapped)
 
     [NotMapped]

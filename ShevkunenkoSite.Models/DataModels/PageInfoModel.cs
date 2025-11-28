@@ -6,33 +6,6 @@ namespace ShevkunenkoSite.Models.DataModels;
 
 public class PageInfoModel
 {
-    #region Список областей (Area) (NotMapped)
-
-    [NotMapped]
-    public string[] AreaItems =
-    [
-        "Root",
-        "Admin",
-        "Movies",
-        "Rybakov"
-    ];
-
-    #endregion
-
-    #region Список типов  (OgType) (NotMapped)
-
-    [NotMapped]
-    public string[] OgTypeItems =
-    [
-        "movie",
-        "article",
-        "book",
-        "audiobook",
-        "website"
-    ];
-
-    #endregion
-
     #region Идентификатор страницы в базе данных
 
     [Display(Name = "PageInfoId:")]
@@ -186,13 +159,15 @@ public class PageInfoModel
 
     #endregion
 
-    #region Карточка страницы
+    #region Картинка страницы
 
-    // Картинка страницы
     public Guid ImageFileModelId { get; set; }
     public ImageFileModel? ImageFileModel { get; set; }
 
-    // Текст карточки страницы
+    #endregion
+
+    #region Текст карточки
+
     [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [Display(Name = "Текст карточки :")]
@@ -200,14 +175,21 @@ public class PageInfoModel
     public string PageCardText { get; set; } = string.Empty;
 
     #endregion
-    
+
+    #region Связанный текстовый файл
+
+    public Guid? TextInfoId { get; set; }
+    public TextInfoModel? TextInfo { get; set; }
+
+    #endregion
+
     #region Связанный аудиофайл
 
     public Guid? AudioInfoId { get; set; }
     public AudioInfoModel? AudioInfo { get; set; }
 
     #endregion
-    
+
     #region Заголовок, картинка и текст страницы
 
     [Required(AllowEmptyStrings = true)]
@@ -257,7 +239,7 @@ public class PageInfoModel
     public bool PageLinksByFilters { get; set; } = false;
 
     #endregion
-    
+
     #region Строка фильтров страниц сайта, для формирования ссылок на них
 
     [Display(Name = "Фильтры поиска страниц :")]
@@ -305,7 +287,7 @@ public class PageInfoModel
     public string? VideoFilterOut { get; set; }
 
     #endregion
-    
+
     #endregion
 
     #region Ссылки GUID1
@@ -347,16 +329,10 @@ public class PageInfoModel
     #endregion
 
     #endregion
-
+    
     #region Навигационное свойство MovieFileModel
 
     public MovieFileModel? MovieFile { get; set; }
-
-    #endregion
-
-    #region Навигационное свойство книги или статьи
-
-    public BooksAndArticlesModel? BooksAndArticles { get; set; }
 
     #endregion
 
@@ -366,7 +342,36 @@ public class PageInfoModel
 
     #endregion
 
-    #region Выбрать файл картинки
+    #region Свойства NotMapped
+
+    #region Список областей (Area) (NotMapped)
+
+    [NotMapped]
+    public string[] AreaItems =
+    [
+        "Root",
+        "Admin",
+        "Movies",
+        "Rybakov"
+    ];
+
+    #endregion
+
+    #region Список типов  (OgType) (NotMapped)
+
+    [NotMapped]
+    public string[] OgTypeItems =
+    [
+        "movie",
+        "article",
+        "book",
+        "audiobook",
+        "website"
+    ];
+
+    #endregion
+
+    #region Выбрать файл картинки (NotMapped)
 
     [NotMapped]
     [DataType(DataType.Upload)]
@@ -375,7 +380,16 @@ public class PageInfoModel
 
     #endregion
 
-    #region Выбрать файл фона (фотопленки)
+    #region Выбрать файл текста (NotMapped)
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Файл текста :")]
+    public IFormFile? TextFileFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать файл фона (фотопленки) (NotMapped)
 
     [NotMapped]
     [DataType(DataType.Upload)]
@@ -384,7 +398,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Выбрать аудиофайл
+    #region Выбрать аудиофайл (NotMapped)
 
     [NotMapped]
     [DataType(DataType.Upload)]
@@ -393,7 +407,7 @@ public class PageInfoModel
 
     #endregion
 
-    #region Выбрать файл картинки (картинка под верним заголовком)
+    #region Выбрать файл картинки (картинка под верним заголовком) (NotMapped)
 
     [NotMapped]
     [DataType(DataType.Upload)]
@@ -402,87 +416,103 @@ public class PageInfoModel
 
     #endregion
 
-    #region Экземпляр иконки странницы
+    #region Экземпляр иконки странницы (NotMapped)
 
     [NotMapped]
     public IconFileModel? IconItem { get; set; }
 
     #endregion
 
-    #region Список ссылок на страницы по GUID (1)
+    #region Список ссылок на страницы по GUID (1) (NotMapped)
 
     [NotMapped]
     public List<PageInfoModel>? LinksToPagesByGuid { get; set; }
 
     #endregion
 
-    #region Список ссылок на страницы по GUID (2)
+    #region Список ссылок на страницы по GUID (2) (NotMapped)
 
     [NotMapped]
     public List<PageInfoModel>? LinksToPagesByGuid2 { get; set; }
 
     #endregion
 
-    #region Список ссылок на видео по фильтру
+    #region Список ссылок на видео по фильтру (NotMapped)
 
     [NotMapped]
     public List<VideoLinksViewModel>? LinksToVideosByFilterOut { get; set; }
 
     #endregion
 
-    #region Список списков видео
+    #region Список списков видео (NotMapped)
 
     [NotMapped]
     public List<List<MovieFileModel>>? ListsMoviesFileModel { get; set; }
 
     #endregion
 
-    #region Список ссылок на текущую страницу по GUID (1)
+    #region Список ссылок на текущую страницу по GUID (1) (NotMapped)
 
     [NotMapped]
     public List<PageInfoModel>? LinksFromPagesByGuid { get; set; }
 
     #endregion
 
-    #region Список ссылок на текущую страницу по GUID (2)
+    #region Список ссылок на текущую страницу по GUID (2) (NotMapped)
 
     [NotMapped]
     public List<PageInfoModel>? LinksFromPagesByGuid2 { get; set; }
 
     #endregion
 
-    #region Словарь страниц ссылающихся на текущую по текстовым фильтрам
+    #region Словарь страниц ссылающихся на текущую по текстовым фильтрам (NotMapped)
 
     [NotMapped]
     public Dictionary<string, List<PageInfoModel>>? DictionaryOfOutPages { get; set; }
 
     #endregion
-    
-    #region Словарь ссылок на страницы по текстовым фильтрам
+
+    #region Словарь ссылок на страницы по текстовым фильтрам (NotMapped)
 
     [NotMapped]
     public Dictionary<string, List<PageInfoModel>>? DictionaryOfLinksByPageFilterOut { get; set; }
 
     #endregion
 
-    #region Словарь ссылок на видео по текстовым фильтрам
+    #region Словарь ссылок на видео по текстовым фильтрам (NotMapped)
 
     [NotMapped]
     public Dictionary<string, VideoLinksViewModel>? DictionaryOfLinksByVideoFilterOut { get; set; }
 
     #endregion
 
-    #region Словарь ссылок на картинки по текстовым фильтрам
+    #region Словарь ссылок на картинки по текстовым фильтрам (NotMapped)
 
     [NotMapped]
     public Dictionary<string, ImageListViewModel>? DictionaryOfLinksByFotoFilterOut { get; set; }
 
     #endregion
 
-    #region Кадры слева и справа от текста
+    #region Кадры слева и справа от текста (NotMapped)
 
     [NotMapped]
     public FramesAroundMainContentModel? FramesAroundMainContent { get; set; }
+
+    #endregion
+
+    #region Текст без разметки TXT (NotMapped)
+
+    [NotMapped]
+    public string? ClearText { get; set; }
+
+    #endregion
+
+    #region Текст с разметкой HTML (NotMapped)
+
+    [NotMapped]
+    public string? HtmlText { get; set; }
+
+    #endregion
 
     #endregion
 }

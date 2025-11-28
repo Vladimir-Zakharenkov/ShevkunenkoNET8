@@ -455,6 +455,162 @@
 
 			</div>
 
+			@* Связанный файл текста *@
+			<div class="accordion-item mb-3 shadw">
+
+				<h2 id="headingTextFile" class="accordion-header shadw">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#TextFile"
+							aria-expanded="true"
+							aria-controls="TextFile">
+
+						<span class="form-label fs-5">Связанный файл текста :</span>
+
+					</button>
+
+				</h2>
+
+				<div id="TextFile"
+					 class="accordion-collapse collapse"
+					 aria-labelledby="headingPageTitle"
+					 data-bs-parent="#accordionDetailsPage">
+
+					<div class="accordion-body accordion-body-nointend text-center">
+
+						@if (Model.TextInfo == null)
+						{
+							<p class="text-center fluid-font-size text-bg-danger">
+								файл текста для страницы не задан
+							</p>
+						}
+						else
+						{
+							<div id="accordionForTextFile" class="accordion">
+
+								<label asp-for="@Model.TextInfo.TxtFileName" class="@cssForLabel fluid-font-size"></label>
+								<br class="d-md-none" />
+								<span class="fs-5 text_shadow fluid-font-size">@Model.TextInfo.TxtFileName</span>
+								<p class="fs-5 text-primary mb-2 fluid-font-size">(@Model.TextInfo.TxtFileSize байт)</p>
+
+								<hr class="w-50 mx-auto" />
+
+								<label asp-for="@Model.TextInfo.HtmlFileName" class="@cssForLabel fluid-font-size"></label>
+								<br class="d-md-none" />
+								<span class="fs-5 text_shadow fluid-font-size">@Model.TextInfo.HtmlFileName</span>
+								<p class="fs-5 text-primary mb-2 fluid-font-size">
+									(@Model.TextInfo.HtmlFileSize байт)
+								</p>
+
+								@* Файл TXT *@
+								<div class="accordion-item my-3 shadw">
+
+									@* Заголовок группы «файл TXT» *@
+									<h2 id="headingTxtText" class="accordion-header shadw">
+
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#TxtText"
+												aria-expanded="true"
+												aria-controls="TxtText">
+
+											<span class="form-label fs-5">Файл TXT :</span>
+
+										</button>
+
+									</h2>
+
+									<div id="TxtText"
+										 class="accordion-collapse collapse pb-2 px-2"
+										 aria-labelledby="headingTxtText">
+
+										<textarea id="ClearTextInput" class="form-control fordetails fs-6 mb-2"
+												  asp-for="ClearText"
+												  readonly
+												  rows="10"
+												  aria-describedby="ClearTextInputHelpBlock">
+											 </textarea>
+
+										<div id="ClearTextInputHelpBlock" class="form-text">
+											<span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
+											<span class="fs-6 text-success">текст без разметки</span>
+										</div>
+
+									</div>
+
+								</div>
+
+								@* Файл HTML *@
+								<div class="accordion-item my-3 shadw">
+
+									@* Заголовок группы «файл HTML» *@
+									<h2 id="headingHtmlText" class="accordion-header shadw">
+
+										<button class="accordion-button collapsed py-0 stranicy" 
+											type="button" 
+											data-bs-toggle="collapse" 
+											data-bs-target="#HtmlText" 
+											aria-expanded="true" 
+											aria-controls="HtmlText">
+											
+											<span class="form-label fs-5">Файл HTML :</span>
+										
+										</button>
+									
+									</h2>
+
+									<div id="HtmlText" 
+										class="accordion-collapse collapse pb-2 px-2" 
+										aria-labelledby="headingHtmlText">
+
+										<textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
+												  asp-for="HtmlText"
+												  readonly
+												  rows="10"
+												  aria-describedby="HtmlTextInputHelpBlock">
+				                         </textarea>
+
+										<div id="HtmlTextInputHelpBlock" class="form-text">
+
+											<span class="d-none d-sm-inline-block fs-6 text-success">тег «HtmlText» - </span>
+											<span class="fs-6 text-success">текст с разметкой</span>
+
+										</div>
+
+										<hr class="w-25 mx-auto" />
+
+										<div class="bookpages lay1">
+
+											<div class="descr lay1 overflow-y-scroll height400">
+
+												@Html.Raw(Model.HtmlText)
+
+											</div>
+
+										</div>
+
+										<div class="form-text mt-3">
+
+											<span class="fs-6 text-success">вид текста на сайте</span>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+						}
+
+					</div>
+
+				</div>
+
+			</div>
+
 			@* Иконка страницы *@
 			<div class="accordion-item mb-3 shadw">
 
@@ -483,6 +639,45 @@
 								</a>
 							</p>
 						}
+
+					</div>
+
+				</div>
+
+			</div>
+
+			@* Тег «title» *@
+			<div class="accordion-item mb-3 shadw">
+
+				<h2 id="headingPageTitle" class="accordion-header shadw">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#PageTitle"
+							aria-expanded="true"
+							aria-controls="PageTitle">
+
+						<span class="form-label fs-5">Заголовок (title) :</span>
+
+					</button>
+
+				</h2>
+
+				<div id="PageTitle"
+					 class="accordion-collapse collapse"
+					 aria-labelledby="headingPageTitle"
+					 data-bs-parent="#accordionDetailsPage">
+
+					<div class="accordion-body accordion-body-nointend text-center">
+
+						<p class="text-start fluid-font-size">
+							@Model.PageTitle
+						</p>
+
+						<p class="fs-6 form-text text-success">
+							тег «title»
+						</p>
 
 					</div>
 
@@ -1156,9 +1351,9 @@
 													<div class="accordion-body p-1">
 
 														<div class="row mt-1 justify-content-center g-1
-																                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
-																                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-																                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																												                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+																																												                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+																																												                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 															@foreach (var item in listOfPages)
 															{
@@ -1382,9 +1577,9 @@
 																<div class="accordion-body accordion-body-nointend text-center">
 
 																	<div class="row mt-1 justify-content-center g-1
-												                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-												                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-												                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																	                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+																																	                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+																																	                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 																		@foreach (var item in modelForPageLinks)
 																		{
@@ -2038,7 +2233,7 @@
 		</div>
 
 		@* Управление страницей *@
-		@* 		<div class="card-footer border p-0 my-2">
+		<div class="card-footer border p-0 my-2">
 
 			<a asp-area="Admin"
 			   asp-controller="PageInfo"
@@ -2095,7 +2290,7 @@
 			}
 
 		</div>
- *@
+
 	</div>
 
 	@* кадры справа *@

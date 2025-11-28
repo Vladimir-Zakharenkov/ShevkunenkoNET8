@@ -2,16 +2,19 @@
 
 public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoRepository
 {
+    #region Инициализация PagesInfo
     public IQueryable<PageInfoModel> PagesInfo => siteContext.PageInfo
         .Include(image => image.ImageFileModel)
+        .Include(text => text.TextInfo).ThenInclude(book => book != null ? book.BooksAndArticlesModel : null)
         .Include(background => background.BackgroundFileModel)
-        .Include(books => books.BooksAndArticles).ThenInclude(logoOfArticle => logoOfArticle!.LogoOfArticle)
-        //.Include(audioFile => audioFile.AudioInfo)
+        .Include(audioFile => audioFile.AudioInfo)
         .Include(audioBook => audioBook.AudioBook)
-         // TODO: убрать nullable для картинки фильма
-        .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage!.ImageFileModel)
-        .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster!.MoviePoster)
+        // TODO: убрать nullable для картинки фильма
+        .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage != null ? movieImage.ImageFileModel : null)
+        .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster != null ? moviePoster.MoviePoster : null)
         ;
+
+    #endregion
 
     #region Определить страницу в базе данных по запросу
 

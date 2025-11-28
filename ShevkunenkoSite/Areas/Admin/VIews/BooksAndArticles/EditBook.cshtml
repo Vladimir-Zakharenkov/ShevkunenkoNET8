@@ -42,7 +42,7 @@
                 <input asp-for="BookOrArticle.LogoOfArticleId" type="hidden" />
                 <input asp-for="BookOrArticle.ScanOfArticleId" type="hidden" />
                 <input asp-for="BookOrArticle.VideoForBookOrArticleId" type="hidden" />
-                <input asp-for="BookOrArticle.PageInfoModelId" type="hidden" />
+                @* <input asp-for="BookOrArticle.PageInfoModelId" type="hidden" /> *@
 
             </div>
 
@@ -61,7 +61,7 @@
 
                     <div id="PageForBookOrArticle" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPageForBookOrArticle" data-bs-parent="#accordionEditArticle">
 
-                        @if (Context.Request.Method == "GET")
+                        @* @if (Context.Request.Method == "GET")
                         {
                             <p class="fs-5 text_shadow">текущая страница:</p>
 
@@ -78,7 +78,7 @@
                             else
                             {
                                 <p class="fs-6 mb-2 text-danger">страница не задана</p>
-                            }
+                            } *@
                         }
 
                         <hr class="w-50 mx-auto" />

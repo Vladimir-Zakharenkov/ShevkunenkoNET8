@@ -59,8 +59,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
                 var audioInfoModel = await audioFileContext.AudioFiles
                     .Include(a => a.AudioBookModel)
                         .ThenInclude(b => b!.BookForAudioBook)
-                            .ThenInclude(p => p!.PageInfoModel)
-                                .ThenInclude(i => i!.ImageFileModel)
+                      //      .ThenInclude(p => p!.PageInfoModel)
+                      //          .ThenInclude(i => i!.ImageFileModel)
                     //.Include(a => a.PageInfoModel)
                     .AsNoTracking()
                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);

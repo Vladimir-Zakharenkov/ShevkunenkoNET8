@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20251124102412_24-11-2025-13-32")]
-    partial class _241120251332
+    [Migration("20251126191310_26-11-2025-22-12")]
+    partial class _261120252212
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,18 +69,11 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("NumberOfFiles")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PageInfoModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("AudioBookModelId");
 
                     b.HasIndex("BookForAudioBookId")
                         .IsUnique()
                         .HasFilter("[BookForAudioBookId] IS NOT NULL");
-
-                    b.HasIndex("PageInfoModelId")
-                        .IsUnique()
-                        .HasFilter("[PageInfoModelId] IS NOT NULL");
 
                     b.ToTable("AudioBookModel");
                 });
@@ -222,9 +215,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int?>("NumberOfPages")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PageInfoModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Publisher")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -262,10 +252,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasKey("BooksAndArticlesModelId");
 
                     b.HasIndex("LogoOfArticleId");
-
-                    b.HasIndex("PageInfoModelId")
-                        .IsUnique()
-                        .HasFilter("[PageInfoModelId] IS NOT NULL");
 
                     b.HasIndex("ScanOfArticleId");
 
@@ -868,6 +854,9 @@ namespace ShevkunenkoSite.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("AudioBookModelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("AudioInfoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1009,6 +998,9 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<int>("SortOfPage")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TextInfoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TextOfPage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1021,15 +1013,19 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("PageInfoModelId");
 
-                    b.HasIndex("AudioInfoId")
-                        .IsUnique()
-                        .HasFilter("[AudioInfoId] IS NOT NULL");
+                    b.HasIndex("AudioBookModelId");
+
+                    b.HasIndex("AudioInfoId");
 
                     b.HasIndex("BackgroundFileModelId");
 
                     b.HasIndex("ImageFileModelId");
 
                     b.HasIndex("ImagePageHeadingId");
+
+                    b.HasIndex("TextInfoId")
+                        .IsUnique()
+                        .HasFilter("[TextInfoId] IS NOT NULL");
 
                     b.ToTable("PageInfo");
                 });
@@ -1074,9 +1070,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("TextInfoModelId");
 
-                    b.HasIndex("AudioInfoModelId")
-                        .IsUnique()
-                        .HasFilter("[AudioInfoModelId] IS NOT NULL");
+                    b.HasIndex("AudioInfoModelId");
 
                     b.HasIndex("BooksAndArticlesModelId");
 
@@ -1122,13 +1116,7 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithOne("AudioBook")
                         .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "BookForAudioBookId");
 
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
-                        .WithOne("AudioBook")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "PageInfoModelId");
-
                     b.Navigation("BookForAudioBook");
-
-                    b.Navigation("PageInfoModel");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
@@ -1146,10 +1134,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithMany()
                         .HasForeignKey("LogoOfArticleId");
 
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.PageInfoModel", "PageInfoModel")
-                        .WithOne("BooksAndArticles")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "PageInfoModelId");
-
                     b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ScanOfArticle")
                         .WithMany()
                         .HasForeignKey("ScanOfArticleId");
@@ -1159,8 +1143,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasForeignKey("VideoForBookOrArticleId");
 
                     b.Navigation("LogoOfArticle");
-
-                    b.Navigation("PageInfoModel");
 
                     b.Navigation("ScanOfArticle");
 
@@ -1214,9 +1196,13 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.AudioBookModel", "AudioBook")
+                        .WithMany()
+                        .HasForeignKey("AudioBookModelId");
+
                     b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioInfo")
-                        .WithOne("PageInfoModel")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.PageInfoModel", "AudioInfoId");
+                        .WithMany()
+                        .HasForeignKey("AudioInfoId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BackgroundFileModel", "BackgroundFileModel")
                         .WithMany()
@@ -1234,6 +1220,12 @@ namespace ShevkunenkoSite.Services.Migrations
                         .WithMany()
                         .HasForeignKey("ImagePageHeadingId");
 
+                    b.HasOne("ShevkunenkoSite.Models.DataModels.TextInfoModel", "TextInfo")
+                        .WithOne("PageInfo")
+                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.PageInfoModel", "TextInfoId");
+
+                    b.Navigation("AudioBook");
+
                     b.Navigation("AudioInfo");
 
                     b.Navigation("BackgroundFileModel");
@@ -1241,13 +1233,15 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("ImageFileModel");
 
                     b.Navigation("ImagePageHeading");
+
+                    b.Navigation("TextInfo");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
                 {
                     b.HasOne("ShevkunenkoSite.Models.DataModels.AudioInfoModel", "AudioInfoModel")
-                        .WithOne("TextInfoModel")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.TextInfoModel", "AudioInfoModelId");
+                        .WithMany()
+                        .HasForeignKey("AudioInfoModelId");
 
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BooksAndArticlesModel")
                         .WithMany()
@@ -1258,13 +1252,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("BooksAndArticlesModel");
                 });
 
-            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioInfoModel", b =>
-                {
-                    b.Navigation("PageInfoModel");
-
-                    b.Navigation("TextInfoModel");
-                });
-
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
                 {
                     b.Navigation("AudioBook");
@@ -1272,11 +1259,12 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>
                 {
-                    b.Navigation("AudioBook");
-
-                    b.Navigation("BooksAndArticles");
-
                     b.Navigation("MovieFile");
+                });
+
+            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.TextInfoModel", b =>
+                {
+                    b.Navigation("PageInfo");
                 });
 #pragma warning restore 612, 618
         }

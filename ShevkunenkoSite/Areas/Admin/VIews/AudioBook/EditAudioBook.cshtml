@@ -174,7 +174,7 @@
                 {
                     <p class="text_shadow fs-4 mb-3">книга не выбрана</p>
                 }
-                else if (Model.BookForAudioBook?.PageInfoModel?.ImageFileModelId != null)
+                @* else if (Model.BookForAudioBook?.PageInfoModel?.ImageFileModelId != null)
                 {
                     <a asp-area="Admin"
                        asp-controller="BooksAndArticles"
@@ -188,7 +188,7 @@
                                        css-class="w-100"
                                        icon-type="webicon300" />
 
-                    </a>
+                    </a> *@
 
                     <div class="form-text">
 
@@ -197,7 +197,7 @@
                     </div>
 
                     <p class="col-form-label text-primary fs-5">GUID книги :</p>
-                    <p class="text_shadow fs-6 mb-3">@Model.BookForAudioBook.BooksAndArticlesModelId</p>
+                    @* <p class="text_shadow fs-6 mb-3">@Model.BookForAudioBook.BooksAndArticlesModelId</p> *@
                 }
 
                 <label asp-for="BookForAudioBookId" class="d-block mx-auto form-label text-primary fs-5 fw-bold"></label>
