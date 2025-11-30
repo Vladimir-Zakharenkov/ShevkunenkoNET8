@@ -1,55 +1,39 @@
-﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
-// Licensed under MIT license. See License.txt in the project root for license information.
+﻿using Microsoft.Extensions.Logging;
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+namespace MyFirstEfCoreApp;
 
-namespace MyFirstEfCoreApp
+public class MyLoggerProvider(List<string> logs) : ILoggerProvider
 {
-    public class MyLoggerProvider : ILoggerProvider
+    private readonly List<string> _logs = logs;
+
+    public ILogger CreateLogger(string categoryName)
     {
-        private readonly List<string> _logs;
+        return new MyLogger(_logs);
+    }
 
-        public MyLoggerProvider(List<string> logs)
+    void IDisposable.Dispose()
+    {
+    }
+
+    private class MyLogger(List<string> logs) : ILogger
+    {
+        private readonly List<string> _logs = logs;
+
+        public bool IsEnabled(LogLevel logLevel)
         {
-            _logs = logs;
+            return logLevel >= LogLevel.Information;
         }
 
-        public ILogger CreateLogger(string categoryName)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
         {
-            return new MyLogger(_logs);
+            _logs.Add(formatter(state, exception));
+            //Console.WriteLine(formatter(state, exception));
         }
 
-        public void Dispose()
+        public IDisposable BeginScope<TState>(TState state)
         {
-        }
-
-        private class MyLogger : ILogger
-        {
-            private readonly List<string> _logs;
-
-            public MyLogger(List<string> logs)
-            {
-                _logs = logs;
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return logLevel >= LogLevel.Information;
-            }
-
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-                Func<TState, Exception, string> formatter)
-            {
-                _logs.Add(formatter(state, exception));
-                //Console.WriteLine(formatter(state, exception));
-            }
-
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

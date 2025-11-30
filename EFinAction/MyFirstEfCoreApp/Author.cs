@@ -1,16 +1,8 @@
-﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
-// Licensed under MIT license. See License.txt in the project root for license information.
+﻿namespace MyFirstEfCoreApp;
 
-namespace MyFirstEfCoreApp
+public class Author
 {
-    public class Author
-    {
-        public int AuthorId { get; set; } //#D
-        public string Name { get; set; }
-        public string WebUrl { get; set; }
-    }
-
-    /*******************************************************
-    #D This holds the Primary Key of the Author row in the database
-     * ************************************************/
+    public int AuthorId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string WebUrl { get; set; } = string.Empty;
 }

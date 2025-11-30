@@ -42,12 +42,15 @@ public class BooksAndArticlesController(
 
     public async Task<IActionResult> DetailsBook(Guid? bookId)
     {
-        if (bookId.HasValue && await bookContext.BooksAndArticles.Where(b => b.BooksAndArticlesModelId == bookId).AnyAsync())
+        if (bookId.HasValue && await bookContext.BooksAndArticles
+                                                                .Where(b => b.BooksAndArticlesModelId == bookId)
+                                                                .AnyAsync())
         {
             var bookItem = await bookContext.BooksAndArticles
-                .Include(inc => inc.LogoOfArticle)
-                .Include(inc2 => inc2.ScanOfArticle)
-                .Include(inc3 => inc3.VideoForBookOrArticle)
+                .Include(bookCover => bookCover.ImageFileModel)
+                .Include(articleLogo => articleLogo.LogoOfArticle)
+                .Include(articleScan => articleScan.ScanOfArticle)
+                .Include(videoForArticle => videoForArticle.VideoForBookOrArticle)
                 .FirstAsync(b => b.BooksAndArticlesModelId == bookId);
 
             return View(bookItem);

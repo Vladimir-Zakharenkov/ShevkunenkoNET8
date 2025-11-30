@@ -1,6 +1,4 @@
-﻿using ShevkunenkoSite.Models.ViewModels;
-
-namespace ShevkunenkoSite.Controllers;
+﻿namespace ShevkunenkoSite.Controllers;
 
 public class BooksController(
     IBooksAndArticlesRepository articleContext,
