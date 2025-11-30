@@ -68,7 +68,13 @@ public class BooksAndArticlesController(
     [HttpGet]
     public ViewResult AddBook()
     {
-        AddAndEditArticleViewModel newBook = new();
+        BooksAndArticlesModel newBook = new();
+
+        // Список картинок сайта для обложки
+        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+        // Список видео на сайте
+        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
 
         return View(newBook);
     }
@@ -78,307 +84,517 @@ public class BooksAndArticlesController(
     [DisableRequestSizeLimit]
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
-    public async Task<IActionResult> AddBook(AddAndEditArticleViewModel addBook)
+    public async Task<IActionResult> AddBook(
+                [Bind(
+                "BooksAndArticlesModelId," +
+                "ImageFileModelId," +
+                "LogoOfArticleId," +
+                "ScanOfArticleId," +
+                "VideoForBookOrArticleId," +
+                "TypeOfText," +
+                "TypesOfText," +
+                "Publisher," +
+                "AuthorOfText," +
+                "CaptionOfText," +
+                "TheSubtitle," +
+                "BookDescription," +
+                "NumberOfPages," +
+                "DateOfPublication," +
+                "UrlOfArticle," +
+                "TagsForBook," +
+                "RefToWordDoc," +
+                "RefToPdf," +
+                "RefToAudio," +
+                "PageForBookOrArticle," +
+                "CoverForBookFormFile," +
+                "LogoOfArticleFormFile," +
+                "ScanOfArticleFormFile," +
+                "VideoForBookOrArticleFormFile"
+        )]
+        BooksAndArticlesModel addBook)
     {
         if (ModelState.IsValid)
         {
             #region Тип текста
 
-            if (addBook.BookOrArticle.TypeOfText != null)
+            if (addBook.TypeOfText != null)
             {
-                _ = addBook.BookOrArticle.TypeOfText.Trim();
+                _ = addBook.TypeOfText.Trim();
             }
             else
             {
-                addBook.BookOrArticle.TypeOfText = string.Empty;
+                addBook.TypeOfText = string.Empty;
+            }
+
+            #endregion
+
+            #region Добавить обложку для книги
+
+            if (addBook.ImageFileModelId != Guid.Empty & addBook.CoverForBookFormFile == null)
+            {
+                _ = addBook.ImageFileModelId;
+            }
+            else
+            {
+                if (addBook.CoverForBookFormFile != null)
+                {
+                    if (!(addBook.CoverForBookFormFile.FileName.EndsWith(".webp") || addBook.CoverForBookFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("CoverForBookFormFile", $"Выбран некорректный файл «{addBook.CoverForBookFormFile.FileName}»");
+
+                        // Список картинок сайта для обложки
+                        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список видео на сайте
+                        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                        return View(addBook);
+                    }
+
+                    if (addBook.TypeOfText == "article")
+                    {
+                        addBook.ImageFileModelId = null;
+                    }
+                    else
+                    {
+                        if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.CoverForBookFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.CoverForBookFormFile.FileName);
+
+                            addBook.ImageFileModelId = imageFile.ImageFileModelId;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("CoverForBookFormFile", $"Добавьте картинку «{addBook.CoverForBookFormFile.FileName}» в базу данных");
+
+                            // Список картинок сайта для обложки
+                            ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                            // Список видео на сайте
+                            ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                            return View(addBook);
+                        }
+                    }
+                }
+                else
+                {
+                    addBook.ImageFileModelId = null;
+                }
             }
 
             #endregion
 
             #region Издатель книги или статьи
 
-            _ = addBook.BookOrArticle.Publisher.Trim();
+            _ = addBook.Publisher.Trim();
 
             #endregion
 
             #region Логотип статьи
 
-            if (addBook.LogoOfArticleFormFile != null)
+            if (addBook.LogoOfArticleId != Guid.Empty & addBook.LogoOfArticleFormFile == null)
             {
-                if (addBook.BookOrArticle.TypeOfText == "book")
-                {
-                    addBook.BookOrArticle.LogoOfArticleId = null;
-                }
-                else
-                {
-                    if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.LogoOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("LogoOfArticleFormFile", $"Добавьте картинку «{addBook.LogoOfArticleFormFile.FileName}» в базу данных");
-
-                        return View(nameof(AddBook), new AddAndEditArticleViewModel
-                        {
-                            BookOrArticle = addBook.BookOrArticle
-                        });
-                    }
-
-                }
+                _ = addBook.LogoOfArticleId;
             }
             else
             {
-                _ = addBook.BookOrArticle.LogoOfArticleId;
+                if (addBook.LogoOfArticleFormFile != null)
+                {
+                    if (!(addBook.LogoOfArticleFormFile.FileName.EndsWith(".webp") || addBook.LogoOfArticleFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("LogoOfArticleFormFile", $"Выбран некорректный файл «{addBook.LogoOfArticleFormFile.FileName}»");
+
+                        // Список картинок сайта для обложки
+                        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список видео на сайте
+                        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                        return View(addBook);
+                    }
+
+                    if (addBook.TypeOfText == "book")
+                    {
+                        addBook.LogoOfArticleId = null;
+                    }
+                    else
+                    {
+                        if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.LogoOfArticleFormFile.FileName);
+
+                            addBook.LogoOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("LogoOfArticleFormFile", $"Добавьте картинку «{addBook.LogoOfArticleFormFile.FileName}» в базу данных");
+
+                            // Список картинок сайта для обложки
+                            ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                            // Список видео на сайте
+                            ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                            return View(addBook);
+                        }
+                    }
+                }
+                else
+                {
+                    addBook.LogoOfArticleId = null;
+                }
             }
 
             #endregion
 
             #region Скан статьи
 
-            if (addBook.ScanOfArticleFormFile != null)
+            if (addBook.ScanOfArticleId != Guid.Empty & addBook.ScanOfArticleFormFile == null)
             {
-                if (addBook.BookOrArticle.TypeOfText == "book")
-                {
-                    addBook.BookOrArticle.ScanOfArticleId = null;
-                }
-                else
-                {
-                    if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
-                    {
-                        var newImage = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.ScanOfArticleFormFile.FileName);
-
-                        addBook.BookOrArticle.ScanOfArticleId = newImage.ImageFileModelId;
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("ScanOfArticleFormFile", $"Добавьте картинку «{addBook.ScanOfArticleFormFile.FileName}» в базу данных");
-
-                        return View(nameof(AddBook), new AddAndEditArticleViewModel
-                        {
-                            BookOrArticle = addBook.BookOrArticle
-                        });
-                    }
-                }
+                _ = addBook.ScanOfArticleId;
             }
             else
             {
-                addBook.BookOrArticle.ScanOfArticleId = null;
+                if (addBook.ScanOfArticleFormFile != null)
+                {
+                    if (!(addBook.ScanOfArticleFormFile.FileName.EndsWith(".webp") || addBook.ScanOfArticleFormFile.FileName.EndsWith(".png")))
+                    {
+                        ModelState.AddModelError("ScanOfArticleFormFile", $"Выбран некорректный файл «{addBook.ScanOfArticleFormFile.FileName}»");
+
+                        // Список картинок сайта для обложки
+                        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список видео на сайте
+                        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                        return View(addBook);
+                    }
+
+                    if (addBook.TypeOfText == "book")
+                    {
+                        addBook.ScanOfArticleId = null;
+                    }
+                    else
+                    {
+                        if (await imageContext.ImageFiles.Where(i => i.WebImageFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebImageHDFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebImageHDFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIconFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIconFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon200FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon200FileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.WebIcon100FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.WebIcon100FileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.ImageHDFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.ImageHDFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.IconFileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.IconFileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon200FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon200FileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else if (await imageContext.ImageFiles.Where(i => i.Icon100FileName == addBook.ScanOfArticleFormFile.FileName).AnyAsync())
+                        {
+                            var imageFile = await imageContext.ImageFiles.FirstAsync(i => i.Icon100FileName == addBook.ScanOfArticleFormFile.FileName);
+
+                            addBook.ScanOfArticleId = imageFile.ImageFileModelId;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("ScanOfArticleFormFile", $"Добавьте картинку «{addBook.ScanOfArticleFormFile.FileName}» в базу данных");
+
+                            // Список картинок сайта для обложки
+                            ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                            // Список видео на сайте
+                            ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                            return View(addBook);
+                        }
+                    }
+                }
+                else
+                {
+                    addBook.ScanOfArticleId = null;
+                }
+            }
+
+            #endregion
+
+            #region Видео связанное с книгой (статьёй)
+
+            if (addBook.VideoForBookOrArticleId != Guid.Empty & addBook.VideoForBookOrArticleFormFile == null)
+            {
+                _ = addBook.VideoForBookOrArticleId;
+            }
+            else
+            {
+                if (addBook.VideoForBookOrArticleFormFile != null)
+                {
+                    if (!addBook.VideoForBookOrArticleFormFile.FileName.EndsWith(".mp4"))
+                    {
+                        ModelState.AddModelError("VideoForBookOrArticleFormFile", $"Выбран некорректный файл «{addBook.VideoForBookOrArticleFormFile.FileName}»");
+
+                        // Список картинок сайта для обложки
+                        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список видео на сайте
+                        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                        return View(addBook);
+                    }
+
+                    if (await movieContext.MovieFiles
+                            .Where(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName)
+                            .AnyAsync())
+                    {
+                        var movieForItem = await movieContext.MovieFiles
+                                .FirstAsync(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName);
+
+                        addBook.VideoForBookOrArticleId = movieForItem.MovieFileModelId;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("VideoForBookOrArticleFormFile", $"Файл видео «{addBook.VideoForBookOrArticleFormFile.FileName}» не найден в базе данных");
+
+                        // Список картинок сайта
+                        ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                        // Список картинок сайта
+                        ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+                        return View(addBook);
+                    }
+                }
+                else
+                {
+                    addBook.VideoForBookOrArticleId = null;
+                }
             }
 
             #endregion
 
             #region Ссылка на статью или издателя
 
-            _ = addBook.BookOrArticle.UrlOfArticle;
-
-            #endregion
-
-            #region Видео связанное с книгой (статьёй)
-
-            if (addBook.VideoForBookOrArticleFormFile != null)
-            {
-                if (await movieContext.MovieFiles.Where(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName).AnyAsync())
-                {
-                    var movieForItem = await movieContext.MovieFiles.FirstAsync(movie => movie.MovieFileName == addBook.VideoForBookOrArticleFormFile.FileName);
-
-                    addBook.BookOrArticle.VideoForBookOrArticleId = movieForItem.MovieFileModelId;
-                }
-                else
-                {
-                    ModelState.AddModelError("VideoForBookOrArticleFormFile", $"Файл видео «{addBook.VideoForBookOrArticleFormFile.FileName}» не найден в базе данных");
-
-                    return View(nameof(AddBook), new AddAndEditArticleViewModel
-                    {
-                        BookOrArticle = addBook.BookOrArticle
-                    });
-                }
-            }
-            else
-            {
-                addBook.BookOrArticle.VideoForBookOrArticleId = null;
-            }
+            _ = addBook.UrlOfArticle;
 
             #endregion
 
             #region Автор книги или статьи
 
-            if (addBook.BookOrArticle.AuthorOfText != null)
+            if (addBook.AuthorOfText != null)
             {
-                _ = addBook.BookOrArticle.AuthorOfText.Trim();
+                _ = addBook.AuthorOfText.Trim();
             }
             else
             {
-                addBook.BookOrArticle.AuthorOfText = string.Empty;
+                addBook.AuthorOfText = string.Empty;
             }
 
             #endregion
 
             #region Название книги или статьи
 
-            _ = addBook.BookOrArticle.BookDescription.Trim();
+            _ = addBook.BookDescription.Trim();
 
             #endregion
 
             #region Подзаголовок книги или статьи
 
-            _ = addBook.BookOrArticle.TheSubtitle.Trim();
+            _ = addBook.TheSubtitle.Trim();
 
             #endregion
 
             #region Описание книги или статьи
 
-            addBook.BookOrArticle.CaptionOfText = addBook.BookOrArticle.CaptionOfText.Trim();
+            _ = addBook.CaptionOfText.Trim();
 
             #endregion
 
             #region Колличество страниц
 
-            _ = addBook.BookOrArticle.NumberOfPages;
+            _ = addBook.NumberOfPages;
 
             #endregion
 
             #region Дата публикации книги (статьи)
 
-            _ = addBook.BookOrArticle.DateOfPublication;
+            _ = addBook.DateOfPublication;
 
             #endregion
 
             #region Теги по содержанию книги (статьи)
 
-            _ = addBook.BookOrArticle.TagsForBook.Trim();
+            _ = addBook.TagsForBook.Trim();
 
             #endregion
 
             #region Ссылки на скачивание текста и аудиокниги
 
-            _ = addBook.BookOrArticle.RefToWordDoc;
+            _ = addBook.RefToWordDoc;
 
-            _ = addBook.BookOrArticle.RefToPdf;
+            _ = addBook.RefToPdf;
 
-            _ = addBook.BookOrArticle.RefToAudio;
+            _ = addBook.RefToAudio;
 
             #endregion
 
             #region Добавить в БД
 
-            await bookContext.AddBookOrArticleAsync(addBook.BookOrArticle);
+            await bookContext.AddBookOrArticleAsync(addBook);
 
             #endregion
 
             #region Открытие параметров добавленной книги (статьи)
 
-            var newBook = await bookContext.BooksAndArticles.FirstAsync(book => book.CaptionOfText == addBook.BookOrArticle.CaptionOfText);
+            var newBook = await bookContext.BooksAndArticles
+                .FirstAsync(book => book.CaptionOfText == addBook.CaptionOfText);
 
             return RedirectToAction(nameof(DetailsBook), new { bookId = newBook.BooksAndArticlesModelId });
 
@@ -386,10 +602,13 @@ public class BooksAndArticlesController(
         }
         else
         {
-            return View(nameof(AddBook), new AddAndEditArticleViewModel
-            {
-                BookOrArticle = addBook.BookOrArticle
-            });
+            // Список картинок сайта для обложки
+            ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+            // Список видео на сайте
+            ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
+
+            return View(addBook);
         }
     }
 
@@ -572,9 +791,6 @@ public class BooksAndArticlesController(
                             // Список картинок сайта для обложки
                             ViewData["ImageFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
 
-                            // Список картинок сайта для логотипа
-                            ViewData["LogoFiles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
-
                             // Список видео на сайте
                             ViewData["VideoFiles"] = new SelectList(movieContext.MovieFiles.OrderBy(orderVideo => orderVideo.MovieCaption), "MovieFileModelId", "MovieCaption");
 
@@ -595,7 +811,7 @@ public class BooksAndArticlesController(
             bookUpdate.Publisher = editBook.Publisher.Trim();
 
             #endregion
-
+            
             #region Логотип статьи
 
             if (editBook.LogoOfArticleId != Guid.Empty & editBook.LogoOfArticleFormFile == null)
@@ -706,7 +922,7 @@ public class BooksAndArticlesController(
             }
 
             #endregion
-
+            
             #region Скан статьи
 
             if (editBook.ScanOfArticleId != Guid.Empty & editBook.ScanOfArticleFormFile == null)
@@ -732,7 +948,7 @@ public class BooksAndArticlesController(
 
                     if (bookUpdate.TypeOfText == "book")
                     {
-                        bookUpdate.LogoOfArticleId = null;
+                        bookUpdate.ScanOfArticleId = null;
                     }
                     else
                     {
@@ -817,7 +1033,7 @@ public class BooksAndArticlesController(
             }
 
             #endregion
-
+            
             #region Видео связанное с книгой (статьёй)
 
             if (editBook.VideoForBookOrArticleId != Guid.Empty & editBook.VideoForBookOrArticleFormFile == null)
@@ -870,7 +1086,7 @@ public class BooksAndArticlesController(
             }
 
             #endregion
-
+            
             #region Ссылка на статью или издателя
 
             bookUpdate.UrlOfArticle = editBook.UrlOfArticle;

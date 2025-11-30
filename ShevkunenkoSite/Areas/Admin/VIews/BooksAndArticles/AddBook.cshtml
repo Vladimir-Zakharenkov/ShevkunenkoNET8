@@ -1,481 +1,1199 @@
-﻿@model AddAndEditArticleViewModel
+﻿@model BooksAndArticlesModel
+
+@{
+	string cssForLabel = "col-form-label text-primary fs-5 me-2";
+}
 
 <h1 class="fs-3 text_shadow">Добавить книгу (статью)</h1>
 
-<hr class="liniya" />
+<hr class="w-25 mx-auto" />
 
-@* Показ всех ошибок ввода данных *@
-@if (Context.Request.Method == "POST")
-{
-    <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
-}
+<div class="row">
 
+	<div class="col-12 col-lg-8 mx-auto p-2">
 
-<div class="col card p-2">
+		<form asp-area="Admin"
+			  asp-controller="BooksAndArticles"
+			  asp-action="AddBook"
+			  method="post"
+			  enctype="multipart/form-data">
 
-    <div class="col-12 card-body mx-auto">
+			@* Скрытые поля формы *@
+			<div>
 
-        <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
+				<input asp-for="@Model.BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
 
-            @* Скрытые поля формы *@
-            <div>
+			</div>
 
-                <input asp-for="@Model.BookOrArticle.BooksAndArticlesModelId" type="hidden" value="@Guid.Empty" />
+			@* все ошибки ввода данных *@
+			@if (Context.Request.Method == "POST")
+			{
+				<div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+			}
 
-            </div>
+			@* данные по группам *@
+			<div id="accordionAddArticle" class="accordion">
 
-            @* Выбор типа текста *@
-            <div class="row g-2 justify-content-center">
+				@* тип текста *@
+				<div class="accordion-item mt-2 shadw">
 
-                <div class="col-auto">
-                    <label asp-for="@Model.BookOrArticle.TypeOfText" class="col-form-label text-primary fs-5"></label>
-                </div>
+					@* заголовок группы «тип текста» *@
+					<h2 id="headingTextType" class="accordion-header">
 
-                <div class="col-auto" aria-describedby="TypesOfTextInputHelpBlock">
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#TextType"
+								aria-expanded="true"
+								aria-controls="TextType">
 
-                    <select id="TypesOfText" asp-for="@Model.BookOrArticle.TypeOfText" class="form-select">
-                        @{
-                            for (int i = 0; i < @Model.BookOrArticle.TypesOfText.Count(); i++)
-                            {
-                                <option value="@Model.BookOrArticle.TypesOfText[i]">@Model.BookOrArticle.TypesOfText[i]</option>
-                            }
-                        }
-                    </select>
+							<span class="form-label fs-5">Тип текста :</span>
 
-                </div>
+						</button>
 
-                <div id="TypesOfTextInputHelpBlock" class="col-12 justify-content-center">
+					</h2>
 
-                    <span class="fs-6 text-success">тип текста - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+					<div id="TextType"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingTextType"
+						 data-bs-parent="#accordionAddArticle">
 
-                </div>
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.TypesOfText" class="text-danger"></span>
-                }
+							@* выбор типа текста *@
+							<div class="row g-2 justify-content-center">
 
-                <hr class="w-50 mx-auto" />
+								<div class="col-auto">
+									<label asp-for="TypeOfText" class="@cssForLabel"></label>
+								</div>
 
-            </div>
+								<div class="col-auto" aria-describedby="TypesOfTextInputHelpBlock">
 
-            @* Издатель книги (статьи) *@
-            <div class="row g-2 justify-content-center">
+									<select id="TypesOfText" asp-for="TypeOfText" class="form-select">
+										@{
+											for (int i = 0; i < Model.TypesOfText.Count(); i++)
+											{
+												<option value="@Model.TypesOfText[i]">@Model.TypesOfText[i]</option>
+											}
+										}
+									</select>
 
-                <div class="col-auto">
-                    <label asp-for="BookOrArticle.Publisher" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+								</div>
 
-                <div class="col-auto text-start">
-                    <input id="PublisherInput" asp-for="BookOrArticle.Publisher" class="form-control" aria-describedby="PublisherInputHelpBlock" />
-                </div>
+								<div id="TypesOfTextInputHelpBlock" class="col-12 justify-content-center">
 
-                <div id="PublisherInputHelpBlock" class="form-text">
+									<span class="fs-6 text-success">тип текста</span>
+									<br class="d-md-none" />
+									<span class="fs-6 text-danger"> - обязательное поле</span>
 
-                    <span class="fs-6 text-success">издатель книги (статьи)</span>
+								</div>
 
-                </div>
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="TypesOfText" class="text-danger"></span>
+								}
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="BookOrArticle.Publisher" class="text-danger"></span>
-                }
+							</div>
 
-                <hr class="w-50 mx-auto" />
+						</div>
 
-            </div>
+					</div>
 
-            @* Логотип статьи *@
-            <div>
+				</div>
 
-                <div class="row g-2 justify-content-center">
+				@* обложка для книги *@
+				<div class="accordion-item mt-2 shadw">
 
-                    <div class="col-auto">
-                        <label asp-for="LogoOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                    </div>
+					@* заголовок группы «Обложка для книги» *@
+					<h2 id="headingCoverForBook" class="accordion-header">
 
-                    <div class="col-auto text-start">
-                        <input id="LogoOfArticleFormFileInput" asp-for="LogoOfArticleFormFile" class="form-control" aria-describedby="LogoOfArticleFormFileInputHelpBlock" />
-                    </div>
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#CoverForBook"
+								aria-expanded="true"
+								aria-controls="CoverForBook">
 
-                </div>
+							<span class="form-label fs-5">Обложка для книги :</span>
 
-                <div id="LogoOfArticleFormFileInputHelpBlock" class="form-text">
+						</button>
 
-                    <span class="fs-6 text-success">выбрать файл логотипа</span>
+					</h2>
 
-                </div>
+					@* выбрать обложку *@
+					<div id="CoverForBook"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingCoverForBook"
+						 data-bs-parent="#accordionAddArticle">
 
-                <span asp-validation-for="LogoOfArticleFormFile" class="text-danger"></span>
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                <hr class="w-50 mx-auto" />
+							<div>
 
-            </div>
+								<label asp-for="CoverForBookFormFile" class="@cssForLabel"></label>
 
-            @* Скан статьи *@
-            <div>
+								<input asp-for="CoverForBookFormFile"
+									   id="CoverForBookFormFileInput"
+									   class="form-control mt-2 w-50 mx-auto"
+									   aria-describedby="CoverForBookFormFileInputHelpBlock" />
 
-                <div class="row g-2 justify-content-center">
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="CoverForBookFormFile" class="text-danger"></span>
+								}
 
-                    <div class="col-auto">
-                        <label asp-for="ScanOfArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                    </div>
+								<div id="CoverForBookFormFileInputHelpBlock" class="form-text mt-3">
 
-                    <div class="col-auto text-start">
-                        <input id="ScanOfArticleFormFileInput" asp-for="ScanOfArticleFormFile" class="form-control" aria-describedby="ScanOfArticleFormFileInputHelpBlock" />
-                    </div>
+									<span class="fs-6 text-success">
+										выбрать файл обложки
+									</span>
 
-                </div>
+								</div>
 
-                <div id="ScanOfArticleFormFileInputHelpBlock" class="form-text">
+								<hr class="w-50 mx-auto" />
 
-                    <span class="fs-6 text-success">выбрать файл скана</span>
+								<select asp-for="ImageFileModelId"
+										asp-items="ViewBag.ImageFiles"
+										class="d-flex col-12 col-sm-7 col-lg-6 mx-auto my-3">
 
-                </div>
+									<option value="@Guid.Empty">Обложка не выбрана</option>
 
-                <span asp-validation-for="ScanOfArticleFormFile" class="text-danger"></span>
+								</select>
 
-                <hr class="w-50 mx-auto" />
 
-            </div>
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="ImageFileModelId" class="text-danger"></span>
+								}
 
-            @* Ссылка на статью (издателя) *@
-            <div class="row g-2 justify-content-center">
+								<div class="form-text">
 
-                <div class="col-12">
-                    <label asp-for="BookOrArticle.UrlOfArticle" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+									<span class="fs-6 text-success">
+										выбрать обложку
+									</span>
 
-                <div class="col-12 text-start maxwidth700px">
-                    <input id="UrlOfArticleInput" asp-for="BookOrArticle.UrlOfArticle" class="form-control" aria-describedby="UrlOfArticleInputHelpBlock" />
-                </div>
+								</div>
 
-                <div id="UrlOfArticleInputHelpBlock" class="form-text">
+							</div>
 
-                    <span class="fs-6 text-success">ссылка на статью</span>
+						</div>
 
-                </div>
+					</div>
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="BookOrArticle.UrlOfArticle" class="text-danger"></span>
-                }
+				</div>
 
-                <hr class="w-50 mx-auto" />
+				@* издатель книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
 
-            </div>
+					@* заголовок группы «Издатель книги (статьи)» *@
+					<h2 id="headingPublisher" class="accordion-header">
 
-            @* Видео связанное с книгой (статьёй) *@
-            <div>
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#Publisher"
+								aria-expanded="true"
+								aria-controls="Publisher">
 
-                <div class="row g-2 justify-content-center">
+							<span class="form-label fs-5">Издатель текста :</span>
 
-                    <div class="col-auto">
-                        <label asp-for="VideoForBookOrArticleFormFile" class="col-form-label text-primary fs-5 me-2"></label>
-                    </div>
+						</button>
 
-                    <div class="col-auto text-start">
-                        <input id="VideoForBookOrArticleFormFileInput" asp-for="VideoForBookOrArticleFormFile" class="form-control" aria-describedby="VideoForBookOrArticleFormFileInputHelpBlock" />
-                    </div>
+					</h2>
 
-                </div>
+					<div id="Publisher"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingPublisher"
+						 data-bs-parent="#accordionEditArticle">
 
-                <div id="VideoForBookOrArticleFormFileInputHelpBlock" class="form-text">
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                    <span class="fs-6 text-success">выбрать файл видео</span>
+							<label asp-for="Publisher" class="@cssForLabel"></label>
 
-                </div>
+							<input asp-for="Publisher"
+								   id="PublisherInput"
+								   class="text-center col-11 col-lg-6"
+								   aria-describedby="PublisherInputHelpBlock" />
 
-                <span asp-validation-for="VideoForBookOrArticleFormFile" class="text-danger"></span>
+							<div id="PublisherInputHelpBlock" class="form-text">
 
-                <hr class="w-50 mx-auto" />
+								<span class="fs-6 text-success">издатель книги (статьи)</span>
 
-            </div>
+							</div>
 
-            @* Автор книги (статьи) *@
-            <div class="row g-2 justify-content-center">
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="Publisher" class="text-danger"></span>
+							}
 
-                <div class="col-auto">
-                    <label asp-for="@Model.BookOrArticle.AuthorOfText" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+						</div>
 
-                <div class="col-auto text-start">
-                    <input id="AuthorOfTextInput" asp-for="@Model.BookOrArticle.AuthorOfText" class="form-control" aria-describedby="AuthorOfTextInputHelpBlock" />
-                </div>
+					</div>
 
-                <div id="AuthorOfTextInputHelpBlock" class="form-text">
+				</div>
 
-                    <span class="fs-6 text-success">автор книги (статьи) - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+				@*  логотип книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
 
-                </div>
+					@* Заголовок группы «логотип книги (статьи)» *@
+					<h2 class="accordion-header" id="headingLogo">
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.AuthorOfText" class="text-danger"></span>
-                }
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#Logo"
+								aria-expanded="true"
+								aria-controls="Logo">
 
-                <hr class="w-50 mx-auto" />
+							<span class="form-label fs-5">Логотип текста :</span>
 
-            </div>
+						</button>
 
-            @* Заголовок книги (статьи) *@
-            <div class="row g-2 justify-content-center">
+					</h2>
 
-                <div class="col-auto">
-                    <label asp-for="@Model.BookOrArticle.CaptionOfText" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+					<div id="Logo"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingLogo"
+						 data-bs-parent="#accordionEditArticle">
 
-                <div class="col-auto text-start">
-                    <input id="CaptionOfTextInput" asp-for="@Model.BookOrArticle.CaptionOfText" class="form-control" aria-describedby="CaptionOfTextInputHelpBlock" />
-                </div>
+						@* логотип книги (статьи) *@
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                <div id="CaptionOfTextInputHelpBlock" class="form-text">
+							<label asp-for="LogoOfArticleId" class="@cssForLabel"></label>
 
-                    <span class="fs-6 text-success">заголовок книги (статьи) - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+							@if (Model.LogoOfArticle != null)
+							{
+								<a asp-area="Admin"
+								   asp-controller="ImageInfo"
+								   asp-action="DetailsImage"
+								   asp-route-imageid="@Model.LogoOfArticleId"
+								   class="d-block"
+								   title="информация о картинке"
+								   onclick="this.target='_blank'">
 
-                </div>
+									<vc:view-image image-id="@Model.LogoOfArticleId"
+												   css-class="w-100 maxwidth700px shadw imageref"
+												   icon-type="webimage" />
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.CaptionOfText" class="text-danger"></span>
-                }
+								</a>
 
-                <hr class="w-50 mx-auto" />
+								@if (!string.IsNullOrEmpty(Model.LogoOfArticle.WebImageFileName))
+								{
+									<p class="text_shadow my-2 fluid-font-size">
+										@Model.LogoOfArticle.ImagePath/@Model.LogoOfArticle.WebImageFileName
+									</p>
+								}
+								else
+								{
+									<p class="text_shadow mt-2 fluid-font-size">
+										@Model.LogoOfArticle.ImagePath/@Model.LogoOfArticle.ImageFileName
+									</p>
+								}
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									логотип для статьи не задан
+								</p>
+							}
 
-            </div>
+							<hr class="w-50 mx-auto" />
 
-            @* Подзаголовок книги (статьи) *@
-            <div class="row g-2 justify-content-center">
+							<input asp-for="LogoOfArticleFormFile"
+								   id="LogoOfArticleFormFileInput"
+								   class="form-control mt-2 w-50 mx-auto"
+								   aria-describedby="LogoOfArticleFormFileInputHelpBlock" />
 
-                <div class="col-12">
-                    <label asp-for="@Model.BookOrArticle.TheSubtitle" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="LogoOfArticleFormFile" class="text-danger"></span>
+							}
 
-                <div class="col-12 text-start maxwidth700px">
-                    <input id="TheSubtitleInput" asp-for="@Model.BookOrArticle.TheSubtitle" class="form-control" aria-describedby="TheSubtitleInputHelpBlock" />
-                </div>
+							<div id="LogoOfArticleFormFileInputHelpBlock" class="form-text mt-3">
 
-                <div id="TheSubtitleInputHelpBlock" class="form-text">
+								<span class="fs-6 text-success">
+									выбрать логотип
+								</span>
 
-                    <span class="fs-6 text-success">подзаголовок книги (статьи)</span>
+							</div>
 
-                </div>
+							<hr class="w-50 mx-auto" />
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.TheSubtitle" class="text-danger"></span>
-                }
+							<select asp-for="LogoOfArticleId"
+									asp-items="ViewBag.ImageFiles"
+									class="d-flex col-12 col-sm-7 col-lg-6 mx-auto my-3">
 
-                <hr class="w-50 mx-auto" />
+								<option value="@Guid.Empty">Логотип не выбран</option>
 
-            </div>
+							</select>
 
-            @* Описание текста *@
-            <div class="row g-2 justify-content-center">
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="LogoOfArticleId" class="text-danger"></span>
+							}
 
-                <label asp-for="@Model.BookOrArticle.BookDescription" class="col-form-label text-primary fs-5 me-2"></label>
+							<div class="form-text">
 
-                <textarea id="BookDescriptionInput" class="form-control fordetails maxwidth700px"
-                          asp-for="@Model.BookOrArticle.BookDescription"
-                          rows="3"
-                          aria-describedby="BookDescriptionInputHelpBlock">
-                </textarea>
+								<span class="fs-6 text-success">
+									выбрать логотип
+								</span>
 
-                <div id="BookDescriptionInputHelpBlock" class="form-text">
+							</div>
 
-                    <span class="fs-6 text-success">описание текста - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+						</div>
 
-                </div>
+					</div>
 
-                <span asp-validation-for="@Model.BookOrArticle.BookDescription" class="text-danger"></span>
+				</div>
 
-                <hr class="w-50 mx-auto" />
+				@*  скан книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
 
-            </div>
+					@* заголовок группы «Cкан книги (статьи)» *@
+					<h2 class="accordion-header" id="headingScan">
 
-            @* Количество страниц *@
-            <div class="row g-2 justify-content-center">
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button" data-bs-toggle="collapse"
+								data-bs-target="#Scan"
+								aria-expanded="true"
+								aria-controls="Scan">
 
-                <div class="col-auto">
-                    <label asp-for="@Model.BookOrArticle.NumberOfPages" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+							<span class="form-label fs-5">Скан текста :</span>
 
-                <div class="col-auto text-start">
-                    <input id="NumberOfPagesInput" asp-for="@Model.BookOrArticle.NumberOfPages" class="form-control text-center" aria-describedby="NumberOfPagesInputHelpBlock" />
-                </div>
+						</button>
 
-                <div id="NumberOfPagesInputHelpBlock" class="form-text">
+					</h2>
 
-                    <span class="fs-6 text-success">количество страниц - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+					<div id="Scan"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingScan"
+						 data-bs-parent="#accordionEditArticle">
 
-                </div>
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.NumberOfPages" class="text-danger"></span>
-                }
+							<label asp-for="ScanOfArticleId" class="@cssForLabel"></label>
 
-                <hr class="w-50 mx-auto" />
+							@if (Model.ScanOfArticleId != null)
+							{
+								<a asp-area="Admin"
+								   asp-controller="ImageInfo"
+								   asp-action="DetailsImage"
+								   asp-route-imageid="@Model.ScanOfArticleId"
+								   class="d-block"
+								   title="скан текста"
+								   onclick="this.target='_blank'">
 
-            </div>
+									<vc:view-image image-id="@Model.ScanOfArticleId"
+												   css-class="w-100 maxwidth700px shadw imageref"
+												   icon-type="webimage" />
 
-            @* Дата публикации книги (статьи) *@
-            <div class="row g-2 justify-content-center mb-xl-2">
+								</a>
 
-                <div class="col-auto">
-                    <label asp-for="@Model.BookOrArticle.DateOfPublication" class="col-form-label text-primary fs-5 me-2"></label>
-                </div>
+								@if (Model.ScanOfArticle != null)
+								{
+									@if (!string.IsNullOrEmpty(Model.ScanOfArticle.WebImageFileName))
+									{
+										<p class="text_shadow my-2 fluid-font-size">
+											@Model..ScanOfArticle.ImagePath/@Model.ScanOfArticle.WebImageFileName
+										</p>
+									}
+									else
+									{
+										<p class="text_shadow mt-2 fluid-font-size">
+											@Model.ScanOfArticle.ImagePath/@Model.ScanOfArticle.ImageFileName
+										</p>
+									}
+								}
+								else
+								{
+									<p class="text-center fluid-font-size text-bg-danger">
+										скан для статьи не задан
+									</p>
+								}
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									скан для статьи не задан
+								</p>
+							}
 
-                <div class="col-auto">
-                    <input id="DateOfPublicationInput" asp-for="@Model.BookOrArticle.DateOfPublication" class="form-control text-center" aria-describedby="DateOfPublicationInputHelpBlock" />
-                </div>
+							<hr class="w-50 mx-auto" />
 
-                <div id="DateOfPublicationInputHelpBlock" class="form-text">
+							<input asp-for="ScanOfArticleFormFile"
+								   id="ScanOfArticleFormFileInput"
+								   class="form-control mt-2 w-50 mx-auto"
+								   aria-describedby="ScanOfArticleFormFileInputHelpBlock" />
 
-                    <span class="fs-6 text-success">дата публикации - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">обязательное поле</span>
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="ScanOfArticleFormFile" class="text-danger"></span>
+							}
 
-                </div>
+							<div id="ScanOfArticleFormFileInputHelpBlock" class="form-text mt-3">
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.BookOrArticle.DateOfPublication" class="text-danger"></span>
-                }
+								<span class="fs-6 text-success">
+									выбрать скан
+								</span>
 
-            </div>
+							</div>
 
-            @* Теги по содержанию текста *@
-            <div>
+							<hr class="w-50 mx-auto" />
 
-                <label asp-for="BookOrArticle.TagsForBook" class="col-form-label text-primary fs-5 me-2"></label>
+							<select asp-for="ScanOfArticleId"
+									asp-items="ViewBag.ImageFiles"
+									class="d-flex col-12 col-sm-7 col-lg-6 mx-auto my-3">
 
-                <textarea id="TagsForBookInput" class="form-control fordetails mx-auto maxwidth700px"
-                          asp-for="BookOrArticle.TagsForBook"
-                          rows="3"
-                          aria-describedby="TagsForBookInputHelpBlock">
-                </textarea>
+								<option value="@Guid.Empty">Скан не выбран</option>
 
-                <div id="TagsForBookInputHelpBlock" class="form-text">
+							</select>
 
-                    <span class="fs-6 text-success">теги по тексту - </span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger">вводить через запятую</span>
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="ScanOfArticleId" class="text-danger"></span>
+							}
 
-                </div>
+							<div class="form-text">
 
-                <span asp-validation-for="BookOrArticle.TagsForBook" class="text-danger"></span>
+								<span class="fs-6 text-success">
+									выбрать скан
+								</span>
 
-                <hr class="w-50 mx-auto" />
+							</div>
 
-            </div>
+						</div>
 
-            @* Ссылка на скачивание в формате word *@
-            <div class="row g-2 justify-content-center">
+					</div>
 
-                <div class="col-12">
-                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToWordDoc"></label>
-                </div>
+				</div>
 
-                <div class="col-12 text-start maxwidth700px">
-                    <input id="RefToWordDocInput" class="form-control" asp-for="BookOrArticle.RefToWordDoc" aria-describedby="RefToWordDocInputHelpBlock" />
-                </div>
+				@*  видео связанное с книгой (статьёй) *@
+				<div class="accordion-item mt-2 shadw">
 
-                <div id="RefToWordDocInputHelpBlock" class="form-text">
+					@* Заголовок группы «видео связанное с книгой (статьёй)» *@
+					<h2 id="headingVideoForBookOrArticle" class="accordion-header">
 
-                    <span class="fs-6 text-success">ссылка на текст в формате word</span>
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#VideoForBookOrArticle"
+								aria-expanded="true"
+								aria-controls="VideoForBookOrArticle">
 
-                </div>
+							<span class="form-label fs-5">Видео для текста :</span>
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="BookOrArticle.RefToWordDoc" class="text-danger"></span>
-                }
+						</button>
 
-                <hr class="w-50 mx-auto" />
+					</h2>
 
-            </div>
+					<div id="VideoForBookOrArticle"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingVideoForBookOrArticle"
+						 data-bs-parent="#accordionEditArticle">
 
-            @* Ссылка на скачивание в формате pdf *@
-            <div class="row g-2 justify-content-center">
+						<div class="accordion-body accordion-body-nointend text-center">
 
-                <div class="col-12">
-                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToPdf"></label>
-                </div>
+							<label asp-for="VideoForBookOrArticleId" class="@cssForLabel"></label>
 
-                <div class="col-12 text-start maxwidth700px">
-                    <input id="RefToPdfInput" class="form-control" asp-for="BookOrArticle.RefToPdf" aria-describedby="RefToPdfInputHelpBlock" />
-                </div>
+							@if (Model.VideoForBookOrArticle != null)
+							{
+								<a asp-area="Admin"
+								   asp-controller="MovieInfo"
+								   asp-action="DetailsMovie"
+								   asp-route-movieid="@Model.VideoForBookOrArticle.MovieFileModelId"
+								   class="d-block"
+								   title="информация о фильме"
+								   onclick="this.target='_blank'">
 
-                <div id="RefToPdfInputHelpBlock" class="form-text">
+									<vc:view-image image-id="@Model.VideoForBookOrArticle.ImageFileModelId"
+												   css-class="w-100 mx-auto maxwidth300px shadw imageref"
+												   icon-type="webimage" />
 
-                    <span class="fs-6 text-success">ссылка на текст в формате pdf</span>
+								</a>
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									видео не задано
+								</p>
+							}
 
-                </div>
+							<hr class="w-50 mx-auto" />
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="BookOrArticle.RefToPdf" class="text-danger"></span>
-                }
+							<input asp-for="VideoForBookOrArticleFormFile"
+								   id="VideoForBookOrArticleFormFileInput"
+								   class="form-control mt-2 w-50 mx-auto"
+								   aria-describedby="VideoForBookOrArticleFormFileInputHelpBlock" />
 
-                <hr class="w-50 mx-auto" />
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="VideoForBookOrArticleFormFile" class="text-danger"></span>
+							}
 
-            </div>
+							<div id="VideoForBookOrArticleFormFileInputHelpBlock" class="form-text mt-3">
 
-            @* Ссылка на скачивание аудиокниги *@
-            <div class="row g-2 justify-content-center">
+								<span class="fs-6 text-success">
+									выбрать видео
+								</span>
 
-                <div class="col-12">
-                    <label class="col-form-label text-primary fs-5 me-2" asp-for="BookOrArticle.RefToAudio"></label>
-                </div>
+							</div>
 
-                <div class="col-12 text-start maxwidth700px">
-                    <input id="RefToAudioInput" class="form-control" asp-for="BookOrArticle.RefToAudio" aria-describedby="RefToAudioInputHelpBlock" />
-                </div>
+							<hr class="w-50 mx-auto" />
 
-                <div id="RefToAudioInputHelpBlock" class="form-text">
+							<select asp-for="VideoForBookOrArticleId"
+									asp-items="ViewBag.VideoFiles"
+									class="d-flex col-12 col-sm-7 col-lg-6 mx-auto my-3">
 
-                    <span class="fs-6 text-success">ссылка на аудиокнигу</span>
+								<option value="@Guid.Empty">Видео не выбрано</option>
 
-                </div>
+							</select>
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="BookOrArticle.RefToAudio" class="text-danger"></span>
-                }
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="VideoForBookOrArticleId" class="text-danger"></span>
+							}
 
-            </div>
+							<div class="form-text">
 
-            @* Сохранить - Отменить *@
-            <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
+								<span class="fs-6 text-success">
+									выбрать видео
+								</span>
 
-                <button type="submit" class="btn btn-outline-success mt-2 me-2 text-center shadw"
-                        title="Сохранить">
-                    Сохранить
-                </button>
+							</div>
 
-                <a class="btn btn-outline-danger mt-2 shadw"
-                   asp-area="Admin"
-                   asp-controller="BooksAndArticles"
-                   asp-action="Index"
-                   title="Отменить">
-                    Отменить
-                </a>
+						</div>
 
-            </div>
+					</div>
 
-        </form>
+				</div>
 
-    </div>
+				@*  ссылка на статью (издателя) *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Ссылка на статью (издателя)» *@
+					<h2 id="headingUrlOfArticle" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#UrlOfArticle"
+								aria-expanded="true"
+								aria-controls="UrlOfArticle">
+
+							<span class="form-label fs-5">Ссылка на текст :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="UrlOfArticle"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingUrlOfArticle"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="UrlOfArticle" class="@cssForLabel"></label>
+
+							@if (Model.UrlOfArticle != null)
+							{
+								<div class="col-12 fs-5 text-center pb-3">
+
+									<a class="text-black text_shadow"
+									   href="@Model.UrlOfArticle"
+									   nClick="this.target='_blank'">
+
+										@Model.UrlOfArticle
+
+									</a>
+
+								</div>
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									ссылка на статью не задана
+								</p>
+							}
+
+							<input asp-for="UrlOfArticle"
+								   id="UrlOfArticleInput"
+								   class="form-control text-start my-3 col-12 col-xl-10 border border-1 border-black"
+								   aria-describedby="UrlOfArticleInputHelpBlock" />
+
+							<div id="UrlOfArticleInputHelpBlock" class="form-text">
+								<span class="d-none d-sm-inline-block fs-6 text-success">тег «UrlOfArticle» - </span>
+								<span class="fs-6 text-success">ссылка на статью или издателя</span>
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="UrlOfArticle" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* автор книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Автор книги (статьи)» *@
+					<h2 class="accordion-header" id="headingAuthor">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#Author"
+								aria-expanded="true" aria-controls="Author">
+
+							<span class="form-label fs-5">Автор текста :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="Author"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingAuthor"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="AuthorOfText" class="@cssForLabel"></label>
+
+							<input asp-for="AuthorOfText"
+								   id="AuthorOfTextInput"
+								   class="text-center col-11 col-lg-6"
+								   aria-describedby="AuthorOfTextInputHelpBlock" />
+
+							<div id="AuthorOfTextInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">автор книги (статьи) - </span>
+								<br class="d-md-none" />
+								<span class="fs-6 text-danger">обязательное поле</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="AuthorOfText" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* заголовок книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Заголовок книги (статьи)» *@
+					<h2 id="headingCaptionOfText" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#CaptionOfText"
+								aria-expanded="true"
+								aria-controls="CaptionOfText">
+
+							<span class="form-label fs-5">Заголовок текста :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="CaptionOfText"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingCaptionOfText"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="CaptionOfText" class="@cssForLabel"></label>
+
+							<input asp-for="CaptionOfText"
+								   id="CaptionOfTextInput"
+								   class="form-control w-75 mx-auto text-center border border-1 border-black"
+								   aria-describedby="CaptionOfTextInputHelpBlock" />
+
+							<div id="CaptionOfTextInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">заголовок книги (статьи) - </span>
+								<br class="d-md-none" />
+								<span class="fs-6 text-danger">обязательное поле</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="CaptionOfText" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* подзаголовок книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Подзаголовок книги (статьи)» *@
+					<h2 id="headingTheSubtitle" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#TheSubtitle"
+								aria-expanded="true"
+								aria-controls="TheSubtitle">
+
+							<span class="form-label fs-5">Подзаголовок текста :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="TheSubtitle"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingTheSubtitle"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="TheSubtitle" class="@cssForLabel"></label>
+
+							<input asp-for="TheSubtitle"
+								   id="TheSubtitleInput"
+								   class="form-control w-75 mx-auto text-center border border-1 border-black"
+								   aria-describedby="TheSubtitleInputHelpBlock" />
+
+							<div id="TheSubtitleInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">подзаголовок книги (статьи)</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="TheSubtitle" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* описание текста *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Описание текста» *@
+					<h2 class="accordion-header" id="headingBookDescription">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#BookDescription"
+								aria-expanded="true"
+								aria-controls="BookDescription">
+
+							<span class="form-label fs-5">Описание текста :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="BookDescription"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingBookDescription"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="BookDescription" class="@cssForLabel"></label>
+
+							<textarea id="BookDescriptionInput" class="form-control fordetails mx-auto col-12 col-xl-10"
+									  asp-for="BookDescription"
+									  rows="4"
+									  aria-describedby="BookDescriptionInputHelpBlock">
+                            </textarea>
+
+							<div id="BookDescriptionInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">описание текста - </span>
+								<br class="d-md-none" />
+								<span class="fs-6 text-danger">обязательное поле</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="BookDescription" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* количество страниц *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Колличество страниц» *@
+					<h2 class="accordion-header" id="headingNumberOfPages">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#NumberOfPages"
+								aria-expanded="true"
+								aria-controls="NumberOfPages">
+
+							<span class="form-label fs-5">Количество страниц :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="NumberOfPages"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingNumberOfPages"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="row accordion-body accordion-body-nointend text-center justify-content-center justify-content-sm-start">
+
+							<label asp-for="NumberOfPages" class="@cssForLabel col-12 col-sm-8 text-center text-sm-end"></label>
+
+							<input asp-for="NumberOfPages"
+								   id="NumberOfPagesInput"
+								   class="text-center text-sm-start py-1 col-4 col-sm-2"
+								   aria-describedby="NumberOfPagesInputHelpBlock" />
+
+							<div id="NumberOfPagesInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">количество страниц - </span>
+								<br class="d-md-none" />
+								<span class="fs-6 text-danger">обязательное поле</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="NumberOfPages" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* дата публикации книги (статьи) *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Дата публикации книги (статьи)» *@
+					<h2 class="accordion-header" id="headingDateOfPublication">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#DateOfPublication"
+								aria-expanded="true"
+								aria-controls="DateOfPublication">
+
+							<span class="form-label fs-5">Дата публикации :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="DateOfPublication"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingDateOfPublication"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<div class="row g-2 justify-content-center">
+
+								<div class="col-auto">
+									<label asp-for="DateOfPublication" class="@cssForLabel"></label>
+								</div>
+
+								<div class="col-auto text-start">
+									<input asp-for="DateOfPublication"
+										   id="DateOfPublicationInput"
+										   class="form-control"
+										   aria-describedby="DateOfPublicationInputHelpBlock" />
+								</div>
+
+								<div id="DateOfPublicationInputHelpBlock" class="form-text">
+
+									<span class="fs-6 text-success">дата публикации текста - </span>
+									<br class="d-md-none" />
+									<span class="fs-6 text-danger">обязательное поле</span>
+
+								</div>
+
+								@if (Context.Request.Method == "POST")
+								{
+									<span asp-validation-for="DateOfPublication" class="text-danger"></span>
+								}
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@* Теги по содержанию текста *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Теги по содержанию текста» *@
+					<h2 class="accordion-header" id="headingTagsForBook">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#TagsForBook"
+								aria-expanded="true"
+								aria-controls="BookDescription">
+
+							<span class="form-label fs-5">Теги по тексту :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="TagsForBook"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingTagsForBook"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="TagsForBook" class="@cssForLabel"></label>
+
+							<div class="maxwidthcontent mx-auto justify-content-lg-start mb-3">
+
+								@foreach (var tag in Model.TagsForBook.Split(',', StringSplitOptions.RemoveEmptyEntries))
+								{
+									<p class="fs-5 text-start text_shadow"># @tag</p>
+								}
+
+							</div>
+
+							<textarea asp-for="TagsForBook"
+									  id="TagsForBookInput"
+									  class="form-control fordetails mx-auto"
+									  rows="3"
+									  aria-describedby="TagsForBookInputHelpBlock">
+                            </textarea>
+
+							<div id="TagsForBookInputHelpBlock" class="form-text">
+
+								<span class="fs-6 text-success">теги по тексту - </span>
+								<br class="d-md-none" />
+								<span class="fs-6 text-danger">вводить через запятую</span>
+
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="TagsForBook" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+				@*  ссылка на скачивания текста *@
+				<div class="accordion-item mt-2 shadw">
+
+					@* заголовок группы «Ссылки на скачивание текста» *@
+					<h2 id="headingLoadText" class="accordion-header">
+
+						<button class="accordion-button collapsed py-0 stranicy"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#LoadText"
+								aria-expanded="true"
+								aria-controls="LoadText">
+
+							<span class="form-label fs-5">Скачать текст :</span>
+
+						</button>
+
+					</h2>
+
+					<div id="LoadText"
+						 class="accordion-collapse collapse"
+						 aria-labelledby="headingLoadText"
+						 data-bs-parent="#accordionEditArticle">
+
+						<div class="accordion-body accordion-body-nointend text-center">
+
+							<label asp-for="RefToWordDoc" class="@cssForLabel"></label>
+
+							@if (Model.RefToWordDoc != null)
+							{
+								<div class="col-12 fs-5 text-center pb-3">
+
+									<a class="text-black text_shadow"
+									   href="@Model.RefToWordDoc"
+									   title="скачать в формате word"
+									   onClick="this.target='_blank'">
+
+										@Model.RefToWordDoc
+
+									</a>
+
+								</div>
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									ссылка не задана
+								</p>
+							}
+
+							<input asp-for="RefToWordDoc"
+								   id="RefToWordDocInput"
+								   class="form-control text-center border border-1 border-black"
+								   aria-describedby="RefToWordDocInputHelpBlock" />
+
+							<div id="RefToWordDocInputHelpBlock" class="form-text">
+								<span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToWordDoc» - </span>
+								<span class="fs-6 text-success">ссылка на текст в формате word</span>
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="RefToWordDoc" class="text-danger"></span>
+							}
+
+							<label asp-for="RefToPdf" class="@cssForLabel"></label>
+
+							@if (Model.RefToPdf != null)
+							{
+								<div class="col-12 fs-5 text-center pb-3">
+
+									<a class="text-black text_shadow"
+									   href="@Model.RefToPdf"
+									   title="скачать в формате pdf"
+									   onClick="this.target='_blank'">
+
+										@Model.RefToPdf
+
+									</a>
+
+								</div>
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									ссылка не задана
+								</p>
+							}
+
+							<input asp-for="RefToPdf"
+								   id="RefToPdfInput"
+								   class="form-control text-center border border-1 border-black"
+								   aria-describedby="RefToPdfInputHelpBlock" />
+
+							<div id="RefToPdfInputHelpBlock" class="form-text">
+								<span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToPdf» - </span>
+								<span class="fs-6 text-success">ссылка на текст в формате pdf</span>
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="RefToPdf" class="text-danger"></span>
+							}
+
+							<label asp-for="RefToAudio" class="@cssForLabel"></label>
+
+							@if (Model.RefToAudio != null)
+							{
+								<div class="col-12 fs-5 text-center pb-3">
+
+									<a class="text-black text_shadow"
+									   href="@Model.RefToAudio"
+									   title="скачать аудиокнигу"
+									   onClick="this.target='_blank'">
+
+										@Model.RefToAudio
+
+									</a>
+
+								</div>
+							}
+							else
+							{
+								<p class="text-center fluid-font-size text-bg-danger">
+									ссылка не задана
+								</p>
+							}
+
+							<input asp-for="RefToAudio"
+								   id="RefToAudioInput"
+								   class="form-control text-center border border-1 border-black"
+								   aria-describedby="RefToAudioInputHelpBlock" />
+
+							<div id="RefToPdfInputHelpBlock" class="form-text">
+								<span class="d-none d-sm-inline-block fs-6 text-success">тег «RefToAudio» - </span>
+								<span class="fs-6 text-success">ссылка аудиокнигу</span>
+							</div>
+
+							@if (Context.Request.Method == "POST")
+							{
+								<span asp-validation-for="RefToAudio" class="text-danger"></span>
+							}
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			@* Сохранить - Отменить *@
+			<div class="card-footer p-0 pb-2 mt-4">
+
+				<button type="submit"
+						class="btn btn-outline-success mt-2 me-2 text-center shadw"
+						title="Сохранить">
+
+					Сохранить
+
+				</button>
+
+				<a class="btn btn-outline-danger mt-2 shadw"
+				   asp-area="Admin"
+				   asp-controller="BooksAndArticles"
+				   asp-action="Index"
+				   title="Отменить">
+
+					Отменить
+
+				</a>
+
+			</div>
+
+		</form>
+
+	</div>
 
 </div>
