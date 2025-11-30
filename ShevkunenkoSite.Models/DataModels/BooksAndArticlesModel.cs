@@ -13,6 +13,13 @@ public class BooksAndArticlesModel
 
     #endregion
 
+    #region Обложка книги
+
+    public Guid? ImageFileModelId { get; set; }
+    public ImageFileModel? ImageFileModel { get; set; }
+
+    #endregion
+
     #region Тип текста
 
     [DataType(DataType.Text)]
@@ -22,10 +29,8 @@ public class BooksAndArticlesModel
     [NotMapped]
     public string[] TypesOfText =
         [
-            "web",
             "book",
-            "article",
-            "audiobook"
+            "article"
         ];
 
     #endregion
@@ -54,6 +59,14 @@ public class BooksAndArticlesModel
     [Display(Name = "Скан статьи :")]
     public Guid? ScanOfArticleId { get; set; }
     public ImageFileModel? ScanOfArticle { get; set; }
+
+    #endregion
+
+    #region Видео связанное с книгой (статьёй)
+
+    [Display(Name = "Видео для текста :")]
+    public Guid? VideoForBookOrArticleId { get; set; }
+    public MovieFileModel? VideoForBookOrArticle { get; set; }
 
     #endregion
 
@@ -127,15 +140,9 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Видео связанное с книгой (статьёй)
+    #region Ссылки на загрузку
 
-    [Display(Name = "Видео для текста :")]
-    public Guid? VideoForBookOrArticleId { get; set; }
-    public MovieFileModel? VideoForBookOrArticle { get; set; }
-
-    #endregion
-
-    #region Ссылка на документ Word
+    #region Ссылка загрузки Word
 
     [DataType(DataType.Url)]
     [Display(Name = "Документ Word : ")]
@@ -143,7 +150,7 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Ссылка на документ PDF
+    #region Ссылка загрузки PDF
 
     [DataType(DataType.Url)]
     [Display(Name = "Документ PDF : ")]
@@ -151,7 +158,7 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Ссылка на аудиокнигу
+    #region Ссылка загрузки аудиокниги
 
     [DataType(DataType.Url)]
     [Display(Name = "Аудиокнига : ")]
@@ -159,17 +166,45 @@ public class BooksAndArticlesModel
 
     #endregion
 
-    #region Навигационное свойство TextInfoModel
+    #endregion
 
-    //public TextInfoModel? TextInfo { get; set; }
+    #region NotMapped
 
-    // TODO: выдает ошибку при установке
+    #region Выбрать обложку
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать обложку :")]
+    public IFormFile? CoverForBookFormFile { get; set; }
 
     #endregion
 
-    #region Навигационное свойство AudioBookModel
+    #region Выбрать логотип
 
-    public AudioBookModel? AudioBook { get; set; }
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать логотип :")]
+    public IFormFile? LogoOfArticleFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать скан
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать скан :")]
+    public IFormFile? ScanOfArticleFormFile { get; set; }
+
+    #endregion
+
+    #region Выбрать видео
+
+    [NotMapped]
+    [DataType(DataType.Upload)]
+    [Display(Name = "Выбрать видео :")]
+    public IFormFile? VideoForBookOrArticleFormFile { get; set; }
+
+    #endregion
 
     #endregion
 }

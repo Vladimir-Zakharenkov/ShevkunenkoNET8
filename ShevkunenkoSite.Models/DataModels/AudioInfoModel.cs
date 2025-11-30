@@ -140,12 +140,6 @@ public class AudioInfoModel
     public TextInfoModel? Transcript { get; set; }
     #endregion
 
-    #region Навигационное свойство страницы сайта
-
-    //public PageInfoModel? PageInfoModel { get; set; }
-
-    #endregion
-
     #region Текст аудиофайла (NotMapped)
 
     [NotMapped]

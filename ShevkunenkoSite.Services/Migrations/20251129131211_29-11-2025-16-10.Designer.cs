@@ -12,8 +12,8 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20251126191310_26-11-2025-22-12")]
-    partial class _261120252212
+    [Migration("20251129131211_29-11-2025-16-10")]
+    partial class _291120251610
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,9 +71,7 @@ namespace ShevkunenkoSite.Services.Migrations
 
                     b.HasKey("AudioBookModelId");
 
-                    b.HasIndex("BookForAudioBookId")
-                        .IsUnique()
-                        .HasFilter("[BookForAudioBookId] IS NOT NULL");
+                    b.HasIndex("BookForAudioBookId");
 
                     b.ToTable("AudioBookModel");
                 });
@@ -1113,8 +1111,8 @@ namespace ShevkunenkoSite.Services.Migrations
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.AudioBookModel", b =>
                 {
                     b.HasOne("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", "BookForAudioBook")
-                        .WithOne("AudioBook")
-                        .HasForeignKey("ShevkunenkoSite.Models.DataModels.AudioBookModel", "BookForAudioBookId");
+                        .WithMany()
+                        .HasForeignKey("BookForAudioBookId");
 
                     b.Navigation("BookForAudioBook");
                 });
@@ -1250,11 +1248,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Navigation("AudioInfoModel");
 
                     b.Navigation("BooksAndArticlesModel");
-                });
-
-            modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
-                {
-                    b.Navigation("AudioBook");
                 });
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.PageInfoModel", b =>

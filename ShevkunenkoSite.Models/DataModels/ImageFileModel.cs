@@ -2,7 +2,7 @@
 
 public class ImageFileModel
 {
-    #region Идентификатор (Guid) картинки в базе данных
+    #region Идентификатор (Guid)
 
     [Key]
     [Display(Name = "Идентификатор картинки :")]

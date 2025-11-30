@@ -47,7 +47,6 @@ public class AudioBookController(
         {
             var audioBook = await audioBookContext.AudioBooks
                 .Include(inc => inc.BookForAudioBook)
-                 //   .ThenInclude(thenInc => thenInc != null ? thenInc.PageInfoModel : null)
                 .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookId);
 
             return View(audioBook);
@@ -135,7 +134,6 @@ public class AudioBookController(
 
             var editAudioBook = await audioBookContext.AudioBooks
                 .Include(inc => inc.BookForAudioBook)
-      //              .ThenInclude(thenInc => thenInc != null ? thenInc.PageInfoModel : null)
                 .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookId);
 
             #endregion

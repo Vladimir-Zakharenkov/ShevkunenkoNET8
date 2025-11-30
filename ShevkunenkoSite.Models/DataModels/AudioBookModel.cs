@@ -54,12 +54,5 @@ public class AudioBookModel
 
     #endregion
 
-    #region Страница аудиокниги
-
-    //public Guid? PageInfoModelId { get; set; }
-    //public PageInfoModel? PageInfoModel { get; set; }
-
-    #endregion
-
     // TODO: добавить свойство ссылки(Uri) на аудиокнигу
 }

@@ -111,6 +111,7 @@
 				<div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
 			}
 
+			@* данные по группам *@
 			<div id="accordionEditPage" class="accordion">
 
 				@* выбор MVC или RazorPages *@
@@ -340,23 +341,33 @@
 										<a asp-area="Admin"
 										   asp-controller="TextInfo"
 										   asp-action="DetailsText"
-										   asp-route-imageid="@Model.TextInfoId"
+										   asp-route-textId="@Model.TextInfoId"
 										   class="d-block mx-auto maxwidth300px shadw imageref"
 										   title="информация о файле текста"
 										   onclick="this.target='_blank'">
 
-											<vc:view-image image-id="@Model.ImageFileModelId" css-class="w-100" icon-type="webimage" />
+											<label asp-for="@Model.TextInfo.FolderForText" class="@cssForLabel"></label>
+
+											<p class="text_shadow text-indent-0 text-center fs-5">
+												@DataConfig.TextsFolderPath.Replace('\\', '/')@Model.TextInfo.FolderForText
+											</p>
+
+											<hr class="w-25 mx-auto" />
+
+											<span class="text_shadow my-2 fluid-font-size">
+												@Model.TextInfo.TxtFileName
+											</span>
+
+											<span class="text_shadow my-2 fluid-font-size">
+												@Model.TextInfo.HtmlFileName
+											</span>
 
 										</a>
-
-										<p class="text_shadow my-2 fluid-font-size">
-											@Model.TextInfo.HtmlFileName
-										</p>
 									}
 									else
 									{
-										<p class="fs-6 form-text text-success">
-											файл текста не выбран
+										<p class="text-center fluid-font-size text-bg-danger">
+											файл текста для страницы не задан
 										</p>
 									}
 								}
@@ -391,7 +402,6 @@
 									<option value="@Guid.Empty">Текст не выбран</option>
 
 								</select>
-
 
 								@if (Context.Request.Method == "POST")
 								{

@@ -151,43 +151,43 @@
 		}
 
 
-		@* @if (Model.OgType == "article" && Model.BooksAndArticles != null)
+		@if (Model.OgType == "article" && Model.TextInfo != null && Model.TextInfo.BooksAndArticlesModel != null)
 		{
 			<span itemscope itemtype="https://schema.org/Article">
 
-				<meta itemprop="author" content="@Model.BooksAndArticles.AuthorOfText" />
-				<meta itemprop="name" content="@Model.BooksAndArticles.CaptionOfText" />
-				<meta itemprop="publisher" content="@Model.BooksAndArticles.Publisher" />
-				<meta itemprop="datePublished dateModified" content="@Model.BooksAndArticles.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
-				<meta itemprop="description" content="@Model.BooksAndArticles.BookDescription" />
+				<meta itemprop="author" content="@Model.TextInfo.BooksAndArticlesModel.AuthorOfText" />
+				<meta itemprop="name" content="@Model.TextInfo.BooksAndArticlesModel.CaptionOfText" />
+				<meta itemprop="publisher" content="@Model.TextInfo.BooksAndArticlesModel.Publisher" />
+				<meta itemprop="datePublished dateModified" content="@Model.TextInfo.BooksAndArticlesModel.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
+				<meta itemprop="description" content="@Model.TextInfo.BooksAndArticlesModel.BookDescription" />
 
-				@if (Model.BooksAndArticles.LogoOfArticle != null)
+				@if (Model.TextInfo.BooksAndArticlesModel.LogoOfArticle != null)
 				{
 					<span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
-						<meta itemprop="caption" content="@Model.BooksAndArticles.LogoOfArticle.ImageCaption" />
-						<link itemprop="contentUrl thumbnailUrl url" href="href=@sitePath@Model.BooksAndArticles.LogoOfArticle.ImagePath/@Model.BooksAndArticles.LogoOfArticle.WebImageFileName" />
-						<meta itemprop="width" content="@Model.BooksAndArticles.LogoOfArticle.WebImageWidth" />
-						<meta itemprop="height" content="@Model.BooksAndArticles.LogoOfArticle.WebImageHeight" />
+						<meta itemprop="caption" content="@Model.TextInfo.BooksAndArticlesModel.LogoOfArticle.ImageCaption" />
+						<link itemprop="contentUrl thumbnailUrl url" href="href=@sitePath@Model.TextInfo.BooksAndArticlesModel.LogoOfArticle.ImagePath/@Model.TextInfo.BooksAndArticlesModel.LogoOfArticle.WebImageFileName" />
+						<meta itemprop="width" content="@Model.TextInfo.BooksAndArticlesModel.LogoOfArticle.WebImageWidth" />
+						<meta itemprop="height" content="@Model.TextInfo.BooksAndArticlesModel.LogoOfArticle.WebImageHeight" />
 					</span>
 				}
 
 			</span>
-		} *@
+		}
 
 
-		@* @if (Model.OgType == "book" && Model.BooksAndArticles != null)
+		@if (Model.OgType == "book" && Model.TextInfo != null && Model.TextInfo.BooksAndArticlesModel != null)
 		{
 			<span itemscope itemtype="http://schema.org/Book">
 
-				<meta itemprop="author" content="@Model.BooksAndArticles.AuthorOfText">
-				<meta itemprop="name" content="@Model.BooksAndArticles.CaptionOfText">
-				<meta itemprop="publisher" content="@Model.BooksAndArticles.Publisher">
-				<meta itemprop="datePublished" content="@Model.BooksAndArticles.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
-				<meta itemprop="numberOfPages" content="@Model.BooksAndArticles.NumberOfPages">
-				<meta itemprop="description" content="@Model.BooksAndArticles.BookDescription">
+				<meta itemprop="author" content="@Model.TextInfo.BooksAndArticlesModel.AuthorOfText">
+				<meta itemprop="name" content="@Model.TextInfo.BooksAndArticlesModel.CaptionOfText">
+				<meta itemprop="publisher" content="@Model.TextInfo.BooksAndArticlesModel.Publisher">
+				<meta itemprop="datePublished" content="@Model.TextInfo.BooksAndArticlesModel.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+				<meta itemprop="numberOfPages" content="@Model.TextInfo.BooksAndArticlesModel.NumberOfPages">
+				<meta itemprop="description" content="@Model.TextInfo.BooksAndArticlesModel.BookDescription">
 
 			</span>
-		} *@
+		}
 
 
 		@if (Model.OgType == "audiobook")
@@ -210,12 +210,12 @@
 		}
 
 
-		@* @if (Model.OgType == "book" && Model.BooksAndArticles != null)
+		@if (Model.OgType == "book" && Model.TextInfo != null && Model.TextInfo.BooksAndArticlesModel != null)
 		{
 			<a asp-area=""
 			   asp-controller="Books"
 			   asp-action="Book"
-			   asp-route-bookCaption="@Model.BooksAndArticles.CaptionOfText.Replace(' ', '-')"
+			   asp-route-bookCaption="@Model.TextInfo.BooksAndArticlesModel.CaptionOfText.Replace(' ', '-')"
 			   asp-route-pageNumber=0
 			   class="rounded-3 p-0">
 
@@ -273,39 +273,7 @@
 				}
 
 			</a>
-		} *@
-
-
-		<a class="rounded-3 p-0"
-		   href="@Url.Content((Model.PagePathNickName != string.Empty ? Model.PagePathNickName : Model.PageFullPathWithData))"
-		   title="@Model.PageTitle"
-		   itemprop="url">
-
-			@if (Model.ImageFileModel != null)
-			{
-				<vc:view-image image-id="@Model.ImageFileModel.ImageFileModelId"
-							   css-class="card-img-top shadw rounded-3"
-							   icon-type="webicon300" />
-			}
-			else
-			{
-				<vc:view-image image-id="@DataConfig.NoImage"
-							   css-class="card-img-top shadw rounded-3"
-							   icon-type="webicon300" />
-			}
-
-			@if (!string.IsNullOrEmpty(Model.PageCardText))
-			{
-				<div class="d-none d-sm-block card-body rounded-2 p-0 mt-1 mt-md-2 shadw cardBodyBg">
-
-					<p class="card-title p-0 mb-0 fw-medium fontadaptive">@Model.PageCardText</p>
-
-				</div>
-			}
-
-		</a>
-
-
+		}
 
 	</div>
 

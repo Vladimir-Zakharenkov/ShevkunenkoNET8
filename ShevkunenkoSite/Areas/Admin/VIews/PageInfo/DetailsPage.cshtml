@@ -490,19 +490,31 @@
 						{
 							<div id="accordionForTextFile" class="accordion">
 
-								<label asp-for="@Model.TextInfo.TxtFileName" class="@cssForLabel fluid-font-size"></label>
-								<br class="d-md-none" />
-								<span class="fs-5 text_shadow fluid-font-size">@Model.TextInfo.TxtFileName</span>
-								<p class="fs-5 text-primary mb-2 fluid-font-size">(@Model.TextInfo.TxtFileSize байт)</p>
+								<a asp-area="Admin"
+								   asp-controller="TextInfo"
+								   asp-action="DetailsText"
+								   asp-route-textId="@Model.TextInfoId"
+								   class="d-block mx-auto maxwidth300px shadw imageref"
+								   title="информация о файле текста"
+								   onclick="this.target='_blank'">
 
-								<hr class="w-50 mx-auto" />
+									<label asp-for="@Model.TextInfo.FolderForText" class="@cssForLabel"></label>
 
-								<label asp-for="@Model.TextInfo.HtmlFileName" class="@cssForLabel fluid-font-size"></label>
-								<br class="d-md-none" />
-								<span class="fs-5 text_shadow fluid-font-size">@Model.TextInfo.HtmlFileName</span>
-								<p class="fs-5 text-primary mb-2 fluid-font-size">
-									(@Model.TextInfo.HtmlFileSize байт)
-								</p>
+									<p class="text_shadow text-indent-0 text-center fs-5">
+										@DataConfig.TextsFolderPath.Replace('\\', '/')@Model.TextInfo.FolderForText
+									</p>
+
+									<hr class="w-25 mx-auto" />
+
+									<span class="text_shadow my-2 fluid-font-size">
+										@Model.TextInfo.TxtFileName
+									</span>
+									<br />
+									<span class="text_shadow my-2 fluid-font-size">
+										@Model.TextInfo.HtmlFileName
+									</span>
+
+								</a>
 
 								@* Файл TXT *@
 								<div class="accordion-item my-3 shadw">

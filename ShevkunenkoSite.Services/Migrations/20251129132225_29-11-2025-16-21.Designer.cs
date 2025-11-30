@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShevkunenkoSite.Services;
 
@@ -11,9 +12,11 @@ using ShevkunenkoSite.Services;
 namespace ShevkunenkoSite.Services.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class SiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251129132225_29-11-2025-16-21")]
+    partial class _291120251621
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,9 +207,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.Property<DateTime>("DateOfPublication")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ImageFileModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("LogoOfArticleId")
                         .HasColumnType("uniqueidentifier");
 
@@ -248,8 +248,6 @@ namespace ShevkunenkoSite.Services.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BooksAndArticlesModelId");
-
-                    b.HasIndex("ImageFileModelId");
 
                     b.HasIndex("LogoOfArticleId");
 
@@ -1128,10 +1126,6 @@ namespace ShevkunenkoSite.Services.Migrations
 
             modelBuilder.Entity("ShevkunenkoSite.Models.DataModels.BooksAndArticlesModel", b =>
                 {
-                    b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "ImageFileModel")
-                        .WithMany()
-                        .HasForeignKey("ImageFileModelId");
-
                     b.HasOne("ShevkunenkoSite.Models.DataModels.ImageFileModel", "LogoOfArticle")
                         .WithMany()
                         .HasForeignKey("LogoOfArticleId");
@@ -1143,8 +1137,6 @@ namespace ShevkunenkoSite.Services.Migrations
                     b.HasOne("ShevkunenkoSite.Models.DataModels.MovieFileModel", "VideoForBookOrArticle")
                         .WithMany()
                         .HasForeignKey("VideoForBookOrArticleId");
-
-                    b.Navigation("ImageFileModel");
 
                     b.Navigation("LogoOfArticle");
 
