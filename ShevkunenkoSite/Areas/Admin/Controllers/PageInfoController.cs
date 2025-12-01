@@ -82,7 +82,6 @@ public class PageInfoController(
                 .Include(text => text.TextInfo)
                 .Include(background => background.BackgroundFileModel)
                 .Include(audioFile => audioFile.AudioInfo)
-                .Include(audioBook => audioBook.AudioBook)
                 // TODO: убрать nullable для картинки фильма 
                 .Include(movie => movie.MovieFile)
                 .Include(movie => movie.MovieFile)
@@ -130,11 +129,13 @@ public class PageInfoController(
 
             pageItem.LinksFromPagesByGuid = [];
 
+#pragma warning disable CA1862
             pageItem.LinksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages != null && p.RefPages.ToLower()
                     .Contains(pageItem.PageInfoModelId.ToString().ToLower()))
                     .ToArrayAsync());
+#pragma warning restore CA1862
 
             _ = pageItem.LinksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
 
@@ -144,10 +145,12 @@ public class PageInfoController(
 
             pageItem.LinksFromPagesByGuid2 = [];
 
+#pragma warning disable CA1862
             pageItem.LinksFromPagesByGuid2
                  .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages2 != null && p.RefPages2.ToLower().Contains(pageItem.PageInfoModelId.ToString().ToLower()))
                 .ToArrayAsync());
+#pragma warning restore CA1862
 
             _ = pageItem.LinksFromPagesByGuid2.Distinct().OrderBy(p => p.SortOfPage);
 
@@ -390,9 +393,11 @@ public class PageInfoController(
                         {
                             var bookForPage = await bookAndArticleContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookGuid);
 
+#pragma warning disable CA1862
                             var imageItems = await imageContext.ImageFiles
                                                             .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
                                                             .ToArrayAsync();
+#pragma warning restore CA1862
 
                             imageItems = [.. imageItems.Shuffle()];
 
@@ -422,9 +427,11 @@ public class PageInfoController(
 
                     var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
 
+#pragma warning disable CA1862
                     var imageItems = await imageContext.ImageFiles
                                 .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
                                 .ToArrayAsync();
+#pragma warning restore CA1862
 
                     imageItems = [.. imageItems.Shuffle()];
 
@@ -1457,7 +1464,6 @@ public class PageInfoController(
                 .Include(text => text.TextInfo).ThenInclude(book => book != null ? book.BooksAndArticlesModel : null)
                 .Include(background => background.BackgroundFileModel)
                 .Include(audioFile => audioFile.AudioInfo)
-                .Include(audioBook => audioBook.AudioBook)
                 .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage != null ? movieImage.ImageFileModel : null)
                 .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster != null ? moviePoster.MoviePoster : null)
                 .FirstAsync(i => i.PageInfoModelId == pageId);
@@ -1485,10 +1491,12 @@ public class PageInfoController(
 
             List<PageInfoModel> linksFromPagesByGuid = [];
 
+#pragma warning disable CA1862
             linksFromPagesByGuid
                 .AddRange(await pageInfoContext.PagesInfo
                     .Where(p => p.RefPages != null && p.RefPages.ToLower().Contains(editPage.PageInfoModelId.ToString().ToLower()))
                     .ToArrayAsync());
+#pragma warning restore CA1862
 
             _ = linksFromPagesByGuid.Distinct().OrderBy(p => p.SortOfPage);
 
@@ -1747,9 +1755,11 @@ public class PageInfoController(
                         {
                             var bookForPage = await bookAndArticleContext.BooksAndArticles.FirstAsync(book => book.BooksAndArticlesModelId == bookGuid);
 
+#pragma warning disable CA1862
                             var imageItems = await imageContext.ImageFiles
                                                             .Where(img => img.SearchFilter.ToLower().Contains(bookForPage.CaptionOfText.ToLower()))
                                                             .ToArrayAsync();
+#pragma warning restore CA1862
 
                             imageItems = [.. imageItems.Shuffle()];
 
@@ -1779,9 +1789,11 @@ public class PageInfoController(
 
                     var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
 
+#pragma warning disable CA1862
                     var imageItems = await imageContext.ImageFiles
                                 .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
                                 .ToArrayAsync();
+#pragma warning restore CA1862
 
                     imageItems = [.. imageItems.Shuffle()];
 
@@ -2033,7 +2045,7 @@ public class PageInfoController(
             }
 
             #endregion
-            
+
             #region Изменить ссылку на текстовый файл
 
             if (editPage.TextInfoId != Guid.Empty & editPage.TextFileFormFile == null)

@@ -1,5 +1,9 @@
 ﻿@model AudioBookModel
 
+@{
+	string cssForLabel = "col-form-label text-primary fs-5 me-2";
+}
+
 <h1 class="fs-3 text_shadow">Информация об аудиокниге</h1>
 
 <hr class="w-25 mx-auto" />
@@ -7,209 +11,176 @@
 @* Id аудиокниги *@
 <div>
 
-    <p class="fs-5 mb-3">
-        <span class="text-primary">AudioBookModelId:</span><br />
-        <span class="text_shadow">
-            @Model.AudioBookModelId
-        </span>
-        <br />
-        <span class="fs-6 form-text text-success">
-            идентификатор в базе данных (GUID)
-        </span>
-    </p>
-
-    <hr class="liniya" />
+	<p class="fs-5 mb-3">
+		<span class="text-primary">AudioBookModelId:</span><br />
+		<span class="text_shadow">
+			@Model.AudioBookModelId
+		</span>
+		<br />
+		<span class="fs-6 form-text text-success">
+			идентификатор в базе данных (GUID)
+		</span>
+	</p>
 
 </div>
 
-<div class="card col col-lg-10 col-xl-9 col-xxl-8 mx-auto p-2">
+<div class="row">
 
-    <div class="card-body">
+	<div class="col-12 col-lg-8 mx-auto p-2">
 
-        @* Кнопки «список», «изменить», «удалить» *@
-        <div class="card-footer mb-2">
+		@* Название *@
+		<div class="border border-1 mb-2">
 
-            @* Список аудиокниг сайта *@
-            <a class="btn btn-outline-primary minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="Index"
-               title="список аудиокниг">
+			<label asp-for="CaptionOfAudioBook" class="@cssForLabel"></label>
 
-                Список
+			<p class="fs-4 text-center text_shadow">@Model.CaptionOfAudioBook</p>
 
-            </a>
+			<div class="form-text">
 
-            @* Изменить сведения об аудиокниге *@
-            <a class="btn btn-outline-success minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="EditAudioBook"
-               asp-route-audiobookId="@Model.AudioBookModelId"
-               title="изменить данные">
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfAudioBook» - </span>
+				<span class="fs-6 text-success">название аудиокниги</span>
 
-                Изменить
+			</div>
 
-            </a>
+		</div>
 
-            @* Удалить аудиокнигу *@
-            <a class="btn btn-outline-danger minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="DeleteAudioBook"
-               asp-route-audiobookId="@Model.AudioBookModelId"
-               title="удалить аудиокнигу">
+		@* Описание *@
+		<div class=" mb-3">
 
-                Удалить
+			<label asp-for="@Model.AudioBookDescription" class="@cssForLabel"></label>
 
-            </a>
-
-        </div>
-
-        @* Название *@
-        <div class="border border-1 mb-2">
-
-            <label asp-for="CaptionOfAudioBook" class="col-form-label text-primary fs-5"></label>
-
-            <p class="fs-4 text-center text_shadow">@Model.CaptionOfAudioBook</p>
-
-            <div class="form-text">
-
-                <span class="d-none d-sm-inline-block fs-6 text-success">тег «CaptionOfAudioBook» - </span>
-                <span class="fs-6 text-success">название аудиокниги</span>
-
-            </div>
-
-        </div>
-
-        @* Описание *@
-        <div class=" mb-3">
-
-            <label asp-for="@Model.AudioBookDescription" class="col-form-label text-primary fs-5"></label>
-
-            <textarea asp-for="@Model.AudioBookDescription"
-                      class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
-                      rows="5">
+			<textarea asp-for="@Model.AudioBookDescription"
+					  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
+					  rows="5">
             </textarea>
 
-            <div class="form-text">
+			<div class="form-text">
 
-                <span class="d-none d-sm-inline-block fs-6 text-success">тег «AudioBookDescription» - </span>
-                <span class="fs-6 text-success">описание аудиокниги</span>
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «AudioBookDescription» - </span>
+				<span class="fs-6 text-success">описание аудиокниги</span>
 
-            </div>
+			</div>
 
-        </div>
+		</div>
 
-        @* Исполнитель *@
-        <div class="border border-1 mb-2">
+		@* Исполнитель *@
+		<div class="border border-1 mb-2">
 
-            <label asp-for="ActorOfAudioBook" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="ActorOfAudioBook" class="@cssForLabel"></label>
 
-            <p class="fs-4 text-center text_shadow">@Model.ActorOfAudioBook</p>
+			<p class="fs-4 text-center text_shadow">@Model.ActorOfAudioBook</p>
 
-            <div class="form-text">
+			<div class="form-text">
 
-                <span class="d-none d-sm-inline-block fs-6 text-success">тег «ActorOfAudioBook» - </span>
-                <span class="fs-6 text-success">исполнитель аудиокниги</span>
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «ActorOfAudioBook» - </span>
+				<span class="fs-6 text-success">исполнитель аудиокниги</span>
 
-            </div>
+			</div>
 
-        </div>
+		</div>
 
-        @* Количество файлов *@
-        <div>
+		@* Количество файлов *@
+		<div>
 
-            <label asp-for="NumberOfFiles" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="NumberOfFiles" class="@cssForLabel"></label>
 
-            <p class="fs-4 text-center text_shadow">@Model.NumberOfFiles</p>
+			<p class="fs-4 text-center text_shadow">
+				@Model.NumberOfFiles
+			</p>
 
-            <div class="form-text">
-                <span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfFiles» - </span>
-                <span class="fs-6 text-success">количество файлов</span>
-            </div>
+			<div class="form-text">
+				<span class="d-none d-sm-inline-block fs-6 text-success">тег «NumberOfFiles» - </span>
+				<span class="fs-6 text-success">количество файлов</span>
+			</div>
 
-        </div>
+		</div>
 
-        @* Текст аудиокниги на сайте *@
-        <div>
+		@* Текст аудиокниги на сайте *@
+		<div>
 
-            <hr class="liniya" />
+			<hr class="liniya" />
 
-            <p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
+			<p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
 
-            @if (Model.BookForAudioBookId == null)
-            {
-                <p class="text_shadow fs-4 mb-3">книга не выбрана</p>
-            }
-            @* else if (Model.BookForAudioBook?.PageInfoModel?.ImageFileModelId != null)
-            {
-                <a asp-area="Admin"
-                   asp-controller="BooksAndArticles"
-                   asp-action="DetailsBook"
-                   asp-route-bookId="@Model.BookForAudioBook.BooksAndArticlesModelId"
-                   class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
-                   title="информация о книге"
-                   onclick="this.target='_blank'">
+			@if (Model.BookForAudioBook == null)
+			{
+				<p class="text-center fluid-font-size text-bg-danger">
+					книга не выбрана
+				</p>
+			}
+			else if (Model.BookForAudioBook.ImageFileModelId != null)
+			{
+				<a asp-area="Admin"
+				   asp-controller="BooksAndArticles"
+				   asp-action="DetailsBook"
+				   asp-route-bookId="@Model.BookForAudioBook.BooksAndArticlesModelId"
+				   class="d-block mx-auto mb-3 maxwidth300px shadw imageref"
+				   title="информация о книге"
+				   onclick="this.target='_blank'">
 
-                    <vc:view-image image-id="@Model.BookForAudioBook.PageInfoModel.ImageFileModelId"
-                                   css-class="w-100"
-                                   icon-type="webicon300" />
+					<vc:view-image image-id="@Model.BookForAudioBook.ImageFileModelId"
+								   css-class="w-100"
+								   icon-type="webicon300" />
 
-                </a>
+				</a>
 
-                <div class="form-text">
+				<div class="form-text">
 
-                    <span class="fs-6 text-success">тег «BookForAudioBook»</span>
+					<span class="fs-6 text-success">тег «BookForAudioBook»</span>
 
-                </div>
+				</div>
 
-                <p class="col-form-label text-primary fs-5">GUID книги :</p>
-                <p class="text_shadow fs-6 mb-3">@Model.BookForAudioBook.BooksAndArticlesModelId</p>
-            } *@
+				<p class="col-form-label text-primary fs-5">
+					GUID книги :
+				</p>
 
-        </div>
+				<p class="text_shadow fluid-font-size mb-3">
+					@Model.BookForAudioBook.BooksAndArticlesModelId
+				</p>
+			}
 
-        @* Кнопки «список», «изменить», «удалить» *@
-        <div class="card-footer mt-2">
+		</div>
 
-            @* Список аудиокниг сайта *@
-            <a class="btn btn-outline-primary minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="Index"
-               title="список аудиокниг">
+		@* Кнопки «список», «изменить», «удалить» *@
+		<div class="card-footer mt-2">
 
-                Список
+			@* Список аудиокниг сайта *@
+			<a class="btn btn-outline-primary minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioBook"
+			   asp-action="Index"
+			   title="список аудиокниг">
 
-            </a>
+				Список
 
-            @* Изменить сведения об аудиокниге *@
-            <a class="btn btn-outline-success minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="EditAudioBook"
-               asp-route-audiobookId="@Model.AudioBookModelId"
-               title="изменить данные">
+			</a>
 
-                Изменить
+			@* Изменить сведения об аудиокниге *@
+			<a class="btn btn-outline-success minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioBook"
+			   asp-action="EditAudioBook"
+			   asp-route-audiobookId="@Model.AudioBookModelId"
+			   title="изменить данные">
 
-            </a>
+				Изменить
 
-            @* Удалить аудиокнигу *@
-            <a class="btn btn-outline-danger minwidth100px m-2 shadw"
-               asp-area="Admin"
-               asp-controller="AudioBook"
-               asp-action="DeleteAudioBook"
-               asp-route-audiobookId="@Model.AudioBookModelId"
-               title="удалить аудиокнигу">
+			</a>
 
-                Удалить
+			@* Удалить аудиокнигу *@
+			<a class="btn btn-outline-danger minwidth100px m-2 shadw"
+			   asp-area="Admin"
+			   asp-controller="AudioBook"
+			   asp-action="DeleteAudioBook"
+			   asp-route-audiobookId="@Model.AudioBookModelId"
+			   title="удалить аудиокнигу">
 
-            </a>
+				Удалить
 
-        </div>
+			</a>
 
-    </div>
+		</div>
+
+	</div>
 
 </div>

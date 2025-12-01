@@ -8,7 +8,6 @@ public class PageInfoImplementation(SiteDbContext siteContext) : IPageInfoReposi
         .Include(text => text.TextInfo).ThenInclude(book => book != null ? book.BooksAndArticlesModel : null).ThenInclude(articleLogo => articleLogo!.LogoOfArticle != null ? articleLogo.LogoOfArticle : null)
         .Include(background => background.BackgroundFileModel)
         .Include(audioFile => audioFile.AudioInfo)
-        .Include(audioBook => audioBook.AudioBook)
         // TODO: убрать nullable для картинки фильма
         .Include(movie => movie.MovieFile).ThenInclude(movieImage => movieImage != null ? movieImage.ImageFileModel : null)
         .Include(movie => movie.MovieFile).ThenInclude(moviePoster => moviePoster != null ? moviePoster.MoviePoster : null)

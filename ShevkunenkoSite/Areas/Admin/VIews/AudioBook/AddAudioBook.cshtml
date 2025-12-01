@@ -1,177 +1,210 @@
 ﻿@model AudioBookModel
 
-<h1 class="fs-3 text_shadow">Добавить аудиокнигу</h1>
-
-<hr class="liniya" />
-
-@* Показ всех ошибок ввода данных *@
-@if (Context.Request.Method == "POST")
-{
-    <div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+@{
+	string cssForLabel = "col-form-label text-primary fs-5 me-2";
 }
 
+<h1 class="fs-3 text_shadow">Добавить аудиокнигу</h1>
 
-<div class="col card p-2">
+<hr class="w-25 mx-auto" />
 
-    <div class="col-12 card-body mx-auto">
+<div class="row">
 
-        <form method="post" class="col-12 col-xxl-10 mx-auto" enctype="multipart/form-data">
+	<div class="col-12 col-lg-8 mx-auto p-2">
 
-            @* Скрытые поля формы *@
-            <div>
+		<form asp-area="Admin"
+			  asp-controller="AudioBook"
+			  asp-action="AddAudioBook"
+			  method="post"
+			  enctype="multipart/form-data">
 
-                <input asp-for="@Model.AudioBookModelId" type="hidden" value="@Guid.Empty" />
+			@* Скрытые поля формы *@
+			<div>
 
-            </div>
+				<input asp-for="@Model.AudioBookModelId" type="hidden" value="@Guid.Empty" />
 
-            @* Заголовок и описание аудиокниги *@
-            <div class="border border-black border-1 p-3 pb-1 mb-2">
+			</div>
 
-                @* Заголовок аудиокниги *@
-                <div class="row g-2 justify-content-center bg-secondary">
+			@* все ошибки ввода данных *@
+			@if (Context.Request.Method == "POST")
+			{
+				<div asp-validation-summary="All" class="text-danger border border-top-0 border-danger mb-3"></div>
+			}
 
-                    <div class="col-12 col-lg-3">
+			@* Заголовок и описание аудиокниги *@
+			<div class="border border-black border-1 p-3 pb-1 mb-2">
 
-                        <label asp-for="@Model.CaptionOfAudioBook" class="col-form-label text-white fs-5 py-0"></label>
+				@* Заголовок аудиокниги *@
+				<div class="row g-2 justify-content-center bg-secondary">
 
-                    </div>
+					<div class="col-12 col-lg-3">
 
-                    <div class="col text-start pb-1 pe-lg-4">
+						<label asp-for="@Model.CaptionOfAudioBook" class="@cssForLabel text-white"></label>
 
-                        <input asp-for="@Model.CaptionOfAudioBook"
-                               id="CaptionOfAudioBookInput"
-                               class="form-control"
-                               aria-describedby="CaptionOfAudioBookInputHelpBlock" />
+					</div>
 
-                    </div>
+					<div class="col text-start pb-1 pe-lg-4">
 
-                    <div id="CaptionOfAudioBookInputHelpBlock" class="form-text bg-light">
+						<input asp-for="@Model.CaptionOfAudioBook"
+							   id="CaptionOfAudioBookInput"
+							   class="form-control"
+							   aria-describedby="CaptionOfAudioBookInputHelpBlock" />
 
-                        <span class="fs-6 text-success">название книги</span>
-                        <br class="d-md-none" />
-                        <span class="fs-6 text-danger"> - обязательное поле</span>
+					</div>
 
-                    </div>
+					<div id="CaptionOfAudioBookInputHelpBlock" class="form-text bg-light">
 
-                    @if (Context.Request.Method == "POST")
-                    {
-                        <span asp-validation-for="@Model.CaptionOfAudioBook" class="text-danger"></span>
-                    }
+						<span class="fs-6 text-success">название книги</span>
+						<br class="d-md-none" />
+						<span class="fs-6 text-danger"> - обязательное поле</span>
 
-                </div>
+					</div>
 
-                @* Описание аудиокниги *@
-                <div class="row g-2 justify-content-center">
+					@if (Context.Request.Method == "POST")
+					{
+						<span asp-validation-for="@Model.CaptionOfAudioBook" class="text-danger"></span>
+					}
 
-                    <label asp-for="@Model.AudioBookDescription" class="col-form-label text-primary fs-5"></label>
+				</div>
 
-                    <textarea asp-for="@Model.AudioBookDescription"
-                              id="AudioBookDescriptionInput"
-                              class="form-control fordetails maxwidth700px border border-1 border-primary mt-0"
-                              rows="5"
-                              aria-describedby="AudioBookDescriptionInputHelpBlock">
+				@* Описание аудиокниги *@
+				<div class="row g-2 justify-content-center">
+
+					<label asp-for="@Model.AudioBookDescription" class="@cssForLabel"></label>
+
+					<textarea asp-for="@Model.AudioBookDescription"
+							  id="AudioBookDescriptionInput"
+							  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0"
+							  rows="5"
+							  aria-describedby="AudioBookDescriptionInputHelpBlock">
                     </textarea>
 
-                    <div id="AudioBookDescriptionInputHelpBlock" class="form-text bg-light">
+					<div id="AudioBookDescriptionInputHelpBlock" class="form-text bg-light">
 
-                        <span class="fs-6 text-success">описание текста</span>
-                        <br class="d-md-none" />
-                        <span class="fs-6 text-danger"> - обязательное поле</span>
+						<span class="fs-6 text-success">описание текста</span>
+						<br class="d-md-none" />
+						<span class="fs-6 text-danger"> - обязательное поле</span>
 
-                    </div>
+					</div>
 
-                    <span asp-validation-for="@Model.AudioBookDescription" class="text-danger"></span>
+					@if (Context.Request.Method == "POST")
+					{
+						<span asp-validation-for="@Model.AudioBookDescription" class="text-danger"></span>
+					}
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            @* Исполнитель аудиокниги *@
-            <div class="row g-0 justify-content-center bg-secondary py-0 my-2">
+			@* Исполнитель аудиокниги *@
+			<div class="row g-0 justify-content-center bg-secondary py-0 my-2">
 
-                <div class="col-12 col-lg-4">
+				<div class="col-12 col-lg-4">
 
-                    <label asp-for="@Model.ActorOfAudioBook" class="col-form-label text-white fs-5 p-0 pt-lg-2"></label>
+					<label asp-for="@Model.ActorOfAudioBook" class="@cssForLabel text-white"></label>
 
-                </div>
+				</div>
 
-                <div class="col text-start p-1 pe-lg-4">
+				<div class="col text-start p-1 pe-lg-4">
 
-                    <input asp-for="@Model.ActorOfAudioBook"
-                           id="ActorOfAudioBookInput"
-                           class="form-control"
-                           aria-describedby="ActorOfAudioBookInputHelpBlock" />
+					<input asp-for="@Model.ActorOfAudioBook"
+						   id="ActorOfAudioBookInput"
+						   class="form-control"
+						   aria-describedby="ActorOfAudioBookInputHelpBlock" />
 
-                </div>
+				</div>
 
-                <div id="ActorOfAudioBookInputHelpBlock" class="form-text bg-light">
+				<div id="ActorOfAudioBookInputHelpBlock" class="form-text bg-light">
 
-                    <span class="fs-6 text-success">исполнитель</span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger"> - обязательное поле</span>
+					<span class="fs-6 text-success">исполнитель</span>
+					<br class="d-md-none" />
+					<span class="fs-6 text-danger"> - обязательное поле</span>
 
-                </div>
+				</div>
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="@Model.ActorOfAudioBook" class="text-danger"></span>
-                }
+				@if (Context.Request.Method == "POST")
+				{
+					<span asp-validation-for="@Model.ActorOfAudioBook" class="text-danger"></span>
+				}
 
-            </div>
+			</div>
 
-            @* Количество файлов *@
-            <div class="row g-2 justify-content-center mt-3">
+			@* Количество файлов *@
+			<div class="row g-2 justify-content-center my-3">
 
-                <div class="col-auto">
+				<div class="col-auto">
 
-                    <label asp-for="NumberOfFiles" class="col-form-label text-primary fs-5 py-0"></label>
+					<label asp-for="@Model.NumberOfFiles" class="@cssForLabel"></label>
 
-                </div>
+				</div>
 
-                <div class="col-5 col-sm-3 col-lg-2 text-start">
+				<div class="col-5 col-sm-3 col-lg-2 text-start">
 
-                    <input asp-for="NumberOfFiles"
-                           id="NumberOfAudioFIlesnput"
-                           class="form-control text-center"
-                           aria-describedby="NumberOfAudioFIlesInputHelpBlock" />
+					<input asp-for="@Model.NumberOfFiles"
+						   id="NumberOfAudioFIlesnput"
+						   class="form-control text-center"
+						   aria-describedby="NumberOfAudioFIlesnputHelpBlock" />
 
-                </div>
+				</div>
 
-                <div id="NumberOfAudioFIlesInputHelpBlock" class="form-text bg-light">
+				<div id="NumberOfAudioFIlesnputHelpBlock" class="form-text bg-light">
 
-                    <span class="fs-6 text-success">количество файлов</span>
-                    <br class="d-md-none" />
-                    <span class="fs-6 text-danger"> - обязательное поле</span>
+					<span class="fs-6 text-success">количество файлов</span>
+					<br class="d-md-none" />
+					<span class="fs-6 text-danger"> - обязательное поле</span>
 
-                </div>
+				</div>
 
-                @if (Context.Request.Method == "POST")
-                {
-                    <span asp-validation-for="NumberOfFiles" class="text-danger"></span>
-                }
+				@if (Context.Request.Method == "POST")
+				{
+					<span asp-validation-for="@Model.NumberOfFiles" class="text-danger"></span>
+				}
 
-            </div>
+			</div>
 
-            @* Сохранить - Отменить *@
-            <div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
+			@* Текст аудиокниги на сайте *@
+			<div>
 
-                <button type="submit" class="btn btn-outline-success mt-2 me-3 text-center shadw"
-                        title="Сохранить">
-                    Сохранить
-                </button>
+				<hr class="w-25 mx-auto" />
 
-                <a class="btn btn-outline-danger mt-2 shadw"
-                   asp-area="Admin"
-                   asp-controller="AudioBook"
-                   asp-action="Index"
-                   title="Отменить">
-                    Отменить
-                </a>
+				<label asp-for="BookForAudioBookId" class="@cssForLabel"></label>
 
-            </div>
+				<select asp-for="BookForAudioBookId"
+						asp-items="ViewBag.Books"
+						class="d-flex col-12 col-sm-7 col-lg-6 mx-auto my-3">
 
-        </form>
+					<option value="@Guid.Empty">Видео не выбрано</option>
 
-    </div>
+				</select>
+
+				<div class="fs-6 form-text text-success mb-3">
+					выбрать книгу
+				</div>
+
+				<hr class="w-25 mx-auto" />
+
+			</div>
+
+			@* Сохранить - Отменить *@
+			<div class="card-footer p-0 pb-2 mt-4 mx-auto maxwidth700px">
+
+				<button type="submit" class="btn btn-outline-success mt-2 me-3 text-center shadw"
+						title="Сохранить">
+					Сохранить
+				</button>
+
+				<a class="btn btn-outline-danger mt-2 shadw"
+				   asp-area="Admin"
+				   asp-controller="AudioBook"
+				   asp-action="Index"
+				   title="Отменить">
+					Отменить
+				</a>
+
+			</div>
+
+		</form>
+
+	</div>
 
 </div>

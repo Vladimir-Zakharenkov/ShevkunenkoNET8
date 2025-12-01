@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
@@ -7,7 +8,8 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers;
 [Authorize]
 public class AudioBookController(
     IAudioBookRepository audioBookContext,
-    IBooksAndArticlesRepository bookContext) : Controller
+    IBooksAndArticlesRepository bookContext
+    ) : Controller
 {
     #region Список аудиокниг
 
@@ -28,7 +30,7 @@ public class AudioBookController(
 
             CurrentPage = pageNumber,
             ItemsPerPage = DataConfig.NumberOfItemsPerPage,
-            TotalItems = allAudioBooks.Count(),
+            TotalItems = allAudioBooks.Count,
 
             SearchString = searchString ?? string.Empty
         });
@@ -64,12 +66,37 @@ public class AudioBookController(
     [HttpGet]
     public ViewResult AddAudioBook()
     {
-        return View();
+        AudioBookModel newBook = new();
+
+        #region SelectList из названий книг на сайте
+
+        // Список картинок сайта для обложки
+        ViewData["Books"] = new SelectList(bookContext.BooksAndArticles
+                                                                            .Where(book => book.TypeOfText == "book")
+                                                                            .OrderBy(orderBook => orderBook.CaptionOfText),
+                                                                            "BooksAndArticlesModelId", "CaptionOfText");
+
+        #endregion
+
+        return View(newBook);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddAudioBook(AudioBookModel addAudioBook)
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
+    public async Task<IActionResult> AddAudioBook(
+                [Bind(
+                "AudioBookModelId," +
+                "CaptionOfAudioBook," +
+                "AudioBookDescription," +
+                "ActorOfAudioBook," +
+                "NumberOfFiles," +
+                "BookForAudioBookId," +
+                "BookForAudioBook"
+                )]
+        AudioBookModel addAudioBook)
     {
         if (ModelState.IsValid)
         {
@@ -97,6 +124,19 @@ public class AudioBookController(
 
             #endregion
 
+            #region Книга для аудиокниги
+
+            if (addAudioBook.BookForAudioBookId == Guid.Empty)
+            {
+                addAudioBook.BookForAudioBookId = null;
+            }
+            else
+            {
+                _ = addAudioBook.BookForAudioBookId;
+            }
+
+            #endregion
+
             #region Добавить в БД
 
             await audioBookContext.AddAudioBookAsync(addAudioBook);
@@ -114,6 +154,16 @@ public class AudioBookController(
         }
         else
         {
+            #region SelectList из названий книг на сайте
+
+            // Список картинок сайта для обложки
+            ViewData["Books"] = new SelectList(bookContext.BooksAndArticles
+                                                                                .Where(book => book.TypeOfText == "book")
+                                                                                .OrderBy(orderBook => orderBook.CaptionOfText),
+                                                                                "BooksAndArticlesModelId", "CaptionOfText");
+
+            #endregion
+
             return View(nameof(AddAudioBook), addAudioBook);
         }
     }
@@ -138,37 +188,17 @@ public class AudioBookController(
 
             #endregion
 
-            #region SelectListItem из названий книг на сайте
+            #region SelectList из названий книг на сайте
 
-            var booksOnSite = await bookContext.BooksAndArticles
-                .Where(booksAndArticles => booksAndArticles.TypeOfText == "book")
-                .ToListAsync();
-
-            var seletListItemFromBookOnSite = booksOnSite
-                .OrderBy(book => book.CaptionOfText)
-                .Select(selectListItem => new SelectListItem
-                {
-                    Value = selectListItem.BooksAndArticlesModelId.ToString(),
-                    Text = selectListItem.CaptionOfText
-                })
-                .ToList();
-
-            seletListItemFromBookOnSite.Insert(0, new SelectListItem { Text = "книга не задана", Value = Guid.Empty.ToString() });
+            // Список картинок сайта для обложки
+            ViewData["Books"] = new SelectList(bookContext.BooksAndArticles
+                                                                                .Where(book => book.TypeOfText == "book")
+                                                                                .OrderBy(orderBook => orderBook.CaptionOfText),
+                                                                                "BooksAndArticlesModelId", "CaptionOfText");
 
             #endregion
 
-            return View(new AudioBookViewModel
-            {
-                AudioBookModelId = editAudioBook.AudioBookModelId,
-                CaptionOfAudioBook = editAudioBook.CaptionOfAudioBook,
-                AudioBookDescription = editAudioBook.AudioBookDescription,
-                ActorOfAudioBook = editAudioBook.ActorOfAudioBook,
-                NumberOfFiles = editAudioBook.NumberOfFiles,
-                BookForAudioBookId = editAudioBook.BookForAudioBookId,
-                BookForAudioBook = editAudioBook.BookForAudioBook,
-                //PageInfoModelId = editAudioBook.PageInfoModelId,
-                BooksOnSite = seletListItemFromBookOnSite
-            });
+            return View(editAudioBook);
         }
         else
         {
@@ -178,7 +208,20 @@ public class AudioBookController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditAudioBook(AudioBookViewModel audioBookItem)
+    [DisableRequestSizeLimit]
+    [RequestSizeLimit(5_268_435_456)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
+    public async Task<IActionResult> EditAudioBook(
+                [Bind(
+                "AudioBookModelId," +
+                "CaptionOfAudioBook," +
+                "AudioBookDescription," +
+                "ActorOfAudioBook," +
+                "NumberOfFiles," +
+                "BookForAudioBookId," +
+                "BookForAudioBook"
+                )]
+        AudioBookModel audioBookItem)
     {
         AudioBookModel audioBookUpdate = await audioBookContext.AudioBooks
             .FirstAsync(audioBook => audioBook.AudioBookModelId == audioBookItem.AudioBookModelId);
@@ -229,10 +272,19 @@ public class AudioBookController(
             return RedirectToAction(nameof(DetailsAudioBook), new { audioBookId = audioBookUpdate.AudioBookModelId });
 
             #endregion
-
         }
         else
         {
+            #region SelectList из названий книг на сайте
+
+            // Список картинок сайта для обложки
+            ViewData["Books"] = new SelectList(bookContext.BooksAndArticles
+                                                                                .Where(book => book.TypeOfText == "book")
+                                                                                .OrderBy(orderBook => orderBook.CaptionOfText),
+                                                                                "BooksAndArticlesModelId", "CaptionOfText");
+
+            #endregion
+
             return View(nameof(EditAudioBook), audioBookItem);
         }
     }

@@ -336,12 +336,6 @@ public class PageInfoModel
 
     #endregion
 
-    #region Навигационное свойство аудиокниги
-
-    public AudioBookModel? AudioBook { get; set; }
-
-    #endregion
-
     #region Свойства NotMapped
 
     #region Список областей (Area) (NotMapped)
