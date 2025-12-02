@@ -1,13 +1,15 @@
-﻿@model BooksAndArticlesViewModel
+﻿@model ItemsListViewModel
 
 @* Значение строки поиска *@
 <div>
-    @if (!String.IsNullOrEmpty(Model.BookSearchString))
+    @if (!String.IsNullOrEmpty(Model.SearchString))
     {
         <div class="row mb-0">
+
             <p class="col-12 fs-5 text-primary">
-                Поиск по строке: <span class="text-black text_shadow">@Model.BookSearchString</span>
+                Поиск по строке: <span class="text-black text_shadow">@Model.SearchString</span>
             </p>
+
         </div>
     }
 </div>
@@ -15,20 +17,32 @@
 @* Сообщение о количестве книг и статей *@
 <div>
 
-    @if (Model.PagingInfo.TotalItems == 0)
+    @if (Model.TotalItems == 0)
     {
         <div class="row">
+
             <div class="col text-center p-2">
-                <p class="fs-5 text_shadow mb-0">В базе данных нет книг и статей</p>
+
+                <p class="fs-5 text_shadow mb-0">
+                    В базе данных нет книг и статей
+                </p>
+
             </div>
+
         </div>
     }
     else
     {
         <div class="row">
+
             <div class="col-12 text-center">
-                <p class="fs-5 text-primary mb-0">Количество книг (статей):&nbsp;<span class="text-black text_shadow">@Model.PagingInfo.TotalItems</span></p>
+
+                <p class="fs-5 text-primary mb-0">
+                    Количество книг (статей) :&nbsp;<span class="text-black text_shadow">@Model.TotalItems</span>
+                </p>
+
             </div>
+
         </div>
     }
 
@@ -40,58 +54,43 @@
 <div class="row">
 
     <div class="col-12 col-md-3">
+
         <a class="btn btn-outline-danger shadw py-1 mt-2"
            asp-area="Admin"
            asp-controller="BooksAndArticles"
            asp-action="AddBook"
            title="добавить книгу (статью)">
+
             Добавить
+
         </a>
+
     </div>
 
     <hr class="col-12 w-75 mt-3 d-md-none mx-auto" />
 
     <div class="col-12 col-md-9 mb-2">
 
-        <form method="get" class="text-center text-md-end mt-md-2"
+        <form method="get"
+              class="text-center text-md-end mt-md-2"
               asp-area="Admin"
               asp-controller="BooksAndArticles"
               asp-action="Index">
 
-            <input type="text" class="d-inline-block align-middle mt-1 w-50" asp-for="BookSearchString" />
+            <input asp-for="SearchString"
+                   class="d-inline-block align-middle mt-1 w-50"
+                   type="text" />
 
-            <input type="submit" class="btn btn-outline-success shadw py-1 me-md-3" value="Поиск" title="поиск текста" />
+            <input class="btn btn-outline-success shadw py-1 me-md-3"
+                   type="submit"
+                   value="Поиск"
+                   title="поиск книг (статей)" />
 
         </form>
 
     </div>
 
     <hr class="liniya" />
-
-</div>
-
-@* Страницы *@
-<div>
-
-    @if (Model.PagingInfo.TotalPages > 1)
-    {
-        <div class="row p-2 m-2">
-
-            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-                 page-model="@Model.PagingInfo"
-                 book-search="@Model"
-                 page-action="Index"
-                 page-classes-enabled="true"
-                 page-class="btn"
-                 page-class-normal="btn-outline-dark"
-                 page-class-selected="btn-danger"
-                 data-toggle="buttons"
-                 role="group"
-                 aria-label="картинки сайта">
-            </div>
-
-        </div>
-    }
 
 </div>
 
@@ -108,10 +107,10 @@
 
                     <tr class="table-secondary text-start">
 
-                        <th scope="col" class="text-primary d-none d-md-table-cell">Автор</th>
-                        <th scope="col" class="text-primary">Заголовок</th>
-                        <th scope="col" class="text-primary text-center d-none d-lg-table-cell">Описание</th>
-                        <th scope="col"></th>
+                        <th scope="col" class="d-none d-md-table-cell col-md-4 col-xl-2 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Автор</th>
+                        <th scope="col" class="col-8 col-md-5 col-xl-3 text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Заголовок</th>
+                        <th scope="col" class="d-none d-xl-table-cell col-xl-4 col-xxl-5 text-center text-primary border border-black border-end-2 border-start-0 border-top-0 border-bottom-0">Описание</th>
+                        <th scope="col" class="col-4 col-md-3 col-xxl-2"></th>
 
                     </tr>
 
@@ -119,24 +118,28 @@
 
                 <tbody>
 
-                    @foreach (var book in Model.AllBooks)
+                    @foreach (var book in Model.AllBooksAndArticlesFiles ?? [])
                     {
                         <tr class="text-start">
 
-                            <td scope="col" class="text-start text_shadow d-none d-md-table-cell">@book.AuthorOfText</td>
+							<td scope="col" class="d-none d-md-table-cell col-md-4 col-xl-2 text-start text_shadow">@book.AuthorOfText</td>
 
-                            <td scope="col" class="text-start text_shadow">@book.CaptionOfText</td>
+                            <td scope="col" class="col-8 col-md-5 col-xl-3 text-start text_shadow">@book.CaptionOfText</td>
 
-                            <td scope="col" class="text-start text_shadow d-none d-lg-table-cell">@book.BookDescription</td>
+							<td scope="col" class="d-none d-xl-table-cell col-xl-4 col-xxl-5 text-start text_shadow">@book.BookDescription</td>
 
-                            <td scope="col" class="text-center">
+                            @* Кнопки Информация - Изменить - Удалить*@
+                            <td scope="col" class="col-4 col-md-3 col-xxl-2 align-content-center text-center">
+
                                 <a class="btn btn-outline-primary p-1 m-1 shadw"
                                    asp-area="Admin"
                                    asp-controller="BooksAndArticles"
                                    asp-action="DetailsBook"
                                    asp-route-bookId="@book.BooksAndArticlesModelId"
                                    title="информация о книге (статье)">
+
                                     Info
+
                                 </a>
 
                                 <a class="btn btn-outline-success p-1 m-1 shadw"
@@ -145,7 +148,9 @@
                                    asp-action="EditBook"
                                    asp-route-bookId="@book.BooksAndArticlesModelId"
                                    title="изменить книгу (статью)">
+
                                     Edit
+
                                 </a>
 
                                 <a class="btn btn-outline-danger p-1 m-1 shadw"
@@ -154,8 +159,11 @@
                                    asp-action="DeleteBook"
                                    asp-route-bookId="@book.BooksAndArticlesModelId"
                                    title="удалить книгу">
+
                                     Del
+
                                 </a>
+
                             </td>
 
                         </tr>
@@ -171,27 +179,8 @@
 
 </div>
 
-@* Страницы *@
-<div>
-
-    @if (Model.PagingInfo.TotalPages > 1)
-    {
-        <div class="row p-2 m-2">
-
-            <div class="col-11 btn-group flex-wrap btn-group-sm m-2 p-1 mx-auto ten"
-                 page-model="@Model.PagingInfo"
-                 book-search="@Model"
-                 page-action="Index"
-                 page-classes-enabled="true"
-                 page-class="btn"
-                 page-class-normal="btn-outline-dark"
-                 page-class-selected="btn-danger"
-                 data-toggle="buttons"
-                 role="group"
-                 aria-label="картинки сайта">
-            </div>
-
-        </div>
-    }
-
-</div>
+@* Разбивка на страницы *@
+@if (Model.TotalItems > DataConfig.NumberOfItemsPerPage)
+{
+        <div pagination="@Model"></div>
+}

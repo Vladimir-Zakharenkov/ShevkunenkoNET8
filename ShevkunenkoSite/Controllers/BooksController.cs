@@ -7,7 +7,8 @@ public class BooksController(
     IImageFileRepository imageFileContext,
     IAudioBookRepository audioBookContext,
     IAudioInfoRepository audioFileContext,
-    IWebHostEnvironment hostEnvironment) : Controller
+    IWebHostEnvironment hostEnvironment
+    ) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
 
@@ -112,7 +113,7 @@ public class BooksController(
 
         #endregion
 
-        #region Информация о старнице сайта
+        #region Информация о странице сайта
 
         articleViewModel.PageInfo = await pageContext.GetPageInfoByPathAsync(HttpContext);
 
@@ -160,7 +161,6 @@ public class BooksController(
         #endregion
 
         return View("Book", articleViewModel);
-
     }
 
     public async Task<IActionResult> AudioBook(string? audioBookCaption, string? audioActor, int? audioBookPart)

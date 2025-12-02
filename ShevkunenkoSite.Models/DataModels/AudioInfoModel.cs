@@ -136,6 +136,7 @@ public class AudioInfoModel
 
     [Display(Name = "Transcript :")]
     public Guid? TranscriptId { get; set; }
+
     [NotMapped]
     public TextInfoModel? Transcript { get; set; }
     #endregion

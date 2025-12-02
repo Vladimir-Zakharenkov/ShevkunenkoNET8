@@ -76,6 +76,8 @@ public class TextInfoModel
 
     #endregion
 
+    #region NotMapped
+
     #region Текст без разметки TXT (NotMapped)
 
     [NotMapped]
@@ -134,6 +136,8 @@ public class TextInfoModel
 
     [NotMapped]
     public string? RefInMovies { get; set; }
+
+    #endregion
 
     #endregion
 }

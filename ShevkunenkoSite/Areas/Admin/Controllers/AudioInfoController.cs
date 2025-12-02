@@ -6,12 +6,14 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]
-    public class AudioInfoController(
+    public class AudioInfoController
+        (
         IAudioInfoRepository audioFileContext,
         IAudioBookRepository audioBookContext,
         IPageInfoRepository pagesOfSiteContext,
         ITextInfoRepository textsOfSiteContext,
-        IWebHostEnvironment hostEnvironment) : Controller
+        IWebHostEnvironment hostEnvironment
+        ) : Controller
     {
         private readonly string rootPath = hostEnvironment.WebRootPath;
 
@@ -58,10 +60,7 @@ namespace ShevkunenkoSite.Areas.Admin.Controllers
             {
                 var audioInfoModel = await audioFileContext.AudioFiles
                     .Include(a => a.AudioBookModel)
-                        .ThenInclude(b => b!.BookForAudioBook)
-                      //      .ThenInclude(p => p!.PageInfoModel)
-                      //          .ThenInclude(i => i!.ImageFileModel)
-                    //.Include(a => a.PageInfoModel)
+                        .ThenInclude(b => b!.BookForAudioBook)  // TODO: убрать ! для BookForAudioBook
                     .AsNoTracking()
                     .FirstAsync(audioFile => audioFile.AudioInfoModelId == audioFileId);
 

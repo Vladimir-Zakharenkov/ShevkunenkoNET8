@@ -1,5 +1,9 @@
 ﻿@model AudioInfoModel
 
+@{
+	string cssForLabel = "col-form-label text-primary fs-5 me-2";
+}
+
 <h1 class="fs-3 text_shadow">Информация об аудиофайле</h1>
 
 <hr class="w-25 mx-auto" />
@@ -19,60 +23,20 @@
 		</span>
 	</p>
 
-	<hr class="liniya" />
-
 </div>
 
-<div class="card col col-lg-10 col-xl-9 col-xxl-8 mx-auto p-2">
+<div class="row">
 
-	<div class="card-body">
-
-		@* Кнопки «список», «изменить», «удалить» *@
-		<div class="card-footer mb-2">
-
-			@* Список аудиофайлов сайта *@
-			<a class="btn btn-outline-primary minwidth100px m-2 shadw"
-			   asp-area="Admin"
-			   asp-controller="AudioInfo"
-			   asp-action="Index"
-			   title="список аудиофайлов">
-
-				Список
-
-			</a>
-
-			@* Изменить сведения об аудиофайле *@
-			<a class="btn btn-outline-success minwidth100px m-2 shadw"
-			   asp-area="Admin"
-			   asp-controller="AudioInfo"
-			   asp-action="EditAudioFile"
-			   asp-route-audioFileId="@Model.AudioInfoModelId"
-			   title="изменить данные">
-
-				Изменить
-
-			</a>
-
-			@* Удалить аудиофайл *@
-			<a class="btn btn-outline-danger minwidth100px m-2 shadw"
-			   asp-area="Admin"
-			   asp-controller="AudioInfo"
-			   asp-action="DeleteAudioFile"
-			   asp-route-audioFileId="@Model.AudioInfoModelId"
-			   title="удалить аудиофайл">
-
-				Удалить
-
-			</a>
-
-		</div>
+	<div class="col-12 col-lg-8 mx-auto p-2">
 
 		@* Название *@
 		<div class="border border-1 mb-2">
 
-			<label asp-for="CaptionOfTextInAudioFile" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="CaptionOfTextInAudioFile" class="@cssForLabel"></label>
 
-			<p class="fs-4 text-center text_shadow">@Model.CaptionOfTextInAudioFile</p>
+			<p class="fs-4 text-center text_shadow">
+				@Model.CaptionOfTextInAudioFile
+			</p>
 
 			<div class="form-text">
 
@@ -86,9 +50,11 @@
 		@* Файл - Папка файла*@
 		<div class=" mb-3">
 
-			<label asp-for="FolderForAudioFile" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="FolderForAudioFile" class="@cssForLabel"></label>
 
-			<p class="fs-5 text-center text_shadow">@Model.FolderForAudioFile</p>
+			<p class="fs-5 text-center text_shadow">
+				@Model.FolderForAudioFile
+			</p>
 
 			<div class="form-text">
 
@@ -98,9 +64,11 @@
 
 			<hr class="w-50 mx-auto" />
 
-			<label asp-for="AudioFileName" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="AudioFileName" class="@cssForLabel"></label>
 
-			<p class="fs-5 text-center text_shadow">@Model.AudioFileName</p>
+			<p class="fs-5 text-center text_shadow">
+				@Model.AudioFileName
+			</p>
 
 			<div class="form-text">
 
@@ -113,10 +81,11 @@
 		@* Описание *@
 		<div class=" mb-3">
 
-			<label asp-for="AudioFileDescription" class="col-form-label text-primary fs-5"></label>
+			<label asp-for="AudioFileDescription" class="@cssForLabel"></label>
 
 			<textarea asp-for="AudioFileDescription"
 					  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
+					  readonly
 					  rows="5">
             </textarea>
 
@@ -138,9 +107,11 @@
 			}
 			else
 			{
-				<label asp-for="AuthorOfText" class="col-form-label text-primary fs-5"></label>
+				<label asp-for="AuthorOfText" class="@cssForLabel"></label>
 
-				<p class="fs-4 text-center text_shadow">@Model.AuthorOfText</p>
+				<p class="fs-4 text-center text_shadow">
+					@Model.AuthorOfText
+				</p>
 
 				<div class="form-text">
 
@@ -160,19 +131,33 @@
 
 				@* Заголовок группы «параметры файла» *@
 				<h2 id="headingFileProperties" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#FileProperties" aria-expanded="true" aria-controls="FileProperties">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#FileProperties"
+							aria-expanded="true"
+							aria-controls="FileProperties">
+
 						<span class="form-label fs-5">Параметры файла :</span>
+
 					</button>
+
 				</h2>
 
-				<div id="FileProperties" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingFileProperties" data-bs-parent="#accordionForAudioFile">
+				<div id="FileProperties"
+					 class="accordion-collapse collapse pb-2 px-2"
+					 aria-labelledby="headingFileProperties"
+					 data-bs-parent="#accordionForAudioFile">
 
 					@* Дата загрузки на сайт *@
 					<div>
 
-						<label asp-for="AudioFileUploadDate" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileUploadDate" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileUploadDate.ToString("dd-MM-yyyy")</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileUploadDate.ToString("dd-MM-yyyy")
+						</span>
 
 						<div class="form-text">
 
@@ -188,9 +173,11 @@
 					@* Продолжительность *@
 					<div>
 
-						<label asp-for="AudioFileDuration" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileDuration" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileDuration.ToString(@"hh\:mm\:ss")</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileDuration.ToString(@"hh\:mm\:ss")
+						</span>
 
 						<div class="form-text">
 
@@ -206,9 +193,11 @@
 					@* Размер *@
 					<div>
 
-						<label asp-for="AudioFileSize" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileSize" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileSize байт</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileSize байт
+						</span>
 
 						<div class="form-text">
 
@@ -224,9 +213,11 @@
 					@* Битрейт *@
 					<div>
 
-						<label asp-for="AudioFileBitRate" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileBitRate" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileBitRate кбит/с</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileBitRate кбит/с
+						</span>
 
 						<div class="form-text">
 
@@ -242,9 +233,11 @@
 					@* Частота дискредитации *@
 					<div>
 
-						<label asp-for="AudioFileFrequency" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileFrequency" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileFrequency Гц</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileFrequency Гц
+						</span>
 
 						<div class="form-text">
 
@@ -260,9 +253,11 @@
 					@* Тип файла *@
 					<div>
 
-						<label asp-for="AudioFileType" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileType" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileType</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileType
+						</span>
 
 						<div class="form-text">
 
@@ -278,9 +273,11 @@
 					@* Тип MIME *@
 					<div>
 
-						<label asp-for="AudioFileMimeType" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="AudioFileMimeType" class="@cssForLabel"></label>
 						<br class="d-sm-none" />
-						<span class="fs-5 text-center text_shadow">@Model.AudioFileMimeType</span>
+						<span class="fs-5 text-center text_shadow">
+							@Model.AudioFileMimeType
+						</span>
 
 						<div class="form-text">
 
@@ -300,17 +297,29 @@
 
 				@* Заголовок группы «текст аудиофайла» *@
 				<h2 id="headingRefToAudioFile" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#RefToAudioFile" aria-expanded="true" aria-controls="RefToAudioFile">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#RefToAudioFile"
+							aria-expanded="true"
+							aria-controls="RefToAudioFile">
+
 						<span class="form-label fs-5">Ссылки :</span>
+
 					</button>
+
 				</h2>
 
-				<div id="RefToAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingRefToAudioFile" data-bs-parent="#accordionForAudioFile">
+				<div id="RefToAudioFile"
+					 class="accordion-collapse collapse pb-2 px-2"
+					 aria-labelledby="headingRefToAudioFile"
+					 data-bs-parent="#accordionForAudioFile">
 
 					@* Ссылка на sergeyshef.ru *@
 					<div>
 
-						<label asp-for="InternetRefToAudioFile" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="InternetRefToAudioFile" class="@cssForLabel"></label>
 
 						@if (Model.InternetRefToAudioFile != null)
 						{
@@ -319,7 +328,11 @@
 							<a class="btn btn-outline-primary py-1 m-2 shadw"
 							   href="@Model.InternetRefToAudioFile"
 							   onclick="this.target='_blank'"
-							   title="перейти по ссылки">Перейти</a>
+							   title="перейти по ссылки">
+
+								Перейти
+
+							</a>
 
 							<div class="form-text">
 
@@ -330,7 +343,9 @@
 						}
 						else
 						{
-							<p class="text_shadow fs-5">ссылка не задана</p>
+							<p class="text-center fluid-font-size text-bg-danger">
+								ссылка не задана
+							</p>
 						}
 
 						<hr class="w-50 mx-auto" />
@@ -340,7 +355,7 @@
 					@* Ссылка на podster.fm *@
 					<div>
 
-						<label asp-for="PodsterFmRefToAudioFile" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="PodsterFmRefToAudioFile" class="@cssForLabel"></label>
 
 						@if (Model.PodsterFmRefToAudioFile != null)
 						{
@@ -349,7 +364,11 @@
 							<a class="btn btn-outline-primary py-1 m-2 shadw"
 							   href="@Model.PodsterFmRefToAudioFile"
 							   onclick="this.target='_blank'"
-							   title="перейти по ссылки">Перейти</a>
+							   title="перейти по ссылки">
+
+								Перейти
+
+							</a>
 
 							<div class="form-text">
 
@@ -360,7 +379,9 @@
 						}
 						else
 						{
-							<p class="text_shadow fs-5">ссылка не задана</p>
+							<p class="text-center fluid-font-size text-bg-danger">
+								ссылка не задана
+							</p>
 						}
 
 						<hr class="w-50 mx-auto" />
@@ -370,7 +391,7 @@
 					@* Ссылка на disk.yandex.ru *@
 					<div>
 
-						<label asp-for="YandexDiskRefToAudioFile" class="col-form-label text-primary fs-5"></label>
+						<label asp-for="YandexDiskRefToAudioFile" class="@cssForLabel"></label>
 
 						@if (Model.YandexDiskRefToAudioFile != null)
 						{
@@ -379,7 +400,11 @@
 							<a class="btn btn-outline-primary py-1 m-2 shadw"
 							   href="@Model.YandexDiskRefToAudioFile"
 							   onclick="this.target='_blank'"
-							   title="перейти по ссылки">Перейти</a>
+							   title="перейти по ссылки">
+
+								Перейти
+
+							</a>
 
 							<div class="form-text">
 
@@ -390,7 +415,9 @@
 						}
 						else
 						{
-							<p class="text_shadow fs-5">ссылка не задана</p>
+							<p class="text-center fluid-font-size text-bg-danger">
+								ссылка не задана
+							</p>
 						}
 
 					</div>
@@ -404,16 +431,30 @@
 
 				@* Заголовок группы «плейер для аудиофайла» *@
 				<h2 id="headingPlayerForAudioFile" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#PlayerForAudioFile" aria-expanded="true" aria-controls="PlayerForAudioFile">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#PlayerForAudioFile"
+							aria-expanded="true"
+							aria-controls="PlayerForAudioFile">
+
 						<span class="form-label fs-5">Плейер :</span>
+
 					</button>
+
 				</h2>
 
-				<div id="PlayerForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingPlayerForAudioFile" data-bs-parent="#accordionForAudioFile">
+				<div id="PlayerForAudioFile"
+					 class="accordion-collapse collapse pb-2 px-2"
+					 aria-labelledby="headingPlayerForAudioFile"
+					 data-bs-parent="#accordionForAudioFile">
 
 					@if (string.IsNullOrEmpty(Model.PlayerPodsterFm))
 					{
-						<p class="text_shadow fs-4 mt-2">плейер для аудиофайла не задан</p>
+						<p class="text-center fluid-font-size text-bg-danger">
+							плейер для аудиофайла не задан
+						</p>
 					}
 					else
 					{
@@ -436,12 +477,24 @@
 
 				@* Заголовок группы «текст аудиофайла» *@
 				<h2 id="headingTextForAudioFile" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#TextForAudioFile" aria-expanded="true" aria-controls="TextForAudioFile">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#TextForAudioFile"
+							aria-expanded="true"
+							aria-controls="TextForAudioFile">
+
 						<span class="form-label fs-5">Текст аудиофайла :</span>
+
 					</button>
+
 				</h2>
 
-				<div id="TextForAudioFile" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingTextForAudioFile" data-bs-parent="#accordionForAudioFile">
+				<div id="TextForAudioFile"
+					 class="accordion-collapse collapse pb-2 px-2"
+					 aria-labelledby="headingTextForAudioFile"
+					 data-bs-parent="#accordionForAudioFile">
 
 					@if (Model.TranscriptId != null)
 					{
@@ -459,19 +512,22 @@
 						</h2>
 
 						@* Информация о связанной книге статье *@
-						<div class="@(Model.AudioBookModel?.BookForAudioBook != null ? "d-block" : "d-none")">
+						<div>
 
-							<hr class="w-50 mx-auto" />
+							@if (Model.AudioBookModel != null && Model.AudioBookModel.BookForAudioBook != null)
+							{
+								<hr class="w-50 mx-auto" />
 
-							<p class="fs-5 text-center">
-								<span class="text-primary">Страница </span>
-								<span class="text_shadow">«@Model.Transcript?.SequenceNumber»</span>
-								<br class="d-xl-none" />
-								<span class="text-primary"> @(Model.Transcript?.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
-								<span class="text_shadow">«@Model.Transcript?.BooksAndArticlesModel?.CaptionOfText»</span>
-							</p>
+								<p class="fs-5 text-center">
+									<span class="text-primary">Страница </span>
+									<span class="text_shadow">«@Model.Transcript?.SequenceNumber»</span>
+									<br class="d-xl-none" />
+									<span class="text-primary"> @(Model.Transcript?.BooksAndArticlesModel?.TypeOfText == "book" ? "книги" : "статьи")</span>
+									<span class="text_shadow">«@Model.Transcript?.BooksAndArticlesModel?.CaptionOfText»</span>
+								</p>
 
-							<hr class="w-50 mx-auto" />
+								<hr class="w-50 mx-auto" />
+							}
 
 						</div>
 
@@ -481,13 +537,14 @@
 							@* Описание текста *@
 							<div>
 
-								<label asp-for="Transcript.TextDescription" class="col-form-label text-primary fs-5 me-2"></label>
+								<label asp-for="Transcript.TextDescription" class="@cssForLabel"></label>
+
 								<textarea id="TextDescriptionInput" class="form-control fordetails fs-5 text_shadow"
 										  asp-for="Transcript.TextDescription"
 										  readonly
 										  rows="4"
 										  aria-describedby="TextDescriptionInputHelpBlock">
-																													</textarea>
+												</textarea>
 
 								<div id="TextDescriptionInputHelpBlock" class="form-text">
 									<span class="d-none d-sm-inline-block fs-6 text-success">тег «TextDescription» - </span>
@@ -501,9 +558,11 @@
 							@* Каталог текста *@
 							<div>
 
-								<label asp-for="Transcript.FolderForText" class="col-form-label text-primary fs-5 me-2"></label>
+								<label asp-for="Transcript.FolderForText" class="@cssForLabel"></label>
 								<br class="d-md-none" />
-								<span class="fs-5 text_shadow">@DataConfig.TextsFolderPath@Model.Transcript?.FolderForText</span>
+								<span class="fs-5 text_shadow">
+									@DataConfig.TextsFolderPath@Model.Transcript?.FolderForText
+								</span>
 
 								<hr class="w-50 mx-auto" />
 
@@ -522,7 +581,7 @@
 										  readonly
 										  rows="10"
 										  aria-describedby="ClearTextInputHelpBlock">
-																														 </textarea>
+																																																										 </textarea>
 
 								<div id="ClearTextInputHelpBlock" class="form-text">
 									<span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
@@ -547,14 +606,26 @@
 
 				@* Заголовок группы «аудиокнига» *@
 				<h2 id="headingAudioBook" class="accordion-header shadw">
-					<button class="accordion-button collapsed py-0 stranicy" type="button" data-bs-toggle="collapse" data-bs-target="#AudioBook" aria-expanded="true" aria-controls="AudioBook">
+
+					<button class="accordion-button collapsed py-0 stranicy"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#AudioBook"
+							aria-expanded="true"
+							aria-controls="AudioBook">
+
 						<span class="form-label fs-5">Аудиокнига :</span>
+
 					</button>
+
 				</h2>
 
-				<div id="AudioBook" class="accordion-collapse collapse pb-2 px-2" aria-labelledby="headingAudioBook" data-bs-parent="#accordionForAudioFile">
+				<div id="AudioBook"
+					 class="accordion-collapse collapse pb-2 px-2"
+					 aria-labelledby="headingAudioBook"
+					 data-bs-parent="#accordionForAudioFile">
 
-					<label asp-for="SequenceNumber" class="col-form-label text-primary fs-5"></label>
+					<label asp-for="SequenceNumber" class="@cssForLabel"></label>
 
 					<span class="fs-4 text-center text_shadow">@Model.SequenceNumber</span>
 
@@ -572,9 +643,11 @@
 						@* Название *@
 						<div class="border border-1 my-2">
 
-							<label asp-for="@Model.AudioBookModel.CaptionOfAudioBook" class="col-form-label text-primary fs-5"></label>
+							<label asp-for="@Model.AudioBookModel.CaptionOfAudioBook" class="@cssForLabel"></label>
 
-							<p class="fs-4 text-center text_shadow">@Model.AudioBookModel.CaptionOfAudioBook</p>
+							<p class="fs-4 text-center text_shadow">
+								@Model.AudioBookModel.CaptionOfAudioBook
+							</p>
 
 							<div class="form-text">
 
@@ -588,12 +661,13 @@
 						@* Описание *@
 						<div class=" mb-3">
 
-							<label asp-for="@Model.AudioBookModel.AudioBookDescription" class="col-form-label text-primary fs-5"></label>
+							<label asp-for="@Model.AudioBookModel.AudioBookDescription" class="@cssForLabel"></label>
 
 							<textarea asp-for="@Model.AudioBookModel.AudioBookDescription"
 									  class="form-control fordetails maxwidth700px border border-1 border-primary mt-0 mx-auto"
+									  readonly
 									  rows="5">
-																															</textarea>
+										</textarea>
 
 							<div class="form-text">
 
@@ -607,7 +681,7 @@
 						@* Исполнитель *@
 						<div class="border border-1 mb-2">
 
-							<label asp-for="@Model.AudioBookModel.ActorOfAudioBook" class="col-form-label text-primary fs-5"></label>
+							<label asp-for="@Model.AudioBookModel.ActorOfAudioBook" class="@cssForLabel"></label>
 
 							<p class="fs-4 text-center text_shadow">@Model.AudioBookModel.ActorOfAudioBook</p>
 
@@ -623,7 +697,7 @@
 						@* Количество файлов *@
 						<div>
 
-							<label asp-for="@Model.AudioBookModel.NumberOfFiles" class="col-form-label text-primary fs-5"></label>
+							<label asp-for="@Model.AudioBookModel.NumberOfFiles" class="@cssForLabel"></label>
 
 							<span class="fs-4 text-center text_shadow">@Model.AudioBookModel.NumberOfFiles</span>
 
@@ -641,7 +715,7 @@
 
 							<p class="col-form-label text-primary fs-5">Аудиокнига по книге :</p>
 
-							@* @if (Model.AudioBookModel.BookForAudioBook != null)
+							@if (Model.AudioBookModel.BookForAudioBook != null)
 							{
 								<a asp-area="Admin"
 								   asp-controller="BooksAndArticles"
@@ -651,7 +725,7 @@
 								   title="информация о книге"
 								   onclick="this.target='_blank'">
 
-									<vc:view-image image-id="@Model.AudioBookModel.BookForAudioBook.PageInfoModel?.ImageFileModelId"
+									<vc:view-image image-id="@Model.AudioBookModel.BookForAudioBook.ImageFileModelId"
 												   css-class="w-100"
 												   icon-type="webicon300" />
 
@@ -669,7 +743,7 @@
 							else
 							{
 								<p class="text_shadow fs-4 mb-3">книга не выбрана</p>
-							} *@
+							}
 
 						</div>
 					}

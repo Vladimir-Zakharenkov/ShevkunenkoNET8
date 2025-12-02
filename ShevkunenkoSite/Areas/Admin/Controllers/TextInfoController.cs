@@ -11,7 +11,8 @@ public class TextInfoController(
     IBooksAndArticlesRepository bookContext,
     IMovieFileRepository movieContext,
     IAudioInfoRepository audioFIleContext,
-    IWebHostEnvironment hostEnvironment) : Controller
+    IWebHostEnvironment hostEnvironment
+    ) : Controller
 {
     private readonly string rootPath = hostEnvironment.WebRootPath;
 
@@ -125,13 +126,15 @@ public class TextInfoController(
     [RequestSizeLimit(5_268_435_456)]
     [RequestFormLimits(MultipartBodyLengthLimit = 5268435456)]
     public async Task<IActionResult> AddText(
-                    [Bind("NewTextFolder," +
+                    [Bind(
+                    "NewTextFolder," +
                     "TxtFileFormFile," +
                     "HtmlFileFormFile," +
                     "TextDescription," +
                     "FolderForText," +
                     "BooksAndArticlesModelId," +
-                    "SequenceNumber")]
+                    "SequenceNumber"
+        )]
         TextInfoModel addText)
     {
         if (ModelState.IsValid)

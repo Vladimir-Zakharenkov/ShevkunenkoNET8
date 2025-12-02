@@ -427,30 +427,42 @@ public class PageInfoController(
 
                     var dictionaryOfRoutdata = routData.Select(part => part.Split('=')).ToDictionary(split => split[0], split => split[1]);
 
-#pragma warning disable CA1862
-                    var imageItems = await imageContext.ImageFiles
-                                .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
-                                .ToArrayAsync();
 #pragma warning restore CA1862
-
-                    imageItems = [.. imageItems.Shuffle()];
-
-                    if (imageItems.Length > 1)
+                    if (await imageContext.ImageFiles
+                                .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower())).AnyAsync())
                     {
-                        pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                        var imageItems = await imageContext.ImageFiles
+                                    .Where(img => img.SearchFilter.ToLower().Contains(dictionaryOfRoutdata["bookcaption"].ToLower()))
+                                    .ToArrayAsync();
+
+                        imageItems = [.. imageItems.Shuffle()];
+
+                        if (imageItems.Length > 1)
                         {
-                            FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
-                            FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
-                        };
+                            pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                            {
+                                FramesOnTheLeft = [.. imageItems.Take(imageItems.Length / 2)],
+                                FramesOnTheRight = [.. imageItems.Skip(imageItems.Length / 2)]
+                            };
+                        }
+                        else
+                        {
+                            pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
+                            {
+                                FramesOnTheLeft = [.. imageItems],
+                                FramesOnTheRight = [.. imageItems]
+                            };
+                        }
                     }
                     else
                     {
                         pageItem.FramesAroundMainContent = new FramesAroundMainContentModel
                         {
-                            FramesOnTheLeft = [.. imageItems],
-                            FramesOnTheRight = [.. imageItems]
+                            FramesOnTheLeft = [],
+                            FramesOnTheRight = []
                         };
                     }
+#pragma warning disable CA1862
                 }
             }
 
@@ -754,7 +766,6 @@ public class PageInfoController(
             }
 
             #endregion
-
 
             #region Добавить фон для страницы
 

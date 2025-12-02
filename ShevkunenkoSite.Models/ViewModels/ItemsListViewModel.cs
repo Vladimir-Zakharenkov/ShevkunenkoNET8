@@ -14,6 +14,12 @@ public class ItemsListViewModel : PagingInfoViewModel
 
     #endregion
 
+    #region Статьи и книги
+
+    public BooksAndArticlesModel[]? AllBooksAndArticlesFiles { get; set; }
+
+    #endregion
+
     #region Тексты
 
     public TextInfoModel[]? AllTextFiles { get; set; }
@@ -25,5 +31,4 @@ public class ItemsListViewModel : PagingInfoViewModel
     public PageInfoModel[]? AllSitePages { get; set; }
 
     #endregion
-
 }

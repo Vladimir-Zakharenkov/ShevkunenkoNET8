@@ -1,39 +1,45 @@
-﻿using Microsoft.Extensions.Logging;
+﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
+// Licensed under MIT license. See License.txt in the project root for license information.
 
-namespace MyFirstEfCoreApp;
+using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
-public class MyLoggerProvider(List<string> logs) : ILoggerProvider
+namespace MyFirstEfCoreApp
 {
-    private readonly List<string> _logs = logs;
-
-    public ILogger CreateLogger(string categoryName)
-    {
-        return new MyLogger(_logs);
-    }
-
-    void IDisposable.Dispose()
-    {
-    }
-
-    private class MyLogger(List<string> logs) : ILogger
+    public class MyLoggerProvider(List<string> logs) : ILoggerProvider
     {
         private readonly List<string> _logs = logs;
 
-        public bool IsEnabled(LogLevel logLevel)
+        public ILogger CreateLogger(string categoryName)
         {
-            return logLevel >= LogLevel.Information;
+            return new MyLogger(_logs);
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-            Func<TState, Exception, string> formatter)
+        public void Dispose()
         {
-            _logs.Add(formatter(state, exception));
-            //Console.WriteLine(formatter(state, exception));
         }
 
-        public IDisposable BeginScope<TState>(TState state)
+        private class MyLogger(List<string> logs) : ILogger
         {
-            return null;
+            private readonly List<string> _logs = logs;
+
+            public bool IsEnabled(LogLevel logLevel)
+            {
+                return logLevel >= LogLevel.Information;
+            }
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+                Func<TState, Exception, string> formatter)
+            {
+                _logs.Add(formatter(state, exception));
+                //Console.WriteLine(formatter(state, exception));
+            }
+
+            public IDisposable BeginScope<TState>(TState state)
+            {
+                return null;
+            }
         }
     }
 }

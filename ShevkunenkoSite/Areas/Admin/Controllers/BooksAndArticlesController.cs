@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
-public class BooksAndArticlesController(
+public class BooksAndArticlesController
+    (
     IBooksAndArticlesRepository bookContext,
     ITextInfoRepository textContext,
     IImageFileRepository imageContext,
@@ -13,26 +15,32 @@ public class BooksAndArticlesController(
 {
     #region Список книг и статей
 
-    public int booksPerPage = 16;
-
-    public IActionResult Index(string? bookSearchString, int pageNumber = 1)
+    public async Task<IActionResult> Index(string? searchString, int pageNumber = 1)
     {
-        var allBooks = bookContext.BooksAndArticles.BookSearch(bookSearchString);
+        var allBooksAndArticles = await bookContext.BooksAndArticles.ToListAsync();
 
-        return View(new BooksAndArticlesViewModel
+        if (!searchString.IsNullOrEmpty())
         {
-            AllBooks = [.. allBooks
-                     .Skip((pageNumber - 1) * booksPerPage)
-                     .Take(booksPerPage)],
+            allBooksAndArticles = [.. allBooksAndArticles.BookSearch(searchString).OrderBy(book => book.CaptionOfText)];
+        }
 
-            PagingInfo = new PagingInfoViewModel
-            {
-                CurrentPage = pageNumber,
-                ItemsPerPage = booksPerPage,
-                TotalItems = allBooks.Count()
-            },
+        return View(new ItemsListViewModel
+        {
+            AllBooksAndArticlesFiles = [..  allBooksAndArticles
+                     .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                     .Take(DataConfig.NumberOfItemsPerPage)],
 
-            BookSearchString = bookSearchString ?? string.Empty
+            #region Свойства PagingInfoViewModel
+
+            TotalItems = allBooksAndArticles.Count,
+
+            ItemsPerPage = DataConfig.NumberOfItemsPerPage,
+
+            CurrentPage = pageNumber,
+
+            SearchString = searchString ?? string.Empty
+
+            #endregion
         });
     }
 
