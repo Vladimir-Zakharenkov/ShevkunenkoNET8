@@ -933,9 +933,9 @@ public class PageInfoController(
             _ = addPage.SortOfPage;
 
             #endregion
-            
+
             #region Адрес
-            
+
             #region Область
 
             if (string.IsNullOrEmpty(addPage.PageArea.Trim()) || addPage.PageArea == "Root")
@@ -948,7 +948,7 @@ public class PageInfoController(
             }
 
             #endregion
-            
+
             #region Контроллер
 
             if (addPage.PageAsRazorPage)
@@ -982,7 +982,7 @@ public class PageInfoController(
             }
 
             #endregion
-            
+
             #region Действие
 
             if (addPage.PageAsRazorPage)
@@ -1016,7 +1016,7 @@ public class PageInfoController(
             }
 
             #endregion
-            
+
             #region Адрес без Области (для RazorPage)
 
             if (addPage.PageAsRazorPage)
@@ -1362,11 +1362,13 @@ public class PageInfoController(
 
             #region Поиск связанных страниц
 
-                _ = addPage.PageLinksByFilters;
+            _ = addPage.PageLinksByFilters;
 
             if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.InvariantCultureIgnoreCase))
             {
                 addPage.PageFilterOut = "Книги Николая Модестова,";
+
+                addPage.PageLinksByFilters = true;
             }
 
             if (addPage.PageFilterOut != null)
@@ -2621,31 +2623,8 @@ public class PageInfoController(
 
             #region Изменить группы связанных ссылок
 
-            // поиск связанных страниц по GUID (1)
-            pageUpdate.PageLinks = editPage.PageLinks;
+            #region Поиск связанных страниц по фильтрам
 
-            if (editPage.RefPages != null)
-            {
-                pageUpdate.RefPages = editPage.RefPages.Trim().ToLower();
-            }
-            else
-            {
-                editPage.RefPages = null;
-            }
-
-            // поиск связанных страниц по GUID (2)
-            pageUpdate.PageLinks2 = editPage.PageLinks2;
-
-            if (editPage.RefPages2 != null)
-            {
-                pageUpdate.RefPages2 = editPage.RefPages2.Trim().ToLower();
-            }
-            else
-            {
-                editPage.RefPages2 = null;
-            }
-
-            // поиск связанных страниц по фильтру
             pageUpdate.PageLinksByFilters = editPage.PageLinksByFilters;
 
             if (!string.IsNullOrEmpty(editPage.PageFilterOut))
@@ -2657,7 +2636,40 @@ public class PageInfoController(
                 editPage.PageFilterOut = null;
             }
 
-            // поиск связанных видео
+            #endregion
+
+            #region Поиск связанных страниц по GUID (1)
+
+            pageUpdate.PageLinks = editPage.PageLinks;
+
+            if (editPage.RefPages != null)
+            {
+                pageUpdate.RefPages = editPage.RefPages.Trim().ToLower();
+            }
+            else
+            {
+                editPage.RefPages = null;
+            }
+
+            #endregion
+
+            #region Поиск связанных страниц по GUID (2)
+
+            pageUpdate.PageLinks2 = editPage.PageLinks2;
+
+            if (editPage.RefPages2 != null)
+            {
+                pageUpdate.RefPages2 = editPage.RefPages2.Trim().ToLower();
+            }
+            else
+            {
+                editPage.RefPages2 = null;
+            }
+
+            #endregion
+
+            #region Поиск связанных видео
+
             pageUpdate.VideoLinks = editPage.VideoLinks;
 
             if (editPage.VideoFilterOut != null)
@@ -2669,7 +2681,10 @@ public class PageInfoController(
                 editPage.VideoFilterOut = null;
             }
 
-            // альбом картинок
+            #endregion
+
+            #region Альбом картинок
+
             pageUpdate.PhotoLinks = editPage.PhotoLinks;
 
             if (editPage.PhotoFilterOut != null)
@@ -2680,6 +2695,8 @@ public class PageInfoController(
             {
                 editPage.PhotoFilterOut = null;
             }
+
+            #endregion
 
             #endregion
 
