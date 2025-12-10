@@ -90,7 +90,7 @@ public class PageInfoModel
     [Display(Name = "Описание страницы :")]
     public string PageDescription { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Добавте ключевые слова")]
+    //[Required(ErrorMessage = "Добавте ключевые слова")]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Ключевые слова :")]

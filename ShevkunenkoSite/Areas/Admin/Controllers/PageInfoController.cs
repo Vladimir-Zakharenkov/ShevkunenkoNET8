@@ -933,9 +933,9 @@ public class PageInfoController(
             _ = addPage.SortOfPage;
 
             #endregion
-
+            
             #region Адрес
-
+            
             #region Область
 
             if (string.IsNullOrEmpty(addPage.PageArea.Trim()) || addPage.PageArea == "Root")
@@ -948,7 +948,7 @@ public class PageInfoController(
             }
 
             #endregion
-
+            
             #region Контроллер
 
             if (addPage.PageAsRazorPage)
@@ -982,7 +982,7 @@ public class PageInfoController(
             }
 
             #endregion
-
+            
             #region Действие
 
             if (addPage.PageAsRazorPage)
@@ -1016,7 +1016,7 @@ public class PageInfoController(
             }
 
             #endregion
-
+            
             #region Адрес без Области (для RazorPage)
 
             if (addPage.PageAsRazorPage)
@@ -1156,11 +1156,24 @@ public class PageInfoController(
 
             _ = addPage.PageTitle.Trim();
             _ = addPage.PageDescription.Trim();
-            _ = addPage.PageKeyWords.Trim();
+
+            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.CurrentCultureIgnoreCase))
+            {
+                addPage.PageKeyWords = "Москва бандитская, Николай Модестов, криминал, 90-е годы,";
+            }
+            else
+            {
+                _ = addPage.PageKeyWords.Trim();
+            }
 
             #endregion
 
             #region OgType - PageIconPath - BrowserConfig - BrowserConfigFolder - Manifest
+
+            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.InvariantCultureIgnoreCase))
+            {
+                addPage.OgType = "book";
+            }
 
             _ = addPage.OgType.Trim();
 
@@ -1349,7 +1362,12 @@ public class PageInfoController(
 
             #region Поиск связанных страниц
 
-            _ = addPage.PageLinksByFilters;
+                _ = addPage.PageLinksByFilters;
+
+            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.InvariantCultureIgnoreCase))
+            {
+                addPage.PageFilterOut = "Книги Николая Модестова,";
+            }
 
             if (addPage.PageFilterOut != null)
             {
@@ -2339,17 +2357,38 @@ public class PageInfoController(
 
             #region Адрес (для RazorPage) или Действие (для MVC)
 
-            if (string.IsNullOrWhiteSpace(editPage.PageLoc) || string.IsNullOrEmpty(editPage.PageLoc))
+            if (editPage.PageAsRazorPage)
             {
-                pageUpdate.PageLoc = string.Empty;
-            }
-            else if (editPage.PageLoc == "/")
-            {
-                pageUpdate.PageLoc = "/";
+                if (string.IsNullOrWhiteSpace(editPage.PageLoc) || string.IsNullOrEmpty(editPage.PageLoc))
+                {
+                    ModelState.AddModelError("PageItem.PageLoc", "Введите адрес страницы без области");
+
+                    // Список картинок сайта
+                    ViewData["ImageFIles"] = new SelectList(imageContext.ImageFiles.OrderBy(orderImage => orderImage.ImageCaption), "ImageFileModelId", "ImageCaption");
+
+                    // Список картинок для фона (фотопленка)
+                    ViewData["BackgroundImages"] = new SelectList(backgroundContext.BackgroundFiles.OrderBy(orderBackgroundImage => orderBackgroundImage.WebLeftBackground), "BackgroundFileModelId", "WebLeftBackground");
+
+                    // Список текстовых файлов
+                    ViewData["Texts"] = new SelectList(textFileContext.Texts.OrderBy(orderText => orderText.TxtFileName), "TextInfoModelId", "TxtFileName");
+
+                    // Список аудиофайлов
+                    ViewData["AudioFiles"] = new SelectList(audioFileContext.AudioFiles.OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile), "AudioInfoModelId", "CaptionOfTextInAudioFile");
+
+                    return View(editPage);
+                }
+                else if (editPage.PageLoc == "/")
+                {
+                    pageUpdate.PageLoc = "/";
+                }
+                else
+                {
+                    pageUpdate.PageLoc = "/" + editPage.PageLoc.Trim().Trim('/').TrimStart('?').ToLower();
+                }
             }
             else
             {
-                pageUpdate.PageLoc = "/" + editPage.PageLoc.Trim().Trim('/').ToLower();
+                pageUpdate.PageLoc = editPage.Action;
             }
 
             #endregion

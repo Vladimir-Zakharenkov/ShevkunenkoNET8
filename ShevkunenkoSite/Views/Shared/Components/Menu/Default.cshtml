@@ -1,5 +1,5 @@
 ﻿@{
-    string liNavItemClass = "nav-item dropdown shadw mb-2 mb-md-0 maxwidthcontent";
+    string liNavItemClass = "nav-item dropdown shadw mb-2 maxwidthcontent";
     string refNavItemClass = "nav-link dropdown-toggle text-black p-0";
     string ulDropdownMenuClass = "dropdown-menu border-0 bg-transparent mt-2 ps-2 ps-md-0";
     string liDropdownClass = "bg-light p-0 mb-1 rounded-1 maxwidthcontent";
@@ -7,16 +7,30 @@
     string ulDropdownSubMenuClass = "dropdown-menu dropdown-submenu bg-transparent border-0 mt-1";
 }
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light py-1 mt-1 mb-3 rounded-3 shadw d-print-none">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light pb-0 mt-1 mb-2 rounded-3 shadw d-print-none">
 
     <div class="container-fluid">
 
+        @* Помощь сайту *@
+        <a class="navbar-brand donate mb-2 d-inline-block float-start"
+           href="https://www.donationalerts.com/r/sergey1965"
+           onclick="this.target='_blank'">
+
+            <img src="~/images/admin/coffee.webp"
+                 class="border border-2 rounded-1 shadw"
+                 width="33"
+                 height="33"
+                 title="кофе админу"
+                 alt="кофе админу" />
+
+        </a>
+
         @* Переход к оглавлению сайта *@
-        <a class="navbar-brand donate mb-2 mb-md-0"
-           asp-area=""
-           asp-controller="Shevkunenko"
-           asp-action="Index"
-           title="оглавление сайта">
+        <a class="navbar-brand donate mb-2"
+            asp-area=""
+            asp-controller="Shevkunenko"
+            asp-action="Index"
+            title="оглавление сайта">
 
             <img src="~/images/common/index1-300.gif"
                  class="border border-2 rounded-1 shadw"
@@ -27,7 +41,7 @@
         </a>
 
         @* Кнопка свернутого меню *@
-        <button class="navbar-toggler"
+        <button class="navbar-toggler mb-1"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#siteNav"
@@ -755,7 +769,7 @@
 
                 @* Поиск от Yandex *@
                 <li id="yandex-search"
-                    class="nav-item shadw mb-2 mb-md-0 maxwidthcontent search-button pb-md-0"
+                    class="nav-item shadw mb-2 maxwidthcontent search-button pb-md-0"
                     itemprop="itemListElement"
                     itemscope itemtype="http://schema.org/ListItem">
 
@@ -792,20 +806,6 @@
             </ul>
 
         </div>
-
-        @* Помощь сайту *@
-        <a class="d-inline-block float-end navbar-brand donate"
-           href="https://www.donationalerts.com/r/sergey1965"
-           onclick="this.target='_blank'">
-
-            <img src="~/images/admin/coffee.webp"
-                 class="border border-2 rounded-1 shadw"
-                 width="33"
-                 height="33"
-                 title="кофе админу"
-                 alt="кофе админу" />
-
-        </a>
 
     </div>
 

@@ -752,7 +752,8 @@ public class TextInfoController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditText(
-         [Bind( "TextInfoModelId," +
+         [Bind(
+        "TextInfoModelId," +
                     "TextDescription," +
                     "TxtFileName," +
                     "TxtFileSize," +
@@ -768,7 +769,8 @@ public class TextInfoController(
                     "SequenceNumber," +
                     "BooksAndArticlesModelId," +
                     "BooksAndArticlesModel," +
-                    "AudioInfoModelId")]
+                    "AudioInfoModelId"
+        )]
         TextInfoModel textInfoForEditing)
     {
         if (ModelState.IsValid)
@@ -793,9 +795,9 @@ public class TextInfoController(
 
                     string newPathToHtmlFile = Path.GetFullPath(Path.Join(System.IO.Directory.GetCurrentDirectory(), "wwwroot/texts", textInfoForEditing.FolderForText, textForUpdate.HtmlFileName)).Replace('\\', '/');
 
-                    System.IO.File.Move(oldPathToTxtFile, newPathToTxtFile);
+                    System.IO.File.Move(oldPathToTxtFile, newPathToTxtFile, true);
 
-                    System.IO.File.Move(oldPathToHtmlFile, newPathToHtmlFile);
+                    System.IO.File.Move(oldPathToHtmlFile, newPathToHtmlFile, true);
                 }
             }
             else
