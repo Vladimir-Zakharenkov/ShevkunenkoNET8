@@ -345,7 +345,7 @@
 
 					@* иконка аудиокниги *@
 					<vc:view-image image-id="84c9851e-7b45-4bd1-1189-08dd8ec59a70"
-								   css-class="maxwidth40px p-0"
+								   css-class="maxwidth40px p-0 @(Model.BookOrArticle.RefToAudio == null ? "d-none" : "")"
 								   icon-type="webicon100" />
 
 				</button>

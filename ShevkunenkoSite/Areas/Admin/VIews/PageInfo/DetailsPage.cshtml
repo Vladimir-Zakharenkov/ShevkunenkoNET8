@@ -138,6 +138,17 @@
 
 			</a>
 
+			@if (!string.IsNullOrEmpty(Model.PagePathNickName))
+			{
+				<a href="@Url.Content(Model.PagePathNickName)"
+				   class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
+				   title="просмотр">
+
+					Псевдоним
+
+				</a>
+			}
+
 			<a asp-area="Admin"
 			   asp-controller="PageInfo"
 			   asp-action="Index"
@@ -544,7 +555,7 @@
 												  readonly
 												  rows="10"
 												  aria-describedby="ClearTextInputHelpBlock">
-											 </textarea>
+												 </textarea>
 
 										<div id="ClearTextInputHelpBlock" class="form-text">
 											<span class="d-none d-sm-inline-block fs-6 text-success">тег «ClearText» - </span>
@@ -561,29 +572,29 @@
 									@* Заголовок группы «файл HTML» *@
 									<h2 id="headingHtmlText" class="accordion-header shadw">
 
-										<button class="accordion-button collapsed py-0 stranicy" 
-											type="button" 
-											data-bs-toggle="collapse" 
-											data-bs-target="#HtmlText" 
-											aria-expanded="true" 
-											aria-controls="HtmlText">
-											
+										<button class="accordion-button collapsed py-0 stranicy"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#HtmlText"
+												aria-expanded="true"
+												aria-controls="HtmlText">
+
 											<span class="form-label fs-5">Файл HTML :</span>
-										
+
 										</button>
-									
+
 									</h2>
 
-									<div id="HtmlText" 
-										class="accordion-collapse collapse pb-2 px-2" 
-										aria-labelledby="headingHtmlText">
+									<div id="HtmlText"
+										 class="accordion-collapse collapse pb-2 px-2"
+										 aria-labelledby="headingHtmlText">
 
 										<textarea id="HtmlTextInput" class="form-control fordetails fs-6 mb-2"
 												  asp-for="HtmlText"
 												  readonly
 												  rows="10"
 												  aria-describedby="HtmlTextInputHelpBlock">
-				                         </textarea>
+					                         </textarea>
 
 										<div id="HtmlTextInputHelpBlock" class="form-text">
 
@@ -1363,9 +1374,9 @@
 													<div class="accordion-body p-1">
 
 														<div class="row mt-1 justify-content-center g-1
-																																												                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
-																																												                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
-																																												                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																																                                                                        @(listOfPages.Count < 4 ? "row-cols-3" : "")
+																																																                                                                        @((listOfPages.Count % 4 == 0 || listOfPages.Count == 7) ? "row-cols-4" : "")
+																																																                                                                        @((listOfPages.Count > 4 & listOfPages.Count % 4 != 0 & listOfPages.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 															@foreach (var item in listOfPages)
 															{
@@ -1589,9 +1600,9 @@
 																<div class="accordion-body accordion-body-nointend text-center">
 
 																	<div class="row mt-1 justify-content-center g-1
-																																	                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
-																																	                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
-																																	                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
+																																				                                                                                    @(modelForPageLinks.Count < 4 ? "row-cols-3" : "")
+																																				                                                                                                @((modelForPageLinks.Count % 4 == 0 || modelForPageLinks.Count == 7) ? "row-cols-4" : "")
+																																				                                                                                                            @((modelForPageLinks.Count > 4 & modelForPageLinks.Count % 4 != 0 & modelForPageLinks.Count != 7) ? "row-cols-3 row-cols-lg-4 row-cols-xxl-5" : "")">
 
 																		@foreach (var item in modelForPageLinks)
 																		{

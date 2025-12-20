@@ -61,7 +61,7 @@ public class BooksAndArticlesModel
     public ImageFileModel? ScanOfArticle { get; set; }
 
     #endregion
-
+    
     #region Видео связанное с книгой (статьёй)
 
     [Display(Name = "Видео для текста :")]
@@ -85,6 +85,12 @@ public class BooksAndArticlesModel
     [DataType(DataType.Text)]
     [Display(Name = "Заголовок :")]
     public string CaptionOfText { get; set; } = string.Empty;
+
+    #endregion
+
+    #region Связь с таблицей BookCaptionForURLModel (one-to-one)
+
+    public BookCaptionForURLModel? CaptionForURL { get; set; }
 
     #endregion
 

@@ -22,6 +22,8 @@ public class SiteDbContext(DbContextOptions<SiteDbContext> options) : DbContext(
 
     public DbSet<BooksAndArticlesModel> BooksAndArticles => Set<BooksAndArticlesModel>();
 
+    public DbSet<BookCaptionForURLModel> BookCaptionForURL => Set<BookCaptionForURLModel>();
+
     public DbSet<AudioBookModel> AudioBookModel => Set<AudioBookModel>();
 
     public DbSet<AudioInfoModel> AudioInfoModel => Set<AudioInfoModel>();
