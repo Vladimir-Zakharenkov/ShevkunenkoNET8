@@ -14,7 +14,7 @@ public class BooksController(
 
     public IActionResult Index() => View();
 
-    public IActionResult AudioBookIndex() => View(); // TODO: Написать страницу списка аудиокниг аудиокниг
+    public IActionResult AudioBookIndex() => View(); // TODO: Написать страницу списка аудиокниг
 
     public async Task<IActionResult> Book(string? bookCaption, int? pageNumber)
     {
