@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Microsoft.IdentityModel.Tokens;
+using ShevkunenkoSite.Pages.Shared.Components.Code;
 
 namespace ShevkunenkoSite.Areas.Admin.Controllers;
 
@@ -10,63 +11,56 @@ public class ImageInfoController(
 {
     public ImageFileModel? ImageItem { get; set; }
 
+    private static readonly char[] separator = [','];
+
     #region Список картинок
 
-    public int imagesPerPage = 12;
+    //public int imagesPerPage = 12;
 
-    public IActionResult Index
+    public async Task<ViewResult> Index
         (
-        string? imageSearchString,
-        bool? iconList,
-        int pageNumber = 1
+        string? searchString,
+        int pageNumber = 1,
+        bool pageCard = false
         )
     {
-        #region Фильтр по картинкам
+        var allSiteImages = await imageContext.ImageFiles.ToListAsync();
 
-        //var allImages = from m in imageContext.ImageFiles.
-        //    .Where
-        //    (
-        //    s => s.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim())
-        //            | s.ImageDescription.Contains((imageSearchString ?? string.Empty).Trim())
-        //            | s.SearchFilter.Contains((imageSearchString ?? string.Empty).Trim())
-        //            | s.WebImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
-        //            | s.ImageFileName.Contains((imageSearchString ?? string.Empty).Trim())
-        //    )
-        //                select m;
-
-        //var allImages = imageContext.ImageFiles.FuncSearch(ss => ss.ImageCaption.Contains((imageSearchString ?? string.Empty).Trim()));
-
-        var allImages = imageContext.ImageFiles.ImageSearch(imageSearchString);
-
-        #endregion
+        if (!searchString.IsNullOrEmpty())
+        {
+            allSiteImages = [.. allSiteImages.ImageSearch(searchString).OrderBy(siteImage => siteImage.ImageAltTitle)];
+        }
 
         #region Выбор представления - список или иконки
 
-        ImageListViewModel imageListViewModel = new()
+        ItemsListViewModel itemList = new()
         {
-            AllImages = allImages
-                    .Skip((pageNumber - 1) * imagesPerPage)
-                    .Take(imagesPerPage),
+            AllImageFiles = [.. allSiteImages
+                     .Skip((pageNumber - 1) * DataConfig.NumberOfItemsPerPage)
+                     .Take(DataConfig.NumberOfItemsPerPage)],
 
-            PagingInfo = new PagingInfoViewModel
-            {
-                CurrentPage = pageNumber,
-                ItemsPerPage = imagesPerPage,
-                TotalItems = allImages.Count()
-            },
+            #region Свойства PagingInfoViewModel
 
-            ImageSearchString = imageSearchString ?? string.Empty,
+            TotalItems = allSiteImages.Count,
 
-            IconList = iconList
+            ItemsPerPage = DataConfig.NumberOfItemsPerPage,
+
+            CurrentPage = pageNumber,
+
+            SearchString = searchString ?? string.Empty,
+
+            PageCard = pageCard
+
+            #endregion
         };
 
-        if (iconList == null || iconList == false)
+        if (pageCard == false)
         {
-            return View(imageListViewModel);
+            return View(itemList);
         }
         else
         {
-            return View("IconList", imageListViewModel);
+            return View("IconList", itemList);
         }
 
         #endregion

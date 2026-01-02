@@ -4,17 +4,15 @@ namespace ShevkunenkoSite.Services.Interfaces;
 
 public class ImageFileImplementation(SiteDbContext siteContext) : IImageFileRepository
 {
-    private readonly SiteDbContext _siteContext = siteContext;
-
     #region Все файлы картинок в БД
 
-    public IQueryable<ImageFileModel> ImageFiles => _siteContext.ImageFile;
+    public IQueryable<ImageFileModel> ImageFiles => siteContext.ImageFile;
 
     #endregion
 
     #region Сохранить данные картинки в БД
 
-    public async Task SaveChangesInImageAsync() => await _siteContext.SaveChangesAsync();
+    public async Task SaveChangesInImageAsync() => await siteContext.SaveChangesAsync();
 
     #endregion
 
@@ -22,7 +20,7 @@ public class ImageFileImplementation(SiteDbContext siteContext) : IImageFileRepo
 
     public async Task AddNewImageAsync(ImageFileModel image)
     {
-        await _siteContext.ImageFile.AddAsync(image);
+        await siteContext.ImageFile.AddAsync(image);
         await SaveChangesInImageAsync();
     }
 
@@ -32,12 +30,12 @@ public class ImageFileImplementation(SiteDbContext siteContext) : IImageFileRepo
 
     public async Task DeleteImageAsync(Guid imageId)
     {
-        if (await _siteContext.ImageFile.Where(i => i.ImageFileModelId == imageId).AnyAsync())
+        if (await siteContext.ImageFile.Where(i => i.ImageFileModelId == imageId).AnyAsync())
         {
-            ImageFileModel imageToDelete = await _siteContext.ImageFile.FirstAsync(i => i.ImageFileModelId == imageId);
+            ImageFileModel imageToDelete = await siteContext.ImageFile.FirstAsync(i => i.ImageFileModelId == imageId);
 
-            _ = _siteContext.ImageFile.Remove(imageToDelete);
-            _ = await _siteContext.SaveChangesAsync();
+            _ = siteContext.ImageFile.Remove(imageToDelete);
+            _ = await siteContext.SaveChangesAsync();
         }
     }
 
@@ -48,19 +46,19 @@ public class ImageFileImplementation(SiteDbContext siteContext) : IImageFileRepo
     public ImageFileModel GetImageByGuidOrFileNameAsync(string imageObject)
     {
         // Поиск картинки по GUID
-        if (Guid.TryParse(imageObject, out Guid imageIdGuid) & _siteContext.ImageFile.Where(img => img.ImageFileModelId == imageIdGuid).Any())
+        if (Guid.TryParse(imageObject, out Guid imageIdGuid) & siteContext.ImageFile.Where(img => img.ImageFileModelId == imageIdGuid).Any())
         {
-            return _siteContext.ImageFile.First(img => img.ImageFileModelId == imageIdGuid);
+            return siteContext.ImageFile.First(img => img.ImageFileModelId == imageIdGuid);
         }
         // Поиск картинки по названию файла
-        else if (_siteContext.ImageFile.Where(img => img.WebImageFileName == imageObject || img.ImageFileName == imageObject).Any())
+        else if (siteContext.ImageFile.Where(img => img.WebImageFileName == imageObject || img.ImageFileName == imageObject).Any())
         {
-            return _siteContext.ImageFile.First(img => img.WebImageFileName == imageObject || img.ImageFileName == imageObject);
+            return siteContext.ImageFile.First(img => img.WebImageFileName == imageObject || img.ImageFileName == imageObject);
         }
         // Если ничего не найдено, выводим картинку NoImage
         else
         {
-            return _siteContext.ImageFile.First(img => img.ImageFileModelId == Guid.Parse(DataConfig.NoImage));
+            return siteContext.ImageFile.First(img => img.ImageFileModelId == Guid.Parse(DataConfig.NoImage));
         }
     }
 

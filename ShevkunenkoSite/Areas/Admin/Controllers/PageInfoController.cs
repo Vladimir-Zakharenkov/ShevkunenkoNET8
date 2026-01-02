@@ -24,7 +24,12 @@ public class PageInfoController(
 
     private static readonly char[] separator = [','];
 
-    public async Task<ViewResult> Index(string? searchString, int pageNumber = 1, bool pageCard = false)
+    public async Task<ViewResult> Index
+        (
+        string? searchString,
+        int pageNumber = 1,
+        bool pageCard = false
+        )
     {
         var allSitePages = await pageInfoContext.PagesInfo.ToListAsync();
 
