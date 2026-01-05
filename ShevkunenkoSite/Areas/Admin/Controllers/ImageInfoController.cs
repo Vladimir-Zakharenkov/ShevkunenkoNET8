@@ -14,9 +14,6 @@ public class ImageInfoController(
     private static readonly char[] separator = [','];
 
     #region Список картинок
-
-    //public int imagesPerPage = 12;
-
     public async Task<ViewResult> Index
         (
         string? searchString,
@@ -28,7 +25,7 @@ public class ImageInfoController(
 
         if (!searchString.IsNullOrEmpty())
         {
-            allSiteImages = [.. allSiteImages.ImageSearch(searchString).OrderBy(siteImage => siteImage.ImageAltTitle)];
+            allSiteImages = [.. allSiteImages.ImageSearch(searchString).OrderBy(siteImage => siteImage.SortOfPicture)];
         }
 
         #region Выбор представления - список или иконки

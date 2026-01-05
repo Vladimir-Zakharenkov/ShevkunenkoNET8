@@ -12223,7 +12223,7 @@ body {
 }
 @media only screen and (min-width: 576px) {
   .imageref {
-    border: 3px ridge rgba(194, 10, 41, 0);
+    border: 2px ridge rgba(194, 10, 41, 0);
     border-radius: 0.3rem;
     transition: all 0.3s ease-in-out;
   }
@@ -12932,12 +12932,24 @@ li#yandex-search * {
   min-width: 180px;
 }
 
+.minwidth30px {
+  min-width: 30px !important;
+}
+
+.width9percent {
+  min-width: 9% !important;
+}
+
 .minwidth40px {
   min-width: 40px !important;
 }
 
 .minwidth50px {
   min-width: 50px;
+}
+
+.minwidth60px {
+  min-width: 60px;
 }
 
 .minwidth100px {

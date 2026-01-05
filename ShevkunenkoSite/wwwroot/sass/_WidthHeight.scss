@@ -63,12 +63,25 @@
     width: 30%;
     min-width: 180px;
 }
+
+.minwidth30px {
+    min-width: 30px !important;
+}
+
+.width9percent {
+    min-width: 9% !important;
+}
+
 .minwidth40px {
     min-width: 40px !important;
 }
 
 .minwidth50px {
     min-width: 50px;
+}
+
+.minwidth60px {
+    min-width: 60px;
 }
 
 .minwidth100px {

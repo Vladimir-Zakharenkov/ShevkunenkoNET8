@@ -6,12 +6,17 @@
 
 <div class="mx-auto fluid-font-size" itemscope itemtype="https://schema.org/Book">
 
-	<meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText" />
-	<meta itemprop="headline" content="@Model.BookOrArticle.CaptionOfText" />
-	<meta itemprop="url" content="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString">
-	<meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
-	<meta itemprop="dateModified datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
-	<meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+	@* Данные для  https://schema.org/Book *@
+	<span>
+
+		<meta itemprop="author" content="@Model.BookOrArticle.AuthorOfText" />
+		<meta itemprop="headline" content="@Model.BookOrArticle.CaptionOfText" />
+		<meta itemprop="url" content="https://@Context.Request.Host@Context.Request.Path@Context.Request.QueryString">
+		<meta itemprop="publisher" content="@Model.BookOrArticle.Publisher">
+		<meta itemprop="dateModified datePublished dateModified" content="@Model.BookOrArticle.DateOfPublication.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+		<meta itemprop="description" content="@Model.BookOrArticle.BookDescription">
+
+	</span>
 
 	@* выбор картинки для книги *@
 	<span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
@@ -73,8 +78,8 @@
 					<a asp-area=""
 					   asp-controller="Books"
 					   asp-action="PhotoAlbum"
-					   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
 					   asp-route-imageId="@item.ImageFileModelId"
+					   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
 					   class="">
 
 						<vc:view-image image-id="@item.ImageFileModelId"
@@ -227,8 +232,8 @@
 					<a asp-area=""
 					   asp-controller="Books"
 					   asp-action="PhotoAlbum"
-					   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
 					   asp-route-imageId="@item.ImageFileModelId"
+					   asp-route-albumCaption="@Model.BookOrArticle.CaptionOfText.Replace(' ', '-')"
 					   class="">
 
 						<vc:view-image image-id="@item.ImageFileModelId"
@@ -472,8 +477,8 @@
 
 		@* аудио *@
 		<div class="@((Model.TextForBookOrArticle != null
-									   	   && Model.TextForBookOrArticle.AudioInfoModel != null
-									   	   && !string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel.PlayerPodsterFm)) ? "accordion-item my-3 shadw" : "d-none")">
+											  	   && Model.TextForBookOrArticle.AudioInfoModel != null
+										   	   && !string.IsNullOrEmpty(Model.TextForBookOrArticle.AudioInfoModel.PlayerPodsterFm)) ? "accordion-item my-3 shadw" : "d-none")">
 
 			@* заголовок группы «Аудио» *@
 			<h2 class="accordion-header" id="headingAudioForPage">

@@ -48,7 +48,7 @@
 
 </div>
 
-@* Карточка страницы и индкес сортировки *@
+@* Карточка страницы и индекс сортировки *@
 <div>
 
 	<p>
@@ -2287,6 +2287,17 @@
 				Просмотр
 
 			</a>
+
+			@if (!string.IsNullOrEmpty(Model.PagePathNickName))
+			{
+				<a href="@Url.Content(Model.PagePathNickName)"
+				   class="btn btn-outline-primary py-1 m-2 shadw minwidth100px"
+				   title="просмотр">
+
+					Псевдоним
+
+				</a>
+			}
 
 			<a asp-area="Admin"
 			   asp-controller="PageInfo"

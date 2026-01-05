@@ -1161,21 +1161,13 @@ public class PageInfoController(
 
             _ = addPage.PageTitle.Trim();
             _ = addPage.PageDescription.Trim();
-
-            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.CurrentCultureIgnoreCase))
-            {
-                addPage.PageKeyWords = "Москва бандитская, Николай Модестов, криминал, 90-е годы,";
-            }
-            else
-            {
-                _ = addPage.PageKeyWords.Trim();
-            }
+            _ = addPage.PageKeyWords.Trim();
 
             #endregion
 
             #region OgType - PageIconPath - BrowserConfig - BrowserConfigFolder - Manifest
 
-            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.InvariantCultureIgnoreCase))
+            if (addPage.PageTitle.Contains("Москва 3", StringComparison.InvariantCultureIgnoreCase))
             {
                 addPage.OgType = "book";
             }
@@ -1369,9 +1361,9 @@ public class PageInfoController(
 
             _ = addPage.PageLinksByFilters;
 
-            if (addPage.PageTitle.Contains("Москва бандитская 2", StringComparison.InvariantCultureIgnoreCase))
+            if (addPage.PageTitle.Contains("Москва 3", StringComparison.InvariantCultureIgnoreCase))
             {
-                addPage.PageFilterOut = "Книги Николая Модестова,";
+                addPage.PageFilterOut = "Книги Николая Модестова, Книги о Сергее Шевкуненко,";
 
                 addPage.PageLinksByFilters = true;
             }

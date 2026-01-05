@@ -1,4 +1,6 @@
-﻿namespace ShevkunenkoSite.Services.TagHelpers;
+﻿using Azure;
+
+namespace ShevkunenkoSite.Services.TagHelpers;
 
 [HtmlTargetElement("div", Attributes = "pagination")]
 public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : TagHelper
@@ -8,6 +10,8 @@ public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : T
     public ViewContext? ViewContext { get; set; }
 
     public PagingInfoViewModel? Pagination { get; set; }
+
+    public required string AlbumCaption { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -26,13 +30,28 @@ public class PaginationOfItemsListTagHelper(IUrlHelperFactory helperFactory) : T
                 {
                     if (actionValue != null)
                     {
-                        newRef.Attributes["href"] = urlHelper.Action(actionValue.ToString(),
+                        if (actionValue.ToString() == "PhotoAlbum")
+                        {
+                            newRef.Attributes["href"] = urlHelper.Action(actionValue.ToString(),
                             new
                             {
-                                searchString = ViewContext.HttpContext.Request.Query["searchString"].ToString() ?? string.Empty,
                                 pageNumber = i,
-                                pageCard = Pagination.PageCard
+                                albumCaption = AlbumCaption,
+                                imageId = string.Empty
                             });
+
+                            newRef.Attributes["title"] = "страница " + i;
+                        }
+                        else
+                        {
+                            newRef.Attributes["href"] = urlHelper.Action(actionValue.ToString(),
+                                new
+                                {
+                                    searchString = ViewContext.HttpContext.Request.Query["searchString"].ToString() ?? string.Empty,
+                                    pageNumber = i,
+                                    pageCard = Pagination.PageCard
+                                });
+                        }
 
                         newRef.Attributes["title"] = "страница " + i;
                     }

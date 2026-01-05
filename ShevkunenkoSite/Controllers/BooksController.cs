@@ -348,80 +348,141 @@ public class BooksController(
 
     public async Task<IActionResult> PhotoAlbum(Guid? imageId, string? albumCaption, int pageNumber = 1)
     {
-        if (
-            (imageId == null & string.IsNullOrEmpty(albumCaption))
-            || (imageId != null & await imageFileContext.ImageFiles.Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
-            || (albumCaption != null & await imageFileContext.ImageFiles.Where(img => img.SearchFilter.Contains(albumCaption + "#album#")).AnyAsync() == false)
-            )
+        #region Разделители в фильтре картинки
+
+        string album = "#album#";
+
+        string note = "#note#";
+
+        #endregion
+
+        #region Если не указан Id картинки и заголовок альбома
+
+        if (imageId == null & string.IsNullOrEmpty(albumCaption))
         {
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region Если картинка не найдена по введенному Id
+
+        if (imageId != null & await imageFileContext.ImageFiles
+                    .Where(img => img.ImageFileModelId == imageId).AnyAsync() == false)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Если нельзя найти картинку по указанному названию альбома
+
+        if (albumCaption != null & await imageFileContext.ImageFiles
+                    .Where(img => img.SearchFilter.Contains(albumCaption + album)).AnyAsync() == false)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Инициализация PhotoAlbumViewModel
+
         PhotoAlbumViewModel photoAlbumView = new();
+
+        #endregion
 
         #region Просмотр картинки
 
         if (imageId != null)
         {
+            #region Показываем страницу картинки
+
             photoAlbumView.AlbumOrPhoto = false;
+
+            #endregion
+
+            #region Экземпляр картинки
 
             var imageItem = await imageFileContext.ImageFiles.FirstAsync(img => img.ImageFileModelId == imageId);
 
-            if (imageItem.SearchFilter.Contains("#album#"))
+            photoAlbumView.CurrentImageId = imageId;
+
+            #endregion
+
+            if (imageItem.SearchFilter.Contains(album))
             {
                 #region Определение заголовка и подзаголовка альбома
 
                 string[] filters = imageItem.SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-                string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
+                string? filterForCaption = Array.Find(filters, p => p.Contains(album));
 
                 if (filterForCaption != null)
                 {
-                    int foundForCaption = filterForCaption.IndexOf("#album#");
+                    int foundForCaption = filterForCaption.IndexOf(album);
 
                     photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
 
-                    if (filterForCaption.Contains("#note#"))
+                    if (filterForCaption.Contains(note))
                     {
-                        int foundForNote = filterForCaption.IndexOf("#note#");
+                        int foundForNote = filterForCaption.IndexOf(note);
 
-                        photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                        photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + album.Length)..foundForNote];
                     }
                 }
 
                 #endregion
 
+                #region Массив картинок по определенному названию альбома
+
                 var allItems = from m in imageFileContext.ImageFiles
-                   .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + "#album#"))
+                   .Where(p => p.SearchFilter.Contains(photoAlbumView.CaptionOfAlbum + album))
                    .OrderBy(p => p.SortOfPicture)
                                select m;
 
                 var arrayOfItems = await allItems.ToArrayAsync();
 
+                photoAlbumView.AllImageFiles = arrayOfItems;
+
+                photoAlbumView.TotalItems = arrayOfItems.Length;
+
+                #endregion
+
+                #region Номер по порядку в массиве текущей картинки
+
                 var indexOfItem = Array.FindIndex(arrayOfItems, item => item.ImageFileModelId == imageId) + 1;
 
-                if (indexOfItem < DataConfig.NumberOfItemsPerPage)
+                #endregion
+
+                #region Порядковый номер страницы альбома для текущей картинки
+
+                if (indexOfItem < photoAlbumView.ItemsPerPage)
                 {
                     pageNumber = 1;
                 }
-                else if (indexOfItem % (DataConfig.NumberOfItemsPerPage) == 0)
+                else if (indexOfItem % photoAlbumView.ItemsPerPage == 0)
                 {
-                    pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage;
+                    pageNumber = indexOfItem / photoAlbumView.ItemsPerPage;
                 }
                 else
                 {
-                    pageNumber = indexOfItem / DataConfig.NumberOfItemsPerPage + 1;
+                    pageNumber = indexOfItem / photoAlbumView.ItemsPerPage + 1;
                 }
 
+                photoAlbumView.CurrentPage = pageNumber;
+
+                #endregion
+
+                #region Массив картинок для текущей страницы
+
                 var itemsOnPage = await allItems
-                   .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
-                   .Take(photoAlbumView.PagingInfo.ItemsPerPage)
+                   .Skip((pageNumber - 1) * photoAlbumView.ItemsPerPage)
+                   .Take(photoAlbumView.ItemsPerPage)
                    .ToArrayAsync();
 
                 photoAlbumView.ItemsOnPage = itemsOnPage;
-                photoAlbumView.CurrentImageId = imageId;
-                photoAlbumView.PagingInfo.TotalItems = allItems.Count();
-                photoAlbumView.PagingInfo.CurrentPage = pageNumber;
+
+                #endregion
             }
             else
             {
@@ -435,33 +496,45 @@ public class BooksController(
 
         else
         {
-            #region Все картинки по фильтру albumCaption + "#album#
+            #region Показываем страницу альбома
+
+            photoAlbumView.AlbumOrPhoto = true;
+
+            #endregion
+
+            #region Массив картинок по определенному названию альбома
 
             var allItems = from m in imageFileContext.ImageFiles
-               .Where(p => p.SearchFilter.ToLower().Contains(albumCaption + "#album#"))
+               .Where(p => p.SearchFilter.Contains(albumCaption + album))
                .OrderBy(p => p.SortOfPicture)
                            select m;
 
-            var allItemsArray = await allItems.ToArrayAsync();
+            var arrayOfItems = await allItems.ToArrayAsync();
+
+            photoAlbumView.AllImageFiles = arrayOfItems;
+
+            photoAlbumView.TotalItems = arrayOfItems.Length;
 
             #endregion
 
             #region Проверка параметра pageNumber
 
             if (pageNumber < 1
-                || pageNumber > (allItemsArray.Length % photoAlbumView.PagingInfo.ItemsPerPage == 0 ? (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage) : (allItemsArray.Length / photoAlbumView.PagingInfo.ItemsPerPage + 1)))
+                || pageNumber > (arrayOfItems.Length % photoAlbumView.ItemsPerPage == 0 ? (arrayOfItems.Length / photoAlbumView.ItemsPerPage) : (arrayOfItems.Length / photoAlbumView.ItemsPerPage + 1)))
             {
                 return RedirectToAction(nameof(PhotoAlbum), new { pageNumber = 1 });
             }
 
             #endregion
 
-            #region Картинки на текущей странице
+            #region Массив картинок для текущей страницы
 
             var itemsOnPage = await allItems
-                   .Skip((pageNumber - 1) * photoAlbumView.PagingInfo.ItemsPerPage)
-                   .Take(photoAlbumView.PagingInfo.ItemsPerPage)
-                   .ToArrayAsync();
+               .Skip((pageNumber - 1) * photoAlbumView.ItemsPerPage)
+               .Take(photoAlbumView.ItemsPerPage)
+               .ToArrayAsync();
+
+            photoAlbumView.ItemsOnPage = itemsOnPage;
 
             #endregion
 
@@ -469,29 +542,35 @@ public class BooksController(
 
             string[] filters = itemsOnPage[0].SearchFilter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
-            string? filterForCaption = Array.Find(filters, p => p.Contains("#album#"));
+            string? filterForCaption = Array.Find(filters, p => p.Contains(album));
 
             if (filterForCaption != null)
             {
-                int foundForCaption = filterForCaption.IndexOf("#album#");
+                int foundForCaption = filterForCaption.IndexOf(album);
 
                 photoAlbumView.CaptionOfAlbum = filterForCaption[..foundForCaption];
 
-                if (filterForCaption.Contains("#note#"))
+                if (filterForCaption.Contains(note))
                 {
-                    int foundForNote = filterForCaption.IndexOf("#note#");
+                    int foundForNote = filterForCaption.IndexOf(note);
 
-                    photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + 7)..foundForNote];
+                    photoAlbumView.NoteForCaptionOfAlbum = filterForCaption[(foundForCaption + album.Length)..foundForNote];
                 }
             }
 
             #endregion
 
-            photoAlbumView.AlbumOrPhoto = true;
-            photoAlbumView.ItemsOnPage = itemsOnPage;
+            #region Устанавливаем Id для CurrentImageId
+
             photoAlbumView.CurrentImageId = itemsOnPage[0].ImageFileModelId;
-            photoAlbumView.PagingInfo.TotalItems = allItems.Count();
-            photoAlbumView.PagingInfo.CurrentPage = pageNumber;
+
+            #endregion
+
+            #region Номер текущей страницы
+
+            photoAlbumView.CurrentPage = pageNumber;
+
+            #endregion
         }
 
         #endregion
