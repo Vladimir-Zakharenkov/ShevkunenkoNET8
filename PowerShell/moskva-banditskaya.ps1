@@ -1,0 +1,1 @@
+﻿Select-String -Path F:\ShevkunenkoNET8\ShevkunenkoSite\wwwroot\texts\moskva-banditskaya-2\*.html -Pattern 'Япончик' -CaseSensitive | Out-File F:\ShevkunenkoNET8\ShevkunenkoSite\wwwroot\texts\moskva-banditskaya-2\yaponchik.txt

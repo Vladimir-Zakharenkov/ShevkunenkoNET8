@@ -107,6 +107,9 @@
 										asp-items="ViewBag.TextFileFolders"
 										class="col-12 col-sm-7 col-lg-6"
 										aria-describedby="FolderForTxtHtmlFileInputHelpBlock">
+
+									<option value="@Model.FolderForText.Trim('/')" selected>@Model.FolderForText.Trim('/')</option>
+
 								</select>
 
 								<div id="FolderForTxtHtmlFileInputHelpBlock" class="form-text bg-light mt-sm-0">

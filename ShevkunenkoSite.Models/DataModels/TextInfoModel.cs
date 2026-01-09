@@ -12,7 +12,8 @@ public class TextInfoModel
 
     #region Описание текста
 
-    [Required(ErrorMessage = "Добавьте описание текста")]
+    [Required(AllowEmptyStrings = true)]
+    [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Описание текста :")]
     public string TextDescription { get; set; } = string.Empty;

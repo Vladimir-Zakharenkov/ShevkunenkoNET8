@@ -86,6 +86,8 @@ public class TextInfoController(
     [HttpGet]
     public IActionResult AddText()
     {
+        TextInfoModel newText = new();
+
         #region Список папок для текстов
 
         var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
@@ -117,7 +119,7 @@ public class TextInfoController(
 
         #endregion
 
-        return View();
+        return View(newText);
     }
 
     [HttpPost]
@@ -139,50 +141,6 @@ public class TextInfoController(
     {
         if (ModelState.IsValid)
         {
-            #region Описание текста
-
-            if (await textContext.Texts.Where(file => file.TextDescription == addText.TextDescription).AnyAsync())
-            {
-                ModelState.AddModelError("TextDescription", $"Описание «{addText.TextDescription}» уже существует в БД");
-
-                #region Список папок для текстов
-
-                var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
-
-                var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
-
-                ViewData["TextFileFolders"] = new SelectList(folders
-                        .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
-
-                #endregion
-
-                #region Список книг и статей
-
-                ViewData["BooksAndArticles"] = new SelectList(
-                    bookContext.BooksAndArticles
-                            .OrderBy(book => book.CaptionOfText),
-                    "BooksAndArticlesModelId",
-                    "CaptionOfText");
-
-                #endregion
-
-                #region Список аудиофайлов
-
-                ViewData["AudioFiles"] = new SelectList(
-                   audioFIleContext.AudioFiles
-                        .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
-                    "AudioInfoModelId",
-                    "CaptionOfTextInAudioFile");
-
-                #endregion
-
-                return View(addText);
-            }
-
-            addText.TextDescription = addText.TextDescription.Trim();
-
-            #endregion
-
             #region TXT файл - имя файла, размер файла
 
             if (addText.TxtFileFormFile != null)
@@ -306,7 +264,7 @@ public class TextInfoController(
             }
 
             #endregion
-
+            
             #region HTML файл - имя файла, размер файла
 
             if (addText.HtmlFileFormFile != null)
@@ -314,7 +272,7 @@ public class TextInfoController(
                 if (!addText.HtmlFileFormFile.FileName.EndsWith(".html"))
                 {
                     ModelState.AddModelError("HtmlFileFormFile", "Выберите файл формата «.html»");
-
+                    
                     #region Список папок для текстов
 
                     var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
@@ -325,7 +283,7 @@ public class TextInfoController(
                             .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
 
                     #endregion
-
+                    
                     #region Список книг и статей
 
                     ViewData["BooksAndArticles"] = new SelectList(
@@ -335,7 +293,7 @@ public class TextInfoController(
                         "CaptionOfText");
 
                     #endregion
-
+                    
                     #region Список аудиофайлов
 
                     ViewData["AudioFiles"] = new SelectList(
@@ -352,7 +310,7 @@ public class TextInfoController(
                 if (await textContext.Texts.Where(file => file.HtmlFileName == addText.HtmlFileFormFile.FileName).AnyAsync())
                 {
                     ModelState.AddModelError("HtmlFileFormFile", $"Файл с именем «{addText.HtmlFileFormFile.FileName}» уже существует в БД");
-
+                    
                     #region Список папок для текстов
 
                     var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
@@ -363,7 +321,7 @@ public class TextInfoController(
                             .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
 
                     #endregion
-
+                    
                     #region Список книг и статей
 
                     ViewData["BooksAndArticles"] = new SelectList(
@@ -373,7 +331,7 @@ public class TextInfoController(
                         "CaptionOfText");
 
                     #endregion
-
+                    
                     #region Список аудиофайлов
 
                     ViewData["AudioFiles"] = new SelectList(
@@ -394,6 +352,159 @@ public class TextInfoController(
             else
             {
                 ModelState.AddModelError("HtmlFileFormFile", "Вы не выбрали файл");
+                
+                #region Список папок для текстов
+
+                var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
+
+                var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
+
+                ViewData["TextFileFolders"] = new SelectList(folders
+                        .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
+
+                #endregion
+                
+                #region Список книг и статей
+
+                ViewData["BooksAndArticles"] = new SelectList(
+                    bookContext.BooksAndArticles
+                            .OrderBy(book => book.CaptionOfText),
+                    "BooksAndArticlesModelId",
+                    "CaptionOfText");
+
+                #endregion
+                
+                #region Список аудиофайлов
+
+                ViewData["AudioFiles"] = new SelectList(
+                   audioFIleContext.AudioFiles
+                        .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
+                    "AudioInfoModelId",
+                    "CaptionOfTextInAudioFile");
+
+                #endregion
+
+                return View(addText);
+            }
+
+            #endregion
+            
+            #region Номер страницы
+
+            if (addText.SequenceNumber == null)
+            {
+                _ = addText.SequenceNumber;
+            }
+            else
+            {
+                if (addText.BooksAndArticlesModelId != null
+                                    & await textContext.Texts.Where(text =>
+                                        text.BooksAndArticlesModelId == addText.BooksAndArticlesModelId
+                                        & text.SequenceNumber == addText.SequenceNumber)
+                                    .AnyAsync())
+                {
+                    ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{addText.BooksAndArticlesModelId}», страница «{addText.SequenceNumber}» уже существует");
+                    
+                    #region Список папок для текстов
+
+                    var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
+
+                    var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
+
+                    ViewData["TextFileFolders"] = new SelectList(folders
+                            .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
+
+                    #endregion
+                    
+                    #region Список книг и статей
+
+                    ViewData["BooksAndArticles"] = new SelectList(
+                        bookContext.BooksAndArticles
+                                .OrderBy(book => book.CaptionOfText),
+                        "BooksAndArticlesModelId",
+                        "CaptionOfText");
+
+                    #endregion
+                    
+                    #region Список аудиофайлов
+
+                    ViewData["AudioFiles"] = new SelectList(
+                       audioFIleContext.AudioFiles
+                            .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
+                        "AudioInfoModelId",
+                        "CaptionOfTextInAudioFile");
+
+                    #endregion
+
+                    return View(addText);
+                }
+                else if (addText.BooksAndArticlesModelId != null)
+                {
+                    var book = await bookContext
+                        .BooksAndArticles
+                        .FirstAsync(book => book.BooksAndArticlesModelId == addText.BooksAndArticlesModelId);
+
+                    if (addText.SequenceNumber > book.NumberOfPages)
+                    {
+                        ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{addText.BooksAndArticlesModelId}», всего «{book.NumberOfPages}» страниц");
+                        
+                        #region Список папок для текстов
+
+                        var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
+
+                        var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
+
+                        ViewData["TextFileFolders"] = new SelectList(folders
+                                .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
+
+                        #endregion
+                        
+                        #region Список книг и статей
+
+                        ViewData["BooksAndArticles"] = new SelectList(
+                            bookContext.BooksAndArticles
+                                .Where(book => book.TypeOfText == "book")
+                                    .OrderBy(book => book.CaptionOfText),
+                            "BooksAndArticlesModelId",
+                            "CaptionOfText");
+
+                        #endregion
+                        
+                        #region Список аудиофайлов
+
+                        ViewData["AudioFiles"] = new SelectList(
+                           audioFIleContext.AudioFiles
+                                .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
+                            "AudioInfoModelId",
+                            "CaptionOfTextInAudioFile");
+
+                        #endregion
+
+                        return View(addText);
+                    }
+                }
+                else
+                {
+                    _ = addText.SequenceNumber;
+                }
+            }
+
+            #endregion
+
+            #region Описание текста
+
+            if (addText.HtmlFileFormFile.FileName.Contains("moskva-3-"))
+            {
+                addText.TextDescription = "Николай Модестов «Москва 3» страница " + addText.SequenceNumber + ".";
+            }
+            else
+            {
+                addText.TextDescription = addText.TextDescription.Trim();
+            }
+
+            if (await textContext.Texts.Where(file => file.TextDescription == addText.TextDescription).AnyAsync())
+            {
+                ModelState.AddModelError("TextDescription", $"Описание «{addText.TextDescription}» уже существует в БД");
 
                 #region Список папок для текстов
 
@@ -439,114 +550,24 @@ public class TextInfoController(
 
             #region Связанная книга (статья)
 
-            _ = addText.BooksAndArticlesModelId;
-
-            #endregion
-
-            #region Номер страницы
-
-            if (addText.SequenceNumber == null)
+            if (addText.HtmlFileFormFile.FileName.Contains("moskva-3-"))
             {
-                _ = addText.SequenceNumber;
+                addText.BooksAndArticlesModelId = new Guid("84E631B3-CED1-4757-CE23-08DE4C7F911A");
             }
             else
             {
-                if (addText.BooksAndArticlesModelId != null
-                                    & await textContext.Texts.Where(text =>
-                                        text.BooksAndArticlesModelId == addText.BooksAndArticlesModelId
-                                        & text.SequenceNumber == addText.SequenceNumber)
-                                    .AnyAsync())
-                {
-                    ModelState.AddModelError("SequenceNumber", $"Для книги (статьи) «{addText.BooksAndArticlesModelId}», страница «{addText.SequenceNumber}» уже существует");
-
-                    #region Список папок для текстов
-
-                    var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
-
-                    var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
-
-                    ViewData["TextFileFolders"] = new SelectList(folders
-                            .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
-
-                    #endregion
-
-                    #region Список книг и статей
-
-                    ViewData["BooksAndArticles"] = new SelectList(
-                        bookContext.BooksAndArticles
-                                .OrderBy(book => book.CaptionOfText),
-                        "BooksAndArticlesModelId",
-                        "CaptionOfText");
-
-                    #endregion
-
-                    #region Список аудиофайлов
-
-                    ViewData["AudioFiles"] = new SelectList(
-                       audioFIleContext.AudioFiles
-                            .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
-                        "AudioInfoModelId",
-                        "CaptionOfTextInAudioFile");
-
-                    #endregion
-
-                    return View(addText);
-                }
-                else if (addText.BooksAndArticlesModelId != null)
-                {
-                    var book = await bookContext
-                        .BooksAndArticles
-                        .FirstAsync(book => book.BooksAndArticlesModelId == addText.BooksAndArticlesModelId);
-
-                    if (addText.SequenceNumber > book.NumberOfPages)
-                    {
-                        ModelState.AddModelError("SequenceNumber", $"У книги (статьи) «{addText.BooksAndArticlesModelId}», всего «{book.NumberOfPages}» страниц");
-
-                        #region Список папок для текстов
-
-                        var folders = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory() + "\\wwwroot" + DataConfig.TextsFolderPath, "*", SearchOption.AllDirectories);
-
-                        var trimDirectorieFolder = folders[0].IndexOf("texts") + 6;
-
-                        ViewData["TextFileFolders"] = new SelectList(folders
-                                .Select(x => new { value = x[trimDirectorieFolder..], text = x[trimDirectorieFolder..] }), "value", "text");
-
-                        #endregion
-
-                        #region Список книг и статей
-
-                        ViewData["BooksAndArticles"] = new SelectList(
-                            bookContext.BooksAndArticles
-                                .Where(book => book.TypeOfText == "book")
-                                    .OrderBy(book => book.CaptionOfText),
-                            "BooksAndArticlesModelId",
-                            "CaptionOfText");
-
-                        #endregion
-
-                        #region Список аудиофайлов
-
-                        ViewData["AudioFiles"] = new SelectList(
-                           audioFIleContext.AudioFiles
-                                .OrderBy(audioFile => audioFile.CaptionOfTextInAudioFile),
-                            "AudioInfoModelId",
-                            "CaptionOfTextInAudioFile");
-
-                        #endregion
-
-                        return View(addText);
-                    }
-                }
-                else
-                {
-                    _ = addText.SequenceNumber;
-                }
+                _ = addText.BooksAndArticlesModelId;
             }
 
             #endregion
 
             #region Каталог текста
 
+            if (addText.HtmlFileFormFile.FileName.Contains("moskva-3-"))
+            {
+                addText.FolderForText = "moskva-3";
+            }
+            
             if (addText.FolderForText != "texts")
             {
                 addText.FolderForText += '/';
@@ -612,20 +633,40 @@ public class TextInfoController(
 
             #endregion
 
-            #region Копировать файлы
+            #region Копировать файлы в формате UTF8 с BOM
 
             if (addText.TxtFileFormFile != null)
             {
-                using FileStream txtStream = new(rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.TxtFileFormFile.FileName, FileMode.Create);
+                // путь к TXT файлу 
+                var pathForCopyTxt = rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.TxtFileFormFile.FileName;
 
-                await addText.TxtFileFormFile.CopyToAsync(txtStream);
+                using StreamReader readerTxt = new(addText.TxtFileFormFile.OpenReadStream());
+
+                string txtWrite = await readerTxt.ReadToEndAsync();
+
+                // полная перезапись файла 
+                using StreamWriter writer = new(pathForCopyTxt, false, new UTF8Encoding(true));
+
+                await writer.WriteLineAsync(txtWrite);
+
+                writer.Close();
             }
 
             if (addText.HtmlFileFormFile != null)
             {
-                using FileStream htmlStream = new(rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.HtmlFileFormFile.FileName, FileMode.Create);
+                // путь к HTML файлу 
+                var pathForCopyHtml = rootPath + DataConfig.TextsFolderPath + addText.FolderForText + addText.HtmlFileFormFile.FileName;
 
-                await addText.HtmlFileFormFile.CopyToAsync(htmlStream);
+                using StreamReader readerHtml = new(addText.HtmlFileFormFile.OpenReadStream());
+
+                string htmlWrite = await readerHtml.ReadToEndAsync();
+
+                // полная перезапись файла 
+                using StreamWriter writer = new(pathForCopyHtml, false, new UTF8Encoding(true));
+
+                await writer.WriteLineAsync(htmlWrite);
+
+                writer.Close();
             }
 
             #endregion

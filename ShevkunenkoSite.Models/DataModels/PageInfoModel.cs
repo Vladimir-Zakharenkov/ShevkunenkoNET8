@@ -78,19 +78,19 @@ public class PageInfoModel
 
     #region Теги title, description, keywords
 
-    [Required(ErrorMessage = "Добавьте заголовок страницы")]
+    [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Заголовок страницы :")]
     public string PageTitle { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Добавте описание")]
+    [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.MultilineText)]
     [Display(Name = "Описание страницы :")]
     public string PageDescription { get; set; } = string.Empty;
 
-    //[Required(ErrorMessage = "Добавте ключевые слова")]
+    [Required(AllowEmptyStrings = true)]
     [DisplayFormat(ConvertEmptyStringToNull = false)]
     [DataType(DataType.Text)]
     [Display(Name = "Ключевые слова :")]

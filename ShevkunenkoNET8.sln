@@ -518,6 +518,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFinAction", "EFinAction", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstEfCoreApp", "EFinAction\MyFirstEfCoreApp\MyFirstEfCoreApp.csproj", "{961834EC-974F-44F5-BD2E-E33934B7F068}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PowerSHELL", "PowerSHELL", "{D8E5E7D0-3B7C-4AC7-903C-C6E5FAA2CD0B}"
+	ProjectSection(SolutionItems) = preProject
+		PowerShell\hello-select-string.ps1 = PowerShell\hello-select-string.ps1
+		PowerShell\matching-the-template.ps1 = PowerShell\matching-the-template.ps1
+		PowerShell\moskva-banditskaya.ps1 = PowerShell\moskva-banditskaya.ps1
+		PowerShell\search-in-files.ps1 = PowerShell\search-in-files.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
