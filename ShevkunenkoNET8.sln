@@ -524,6 +524,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PowerSHELL", "PowerSHELL", 
 		PowerShell\matching-the-template.ps1 = PowerShell\matching-the-template.ps1
 		PowerShell\moskva-banditskaya.ps1 = PowerShell\moskva-banditskaya.ps1
 		PowerShell\search-in-files.ps1 = PowerShell\search-in-files.ps1
+		PowerShell\search-in-subfolder.ps1 = PowerShell\search-in-subfolder.ps1
+		PowerShell\search-windows-events.ps1 = PowerShell\search-windows-events.ps1
+		PowerShell\select-string-in-function.ps1 = PowerShell\select-string-in-function.ps1
 	EndProjectSection
 EndProject
 Global
